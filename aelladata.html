@@ -7,16 +7,36 @@
     <link rel="stylesheet" href="latex.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        /* Custom overrides for Tufte CSS optimized for 1080p displays */
         .sidenote,
         .marginnote {
-            margin-right: -30%; /* Reduce this even more */
-            width: 40%; /* Make sidenotes slightly narrower */
+            margin-right: -25%; /* Further reduced margin */
+            width: 35%; /* Slightly narrower sidenotes */
         }
 
         section > p,
         section > footer,
         section > table {
-            width: 65%; /* Slightly wider main content */
+            width: 70%; /* Wider main content to give more reading space */
+        }
+
+        /* Add a specific media query for 1080p and similar resolutions */
+        @media screen and (max-width: 1920px) and (min-width: 1200px) {
+            body {
+                width: 80%; /* Slightly narrower overall body */
+                padding-left: 10%; /* Balanced padding */
+            }
+
+            .sidenote,
+            .marginnote {
+                margin-right: -20%; /* Even less negative margin on standard screens */
+            }
+        }
+
+        /* Ensure the fullwidth images don't overflow */
+        figure.fullwidth {
+            max-width: 95%;
+        }
         }
         
     </style>
