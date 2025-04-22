@@ -6,12 +6,32 @@
     <link rel="stylesheet" href="tufte.css" />
     <link rel="stylesheet" href="latex.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Custom overrides for Tufte CSS, the margin was way too the right*/
+        .sidenote,
+        .marginnote {
+            margin-right: -40%;
+        }
+
+        section > p,
+        section > footer,
+        section > table {
+            width: 60%;
+        }
+
+        figure.fullwidth {
+            max-width: 100%;
+        }
+    </style>
 </head>
 
 <body>
     <article>
         <h1 id="Comparative Analysis of Housing Policy">Comparative Analysis of Housing Policy</h1>
         <p class="subtitle">Why does every single person around me say housing sucks?</p>
+        <figure class="fullwidth">
+            <img src="img/housing-developments.JPEG" />
+        </figure>
         <p><i>A finished housing development project, across the street from a stripped down single family home about to be torn down and developed. This area (5 minutes from my house) was rezoned a year ago, allowing duplexes and townhouses to be built in place of almost all single family homes.</i></p>
         <section>
             <p><b>The first question I think that’s on the mind of almost all people I know under 40 who aren't living with their parents is; What’s going on with housing? Why does housing feel like it costs so much more? And most importantly, from a political policy lens, what can we do about it? </b> </p>
