@@ -10,26 +10,26 @@
         /* Custom overrides for Tufte CSS optimized for 1080p displays */
         .sidenote,
         .marginnote {
-            margin-right: -25%; /* Further reduced margin */
-            width: 35%; /* Slightly narrower sidenotes */
+            margin-right: -15%; /* Further reduced margin for better positioning */
+            width: 30%; /* Narrower sidenotes */
         }
 
         section > p,
         section > footer,
         section > table {
-            width: 70%; /* Wider main content to give more reading space */
+            width: 65%; /* Adjusted main content width */
         }
 
-        /* Add a specific media query for 1080p and similar resolutions */
-        @media screen and (max-width: 1920px) and (min-width: 1200px) {
+        /* Optimize specifically for 1080p screens */
+        @media screen and (max-width: 1920px) {
             body {
-                width: 80%; /* Slightly narrower overall body */
-                padding-left: 10%; /* Balanced padding */
+                width: 85%; /* Slightly wider body for better screen usage */
+                padding-left: 8%; /* Reduced padding */
             }
 
             .sidenote,
             .marginnote {
-                margin-right: -20%; /* Even less negative margin on standard screens */
+                margin-right: -12%; /* Even less negative margin for standard screens */
             }
         }
 
@@ -37,6 +37,10 @@
         figure.fullwidth {
             max-width: 95%;
         }
+
+        /* Fix for label/toggle in mobile view */
+        label.margin-toggle:not(.sidenote-number) {
+            color: #777; /* Make toggle more visible */
         }
         
     </style>
@@ -82,7 +86,40 @@
         </section>
         <section>
             <h3 id="Data Sourcing">Data Sourcing</h3>
-
+            <table>
+                <tr>
+                    <th>Question Trying to be Answered</th>
+                    <th>Source</th>
+                </tr>
+                <tr>
+                    <td>Policy Changes</td>
+                    <td>Average Housing Prices/Rent Per Community</td>
+                    <td>Confounding Variables</td>
+                    <td>Community Feelings</td>
+                    <td>Amount of New Buildings Built</td>
+                </tr>
+                <tr>
+                    <td><a> href="https://www.calgary.ca/planning/land-use.html?redirect=/landusebylaw">Land Use Bylaw From City of Calgary</a> href=<a> href="https://www.calgary.ca/planning/land-use.html?redirect=/landusebylaw">Calgary Planning Comission</a>">Land Use Bylaw From City of Calgary</a> <a> href="https://www.calgary.ca/communities/housing-in-calgary/housing-strategy.html">Calgary's Housing Strategy 2024 - 2030</a> </td>
+                    <td><a> href="https://www.calgary.ca/communities/housing-in-calgary/housing-research/housing-trends.html">City of Calgary - Housing Trends</a><a> href="https://wowa.ca/edmonton-housing-market">Analyzed Housing Data - Edmonton</a><a> href="https://wowa.ca/calgary-housing-market">Analyzed Housing Data - Calgary</a></td>
+                    <td><a> href="https://www.canada.ca/en/department-finance/news/2024/09/government-announces-boldest-mortgage-reforms-in-decades-to-unlock-homeownership-for-more-canadians.html">Federal Finance Changes to Housing in 2024</a></td>
+                    <td><a> href="https://www.calgary.ca/research/satisfaction-survey.html#past">2024 fall/2024 spring survey results</a><a> href="https://www.calgary.ca/cps/statistics/calgary-police-statistical-reports.html">Community Crime Statistics</a><a> href="https://data.calgary.ca/d/h3h6-kgme">Community Disorder Statistics</a></td>
+                    <td><a> href="https://data.calgary.ca/Business-and-Economic-Activity/Building-Permits/c2es-76ed/about_data">City of Calgary - Building Permits</a><a> href="https://data.calgary.ca/Business-and-Economic-Activity/Builders-Report-Multi-Family-City-Summary/7ht8-m4j5/about_data">Builders Report - Multi Family - City Summary</a></td>
+                </tr>
+            </table>
+            
+            <p> I really wanted a total collection of current housing listings and sort through them, but it was actually very hard to find and after some searching, several MLS (data sources for housing prices mostly in use by realtors) are either obsenely expensive for individual use or are exclusively available to realtors. I will likely use their analysis and average data for housing prices, I assume it is accurate according to their listings and there isn't an incentive for them to skew averages.<span class="marginnote"> The lowest cost  I could find that would approximate my needs is around 500$ canadian (per month!)</span></p> 
+            <p>
+                Community surveys are done year after year, but unfortunately, it's supposed to happen next fall (in 4 months), so I can use the 2024 Fall result and compare them to the Spring as the rezoning changes happened in May. But I will remind myself to come back to this when in the fall. Trying to neatly and cleanly map = (City with lots of change) vs (City with no change) in the same geographic area/province. A decent amount of changes happened in the city. I was hoping everything would stay the same for the last couple of years; in Edmonton, the City of Edmonton did something similar to the City of Calgary a year before; it allowed homes and apartment buildings city-wide; this is going to be really diffucult to try and map onto another model city and just assume that most variables are solid since comparing one blanket rezoning to another geographical and provinicial blanket rezoning is bound to have lots of issues.</p>
+            <p>
+                I am left with trying to find a significant North American city close enough to Calgary and repeat the process of checking, or I succumb to the longitudinal in-group analysis of a city and settle on managing confounding factors one by one as they come up in other cities in Canada.
+                First up, I can get an analysis that reflects the delta in all housing markets in North America, then Canada, then Alberta; this can give me a very rough estimate of general external factors and name certain specific economic/political trends + federal + provincial changes I can almost begin to separate the effects that local zoning changes had out of the stew of the continental housing market economy.
+                After a cursory glance and finding a particularly striking article by a finance professor in Macleans (on or in?, in a newspaper, but on a website, I am gen Z; what's a newspaper?), there have been some relatively significant federal financial changes that came in the new 2025 year,  notable an extension of maximum time to repay a mortgage from 25 to 30 years, as well as lowering the downpayment required, this is a huge incentivization to new buyers of homes which is likely to increase housing costs without a similar uptick in supply.
+                On top of that, the federal government launched a special tax-free investment fund for a first-time home, as well as enabling the use of upwards of 60,000$ from a retirement fund for one. On top of extra non-linear funding from the N
+                I am left wondering if anything has stayed the same!
+            </p>
+            <p> After coming back to this project post-climb and post-run, I continued to search through possible data sources and found the holy grail, the Canada Mortgage and Housing Corporation, which just so happened to compile and (freely) distribute housing information to the general public. Did you know they also have an official podcast?? That talks about the exact question I am attempting to answer from their Deputy Economist??? </p>
+            <span class="marginnote"> <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/3aEWfGJS0DICK5fHTldE1S?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> </span>
+        
         </section>
 
 </article>
