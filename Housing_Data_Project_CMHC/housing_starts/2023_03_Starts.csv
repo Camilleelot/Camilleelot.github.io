@@ -1,0 +1,18 @@
+Calgary — Starts by Dwelling Type by Zone
+March 2023 Intended Markets - All
+,Single,Semi-Detached,Row,Apartment,All,
+Downtown,0,0,0,0,0,
+Beltline,0,0,0,0,0,
+North Hill,4,6,0,0,10,
+Southwest,17,12,0,22,51,
+Southeast,61,2,39,31,133,
+Northwest,91,20,69,318,498,
+Northeast,21,46,14,21,102,
+Chinook,0,2,4,0,6,
+Fish Creek,46,14,20,57,137,
+Other Centres,101,36,20,0,157,
+Calgary,341,138,166,449,"1,094",
+
+Notes
+"CMA, CA and CSD definitions are based on 2016 Census Geography Definitions"
+Source,CMHC Starts and Completions Survey
