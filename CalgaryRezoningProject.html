@@ -273,20 +273,22 @@
                     </tr>
                 </tbody>
             </table>
-            <p>
-                A simple linear analysis drawn at the line of August 2024, seems clearly positive indicating more housing and more dense housing. And tells a very nice and convincing and finalizing story. Remove restrictions on housing -> more housing of different types. A feel good story where more houses are built with more denser housing.
-                <figure class="fullwidth">
-                    <img src="img/calgarygraphsimple.PNG" />
-                </figure>
-                <figure class="fullwidth">
-                    <img src="img/densityrevolution.PNG" />
-                </figure>
-            </p>
+            <p> And the analysis</p>
+            <figure>
+                <label for="linear graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote"> A simple linear analysis, a difference of percentage in averages before/after the date of August 2024; which was the month that the blanket rezoning took effect.</span>
+                <img src="img/calgarygraphsimple.png" alt="Simple Graph of Calgary Rezoning Changes" />
+            </figure>
+            <p>A simple linear analysis drawn at the line of August 2024, seems clearly positive indicating more housing and more dense housing. And tells a very nice and convincing and finalizing story. Remove restrictions on housing -> more housing of different types. A feel good story where more houses are built with more denser housing. </p>
+            <figure>
+                <label for="linear graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote"> Another simple linear analysis, a percentage difference between dense construction and single detached family homes.</span>
+                <img src="img/densityrevolution.png" alt="Exports and Imports to and from Denmark & Norway from 1700 to 1780" />
+            </figure>
             <p>But a feel good story with a linear line at the date isn't quite as convicing to me. I decided to use an Interrupted Time series analysis to see if this change had affected housing beyond pre-existing trends. Essentially from this point on I am asking; Did this policy cause a significant break in the trends?</p>
             <p>Still my hypothesis and expectation on an intrisic level was of course housing was going to increase and it was going to be more dense, I just didn't seem convinced the trend was this high as implied by the linear anaylsis.'</p>
             <h1 id="The Real Analysis">The Real Analysis</h1>
             <p>What I actually found was paradoxical, using a ITS, total housing decreased by 23.9%. With apartment construction increasing by 27.1% and single family construction practically collapsed by 47%.</p>
-            <p>Using a decomposition analysis.</p>
+            <p>Using a decomposition analysis. The pre-policy trend was 92.5 units/month, and housing growth was positive pre-change. Immediate impact was 642 units, as expected, but the post trend in policy was -74.7units/month.</p>
+
         </section> 
 
 </article>
