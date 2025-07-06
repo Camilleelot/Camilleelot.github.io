@@ -303,8 +303,14 @@
             <p>The pre-policy trend was 92.5 units/month, and housing growth was positive pre-change. Immediate impact was 642 units as expected, but the post-policy trend was -74.7 units/month.</p>
             <figure>
                 <label for="ITS graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote">
-                    time: p = 0.0030 ✓ Significant | post_policy: p = 0.4249 ✗ Not significant | time_after_policy: p = 0.1977 ✗ Not significant
-                </span>
+    <pre><code>
+    Y = β₀ + β₁(time) + β₂(policy) + β₃(time_after_policy) + ε
+
+    Where:
+    β₀ = 1,233 (baseline)
+    β₁ = 92.5 (pre-policy trend)
+    β₂ = 642 (immediate jump)
+    β₃ = -74.7 (trend change after policy) </code></pre></span>
                 <img src="img/ITS.png" alt="ITS Graph" />
             </figure>
             <style type="text/css">
