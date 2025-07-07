@@ -107,191 +107,179 @@
             <label for="mn-demo" class="margin-toggle">&#8853;</label>
 
             <style type="text/css">
-                .tg {
-                    border-collapse: collapse;
-                    border-color: #ccc;
-                    border-spacing: 0;
-                    border-style: solid;
-                    border-width: 1px;
-                }
-
-                    .tg td {
-                        background-color: #fff;
-                        border-color: #ccc;
-                        border-style: solid;
-                        border-width: 0px;
-                        color: #333;
-                        font-family: Arial, sans-serif;
-                        font-size: 14px;
-                        overflow: hidden;
-                        padding: 10px 5px;
-                        word-break: normal;
-                    }
-
-                    .tg th {
-                        background-color: #f0f0f0;
-                        border-color: #ccc;
-                        border-style: solid;
-                        border-width: 0px;
-                        color: #333;
-                        font-family: Arial, sans-serif;
-                        font-size: 14px;
-                        font-weight: normal;
-                        overflow: hidden;
-                        padding: 10px 5px;
-                        word-break: normal;
-                    }
-
-                    .tg .tg-0pky {
-                        border-color: inherit;
-                        text-align: left;
-                        vertical-align: top
-                    }
-
-                    .tg .tg-0lax {
-                        text-align: left;
-                        vertical-align: top
-                    }
-
-                .data-table {
+                .housing-data {
                     float: right;
-                    width: 40%;
-                    margin-left: 2em;
+                    width: 45%;
+                    margin: 0 0 1em 2em;
+                    font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
                     font-size: 0.85em;
+                    border-collapse: collapse;
                 }
+
+                    .housing-data td, .housing-data th {
+                        padding: 0.25em 0.75em;
+                        text-align: right;
+                        border: none;
+                    }
+
+                    .housing-data th {
+                        font-weight: normal;
+                        border-bottom: 1px solid #000;
+                        text-align: right;
+                    }
+
+                        .housing-data th:first-child,
+                        .housing-data td:first-child {
+                            text-align: left;
+                        }
+
+                    /* Subtle zebra striping */
+                    .housing-data tr:nth-child(even) {
+                        background-color: #f8f8f8;
+                    }
+
+                /* Rezoning marker */
+                .rezoning-break td {
+                    border-top: 2px solid #000;
+                    padding-top: 0.5em;
+                }
+
+                    .rezoning-break td:last-child::after {
+                        content: " ←";
+                        font-size: 0.8em;
+                        color: #666;
+                    }
             </style>
-            <table class="tg">
+
+            <table class="housing-data">
                 <thead>
                     <tr>
-                        <th class="tg-0pky" colspan="4">MONTHLY HOUSING STARTS</th>
+                        <th>Year/Month</th>
+                        <th>Single</th>
+                        <th>Apartment</th>
+                        <th>All</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="tg-0pky">Year/Month</td>
-                        <td class="tg-0pky">Single</td>
-                        <td class="tg-0pky">Apartment</td>
-                        <td class="tg-0pky">All</td>
+                        <td>2023-01</td>
+                        <td>304</td>
+                        <td>774</td>
+                        <td>1295</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2023-01</td>
-                        <td class="tg-0pky">304</td>
-                        <td class="tg-0pky">774</td>
-                        <td class="tg-0pky">1295</td>
+                        <td>2023-02</td>
+                        <td>391</td>
+                        <td>492</td>
+                        <td>1238</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2023-02</td>
-                        <td class="tg-0pky">391</td>
-                        <td class="tg-0pky">492</td>
-                        <td class="tg-0pky">1238</td>
+                        <td>2023-03</td>
+                        <td>341</td>
+                        <td>449</td>
+                        <td>1094</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2023-03</td>
-                        <td class="tg-0pky">341</td>
-                        <td class="tg-0pky">449</td>
-                        <td class="tg-0pky">1094</td>
+                        <td>2023-11</td>
+                        <td>594</td>
+                        <td>827</td>
+                        <td>1808</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2023-11</td>
-                        <td class="tg-0pky">594</td>
-                        <td class="tg-0pky">827</td>
-                        <td class="tg-0pky">1808</td>
+                        <td>2023-12</td>
+                        <td>538</td>
+                        <td>513</td>
+                        <td>1493</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2023-12</td>
-                        <td class="tg-0pky">538</td>
-                        <td class="tg-0pky">513</td>
-                        <td class="tg-0pky">1493</td>
+                        <td>2024-01</td>
+                        <td>487</td>
+                        <td>1103</td>
+                        <td>1951</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-01</td>
-                        <td class="tg-0pky">487</td>
-                        <td class="tg-0pky">1103</td>
-                        <td class="tg-0pky">1951</td>
+                        <td>2024-02</td>
+                        <td>460</td>
+                        <td>781</td>
+                        <td>1674</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-02</td>
-                        <td class="tg-0pky">460</td>
-                        <td class="tg-0pky">781</td>
-                        <td class="tg-0pky">1674</td>
+                        <td>2024-03</td>
+                        <td>532</td>
+                        <td>846</td>
+                        <td>1760</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-03</td>
-                        <td class="tg-0pky">532</td>
-                        <td class="tg-0pky">846</td>
-                        <td class="tg-0pky">1760</td>
+                        <td>2024-04</td>
+                        <td>528</td>
+                        <td>877</td>
+                        <td>1831</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-04</td>
-                        <td class="tg-0pky">528</td>
-                        <td class="tg-0pky">877</td>
-                        <td class="tg-0pky">1831</td>
+                        <td>2024-05</td>
+                        <td>617</td>
+                        <td>937</td>
+                        <td>1996</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-05</td>
-                        <td class="tg-0pky">617</td>
-                        <td class="tg-0pky">937</td>
-                        <td class="tg-0pky">1996</td>
+                        <td>2024-06</td>
+                        <td>719</td>
+                        <td>730</td>
+                        <td>1996</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-06</td>
-                        <td class="tg-0pky">719</td>
-                        <td class="tg-0pky">730</td>
-                        <td class="tg-0pky">1996</td>
+                        <td>2024-07</td>
+                        <td>625</td>
+                        <td>1326</td>
+                        <td>2471</td>
+                    </tr>
+                    <tr class="rezoning-break">
+                        <td>2024-08</td>
+                        <td>597</td>
+                        <td>552</td>
+                        <td>1675</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-07</td>
-                        <td class="tg-0pky">625</td>
-                        <td class="tg-0pky">1326</td>
-                        <td class="tg-0pky">2471</td>
+                        <td>2024-09</td>
+                        <td>660</td>
+                        <td>997</td>
+                        <td>2090</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-08</td>
-                        <td class="tg-0pky">597</td>
-                        <td class="tg-0pky">552</td>
-                        <td class="tg-0pky">1675</td>
+                        <td>2024-10</td>
+                        <td>644</td>
+                        <td>1372</td>
+                        <td>2690</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-09</td>
-                        <td class="tg-0pky">660</td>
-                        <td class="tg-0pky">997</td>
-                        <td class="tg-0pky">2090</td>
+                        <td>2024-11</td>
+                        <td>717</td>
+                        <td>1295</td>
+                        <td>2548</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-10</td>
-                        <td class="tg-0pky">644</td>
-                        <td class="tg-0pky">1372</td>
-                        <td class="tg-0pky">2690</td>
+                        <td>2024-12</td>
+                        <td>514</td>
+                        <td>689</td>
+                        <td>1717</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-11</td>
-                        <td class="tg-0pky">717</td>
-                        <td class="tg-0pky">1295</td>
-                        <td class="tg-0pky">2548</td>
+                        <td>2025-01</td>
+                        <td>552</td>
+                        <td>531</td>
+                        <td>1629</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2024-12</td>
-                        <td class="tg-0pky">514</td>
-                        <td class="tg-0pky">689</td>
-                        <td class="tg-0pky">1717</td>
+                        <td>2025-02</td>
+                        <td>500</td>
+                        <td>1390</td>
+                        <td>2407</td>
                     </tr>
                     <tr>
-                        <td class="tg-0pky">2025-01</td>
-                        <td class="tg-0pky">552</td>
-                        <td class="tg-0pky">531</td>
-                        <td class="tg-0pky">1629</td>
-                    </tr>
-                    <tr>
-                        <td class="tg-0pky">2025-02</td>
-                        <td class="tg-0pky">500</td>
-                        <td class="tg-0pky">1390</td>
-                        <td class="tg-0pky">2407</td>
-                    </tr>
-                    <tr>
-                        <td class="tg-0lax">2025-03</td>
-                        <td class="tg-0lax">455</td>
-                        <td class="tg-0lax">1352</td>
-                        <td class="tg-0lax">2235</td>
+                        <td>2025-03</td>
+                        <td>455</td>
+                        <td>1352</td>
+                        <td>2235</td>
                     </tr>
                 </tbody>
             </table>
@@ -311,30 +299,30 @@
             <div class="epigraph">
                 <blockquote>
                     <p>I propose in this inquiry to take nothing for granted, but to bring even accepted theories to the test of first principles, and should they not stand the test, freshly to interrogate facts in the endeavor to discover their law. I propose to beg no question, to shrink from no conclusion, but to follow truth wherever it may lead.</p>
-                    <footer>Henry George, “Introductory : The Problem”</footer>
+                    <footer>Henry George, “Progress and Poverty; Introductory:The Problem" (1879)</footer>
                 </blockquote>
             </div>
-                <p>What I actually found was paradoxical to the YIMBY derugulation theory of housing managment, from 2023/01 to 2024/07 the actual growth rate increased and was 92.5 construction starts per month, after the policy took effect the immediate jump of 642, with the before rezoning construction starts per month averaging 1715 units/month (Jan 2023 - Jul 2024) and after 2124 units/month (Aug 2024 - Mar 2025), with a raw increase of 23.9%.<b>But</b>, the pre-policy growth trend was 92.5 units/month, and housing growth was increasing, extrapolating the growth trend to today it would amount to 2685 units/month compared to the actual 2124 units/month, gives us a -562 difference below the expected pre-policy trend. The types of construction starting changed as well with single family home construction growing from 511 to 580, while apartment construction grew from 805 to 1,022, 13.4% and 27.1% respectively. The substitution in construction of denser homes is not enough to fill the pre-policy trend of the decline in growth of single family construction. </p>
-                <p>The rezoning paradox, is real, and despite making development genuinely easier, with a completly blanket level city wide removal of market restrictions on housing, housing starts fell below the expected trends by 21%, disrupting what was already a strong growth rate, and (much like the change) isn't localized by sectors (groupings of neighbourhoods), and persists across seasonal variations while remaining statistically relevant.</p>
-                <p><b>An important question is, did uncertainty increase?</b> Volatility  before was 385, volatility after was 415 with an F-statistic of 1.16 (critical value: 3.01). The volatility remained similar. Cohen's d measures the effect size at 1.062, indicating a large effect. Bootstrap 95% confidence interval with policy effect of 409 units/month, 95% CI: [94,769]. The effect is statistically robust.</p>
-                <p>
-                    Something statistically relevant <label for="sn-extensive-use-of-sidenotes" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-extensive-use-of-sidenotes" class="margin-toggle" /><span class="sidenote">
-                        d = (M_actual - M_expected) / SD_pooled
-                        d = (2,124 - 2,685) / 530 = -1.06 (Large negative effect)
-                    </span>,and I would argue philosophically important, happened here.
-                </p>
-                <figure>
-                    <label for="ITS graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote">
-                        Y = β₀ + β₁(time) + β₂(policy) + β₃(time_after_policy) + ε
+            <p>What I actually found was paradoxical to the YIMBY derugulation theory of housing managment, from 2023/01 to 2024/07 the actual growth rate increased and was 92.5 construction starts per month, after the policy took effect the immediate jump of 642, with the before rezoning construction starts per month averaging 1715 units/month (Jan 2023 - Jul 2024) and after 2124 units/month (Aug 2024 - Mar 2025), with a raw increase of 23.9%.<b>But</b>, the pre-policy growth trend was 92.5 units/month, and housing growth was increasing, extrapolating the growth trend to today it would amount to 2685 units/month compared to the actual 2124 units/month, gives us a -562 difference below the expected pre-policy trend. The types of construction starting changed as well with single family home construction growing from 511 to 580, while apartment construction grew from 805 to 1,022, 13.4% and 27.1% respectively. The substitution in construction of denser homes is not enough to fill the pre-policy trend of the decline in growth of single family construction. </p>
+            <p>The rezoning paradox, is real, and despite making development genuinely easier, with a completly blanket level city wide removal of market restrictions on housing, housing starts fell below the expected trends by 21%, disrupting what was already a strong growth rate, and (much like the change) isn't localized by sectors (groupings of neighbourhoods), and persists across seasonal variations while remaining statistically relevant.</p>
+            <p><b>An important question is, did uncertainty increase?</b> Volatility  before was 385, volatility after was 415 with an F-statistic of 1.16 (critical value: 3.01). The volatility remained similar. Cohen's d measures the effect size at 1.062, indicating a large effect. Bootstrap 95% confidence interval with policy effect of 409 units/month, 95% CI: [94,769]. The effect is statistically robust.</p>
+            <p>
+                Something statistically relevant <label for="sn-extensive-use-of-sidenotes" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-extensive-use-of-sidenotes" class="margin-toggle" /><span class="sidenote">
+                    d = (M_actual - M_expected) / SD_pooled
+                    d = (2,124 - 2,685) / 530 = -1.06 (Large negative effect)
+                </span>,and I would argue philosophically important, happened here.
+            </p>
+            <figure>
+                <label for="ITS graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote">
+                    Y = β₀ + β₁(time) + β₂(policy) + β₃(time_after_policy) + ε
 
-                        Where:
-                        β₀ = 1,233 (baseline)
-                        β₁ = 92.5 (pre-policy trend)
-                        β₂ = 642 (immediate jump)
-                        β₃ = -74.7 (trend change after policy)
-                    </span>
-                    <img src="img/ITS.png" alt="ITS Graph" />
-                </figure>
+                    Where:
+                    β₀ = 1,233 (baseline)
+                    β₁ = 92.5 (pre-policy trend)
+                    β₂ = 642 (immediate jump)
+                    β₃ = -74.7 (trend change after policy)
+                </span>
+                <img src="img/ITS.png" alt="ITS Graph" />
+            </figure>
         </section>
         <section>
             <h1 id="Interpretation">Interpretation of Data</h1>
