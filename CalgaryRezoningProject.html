@@ -133,17 +133,14 @@
                             text-align: left;
                         }
 
-                /* Remove zebra striping - Tufte style */
-                /* Instead, use whitespace and subtle lines */
 
-                /* Just the rezoning marker - more visible */
                 .rezoning-mark {
                     position: relative;
                 }
 
                     .rezoning-mark td {
-                        border-top: 1.5px solid #cc0000;
-                        padding-top: 0.5em;
+                        padding-top: 0.4em;
+                        border-top: 1px solid #666;
                     }
 
                         .rezoning-mark td:first-child::before {
@@ -152,12 +149,12 @@
                             font-weight: bold;
                         }
 
-                /* Optional: subtle row highlighting on hover only */
+                
                 .housing-data tr:hover td {
                     background-color: #fffbf0;
                 }
 
-                /* Make 2024-07 (peak) and 2024-08 (crash) stand out */
+               
                 .peak-month td:last-child {
                     font-weight: bold;
                 }
@@ -297,6 +294,18 @@
                         <td>455</td>
                         <td>1352</td>
                         <td>2235</td>
+                    </tr>
+                    <tr class="peak-month">
+                        <td>2024-07</td>
+                        <td>625</td>
+                        <td>1326</td>
+                        <td>2471</td>
+                    </tr>
+                    <tr class="rezoning-mark crash-month">
+                        <td>2024-08</td>
+                        <td>597</td>
+                        <td>552</td>
+                        <td>1675</td>
                     </tr>
                 </tbody>
             </table>
