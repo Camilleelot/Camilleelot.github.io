@@ -104,6 +104,8 @@
             <p>5. Adding a specialized Single-Detached Dwelling to code.</p>
             <p>The proposed reason for change was simple: <b>"Calgary needs more homes. Citywide rezoning will help increase supply."</b></p>
             <h2 id="What Changed">What Changed?</h2>
+            <label for="mn-demo" class="margin-toggle">&#8853;</label>
+
             <style type="text/css">
                 .tg {
                     border-collapse: collapse;
@@ -150,6 +152,13 @@
                         text-align: left;
                         vertical-align: top
                     }
+
+                .data-table {
+                    float: right;
+                    width: 40%;
+                    margin-left: 2em;
+                    font-size: 0.85em;
+                }
             </style>
             <table class="tg">
                 <thead>
@@ -299,27 +308,33 @@
             <p>But a feel-good story with a linear line at the date isn't quite convincing. I decided to use an Interrupted Time Series analysis to see if this change affected housing beyond pre-existing trends. Did this policy cause a significant break in the trends?</p>
             <p>My hypothesis and expectation was that housing would increase and become more dense. I just wasn't convinced the trend was as high as implied by the linear analysis.</p>
             <h1 id="The Real Analysis">The Real Analysis</h1>
-            <p>What I actually found was paradoxical to the YIMBY derugulation theory of housing managment, from 2023/01 to 2024/07 the actual growth rate increased and was 92.5 construction starts per month, after the policy took effect the immediate jump of 642, with the before rezoning construction starts per month averaging 1715 units/month (Jan 2023 - Jul 2024) and after 2124 units/month (Aug 2024 - Mar 2025), with a raw increase of 23.9%.<b>But</b>, the pre-policy growth trend was 92.5 units/month, and housing growth was increasing, extrapolating the growth trend to today it would amount to 2685 units/month compared to the actual 2124 units/month, gives us a -562 difference below the expected pre-policy trend. The types of construction starting changed as well with single family home construction growing from 511 to 580, while apartment construction grew from 805 to 1,022, 13.4% and 27.1% respectively. The substitution in construction of denser homes is not enough to fill the pre-policy trend of single family construction. </p>
-            <p>The rezoning paradox, is real, and despite making development genuinely easier, with a completly blanket level city wide removal of market restrictions on housing, housing starts fell below the expected trends by 21%, disrupting what was already a strong growth rate, and (much like the change) isn't localized by sectors (groupings of neighbourhoods), and persists across seasonal variations while remaining statistically relevant.</p>
-            <p><b>An important question is, did uncertainty increase?</b> Volatility  before was 385, volatility after was 415 with an F-statistic of 1.16 (critical value: 3.01). The volatility remained similar. Cohen's d measures the effect size at 1.062, indicating a large effect. Bootstrap 95% confidence interval with policy effect of 409 units/month, 95% CI: [94,769]. The effect is statistically robust.</p>
-            <p>
-                Something statistically relevant <label for="sn-extensive-use-of-sidenotes" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-extensive-use-of-sidenotes" class="margin-toggle" /><span class="sidenote">
-                    d = (M_actual - M_expected) / SD_pooled
-                    d = (2,124 - 2,685) / 530 = -1.06 (Large negative effect)
-                </span>, and I would argue philosophically important, happened here.
-            </p>
-            <figure>
-                <label for="ITS graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote">
-                    Y = β₀ + β₁(time) + β₂(policy) + β₃(time_after_policy) + ε
+            <div class="epigraph">
+                <blockquote>
+                    <p>I propose in this inquiry to take nothing for granted, but to bring even accepted theories to the test of first principles, and should they not stand the test, freshly to interrogate facts in the endeavor to discover their law. I propose to beg no question, to shrink from no conclusion, but to follow truth wherever it may lead.</p>
+                    <footer>Henry George, “Introductory : The Problem”</footer>
+                </blockquote>
+            </div>
+                <p>What I actually found was paradoxical to the YIMBY derugulation theory of housing managment, from 2023/01 to 2024/07 the actual growth rate increased and was 92.5 construction starts per month, after the policy took effect the immediate jump of 642, with the before rezoning construction starts per month averaging 1715 units/month (Jan 2023 - Jul 2024) and after 2124 units/month (Aug 2024 - Mar 2025), with a raw increase of 23.9%.<b>But</b>, the pre-policy growth trend was 92.5 units/month, and housing growth was increasing, extrapolating the growth trend to today it would amount to 2685 units/month compared to the actual 2124 units/month, gives us a -562 difference below the expected pre-policy trend. The types of construction starting changed as well with single family home construction growing from 511 to 580, while apartment construction grew from 805 to 1,022, 13.4% and 27.1% respectively. The substitution in construction of denser homes is not enough to fill the pre-policy trend of the decline in growth of single family construction. </p>
+                <p>The rezoning paradox, is real, and despite making development genuinely easier, with a completly blanket level city wide removal of market restrictions on housing, housing starts fell below the expected trends by 21%, disrupting what was already a strong growth rate, and (much like the change) isn't localized by sectors (groupings of neighbourhoods), and persists across seasonal variations while remaining statistically relevant.</p>
+                <p><b>An important question is, did uncertainty increase?</b> Volatility  before was 385, volatility after was 415 with an F-statistic of 1.16 (critical value: 3.01). The volatility remained similar. Cohen's d measures the effect size at 1.062, indicating a large effect. Bootstrap 95% confidence interval with policy effect of 409 units/month, 95% CI: [94,769]. The effect is statistically robust.</p>
+                <p>
+                    Something statistically relevant <label for="sn-extensive-use-of-sidenotes" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-extensive-use-of-sidenotes" class="margin-toggle" /><span class="sidenote">
+                        d = (M_actual - M_expected) / SD_pooled
+                        d = (2,124 - 2,685) / 530 = -1.06 (Large negative effect)
+                    </span>,and I would argue philosophically important, happened here.
+                </p>
+                <figure>
+                    <label for="ITS graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote">
+                        Y = β₀ + β₁(time) + β₂(policy) + β₃(time_after_policy) + ε
 
-                    Where:
-                    β₀ = 1,233 (baseline)
-                    β₁ = 92.5 (pre-policy trend)
-                    β₂ = 642 (immediate jump)
-                    β₃ = -74.7 (trend change after policy)
-                </span>
-                <img src="img/ITS.png" alt="ITS Graph" />
-            </figure>
+                        Where:
+                        β₀ = 1,233 (baseline)
+                        β₁ = 92.5 (pre-policy trend)
+                        β₂ = 642 (immediate jump)
+                        β₃ = -74.7 (trend change after policy)
+                    </span>
+                    <img src="img/ITS.png" alt="ITS Graph" />
+                </figure>
         </section>
         <section>
             <h1 id="Interpretation">Interpretation of Data</h1>
