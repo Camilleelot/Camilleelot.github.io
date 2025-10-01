@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="latex.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        /* Interactive chart container styles */
+       
         .chart-container {
             margin: 3rem 0;
             background: #fffff8;
@@ -844,29 +844,596 @@
             <p>The recovery period we observe in the data—the lag causing the paradox—represents the slow work of building new connections. Developers must learn which lenders finance townhouses. Lenders must develop new risk models for denser typologies. Planners must establish new permit pathways. Contractors must acquire new capabilities or enter the market from other cities. This isn't adaptation of existing infrastructure—it's reconstruction of the network itself, connection by connection, relationship by relationship. The work is rhizomatic: distributed, bottom-up, without central coordination. It proceeds at the pace relationships form and knowledge diffuses, not at the pace bylaws change.</p>
             
             <h2 id="The-Collision">The Collision: When Arborescent Commands Meet Contingent Realities</h2>
-            
-            <p>We can model this collision formally using concepts from modal logic. Think of the housing construction system as a hypersequent—a structure tracking truth across multiple parallel contexts simultaneously. A successful housing project must satisfy conditions across several domains: [financially viable in the capital market | regulatorally approved in the city's system | constructible with available labor | marketable to eventual buyers]. Each zone has its own constraints and logics. A project succeeds only when all zones align.</p>
-            
-            <p>The city council's bylaw changed one zone: regulatory requirements. But it didn't and couldn't change the others directly. Financial institutions still had loan products designed for single-family construction, not townhouse projects. Contractors still had crews trained for single-family techniques. Buyers still had expectations shaped by existing housing stock. The bylaw created immediate misalignment—projects that were viable in the regulatory zone became non-viable in financial and labor zones because the infrastructure connecting these zones hadn't adjusted.</p>
-            
-            <p>This explains the statistical paradox. Construction didn't decline because rezoning was bad policy or because developers opposed density. Construction declined because the network infrastructure enabling construction was optimized for the old regulatory environment and became temporarily incompatible with the new one. The gap between actual construction (2,124 units/month) and trend projection (2,685 units/month) measures the destruction of network capacity faster than new capacity could form.</p>
-            
-            <p>The compositional shift—single-family down 47%, multi-family up 27%—shows the network beginning to rebuild around new parameters. Some developers successfully forged new connections, securing financing for denser projects and finding capable contractors. But the substitution was insufficient because building rhizomatic networks takes time. You cannot command relationships into existence. You cannot decree that lenders will fund townhouses or that contractors will acquire new skills. These capabilities emerge through distributed experimentation—some developers succeed, others learn from them, knowledge diffuses gradually through the network. This is ampliation at network scale, and it operates on organic rather than bureaucratic timelines.</p>
-            
-            <h2 id="Implications">Implications for Policy Design: Working with Rhizomatic Structures</h2>
-            
-            <p>The lesson isn't that blanket rezoning was wrong. Removing artificial restrictions on density remains sound policy—Calgary's zoning code was genuinely restrictive, preventing construction of housing types many people want and need. The lesson is that hierarchical interventions into rhizomatic systems produce transition costs proportional to the intervention's scope and speed. Calgary changed every residential parcel simultaneously and immediately. The corresponding disruption was massive.</p>
-            
-            <p>An alternative approach would recognize the rhizomatic nature of the construction market and design interventions to work with rather than against that structure. Instead of citywide instant implementation, phase the rezoning over 36 months across different neighborhoods. Early neighborhoods serve as laboratories—developers experiment with new typologies, lenders develop financing products, contractors build capabilities, and knowledge diffuses through the network. Later neighborhoods benefit from established infrastructure. The total timeline is longer, but construction momentum never breaks.</p>
-            
-            <p>Or maintain blanket rezoning but provide transition support acknowledging destroyed network capacity. Establish a city loan program funding the delta between old and new typologies—bridging finance for developers converting single-family projects to townhouses. Create fast-track permitting for first-movers building denser housing, reducing regulatory uncertainty. Fund training programs for contractors learning new construction techniques. These aren't subsidies in the traditional sense—they're infrastructure investments recognizing that the city's regulatory change imposed real costs on market participants who must now rebuild their operational networks.</p>
-            
-            <p>The deeper point is epistemological. Policymakers operating from arborescent positions—elected councils with legitimate authority to legislate—must resist the temptation to assume the systems they govern share their hierarchical logic. Most complex social systems are rhizomatic: markets, ecosystems, cultural practices, informal institutions. These systems don't respond to commands the way machines respond to inputs. They respond through distributed adaptation as individual nodes forge new connections in response to changed environments. This adaptation takes time, follows bottom-up rather than top-down paths, and succeeds through experimentation and knowledge diffusion rather than through compliance with decrees.</p>
-            
-            <p>If we want large-scale transitions—moving from postwar car-dependent sprawl to dense walkable urbanism, shifting from fossil fuel economies to renewable energy systems, transforming extractive industries to regenerative practices—we cannot simply legislate the end state and expect systems to adapt instantly. We must design interventions that acknowledge the rhizomatic structure of the systems we're trying to change and work with their internal logics. Provide time for networks to reconfigure. Support early adopters who bear transition costs. Create conditions enabling distributed experimentation. Allow knowledge to diffuse through existing channels rather than trying to impose it from above.</p>
-            
-            <p>The Calgary rezoning paradox is a case study in what happens when we ignore this principle. A well-intentioned policy, correctly identifying an artificial constraint on housing construction, produced temporary reduction in construction because it treated a rhizomatic system as if it were a machine to be reprogrammed. The construction market will eventually adapt—new connections will form, new expertise will develop, new infrastructure will emerge. But the transition cost, measured in hundreds of foregone housing units during a housing crisis, represents the price of governing rhizomes with arborescent logic. We can do better by designing policies that respect the ontologies of the systems they aim to change.</p>
-        </section>
+
+            <body>
+                <div id="narrative"></div>
+                <svg id="viz" width="1200" height="650"></svg>
+
+                <script src="https://d3js.org/d3.v7.min.js"></script>
+                <script>
+
+                    const width = 1200, height = 650;
+                    const svg = d3.select("#viz").style("background", "#fafafa");
+
+                    // Narrative overlay
+                    const narrative = d3.select("#narrative");
+                    let narrativeTimeout;
+                    function showNarrative(text, duration = 3000) {
+                        if (narrativeTimeout) clearTimeout(narrativeTimeout);
+                        narrative.text(text).classed("show", true);
+                        narrativeTimeout = setTimeout(() => narrative.classed("show", false), duration);
+                    }
+
+                    // --------------------------------------------------
+                    // Council Tree (fixed left)
+                    // --------------------------------------------------
+                    const councilData = {
+                        name: "City Councils",
+                        children: [
+                            {
+                                name: "Ordinances", children: [
+                                    { name: "Zoning" },
+                                    { name: "Permits" }
+                                ]
+                            },
+                            {
+                                name: "Planning Committees", children: [
+                                    { name: "Review Boards" },
+                                    { name: "Public Hearings" }
+                                ]
+                            }
+                        ]
+                    };
+                    const root = d3.hierarchy(councilData);
+                    d3.tree().size([250, 300])(root);
+
+                    // fix council nodes (fx/fy)
+                    root.descendants().forEach(d => {
+                        d.id = d.data.name;
+                        d.fx = d.y + 100;
+                        d.fy = d.x + 150;
+                    });
+
+                    // --------------------------------------------------
+                    // Market Rhizome Nodes with ZONE TYPES
+                    // --------------------------------------------------
+                    const marketNodes = [
+                        { id: "Developer A", zone: "connector" },
+                        { id: "Developer B", zone: "connector" },
+                        { id: "Developer C", zone: "connector" },
+                        { id: "Investor", zone: "finance" },
+                        { id: "Subcontractor 1", zone: "labor" },
+                        { id: "Subcontractor 2", zone: "labor" },
+                        { id: "Landholder", zone: "finance" },
+                        { id: "Bank", zone: "finance" },
+                        { id: "Supplier", zone: "labor" },
+                        { id: "Architect", zone: "labor" },
+                        { id: "Contractor", zone: "labor" }
+                    ];
+
+                    // Zone colors
+                    const zoneColors = {
+                        connector: "#4169E1", // royal blue
+                        finance: "#2E8B57",   // sea green
+                        labor: "#FF8C00"      // dark orange
+                    };
+
+                    // give initial positions (to avoid 0,0 snap)
+                    marketNodes.forEach((n, i) => {
+                        n.x = 700 + (i * 80) % 400;
+                        n.y = 200 + (i * 50);
+                    });
+
+                    // --------------------------------------------------
+                    // GHOST PROJECTS - planned single-family homes
+                    // --------------------------------------------------
+                    const ghostProjects = [
+                        { id: "Ghost1", x: 650, y: 180, zone: "ghost" },
+                        { id: "Ghost2", x: 820, y: 250, zone: "ghost" },
+                        { id: "Ghost3", x: 950, y: 200, zone: "ghost" },
+                        { id: "Ghost4", x: 750, y: 350, zone: "ghost" },
+                        { id: "Ghost5", x: 900, y: 400, zone: "ghost" },
+                        { id: "Ghost6", x: 1050, y: 300, zone: "ghost" }
+                    ];
+
+                    ghostProjects.forEach(g => {
+                        g.fx = g.x;
+                        g.fy = g.y;
+                    });
+
+                    const marketLinks = [
+                        { source: "Developer A", target: "Investor" },
+                        { source: "Developer B", target: "Investor" },
+                        { source: "Developer A", target: "Bank" },
+                        { source: "Developer C", target: "Bank" },
+                        { source: "Developer C", target: "Supplier" },
+                        { source: "Developer B", target: "Architect" },
+                        { source: "Developer A", target: "Contractor" },
+                        { source: "Investor", target: "Bank" },
+                        { source: "Subcontractor 1", target: "Developer A" },
+                        { source: "Subcontractor 2", target: "Developer B" },
+                        { source: "Landholder", target: "Developer A" },
+                        { source: "Landholder", target: "Developer B" },
+                        { source: "Landholder", target: "Developer C" },
+                        { source: "Architect", target: "Supplier" }
+                    ];
+
+                    // Bridge links
+                    const bridgeLinks = [
+                        { source: "Developer A", target: "Review Boards" },
+                        { source: "Developer B", target: "Zoning" },
+                        { source: "Developer C", target: "Permits" },
+                        { source: "Landholder", target: "Zoning" }
+                    ];
+
+                    // Full graph
+                    const allNodes = [...marketNodes, ...ghostProjects, ...root.descendants()];
+                    const allLinks = [...marketLinks, ...bridgeLinks, ...root.links().map(l => ({ source: l.source.id, target: l.target.id }))];
+
+                    // --------------------------------------------------
+                    // Force Simulation
+                    // --------------------------------------------------
+                    const simulation = d3.forceSimulation(allNodes)
+                        .force("link", d3.forceLink(allLinks).id(d => d.id).distance(100))
+                        .force("charge", d3.forceManyBody().strength(-200))
+                        .force("center", d3.forceCenter(width / 2, height / 2))
+                        .alphaDecay(0.05);
+
+                    // --------------------------------------------------
+                    // Draw Links
+                    // --------------------------------------------------
+                    const link = svg.append("g")
+                        .attr("stroke", "#ccc")
+                        .selectAll("line")
+                        .data(allLinks)
+                        .join("line")
+                        .attr("stroke-width", d => bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id) ? 2 : 1)
+                        .attr("stroke-dasharray", d => bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id) ? "4,2" : null)
+                        .attr("class", "network-link");
+
+                    // --------------------------------------------------
+                    // Draw Nodes
+                    // --------------------------------------------------
+                    const node = svg.append("g")
+                        .selectAll("circle")
+                        .data(allNodes)
+                        .join("circle")
+                        .attr("r", d => {
+                            if (d.zone === "ghost") return 8;
+                            return d.data ? 6 : 10;
+                        })
+                        .attr("fill", d => {
+                            if (d.id === "Zoning") return "red";
+                            if (d.zone === "ghost") return "#999";
+                            if (d.zone) return zoneColors[d.zone];
+                            return d.data ? "#333" : "#d33";
+                        })
+                        .attr("opacity", d => d.zone === "ghost" ? 0.3 : 1)
+                        .attr("stroke", d => d.zone === "ghost" ? "#666" : "none")
+                        .attr("stroke-width", d => d.zone === "ghost" ? 2 : 0)
+                        .attr("stroke-dasharray", d => d.zone === "ghost" ? "3,3" : null)
+                        .on("click", clicked)
+                        .call(drag(simulation));
+
+                    const label = svg.append("g")
+                        .selectAll("text")
+                        .data(allNodes)
+                        .join("text")
+                        .attr("dy", "0.35em")
+                        .attr("x", 10)
+                        .text(d => d.zone === "ghost" ? "Planned SF" : d.id)
+                        .attr("font-size", d => d.zone === "ghost" ? 10 : 12)
+                        .attr("opacity", d => d.zone === "ghost" ? 0.4 : 1)
+                        .style("font-style", d => d.zone === "ghost" ? "italic" : "normal");
+
+                    // --------------------------------------------------
+                    // Zone Legend
+                    // --------------------------------------------------
+                    const legend = svg.append("g").attr("transform", "translate(20, 500)");
+
+                    const legendData = [
+                        { label: "Connectors (Developers)", color: zoneColors.connector },
+                        { label: "Finance Zone", color: zoneColors.finance },
+                        { label: "Labor Zone", color: zoneColors.labor },
+                        { label: "Planned Projects", color: "#999", ghost: true }
+                    ];
+
+                    legendData.forEach((item, i) => {
+                        const g = legend.append("g").attr("transform", `translate(0, ${i * 25})`);
+                        g.append("circle")
+                            .attr("r", 6)
+                            .attr("fill", item.color)
+                            .attr("opacity", item.ghost ? 0.3 : 1)
+                            .attr("stroke", item.ghost ? "#666" : "none")
+                            .attr("stroke-width", 2)
+                            .attr("stroke-dasharray", item.ghost ? "3,3" : null);
+                        g.append("text")
+                            .attr("x", 15)
+                            .attr("y", 4)
+                            .attr("font-size", 11)
+                            .text(item.label);
+                    });
+
+                    // --------------------------------------------------
+                    // Simulation Ticks
+                    // --------------------------------------------------
+                    simulation.on("tick", () => {
+                        link
+                            .attr("x1", d => posX(d.source))
+                            .attr("y1", d => posY(d.source))
+                            .attr("x2", d => posX(d.target))
+                            .attr("y2", d => posY(d.target));
+
+                        node
+                            .attr("cx", d => posX(d))
+                            .attr("cy", d => posY(d));
+
+                        label
+                            .attr("x", d => posX(d) + 10)
+                            .attr("y", d => posY(d));
+                    });
+
+                    function posX(d) { return d.fx == null ? d.x : d.fx; }
+                    function posY(d) { return d.fy == null ? d.y : d.fy; }
+
+                    // --------------------------------------------------
+                    // Store original positions for return animation
+                    // --------------------------------------------------
+                    let savedPositions = {};
+                    let isExploding = false;
+                    let ampliationMode = false;
+
+                    function savePositions() {
+                        allNodes.forEach(n => {
+                            if (!n.data && n.zone !== "ghost") { // only market nodes
+                                savedPositions[n.id] = { x: n.x, y: n.y };
+                            }
+                        });
+                    }
+
+                    // --------------------------------------------------
+                    // Interaction: Zoning click cycles color + triggers explode
+                    // Developer click shows ampliation path
+                    // --------------------------------------------------
+                    let zoningState = 0;
+                    function clicked(event, d) {
+                        // Zoning node: trigger explosion
+                        if (d.id === "Zoning" && !isExploding) {
+                            zoningState = (zoningState + 1) % 3;
+                            if (zoningState === 0) {
+                                d3.select(this).attr("fill", "red");
+                            }
+                            if (zoningState === 1) {
+                                d3.select(this).attr("fill", "orange");
+                            }
+                            if (zoningState === 2) {
+                                d3.select(this).attr("fill", "green");
+                                explode();
+                            }
+                        }
+                        // Developer nodes: show ampliation path
+                        else if (d.zone === "connector" && !isExploding) {
+                            showAmpliationPath(d);
+                        }
+                    }
+
+                    // --------------------------------------------------
+                    // AMPLIATION VISUALIZATION
+                    // Show the path a developer must traverse through all zones
+                    // --------------------------------------------------
+                    function showAmpliationPath(developer) {
+                        if (ampliationMode) {
+                            // Reset
+                            clearAmpliation();
+                            return;
+                        }
+
+                        ampliationMode = true;
+
+                        // Find all connected nodes by zone
+                        const connections = allLinks.filter(l =>
+                            (l.source.id === developer.id || l.target.id === developer.id)
+                        );
+
+                        const connectedIds = new Set();
+                        connections.forEach(link => {
+                            connectedIds.add(typeof link.source === 'object' ? link.source.id : link.source);
+                            connectedIds.add(typeof link.target === 'object' ? link.target.id : link.target);
+                        });
+
+                        // Dim everything
+                        node.transition().duration(300).attr("opacity", 0.15);
+                        label.transition().duration(300).attr("opacity", 0.15);
+                        link.transition().duration(300).attr("opacity", 0.1);
+
+                        // Highlight the ampliation path
+                        node.filter(n => connectedIds.has(n.id))
+                            .transition().duration(300).attr("opacity", 1)
+                            .attr("r", n => n.zone === "ghost" ? 8 : (n.data ? 8 : 14));
+
+                        label.filter(n => connectedIds.has(n.id))
+                            .transition().duration(300).attr("opacity", 1)
+                            .attr("font-weight", "bold");
+
+                        link.filter(l => {
+                            const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
+                            const targetId = typeof l.target === 'object' ? l.target.id : l.target;
+                            return connectedIds.has(sourceId) && connectedIds.has(targetId);
+                        })
+                            .transition().duration(300).attr("opacity", 0.8)
+                            .attr("stroke", "#FF1493")
+                            .attr("stroke-width", 3);
+
+                        // Show narrative
+                        const financeConnections = [...connectedIds].filter(id => {
+                            const n = allNodes.find(node => node.id === id);
+                            return n && n.zone === "finance";
+                        }).length;
+
+                        const laborConnections = [...connectedIds].filter(id => {
+                            const n = allNodes.find(node => node.id === id);
+                            return n && n.zone === "labor";
+                        }).length;
+
+                        const regulationConnections = [...connectedIds].filter(id => {
+                            const n = allNodes.find(node => node.id === id);
+                            return n && n.data; // council nodes
+                        }).length;
+
+                        showNarrative(
+                            `${developer.id} must ampliate across zones:\n` +
+                            `Finance (${financeConnections}) • Regulation (${regulationConnections}) • Labor (${laborConnections})\n` +
+                            `All must align for viable project. Click again to reset.`,
+                            10000
+                        );
+                    }
+
+                    function clearAmpliation() {
+                        ampliationMode = false;
+
+                        node.transition().duration(300)
+                            .attr("opacity", d => d.zone === "ghost" ? 0.3 : 1)
+                            .attr("r", d => {
+                                if (d.zone === "ghost") return 8;
+                                return d.data ? 6 : 10;
+                            });
+
+                        label.transition().duration(300)
+                            .attr("opacity", d => d.zone === "ghost" ? 0.4 : 1)
+                            .attr("font-weight", "normal");
+
+                        link.transition().duration(300)
+                            .attr("opacity", 1)
+                            .attr("stroke", "#ccc")
+                            .attr("stroke-width", d => bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id) ? 2 : 1);
+
+                        narrative.classed("show", false);
+                    }
+
+                    // --------------------------------------------------
+                    // EPIC EXPLOSION with proper pacing
+                    // --------------------------------------------------
+                    function explode() {
+                        if (isExploding) return;
+                        isExploding = true;
+
+                        if (ampliationMode) clearAmpliation();
+
+                        // SAVE POSITIONS BEFORE CHAOS
+                        savePositions();
+
+                        // STAGE 1: Show arborescent command (3 seconds, PAUSE action)
+                        showNarrative("Arborescent command: Single decision, instant implementation", 3000);
+
+                        // STAGE 2: After 3 seconds, show impact message and eliminate ghosts (3 seconds)
+                        setTimeout(() => {
+                            showNarrative("561 units/month lost. Projects become non-denoting terms.", 3000);
+
+                            // ELIMINATE GHOST PROJECTS (ontological elimination!)
+                            node.filter(d => d.zone === "ghost")
+                                .transition()
+                                .duration(1200)
+                                .attr("opacity", 0)
+                                .attr("r", 0);
+
+                            label.filter(d => d.zone === "ghost")
+                                .transition()
+                                .duration(1200)
+                                .attr("opacity", 0);
+                        }, 3000);
+
+                        // STAGE 3: After 6 seconds total, UNLEASH THE CHAOS
+                        setTimeout(() => {
+                            allNodes.forEach(n => {
+                                if (!n.data && n.zone !== "ghost") { // skip council nodes and ghosts
+                                    // Generate HUGE random velocities in all directions
+                                    const angle = Math.random() * Math.PI * 2;
+                                    const power = 80 + Math.random() * 120; // velocity between 80-200
+
+                                    n.vx = Math.cos(angle) * power;
+                                    n.vy = Math.sin(angle) * power;
+                                }
+                            });
+
+                            // Stop forces temporarily and let chaos reign
+                            simulation
+                                .force("link", null)
+                                .force("charge", null)
+                                .force("center", null)
+                                .alpha(1)
+                                .alphaDecay(0.001)
+                                .restart();
+                        }, 6000);
+
+                        // STAGE 4: After 7.5 seconds of total chaos, start the EXTREMELY SLOW return
+                        setTimeout(() => {
+                            showNarrative("Rhizomatic reconstruction: relationships rebuilding, knowledge diffusing...", 15000);
+                            returnToPositions();
+                        }, 7500);
+                    }
+
+                    // --------------------------------------------------
+                    // Painfully slow, comedic return to original positions
+                    // --------------------------------------------------
+                    function returnToPositions() {
+                        // Stop the simulation to control positions manually
+                        simulation.stop();
+
+                        // For each market node, slowly transition back over 15 seconds
+                        allNodes.forEach(n => {
+                            if (!n.data && n.zone !== "ghost" && savedPositions[n.id]) {
+                                const saved = savedPositions[n.id];
+
+                                // Create a custom tween for super smooth, slow return
+                                const startX = n.x;
+                                const startY = n.y;
+
+                                d3.select(node.nodes()[allNodes.indexOf(n)])
+                                    .transition()
+                                    .duration(15000) // 15 SECONDS
+                                    .ease(d3.easeCubicInOut) // smooth easing
+                                    .tween("position", function () {
+                                        return function (t) {
+                                            n.x = startX + (saved.x - startX) * t;
+                                            n.y = startY + (saved.y - startY) * t;
+
+                                            // Update visuals during transition
+                                            d3.select(this)
+                                                .attr("cx", n.x)
+                                                .attr("cy", n.y);
+
+                                            // Update corresponding label
+                                            d3.select(label.nodes()[allNodes.indexOf(n)])
+                                                .attr("x", n.x + 10)
+                                                .attr("y", n.y);
+                                        };
+                                    })
+                                    .on("end", function () {
+                                        // When last node done, restore forces and ghosts
+                                        const index = marketNodes.indexOf(n);
+                                        if (index === marketNodes.length - 1) {
+                                            restoreSimulation();
+                                            restoreGhosts();
+                                        }
+                                    });
+                            }
+                        });
+
+                        // Also animate the links during return
+                        const linkUpdateInterval = setInterval(() => {
+                            link
+                                .attr("x1", d => d.source.x)
+                                .attr("y1", d => d.source.y)
+                                .attr("x2", d => d.target.x)
+                                .attr("y2", d => d.target.y);
+                        }, 16); // ~60fps
+
+                        setTimeout(() => {
+                            clearInterval(linkUpdateInterval);
+                        }, 15100);
+                    }
+
+                    function restoreSimulation() {
+                        // Restore normal forces
+                        simulation
+                            .force("link", d3.forceLink(allLinks).id(d => d.id).distance(100))
+                            .force("charge", d3.forceManyBody().strength(-200))
+                            .force("center", d3.forceCenter(width / 2, height / 2))
+                            .alpha(0.3)
+                            .alphaDecay(0.05)
+                            .restart();
+
+                        isExploding = false;
+                    }
+
+                    function restoreGhosts() {
+                        // Ghosts slowly fade back in after network rebuilds
+                        node.filter(d => d.zone === "ghost")
+                            .transition()
+                            .delay(1000)
+                            .duration(3000)
+                            .attr("opacity", 0.3)
+                            .attr("r", 8);
+
+                        label.filter(d => d.zone === "ghost")
+                            .transition()
+                            .delay(1000)
+                            .duration(3000)
+                            .attr("opacity", 0.4);
+
+                        // FINAL RESULT after ghosts return
+                        setTimeout(() => {
+                            showNarrative(
+                                "RESULT:\n" +
+                                "Loss of 561 new construction starts/month\n" +
+                                "Loss of 6 old planned projects\n" +
+                                "Network capacity slowly rebuilding...",
+                                6000
+                            );
+                        }, 4000);
+                    }
+
+                    // --------------------------------------------------
+                    // Titles
+                    // --------------------------------------------------
+                    svg.append("text").attr("x", 100).attr("y", 40).attr("font-size", 16).attr("font-weight", "bold")
+                        .text("Arborescent Logic: City Councils");
+                    svg.append("text").attr("x", 800).attr("y", 40).attr("font-size", 16).attr("font-weight", "bold")
+                        .text("Rhizomatic Logic: Construction Markets");
+                    svg.append("text").attr("x", 350).attr("y", height - 20).attr("font-size", 14)
+                        .text("Click Zoning (red→orange→green) for disruption | Click Developers for ampliation paths");
+
+                    // --------------------------------------------------
+                    // Drag fixed: preserves node position, no snap to top-left
+                    // --------------------------------------------------
+                    function drag(simulation) {
+                        function dragstarted(event, d) {
+                            if (!event.active) simulation.alphaTarget(0.3).restart();
+                            if (!d.data && d.zone !== "ghost") { // only market nodes moveable
+                                d.fx = d.x;
+                                d.fy = d.y;
+                            }
+                        }
+                        function dragged(event, d) {
+                            if (!d.data && d.zone !== "ghost") {
+                                d.fx = event.x;
+                                d.fy = event.y;
+                            }
+                        }
+                        function dragended(event, d) {
+                            if (!event.active) simulation.alphaTarget(0);
+                            if (!d.data && d.zone !== "ghost") {
+                                d.fx = null;
+                                d.fy = null;
+                            }
+                        }
+                        return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+                    }
+
+                </script>
+
+                <p>We can model this collision formally using concepts from modal logic. Think of the housing construction system as a hypersequent—a structure tracking truth across multiple parallel contexts simultaneously. A successful housing project must satisfy conditions across several domains: [financially viable in the capital market | regulatorally approved in the city's system | constructible with available labor | marketable to eventual buyers]. Each zone has its own constraints and logics. A project succeeds only when all zones align.</p>
+
+                <p>The city council's bylaw changed one zone: regulatory requirements. But it didn't and couldn't change the others directly. Financial institutions still had loan products designed for single-family construction, not townhouse projects. Contractors still had crews trained for single-family techniques. Buyers still had expectations shaped by existing housing stock. The bylaw created immediate misalignment—projects that were viable in the regulatory zone became non-viable in financial and labor zones because the infrastructure connecting these zones hadn't adjusted.</p>
+
+                <p>This explains the statistical paradox. Construction didn't decline because rezoning was bad policy or because developers opposed density. Construction declined because the network infrastructure enabling construction was optimized for the old regulatory environment and became temporarily incompatible with the new one. The gap between actual construction (2,124 units/month) and trend projection (2,685 units/month) measures the destruction of network capacity faster than new capacity could form.</p>
+
+                <p>The compositional shift—single-family down 47%, multi-family up 27%—shows the network beginning to rebuild around new parameters. Some developers successfully forged new connections, securing financing for denser projects and finding capable contractors. But the substitution was insufficient because building rhizomatic networks takes time. You cannot command relationships into existence. You cannot decree that lenders will fund townhouses or that contractors will acquire new skills. These capabilities emerge through distributed experimentation—some developers succeed, others learn from them, knowledge diffuses gradually through the network. This is ampliation at network scale, and it operates on organic rather than bureaucratic timelines.</p>
+
+                <h2 id="Implications">Implications for Policy Design: Working with Rhizomatic Structures</h2>
+
+                <p>The lesson isn't that blanket rezoning was wrong. Removing artificial restrictions on density remains sound policy—Calgary's zoning code was genuinely restrictive, preventing construction of housing types many people want and need. The lesson is that hierarchical interventions into rhizomatic systems produce transition costs proportional to the intervention's scope and speed. Calgary changed every residential parcel simultaneously and immediately. The corresponding disruption was massive.</p>
+
+                <p>An alternative approach would recognize the rhizomatic nature of the construction market and design interventions to work with rather than against that structure. Instead of citywide instant implementation, phase the rezoning over 36 months across different neighborhoods. Early neighborhoods serve as laboratories—developers experiment with new typologies, lenders develop financing products, contractors build capabilities, and knowledge diffuses through the network. Later neighborhoods benefit from established infrastructure. The total timeline is longer, but construction momentum never breaks.</p>
+
+                <p>Or maintain blanket rezoning but provide transition support acknowledging destroyed network capacity. Establish a city loan program funding the delta between old and new typologies—bridging finance for developers converting single-family projects to townhouses. Create fast-track permitting for first-movers building denser housing, reducing regulatory uncertainty. Fund training programs for contractors learning new construction techniques. These aren't subsidies in the traditional sense—they're infrastructure investments recognizing that the city's regulatory change imposed real costs on market participants who must now rebuild their operational networks.</p>
+
+                <p>The deeper point is epistemological. Policymakers operating from arborescent positions—elected councils with legitimate authority to legislate—must resist the temptation to assume the systems they govern share their hierarchical logic. Most complex social systems are rhizomatic: markets, ecosystems, cultural practices, informal institutions. These systems don't respond to commands the way machines respond to inputs. They respond through distributed adaptation as individual nodes forge new connections in response to changed environments. This adaptation takes time, follows bottom-up rather than top-down paths, and succeeds through experimentation and knowledge diffusion rather than through compliance with decrees.</p>
+
+                <p>If we want large-scale transitions—moving from postwar car-dependent sprawl to dense walkable urbanism, shifting from fossil fuel economies to renewable energy systems, transforming extractive industries to regenerative practices—we cannot simply legislate the end state and expect systems to adapt instantly. We must design interventions that acknowledge the rhizomatic structure of the systems we're trying to change and work with their internal logics. Provide time for networks to reconfigure. Support early adopters who bear transition costs. Create conditions enabling distributed experimentation. Allow knowledge to diffuse through existing channels rather than trying to impose it from above.</p>
+
+                <p>The Calgary rezoning paradox is a case study in what happens when we ignore this principle. A well-intentioned policy, correctly identifying an artificial constraint on housing construction, produced temporary reduction in construction because it treated a rhizomatic system as if it were a machine to be reprogrammed. The construction market will eventually adapt—new connections will form, new expertise will develop, new infrastructure will emerge. But the transition cost, measured in hundreds of foregone housing units during a housing crisis, represents the price of governing rhizomes with arborescent logic. We can do better by designing policies that respect the ontologies of the systems they aim to change.</p>
+</section>
     </article>
 
     <script>
