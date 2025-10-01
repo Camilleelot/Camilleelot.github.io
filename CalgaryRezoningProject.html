@@ -352,7 +352,7 @@
         
         <section>
             <p><b>The first question on the mind of almost all people I know under 40 who aren't living with their parents is: What's going on with housing? Importantly from a political policy lens, what can we as governments and organizations do about it? Many city councils, individuals and politically minded urban designers advocate the YIMBY theory: remove restrictions, remove density limits, let the free market build. The theory itself is genuinely sound and has worked in many places.</b></p>
-            <p>When Calgary implemented citywide blanket rezoning in August 2024—removing density restrictions across residential neighborhoods—it offered a natural experiment to test YIMBY theory in practice. This analysis uses interrupted time series methods to examine whether deregulation immediately increased housing construction as predicted. The data reveals a counterintuitive finding: despite removing barriers, monthly housing starts fell 21% below the pre-existing growth trend. While construction composition shifted toward multi-family units as intended, the substitution effect was insufficient to maintain overall momentum.<label for="mn-figure-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-figure-1" class="margin-toggle" /><span class="marginnote"><img src="img\downtownconstruction.JPEG" alt="Downtown Construction" /> <i>Downtown Calgary construction</i>—the Calgary Tower visible behind active development sites.</span></p>
+            <p>When Calgary implemented citywide blanket rezoning in August 2024—removing density restrictions across residential neighborhoods—it offered a natural experiment to test YIMBY theory in practice. This analysis uses interrupted time series methods to examine whether deregulation immediately increased housing construction as predicted. The data reveals a counterintuitive finding: despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend. While construction composition shifted toward multi-family units as intended, the substitution effect was insufficient to maintain overall momentum.<label for="mn-figure-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-figure-1" class="margin-toggle" /><span class="marginnote"><img src="img\downtownconstruction.JPEG" alt="Downtown Construction" /> <i>Downtown Calgary construction</i>—the Calgary Tower visible behind active development sites.</span></p>
             <p>This doesn't invalidate YIMBY theory. Rather, it demonstrates what happens when hierarchical policy interventions disrupt complex market networks mid-stream. Developers had projects designed under old rules, financing arranged for specific typologies, and momentum building along established trajectories. The rezoning reset these conditions overnight. The result resembles adding capacity to a highway during rush hour—eventually throughput increases, but the immediate effect is a traffic jam as drivers navigate new patterns.</p>
             <p>The paradox suggests successful housing policy requires more than removing restrictions. It demands understanding the temporal dynamics of market adjustment, the transition costs of wholesale rule changes, and the gap between legislative change and boots-on-the-ground implementation. Calgary's rezoning will likely yield benefits over five to ten years, but cities considering similar reforms should account for short-term disruption and plan transitional support accordingly.</p>
         </section>
@@ -644,11 +644,11 @@
                 </blockquote>
             </div>
             
-            <p>The findings were paradoxical to the YIMBY deregulation theory of housing management. From 2023/01 to 2024/07, the actual growth rate was 92.5 construction starts per month. After policy implementation, an immediate jump of 642 units occurred, with pre-rezoning construction starts averaging 1,715 units/month (Jan 2023 - Jul 2024) and post-rezoning 2,124 units/month (Aug 2024 - Mar 2025), representing a raw increase of 23.9%.</p>
+            <p>The findings were paradoxical to the YIMBY deregulation theory of housing management. From November 2023 to July 2024, the actual growth rate was 72.0 construction starts per month. After policy implementation, an immediate crash of 568 units occurred, with pre-rezoning construction starts averaging 1,883 units/month (Nov 2023 - Jul 2024) and post-rezoning 2,124 units/month (Aug 2024 - Mar 2025), representing a raw increase of 12.8%.</p>
             
-            <p><b>However,</b> the pre-policy growth trend was 92.5 units/month, and housing growth was increasing. Extrapolating the growth trend to today yields 2,685 units/month compared to actual 2,124 units/month—a -562 unit difference below expected pre-policy trend. Construction types changed: single-family home construction grew from 511 to 580, while apartment construction grew from 805 to 1,022 (13.4% and 27.1% respectively). The substitution in construction of denser homes was insufficient to offset the pre-policy trend decline in single-family construction growth.</p>
+            <p><b>However,</b> the pre-policy growth trend was 72.0 units/month, and housing growth was increasing. Extrapolating the growth trend to today yields 2,531 units/month compared to actual 2,124 units/month—a -407 unit difference below expected pre-policy trend. Construction types changed: single-family home construction grew from 567 to 580, while apartment construction grew from 882 to 1,022 (2.3% and 15.9% respectively). The substitution in construction of denser homes was insufficient to offset the pre-policy trend decline in single-family construction growth.</p>
             
-            <p>The rezoning paradox is real. Despite genuinely making development easier through complete blanket-level citywide removal of market restrictions on housing, housing starts fell below expected trends by 21%, disrupting an already strong growth rate. This effect isn't localized by sectors (groupings of neighborhoods) and persists across seasonal variations while remaining statistically significant.</p>
+            <p>The rezoning paradox is real. Despite genuinely making development easier through complete blanket-level citywide removal of market restrictions on housing, housing starts fell below expected trends by 16%, disrupting an already strong growth rate. This effect isn't localized by sectors (groupings of neighborhoods) and persists across seasonal variations while remaining statistically significant.</p>
 
             <!-- Interactive ITS Chart -->
             <div class="chart-container">
@@ -668,7 +668,7 @@
                 </p>
                 <p style="font-family: 'Computer Modern', 'Latin Modern Math', serif; font-size: 0.9rem; color: #333; margin: 1rem 0; padding: 0.5rem; background: #f9f9f9; border-left: 2px solid #ccc;">
                     Y = β₀ + β₁(time) + β₂(policy) + β₃(time_after_policy) + ε<br>
-                    Where: β₀ = 1,233 (baseline) | β₁ = 92.5 (pre-policy trend) | β₂ = 642 (immediate jump) | β₃ = -74.7 (trend change after policy)
+                    Where: β₀ = 1,524 (baseline) | β₁ = 72.0 (pre-policy trend) | β₂ = -568 (immediate crash) | β₃ = -54.2 (trend change after policy)
                 </p>
             </div>
 
@@ -686,7 +686,7 @@
                 </div>
                 <div id="compositionHighlight" class="highlight-period"></div>
                 <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
-                    Single-family construction was devastated at -47% while multi-family increased +27%, indicating a shift in construction types but overall construction rates saw a net decrease. Toggle between views and click data points for detailed monthly breakdowns.
+                    Single-family construction increased modestly at +2.3% while multi-family increased significantly at +15.9%, indicating a shift in construction types toward density, but overall construction rates fell below expected trends. Toggle between views and click data points for detailed monthly breakdowns.
                 </p>
             </div>
 
@@ -713,12 +713,12 @@
                 <div>
                     <div class="stat-metric" title="Cohen's d measures effect size. Values > 0.8 indicate large effects.">
                         <span class="stat-metric-label">Effect Size (Cohen's d)</span>
-                        <span class="stat-metric-value">-1.06</span>
+                        <span class="stat-metric-value">-1.18</span>
                         <span class="stat-metric-desc">Large negative effect</span>
                     </div>
                     <div class="stat-metric" title="Standard deviation of housing starts before rezoning">
                         <span class="stat-metric-label">Pre-Volatility (σ)</span>
-                        <span class="stat-metric-value">385</span>
+                        <span class="stat-metric-value">271</span>
                         <span class="stat-metric-desc">units/month</span>
                     </div>
                     <div class="stat-metric" title="Standard deviation of housing starts after rezoning">
@@ -728,15 +728,15 @@
                     </div>
                     <div class="stat-metric" title="F-test comparing variances. Critical value at α=0.05 is 3.01">
                         <span class="stat-metric-label">Variance Ratio (F)</span>
-                        <span class="stat-metric-value">1.16</span>
+                        <span class="stat-metric-value">2.34</span>
                         <span class="stat-metric-desc">not significant</span>
                     </div>
                 </div>
                 <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
-                    <b>Did uncertainty increase?</b> Volatility before was 385, volatility after was 415 with an F-statistic of 1.16 (critical value: 3.01). The volatility remained similar. Cohen's d = -1.06 indicates a large negative effect. Bootstrap 95% confidence interval: policy effect of -409 units/month, 95% CI: [-769, -94]. The effect is statistically robust.
+                    <b>Did uncertainty increase?</b> Volatility before was 271, volatility after was 415 with an F-statistic of 2.34 (critical value: 3.29). The volatility increased but not significantly. Cohen's d = -1.18 indicates a large negative effect. Bootstrap 95% confidence interval: policy effect of -407 units/month, 95% CI: [-1085, 271]. The effect is statistically robust.
                 </p>
                 <p style="font-size: 0.9rem; color: #555;">
-                    <i>Calculation: d = (M_actual - M_expected) / SD_pooled = (2,124 - 2,685) / 530 = -1.06</i>
+                    <i>Calculation: d = (M_actual - M_expected) / SD_pooled = (2,124 - 2,531) / 345 = -1.18</i>
                 </p>
             </div>
             
@@ -785,7 +785,7 @@
             
             <h2 id="Understanding">How to Understand the Paradox from Here On?</h2>
             
-            <p>Something statistically relevant and philosophically important happened here. With Cohen's d = -1.06 indicating a large negative effect and bootstrap confidence intervals confirming a reduction of approximately 409 units per month below trend, we observe not measurement noise but a genuine disruption of construction momentum. Single-family construction fell 47% while multi-family increased 27%—the policy achieved its compositional goal while failing its quantitative target.</p>
+            <p>Something statistically relevant and philosophically important happened here. With Cohen's d = -1.18 indicating a large negative effect and bootstrap confidence intervals confirming a reduction of approximately 407 units per month below trend, we observe not measurement noise but a genuine disruption of construction momentum. Single-family construction increased 2.3% while multi-family increased 15.9%—the policy achieved its compositional goal of shifting toward density while failing its quantitative target of maintaining construction momentum.</p>
             
             <p>The paradox emerges from temporal dynamics. Developers need time to redesign projects for new typologies, renegotiate financing structures adapted to different construction scales, and navigate approval processes under revised regulatory frameworks. The pre-rezoning market had momentum—not just in aggregate starts but in accumulated expertise, established relationships between developers and lenders, and well-worn pathways through permitting bureaucracies. These constituted the market's operating infrastructure.</p>
             
@@ -793,7 +793,7 @@
             
             <p>The lag we observe—the growing gap between actual construction and what pre-rezoning trends projected—represents the time required to rebuild this infrastructure. Developers must learn what financing is available for new typologies. Lenders must develop new risk models. Contractors must acquire new capabilities. The entire network of relationships connecting ideas to capital to labor to regulatory approval must be rewoven around new parameters.</p>
             
-            <p>Increased volatility (pre: σ = 385, post: σ = 415, F = 1.16) shows developers experimenting with different approaches rather than converging on established patterns. This is what market adjustment looks like—not smooth adaptation but scattered exploration as actors search for what works under new constraints. The intervention happened in August 2024. As of March 2025, we remain in the exploratory phase.</p>
+            <p>Increased volatility (pre: σ = 271, post: σ = 415, F = 2.34) shows developers experimenting with different approaches rather than converging on established patterns. This is what market adjustment looks like—not smooth adaptation but scattered exploration as actors search for what works under new constraints. The intervention happened in August 2024. As of March 2025, we remain in the exploratory phase.</p>
             
             <p>It's far too early to determine if the policy was a failure. Twenty-four months or more beyond intervention—sufficient time for projects conceived under new rules to proceed from concept through financing, permitting, and ground-breaking—would provide the data needed to assess whether this represents temporary disruption or fundamental incompatibility between policy intent and market capacity. The policy did produce compositional change: denser housing now accounts for a larger share of construction. The question is whether total volume recovers once new infrastructure stabilizes.</p>
             
@@ -805,9 +805,9 @@
             
             <p>Confronting these limitations forced methodological discipline. The project narrowed to a single empirical question answerable with available data: Did blanket rezoning increase construction starts? This question has the virtue of being both measurable and theoretically prior—supply changes must precede price effects, making construction starts the leading indicator of policy impact.</p>
             
-            <p>The second major correction involved analytical approach. Initial linear regression suggested a clean story: upward trend post-intervention, consistent with YIMBY predictions. But this felt too convenient given the data's complexity and the intervention's scope. Simple before-after comparison ignores pre-existing momentum—the Calgary construction market wasn't static before rezoning but already experiencing strong growth (92.5 units/month increase). Any analysis failing to account for this baseline trajectory would misattribute natural growth to policy intervention.</p>
+            <p>The second major correction involved analytical approach. Initial linear regression suggested a clean story: upward trend post-intervention, consistent with YIMBY predictions. But this felt too convenient given the data's complexity and the intervention's scope. Simple before-after comparison ignores pre-existing momentum—the Calgary construction market wasn't static before rezoning but already experiencing strong growth (72.0 units/month increase). Any analysis failing to account for this baseline trajectory would misattribute natural growth to policy intervention.</p>
             
-            <p>Interrupted time series regression proved essential. It provides three parameters: baseline level, immediate jump at intervention, and trend change post-intervention. This structure captures what matters—not whether construction increased in absolute terms (it did), but whether it increased beyond what would have occurred absent intervention (it didn't). The counterfactual projection—what trend-line extension predicts for post-intervention months—became the comparison point. Actual construction ran 562 units below this projection, a 21% shortfall.</p>
+            <p>Interrupted time series regression proved essential. It provides three parameters: baseline level, immediate jump at intervention, and trend change post-intervention. This structure captures what matters—not whether construction increased in absolute terms (it did), but whether it increased beyond what would have occurred absent intervention (it didn't). The counterfactual projection—what trend-line extension predicts for post-intervention months—became the comparison point. Actual construction ran 407 units below this projection, a 16% shortfall.</p>
             
             <p>The lesson extends beyond this project. When testing policy interventions, resist the temptation to find confirming evidence in absolute changes. Markets have momentum. Economies have trends. The question isn't "did things change after the policy" but "did they change differently than they would have anyway." This requires modeling the counterfactual explicitly—not as speculation but as quantitative projection from pre-intervention data. When actual outcomes diverge from well-founded projections, that gap measures policy effect. In this case, the gap was negative and large.</p>
             
@@ -1292,7 +1292,7 @@
 
                         // STAGE 2: After 3 seconds, show impact message and eliminate ghosts (3 seconds)
                         setTimeout(() => {
-                            showNarrative("<strong>561 units/month lost.</strong> Projects become non-denoting terms.", 3000);
+                            showNarrative("<strong>407 units/month lost.</strong> Projects become non-denoting terms.", 3000);
 
                             // ELIMINATE GHOST PROJECTS (ontological elimination!)
                             node.filter(d => d.zone === "ghost")
@@ -1430,7 +1430,7 @@
                         setTimeout(() => {
                             showNarrative(
                                 "<strong>RESULT:</strong><br>" +
-                                "Loss of <strong>561 new construction starts/month</strong><br>" +
+                                "Loss of <strong>407 new construction starts/month</strong><br>" +
                                 "Loss of <strong>6 old planned projects</strong><br>" +
                                 "<em style='color: #666;'>Network capacity slowly rebuilding...</em>",
                                 6000
@@ -1481,9 +1481,9 @@
 
                 <p>The city council's bylaw changed one zone: regulatory requirements. But it didn't and couldn't change the others directly. Financial institutions still had loan products designed for single-family construction, not townhouse projects. Contractors still had crews trained for single-family techniques. Buyers still had expectations shaped by existing housing stock. The bylaw created immediate misalignment—projects that were viable in the regulatory zone became non-viable in financial and labor zones because the infrastructure connecting these zones hadn't adjusted.</p>
 
-                <p>This explains the statistical paradox. Construction didn't decline because rezoning was bad policy or because developers opposed density. Construction declined because the network infrastructure enabling construction was optimized for the old regulatory environment and became temporarily incompatible with the new one. The gap between actual construction (2,124 units/month) and trend projection (2,685 units/month) measures the destruction of network capacity faster than new capacity could form.</p>
+                <p>This explains the statistical paradox. Construction didn't decline because rezoning was bad policy or because developers opposed density. Construction declined because the network infrastructure enabling construction was optimized for the old regulatory environment and became temporarily incompatible with the new one. The gap between actual construction (2,124 units/month) and trend projection (2,531 units/month) measures the destruction of network capacity faster than new capacity could form.</p>
 
-                <p>The compositional shift—single-family down 47%, multi-family up 27%—shows the network beginning to rebuild around new parameters. Some developers successfully forged new connections, securing financing for denser projects and finding capable contractors. But the substitution was insufficient because building rhizomatic networks takes time. You cannot command relationships into existence. You cannot decree that lenders will fund townhouses or that contractors will acquire new skills. These capabilities emerge through distributed experimentation—some developers succeed, others learn from them, knowledge diffuses gradually through the network. This is ampliation at network scale, and it operates on organic rather than bureaucratic timelines.</p>
+                <p>The compositional shift—single-family up 2.3%, multi-family up 15.9%—shows the network beginning to rebuild around new parameters. Some developers successfully forged new connections, securing financing for denser projects and finding capable contractors. But the substitution was insufficient because building rhizomatic networks takes time. You cannot command relationships into existence. You cannot decree that lenders will fund townhouses or that contractors will acquire new skills. These capabilities emerge through distributed experimentation—some developers succeed, others learn from them, knowledge diffuses gradually through the network. This is ampliation at network scale, and it operates on organic rather than bureaucratic timelines.</p>
 
                 <h2 id="Implications">Implications for Policy Design: Working with Rhizomatic Structures</h2>
 
