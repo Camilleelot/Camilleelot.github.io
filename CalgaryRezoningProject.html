@@ -860,7 +860,7 @@
                     let narrativeTimeout;
                     function showNarrative(text, duration = 3000) {
                         if (narrativeTimeout) clearTimeout(narrativeTimeout);
-                        narrative.text(text).classed("show", true);
+                        narrative.html(text).classed("show", true);
                         narrativeTimeout = setTimeout(() => narrative.classed("show", false), duration);
                     }
 
@@ -966,9 +966,19 @@
                         { source: "Landholder", target: "Zoning" }
                     ];
 
+                    // GHOST PROJECT OWNERSHIP - faint lines showing which projects belong to which developer
+                    const ghostOwnership = [
+                        { source: "Developer A", target: "Ghost1", type: "ownership" },
+                        { source: "Developer A", target: "Ghost2", type: "ownership" },
+                        { source: "Developer B", target: "Ghost3", type: "ownership" },
+                        { source: "Developer B", target: "Ghost4", type: "ownership" },
+                        { source: "Developer C", target: "Ghost5", type: "ownership" },
+                        { source: "Developer C", target: "Ghost6", type: "ownership" }
+                    ];
+
                     // Full graph
                     const allNodes = [...marketNodes, ...ghostProjects, ...root.descendants()];
-                    const allLinks = [...marketLinks, ...bridgeLinks, ...root.links().map(l => ({ source: l.source.id, target: l.target.id }))];
+                    const allLinks = [...marketLinks, ...bridgeLinks, ...ghostOwnership, ...root.links().map(l => ({ source: l.source.id, target: l.target.id }))];
 
                     // --------------------------------------------------
                     // Force Simulation
@@ -987,8 +997,17 @@
                         .selectAll("line")
                         .data(allLinks)
                         .join("line")
-                        .attr("stroke-width", d => bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id) ? 2 : 1)
-                        .attr("stroke-dasharray", d => bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id) ? "4,2" : null)
+                        .attr("stroke-width", d => {
+                            if (d.type === "ownership") return 1;
+                            if (bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id)) return 2;
+                            return 1;
+                        })
+                        .attr("stroke-dasharray", d => {
+                            if (d.type === "ownership") return "2,4";
+                            if (bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id)) return "4,2";
+                            return null;
+                        })
+                        .attr("opacity", d => d.type === "ownership" ? 0.2 : 1)
                         .attr("class", "network-link");
 
                     // --------------------------------------------------
@@ -1130,39 +1149,72 @@
 
                         ampliationMode = true;
 
-                        // Find all connected nodes by zone
+                        // Find all connected nodes by zone AND ghost projects
                         const connections = allLinks.filter(l =>
                             (l.source.id === developer.id || l.target.id === developer.id)
                         );
 
                         const connectedIds = new Set();
+                        const connectedGhosts = new Set();
+
                         connections.forEach(link => {
-                            connectedIds.add(typeof link.source === 'object' ? link.source.id : link.source);
-                            connectedIds.add(typeof link.target === 'object' ? link.target.id : link.target);
+                            const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                            const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+
+                            connectedIds.add(sourceId);
+                            connectedIds.add(targetId);
+
+                            // Track which ghosts are connected
+                            if (link.type === "ownership") {
+                                connectedGhosts.add(targetId);
+                            }
                         });
 
                         // Dim everything
                         node.transition().duration(300).attr("opacity", 0.15);
                         label.transition().duration(300).attr("opacity", 0.15);
-                        link.transition().duration(300).attr("opacity", 0.1);
+                        link.transition().duration(300).attr("opacity", 0.05);
 
-                        // Highlight the ampliation path
-                        node.filter(n => connectedIds.has(n.id))
+                        // Highlight the ampliation path (non-ghost connections)
+                        node.filter(n => connectedIds.has(n.id) && n.zone !== "ghost")
                             .transition().duration(300).attr("opacity", 1)
-                            .attr("r", n => n.zone === "ghost" ? 8 : (n.data ? 8 : 14));
+                            .attr("r", n => n.data ? 8 : 14);
 
-                        label.filter(n => connectedIds.has(n.id))
+                        label.filter(n => connectedIds.has(n.id) && n.zone !== "ghost")
                             .transition().duration(300).attr("opacity", 1)
                             .attr("font-weight", "bold");
 
+                        // Highlight non-ownership links
                         link.filter(l => {
                             const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
                             const targetId = typeof l.target === 'object' ? l.target.id : l.target;
-                            return connectedIds.has(sourceId) && connectedIds.has(targetId);
+                            return connectedIds.has(sourceId) && connectedIds.has(targetId) && l.type !== "ownership";
                         })
                             .transition().duration(300).attr("opacity", 0.8)
                             .attr("stroke", "#FF1493")
                             .attr("stroke-width", 3);
+
+                        // Highlight connected GHOST PROJECTS in a different color
+                        node.filter(n => connectedGhosts.has(n.id))
+                            .transition().duration(300)
+                            .attr("opacity", 0.6)
+                            .attr("fill", "#9370DB") // Purple for highlighted ghosts
+                            .attr("r", 10);
+
+                        label.filter(n => connectedGhosts.has(n.id))
+                            .transition().duration(300)
+                            .attr("opacity", 0.6)
+                            .attr("font-weight", "bold");
+
+                        // Highlight ownership links
+                        link.filter(l => {
+                            const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
+                            return sourceId === developer.id && l.type === "ownership";
+                        })
+                            .transition().duration(300)
+                            .attr("opacity", 0.6)
+                            .attr("stroke", "#9370DB")
+                            .attr("stroke-width", 2);
 
                         // Show narrative
                         const financeConnections = [...connectedIds].filter(id => {
@@ -1180,10 +1232,13 @@
                             return n && n.data; // council nodes
                         }).length;
 
+                        const ghostCount = connectedGhosts.size;
+
                         showNarrative(
-                            `${developer.id} must ampliate across zones:\n` +
-                            `Finance (${financeConnections}) • Regulation (${regulationConnections}) • Labor (${laborConnections})\n` +
-                            `All must align for viable project. Click again to reset.`,
+                            `<strong>${developer.id}</strong> must ampliate across zones:<br>` +
+                            `Finance (${financeConnections}) • Regulation (${regulationConnections}) • Labor (${laborConnections})<br>` +
+                            `<span style="color: #9370DB; font-weight: 600;">${ghostCount} planned projects</span> depend on this alignment.<br>` +
+                            `<em style="font-size: 14px; color: #666;">Click again to reset.</em>`,
                             10000
                         );
                     }
@@ -1193,6 +1248,12 @@
 
                         node.transition().duration(300)
                             .attr("opacity", d => d.zone === "ghost" ? 0.3 : 1)
+                            .attr("fill", d => {
+                                if (d.id === "Zoning") return ["red", "orange", "green"][zoningState];
+                                if (d.zone === "ghost") return "#999";
+                                if (d.zone) return zoneColors[d.zone];
+                                return d.data ? "#333" : "#d33";
+                            })
                             .attr("r", d => {
                                 if (d.zone === "ghost") return 8;
                                 return d.data ? 6 : 10;
@@ -1203,9 +1264,13 @@
                             .attr("font-weight", "normal");
 
                         link.transition().duration(300)
-                            .attr("opacity", 1)
+                            .attr("opacity", d => d.type === "ownership" ? 0.2 : 1)
                             .attr("stroke", "#ccc")
-                            .attr("stroke-width", d => bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id) ? 2 : 1);
+                            .attr("stroke-width", d => {
+                                if (d.type === "ownership") return 1;
+                                if (bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id)) return 2;
+                                return 1;
+                            });
 
                         narrative.classed("show", false);
                     }
@@ -1223,11 +1288,11 @@
                         savePositions();
 
                         // STAGE 1: Show arborescent command (3 seconds, PAUSE action)
-                        showNarrative("Arborescent command: Single decision, instant implementation", 3000);
+                        showNarrative("<strong>Arborescent command:</strong> Single decision, instant implementation", 3000);
 
                         // STAGE 2: After 3 seconds, show impact message and eliminate ghosts (3 seconds)
                         setTimeout(() => {
-                            showNarrative("561 units/month lost. Projects become non-denoting terms.", 3000);
+                            showNarrative("<strong>561 units/month lost.</strong> Projects become non-denoting terms.", 3000);
 
                             // ELIMINATE GHOST PROJECTS (ontological elimination!)
                             node.filter(d => d.zone === "ghost")
@@ -1267,7 +1332,7 @@
 
                         // STAGE 4: After 7.5 seconds of total chaos, start the EXTREMELY SLOW return
                         setTimeout(() => {
-                            showNarrative("Rhizomatic reconstruction: relationships rebuilding, knowledge diffusing...", 15000);
+                            showNarrative("<strong>Rhizomatic reconstruction:</strong> relationships rebuilding, knowledge diffusing...", 15000);
                             returnToPositions();
                         }, 7500);
                     }
@@ -1364,10 +1429,10 @@
                         // FINAL RESULT after ghosts return
                         setTimeout(() => {
                             showNarrative(
-                                "RESULT:\n" +
-                                "Loss of 561 new construction starts/month\n" +
-                                "Loss of 6 old planned projects\n" +
-                                "Network capacity slowly rebuilding...",
+                                "<strong>RESULT:</strong><br>" +
+                                "Loss of <strong>561 new construction starts/month</strong><br>" +
+                                "Loss of <strong>6 old planned projects</strong><br>" +
+                                "<em style='color: #666;'>Network capacity slowly rebuilding...</em>",
                                 6000
                             );
                         }, 4000);
