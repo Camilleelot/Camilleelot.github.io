@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,6 +6,339 @@
     <link rel="stylesheet" href="tufte.css" />
     <link rel="stylesheet" href="latex.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Interactive chart container styles */
+        .chart-container {
+            margin: 3rem 0;
+            background: #fffff8;
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .chart-container h3 {
+            color: #111 !important;
+            font-weight: normal;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        
+        .chart-container p {
+            color: #333 !important;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            cursor: crosshair;
+        }
+        
+        canvas {
+            max-width: 100%;
+            display: block;
+        }
+        
+        .chart-tooltip {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid #333;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-family: et-book, Palatino, Georgia, serif;
+            color: #111;
+        }
+        
+        .chart-tooltip.visible {
+            opacity: 1;
+        }
+        
+        .tooltip-date {
+            font-weight: bold;
+            margin-bottom: 4px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 4px;
+            color: #111;
+        }
+        
+        .tooltip-value {
+            margin: 2px 0;
+            color: #333;
+        }
+        
+        .tooltip-diff {
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px solid #ccc;
+            color: #cc0000;
+            font-style: italic;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: #fff;
+            border: 1px solid #333;
+            padding: 6px 12px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:hover {
+            background: #f0f0f0;
+        }
+        
+        .control-btn.active {
+            background: #333;
+            color: #fff;
+        }
+        
+        .highlight-period {
+            font-size: 0.9rem;
+            color: #cc0000;
+            margin: 0.5rem 0;
+            font-style: italic;
+        }
+        
+        /* Tufte-style data table */
+        .data-table {
+            width: 100%;
+            font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+            font-size: 0.9em;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: #fffff8;
+        }
+        
+        .data-table th {
+            font-weight: 400;
+            border-bottom: 2px solid #111;
+            text-align: right;
+            padding: 0.75em 1em;
+            color: #111;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .data-table th:first-child {
+            text-align: left;
+        }
+        
+        .data-table td {
+            padding: 0.5em 1em;
+            text-align: right;
+            border: none;
+            color: #111;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .data-table td:first-child {
+            text-align: left;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .data-table tbody tr {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .data-table tbody tr:last-child {
+            border-bottom: 2px solid #111;
+        }
+        
+        .data-table tr:hover td {
+            background-color: #fffbf0;
+            color: #111;
+        }
+        
+        .data-table tr:hover td:first-child {
+            color: #333;
+        }
+        
+        .data-table .intervention-mark {
+            position: relative;
+            background: #fff9f0;
+        }
+        
+        .data-table .intervention-mark td {
+            border-top: 2px solid #cc0000;
+            padding-top: 0.75em;
+            font-weight: 500;
+        }
+        
+        .data-table .intervention-mark td:first-child::before {
+            content: "→ ";
+            color: #cc0000;
+            font-weight: bold;
+            margin-right: 4px;
+        }
+        
+        .data-table .peak-value {
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .data-table .peak-value::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 2px;
+            background: #4a5a8a;
+            opacity: 0.3;
+        }
+        
+        .data-table .crash-value {
+            font-weight: 600;
+            color: #cc0000;
+            position: relative;
+        }
+        
+        .data-table .crash-value::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 2px;
+            background: #cc0000;
+            opacity: 0.3;
+        }
+        
+        /* Pre-intervention rows have subtle tint */
+        .data-table tr.pre-period td {
+            background: rgba(74, 90, 138, 0.02);
+        }
+        
+        /* Post-intervention rows */
+        .data-table tr.post-period td {
+            background: rgba(204, 0, 0, 0.02);
+        }
+        
+        .data-table tr.pre-period:hover td,
+        .data-table tr.post-period:hover td {
+            background: #fffbf0;
+        }
+        
+        /* Statistical metrics display */
+        .stat-metric {
+            display: inline-block;
+            margin: 1rem 2rem 1rem 0;
+            cursor: help;
+        }
+        
+        .stat-metric-label {
+            font-size: 0.85rem;
+            color: #333;
+            display: block;
+        }
+        
+        .stat-metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #111;
+        }
+        
+        .stat-metric-desc {
+            font-size: 0.8rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .stat-metric:hover .stat-metric-value {
+            color: #cc0000;
+        }
+        
+        .stats-container {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #fffff8;
+            border-left: 2px solid #333;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .stats-container h3 {
+            color: #111 !important;
+        }
+        
+        .stats-container p {
+            color: #333 !important;
+        }
+        
+        /* Sparkline table */
+        .sparkline-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: "Gill Sans", Calibri, sans-serif;
+        }
+        
+        .sparkline-table th {
+            text-align: left;
+            border-bottom: 1px solid #333;
+            padding: 0.5rem;
+            font-weight: normal;
+            font-size: 0.9rem;
+            color: #111;
+        }
+        
+        .sparkline-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid #eee;
+            color: #111;
+        }
+        
+        .sparkline-table tr:hover {
+            background: #fffbf0;
+        }
+        
+        .sparkline-cell {
+            width: 200px;
+        }
+        
+        .sparkline {
+            width: 100%;
+            height: 30px;
+            display: block;
+        }
+        
+        .metric-cell {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .change-positive {
+            color: #2d5016;
+            background: rgba(45, 80, 22, 0.08);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .change-negative {
+            color: #cc0000;
+            background: rgba(204, 0, 0, 0.08);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .change-neutral {
+            color: #666;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,33 +349,58 @@
             <img src="img/housing-developments.JPEG" />
         </figure>
         <p><i>A finished housing development project across the street from a stripped down single family home about to be torn down and developed. This area (5 minutes from my house) was rezoned a year ago, allowing duplexes and townhouses to be built in place of single family homes.</i></p>
+        
         <section>
-            <p><b>The first question on the mind of almost all people I know under 40 who aren't living with their parents is: What's going on with housing? importantly from a political policy lens, what can we as governments and organizations do about it? And I think the answer many city councils, individuals and pollitically minded urban designers is the YIMBY theory. Remove restrictions, remove density limits, let the free market build. The theory itself is genuinely sound and has worked in many places. </b></p>
-            <p>This analysis came about as a disconnection of lived experience, and policy promises. When Calgary implemented a citywide blanket rezoning in August 2024, housing construction starts growth didn't increase, in fact despite raw growth, the trend fell 21% when compared to the pre-policy trend. This doesn't mean the YIMBY theory is entirely incorrect, but it's evidence that markets are much more complex than we as policy designers assume.<label for="mn-figure-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-figure-1" class="margin-toggle" /><span class="marginnote"><img src="img\downtownconstruction.JPEG" alt="Blanket Rezoning Map of Ward 1" /> <i> Downtown Construction</i>  showcasing the different levels of urban construction, workers, unions, machinery, capital all need to connect and allign in order for a project to succeed.</span></p>
-            <p>The specific rezoning paradox showcases a trend wherein a temporary but significant disruption happens when a traditional heirarhichal decision making center makes a wholesale decision on a rhizomatic market network. Imagine growing a garden already in bloom, or building a road with current traffic, eventually you will increase capacity, but you're going to disrupt the delicate bonds that govern that network and cause a traffic jam.</p>
-            <p>In no way does this analysis imply that rezoning isn't a way to increase housing supply while having a downstreatm effect on affordability. Rather, to create and deploy a genuinely successfull housing policy means understanding the inherent logic differences between heirarchichal and rhizomatic structures, and understanding that rule changes cannot alone deliver the results that we want. Change requires supporting, rather than trying to dictate to, the delicate mycelium like structures of contractors, financiers, developers and buyers. Still, in 10 years i'd bet Calgary homes will more afforadable than not due to this policy, but transitional support is an important topic for cities who are yet to enact rezoning reforms.</p>
+            <p><b>The first question on the mind of almost all people I know under 40 who aren't living with their parents is: What's going on with housing? Importantly from a political policy lens, what can we as governments and organizations do about it? Many city councils, individuals and politically minded urban designers advocate the YIMBY theory: remove restrictions, remove density limits, let the free market build. The theory itself is genuinely sound and has worked in many places.</b></p>
+            <p>When Calgary implemented citywide blanket rezoning in August 2024—removing density restrictions across residential neighborhoods—it offered a natural experiment to test YIMBY theory in practice. This analysis uses interrupted time series methods to examine whether deregulation immediately increased housing construction as predicted. The data reveals a counterintuitive finding: despite removing barriers, monthly housing starts fell 21% below the pre-existing growth trend. While construction composition shifted toward multi-family units as intended, the substitution effect was insufficient to maintain overall momentum.<label for="mn-figure-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-figure-1" class="margin-toggle" /><span class="marginnote"><img src="img\downtownconstruction.JPEG" alt="Downtown Construction" /> <i>Downtown Calgary construction</i>—the Calgary Tower visible behind active development sites.</span></p>
+            <p>This doesn't invalidate YIMBY theory. Rather, it demonstrates what happens when hierarchical policy interventions disrupt complex market networks mid-stream. Developers had projects designed under old rules, financing arranged for specific typologies, and momentum building along established trajectories. The rezoning reset these conditions overnight. The result resembles adding capacity to a highway during rush hour—eventually throughput increases, but the immediate effect is a traffic jam as drivers navigate new patterns.</p>
+            <p>The paradox suggests successful housing policy requires more than removing restrictions. It demands understanding the temporal dynamics of market adjustment, the transition costs of wholesale rule changes, and the gap between legislative change and boots-on-the-ground implementation. Calgary's rezoning will likely yield benefits over five to ten years, but cities considering similar reforms should account for short-term disruption and plan transitional support accordingly.</p>
         </section>
+        
         <section>
             <h2 id="Intro">Introduction</h2>
-            <p>The YIMBY theory directly adresses the problem of housing supply through rezoning, essentially removing restrictions on the housing market will create the necessary conditions for more homes rather than attempting to alleviate the housing situation through managing current supply. This analysis uses Calgary's recent 2024 blanket rezoning seems like a perfect opportunity to see this theory in action.</p>
+            <p>The YIMBY movement's core proposition is elegant: housing scarcity stems from artificial supply constraints, so removing those constraints should increase supply and improve affordability. Calgary's 2024 blanket rezoning provides an opportunity to observe this theory under controlled conditions—a citywide policy intervention with a clear implementation date, allowing before-and-after comparison.</p>
+            <p>This analysis focuses specifically on construction starts rather than housing prices or affordability outcomes. While the ultimate goal of rezoning is affordability, supply changes must precede price effects. If rezoning fails to increase construction, downstream benefits cannot materialize. The 17-month window examined (November 2023 through March 2025) captures immediate market response to regulatory change—revealing whether developers accelerated activity as barriers fell or whether transition costs produced countervailing effects.</p>
+            <p>The methodological approach treats rezoning as a quasi-experimental intervention. Interrupted time series regression compares actual post-policy outcomes to counterfactual projections based on pre-policy trajectories. This design controls for secular trends and seasonal patterns, isolating the policy's causal effect. The analysis examines both aggregate housing starts and compositional changes across housing types, testing whether the policy achieved its intended shift toward denser construction patterns.</p>
         </section>
+        
         <section>
             <h2 id="questions">Research Questions</h2>
-            <p>What changes were made, with what rationale, and what was the expected outcome?<label for="mn-figure-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-figure-1" class="margin-toggle" /><span class="marginnote"><img src="img\ward-1-rezoning-map.png" alt="Blanket Rezoning Map of Ward 1" />The City of Calgary <em>Blanket Rezoning Map of Calgary's Northwest</em></span></p>
-            <p>Did anything change beyond statistical significance?</p>
-            <p>If there was change, did the policy achieve the intended effect on housing? To what degree?</p>
-            <p>If new housing has been constructed, is that housing within the class of affordable housing? Did the trend of construction with regards to density change?</p>
-            <p>And finally, the main cited casualty of expanding housing supply through rezoning is the loss of community. Using City of Calgary surveys, did this happen and to what degree?</p>
+            <p>This analysis examines Calgary's August 2024 blanket rezoning through five empirical questions:<label for="mn-figure-2" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-figure-2" class="margin-toggle" /><span class="marginnote"><img src="img\ward-1-rezoning-map.png" alt="Blanket Rezoning Map of Ward 1" />The City of Calgary <em>Blanket Rezoning Map of Calgary's Northwest</em></span></p>
+            <p><b>1. Policy Design:</b> What specific regulatory changes were implemented, what was the stated rationale, and what outcomes did policymakers predict?</p>
+            <p><b>2. Impact Magnitude:</b> Did housing construction starts change beyond normal statistical variation? If so, by how much and in which direction?</p>
+            <p><b>3. Causal Attribution:</b> Using interrupted time series analysis, can observed changes be attributed to the policy intervention rather than pre-existing trends or external factors?</p>
+            <p><b>4. Compositional Effects:</b> Did the policy shift construction patterns from single-family to multi-family housing as intended? Was the substitution sufficient to offset any decline in single-family starts?</p>
+            <p><b>5. Mechanism Identification:</b> If effects deviated from predictions, what market dynamics or implementation factors explain the divergence?</p>
+            <p>The analysis employs interrupted time series regression to test the null hypothesis that rezoning had no effect on housing construction trends beyond what would have occurred absent the intervention. This approach isolates the policy's causal impact by comparing actual post-intervention outcomes to counterfactual projections based on pre-intervention momentum.</p>
         </section>
+        
         <section>
             <h2 id="Variables and Data">Data Requirements</h2>
-            <p>1. Policy analysis of the decisions made to determine the decisions made, rationale given, and expected outcomes given to the city/public by council.</p>
-            <p>2. Longitudinal average housing prices/rent per community, scaling heavily towards communities with easy access to high-income earning areas. New cheap housing can always be found in undeveloped areas, but the areas targeted were specifically designed to lower costs and restrictions on smaller, denser, and more urban projects.</p>
-            <p>3. Delta of changes and results; an accounting of changes per severity of modifications made by city council.</p>
-            <p>3.1 Checking for confounding variables: the budget allocated towards new housing projects, alongside possible federal and provincial incentives, could heavily skew the data. If changes were federal, comparing multiple similar Canadian cities (1.3+ million population with similar infrastructure) could help. If provincial, Edmonton serves as a natural comparison.</p>
-            <p>4. Community feeling surveys, weighted more heavily towards longitudinal surveys done over the years, as opposed to one-off surveys. Having longitudinal linkage of surveys done by the same team, with the same methods and questions year after year, would be much more valuable for seeing trends.</p>
-            <p>5. Beyond the direct local conclusions, I want to ask broader questions about generalizability to US and Canadian mid-level, higher-growth cities. Was it always like this? Should Gen Z reduce our expectations of housing to reality?</p>
+            <p><b>1. Policy Documentation:</b> Analysis of council decisions, planning documents, and public communications to establish the regulatory changes implemented, stated rationale, and predicted outcomes.</p>
+            
+            <p><b>2. Construction Activity Data:</b> This analysis relies exclusively on housing construction starts data from the Canada Mortgage and Housing Corporation (CMHC). Construction starts represent the moment developers commit capital and break ground—the most direct measure of market response to regulatory change. CMHC's Housing Starts Survey captures all residential construction activity across Canada with consistent methodology, providing:</p>
+            <ul>
+                <li>Monthly housing starts by dwelling type (single-detached, semi-detached, row, apartment)</li>
+                <li>Geographic granularity at the Census Metropolitan Area level</li>
+                <li>Reliable time series data with standardized definitions</li>
+                <li>Coverage of both market and non-market housing</li>
+            </ul>
+            
+            <p>The 17-month observation window (November 2023 through March 2025) provides 9 pre-intervention and 8 post-intervention data points—sufficient for interrupted time series regression while minimizing confounding from secular trends or macroeconomic shocks. Construction starts, rather than completions or permits, best capture immediate market response since starts reflect actual capital deployment rather than speculative planning or lagged delivery.</p>
+            
+            <h3 id="Initial Scope">Initial Project Scope</h3>
+            <p><i>The analysis initially contemplated a broader empirical investigation before focusing on construction dynamics:</i></p>
+            
+            <p><b>Housing Prices and Rent:</b> Longitudinal price and rent data per community, focusing on neighborhoods with access to high-income employment areas. The hypothesis was that targeted rezoning would lower costs specifically in dense urban contexts rather than peripheral greenfield development. However, price effects require time to materialize and isolating rezoning's impact from concurrent federal mortgage reforms proved infeasible within the available timeframe.</p>
+            
+            <p><b>Comparative Analysis:</b> Cross-city comparison with Edmonton or other Canadian metropolitan areas to control for provincial and federal policy changes. This approach was abandoned when Edmonton implemented similar rezoning reforms simultaneously, eliminating the natural control group.</p>
+            
+            <p><b>Community Sentiment:</b> Longitudinal surveys tracking resident perceptions of neighborhood character, housing affordability, and community cohesion. City of Calgary conducts annual surveys, but the timing (next survey Fall 2025) precluded meaningful before-after comparison within this project timeline.</p>
+            
+            <p><b>Generalizability Questions:</b> Whether Calgary's experience offers lessons for US and Canadian mid-sized cities, and whether generational housing expectations require recalibration. These remain open questions for future research as longer time series become available.</p>
         </section>
+        
         <section>
             <h3 id="Data Sourcing">Data Sources</h3>
             <table>
@@ -51,7 +409,7 @@
                     <th>Sources</th>
                 </tr>
                 <tr>
-                    <td>Policy Changes</td>
+                    <td><b>Policy Changes</b></td>
                     <td>
                         <a href="https://www.calgary.ca/planning/land-use.html?redirect=/landusebylaw">Land Use Bylaw From City of Calgary</a><br>
                         <a href="https://www.calgary.ca/planning/land-use.html?redirect=/landusebylaw">Calgary Planning Commission</a><br>
@@ -59,7 +417,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Housing Prices/Rent</td>
+                    <td><b>Construction Data</b></td>
+                    <td>
+                        <a href="https://www.cmhc-schl.gc.ca/en/professionals/housing-markets-data-and-research/housing-data/data-tables/housing-market-data/housing-starts-construction-residential-metropolitan-area-dwelling-type">CMHC Housing Starts and Construction Data</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><i>Housing Prices (Future Work)</i></td>
                     <td>
                         <a href="https://www.calgary.ca/communities/housing-in-calgary/housing-research/housing-trends.html">City of Calgary - Housing Trends</a><br>
                         <a href="https://wowa.ca/edmonton-housing-market">Analyzed Housing Data - Edmonton</a><br>
@@ -67,310 +431,1240 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Confounding Variables</td>
-                    <td><a href="https://www.canada.ca/en/department-finance/news/2024/09/government-announces-boldest-mortgage-reforms-in-decades-to-unlock-homeownership-for-more-canadians.html">Federal Finance Changes to Housing in 2024</a></td>
-                </tr>
-                <tr>
-                    <td>Community Feelings</td>
+                    <td><i>Community Surveys (Future Work)</i></td>
                     <td>
                         <a href="https://www.calgary.ca/research/satisfaction-survey.html#past">2024 Fall/Spring Survey Results</a><br>
                         <a href="https://www.calgary.ca/cps/statistics/calgary-police-statistical-reports.html">Community Crime Statistics</a><br>
                         <a href="https://data.calgary.ca/d/h3h6-kgme">Community Disorder Statistics</a>
                     </td>
                 </tr>
-                <tr>
-                    <td>Building Permits</td>
-                    <td>
-                        <a href="https://data.calgary.ca/Business-and-Economic-Activity/Building-Permits/c2es-76ed/about_data">City of Calgary - Building Permits</a><br>
-                        <a href="https://data.calgary.ca/Business-and-Economic-Activity/Builders-Report-Multi-Family-City-Summary/7ht8-m4j5/about_data">Builders Report - Multi Family</a>
-                    </td>
-                </tr>
             </table>
 
-            <p>I wanted a total collection of current housing listings but it was difficult to find. Several MLS (data sources for housing prices used by realtors) are either obscenely expensive for individual use or exclusively available to realtors. I will use their analysis and average data for housing prices.<label for="sn-proprietary-monotype-bembo" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-proprietary-monotype-bembo" class="margin-toggle" /><span class="sidenote">The lowest I could find for sale was $500 a month.</span></p>
-            <p>Community surveys are done yearly, but unfortunately the next one happens in fall (in 4 months), so I can use the 2024 Fall result and compare them to Spring as the rezoning changes happened in May.</p>
-            <p>I am left with trying to find a significant North American city close enough to Calgary to repeat the process, or succumb to longitudinal in-group analysis and manage confounding factors one by one. First, I can analyze the delta in housing markets across North America, Canada, then Alberta to estimate general external factors and separate the effects of local zoning changes from the continental housing market economy.</p>
-            <p>After finding a particularly striking article by a finance professor in Macleans, there have been relatively significant federal financial changes in 2025, notably an extension of maximum mortgage repayment time from 25 to 30 years and lowering the downpayment required. This is a huge incentivization to new buyers likely to increase housing costs without similar uptick in supply. Additionally, the federal government launched a special tax-free investment fund for first-time home buyers and enabled use of up to $60,000 from retirement funds. Non-linear funding was also injected into home repairs and construction from the National Housing Strategy into Calgary.</p>
-            <p>The Canada Mortgage and Housing Corporation has the data I need for new construction, new listed rental units, average rent, and completions across Canada. My goal is to collect data before/after August 6, 2024, when citywide rezoning took effect.</p>
+            <h3>Data Limitations and Decisions</h3>
+            
+            <p><b>Why Construction Starts Only?</b> This analysis focuses exclusively on CMHC construction starts data for three reasons: <i>immediacy</i> (starts capture market response within months rather than years), <i>reliability</i> (CMHC uses consistent methodology with minimal reporting lag), and <i>policy relevance</i> (supply changes must precede price effects, making starts the leading indicator). Housing prices and community sentiment remain important but require longer observation windows to detect rezoning effects amid macroeconomic noise.</p>
+            
+            <p><b>The MLS Problem:</b> Comprehensive current housing listings proved inaccessible. MLS databases—the primary source for real-time price data used by realtors—are either prohibitively expensive for individual researchers or exclusively available to licensed professionals. Aggregated analysis and historical averages exist, but lack the granularity needed for neighborhood-level price tracking.<label for="sn-mls-pricing" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-mls-pricing" class="margin-toggle" /><span class="sidenote">The lowest pricing found was $500 per month for direct API access for already sold houses, and live listings require professional credentials!</span></p>
+            
+            <p><b>Future Research Direction:</b> A natural extension would build a live listing scraper and price tracking system to directly observe how rezoning affects asking prices, time-on-market, and listing composition in targeted neighborhoods. This would require either institutional MLS access or sustained web scraping across multiple listing platforms. Combined with the construction starts analysis, this would provide a complete supply-to-price pathway for assessing affordability impacts. <i>Consider this a research journal entry for the explorer in me</i>—the technical challenge of building robust scrapers, the data engineering of longitudinal price tracking, and the analytical payoff of linking regulatory change to real-world affordability remain compelling questions for future work.<label for="mn-calgary-map" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-calgary-map" class="margin-toggle" /><span class="marginnote"><img src="img\city of calgary map.jpg" alt="City of Calgary Overview Map" /> <i>City of Calgary</i> showing the scale of the blanket rezoning across the entire metropolitan area.</span></p>
+            
+            <p><b>Community Surveys:</b> City of Calgary conducts annual resident surveys, but timing constraints prevented meaningful analysis. The 2024 Spring survey preceded rezoning implementation (May), while Fall 2024 results were unavailable during this analysis. Future researchers could compare Fall 2024 to Spring 2025 results to assess community perception changes, though isolating rezoning effects from broader housing market trends would remain challenging.</p>
+            
+            <h3>Why CMHC Data Works</h3>
+            
+            <p>The Canada Mortgage and Housing Corporation's Housing Starts Survey represents the gold standard for Canadian residential construction data. CMHC conducts monthly field surveys of all residential construction projects, capturing starts at the moment of ground-breaking rather than relying on permit applications or completion records. This approach offers several analytical advantages:</p>
+            
+            <p><b>Temporal Precision:</b> Starts reflect the month construction actually begins, providing a clear timeline for policy response. Permits can sit unused for months; completions lag starts by 6-24 months depending on project scale. Starts capture the immediate investment decision.</p>
+            
+            <p><b>Comprehensive Coverage:</b> CMHC surveys all dwelling types (single-detached, semi-detached, row houses, apartments) and all housing types (market-rate, affordable, social housing). This prevents compositional bias where changes in one segment mask broader trends.</p>
+            
+            <p><b>Consistent Methodology:</b> CMHC uses standardized definitions and survey protocols across all Canadian metropolitan areas, enabling reliable time series analysis. Unlike permit data, which varies by municipal reporting systems, CMHC data permits valid month-to-month and city-to-city comparisons.</p>
+            
+            <p><b>Geographic Granularity:</b> Data is available at the Census Metropolitan Area level, matching the geographic scope of Calgary's rezoning policy while providing sufficient sample sizes for stable monthly estimates.</p>
+            
+            <p>The primary limitation is that starts measure quantity, not affordability. A housing start contributes equally to the count whether it's a $250,000 townhouse or a $2 million single-family home. This analysis tracks supply response; price effects require separate investigation.</p>
+        </section>
+        
+        <section>
             <h1 id="Results">Results</h1>
             <h2 id="Policy Changes">Policy Changes and Expected Outcomes</h2>
-            <p>The changes were simpler than implied—a 5 step program aligned by the City of Calgary's Housing Strategy:</p>
+            <p>The changes were simpler than implied—a 5-step program aligned by the City of Calgary's Housing Strategy:</p>
             <p>1. Rezoning the category of Residential to low and medium-density housing options.</p>
-            <p>2. Rezone to housing to include a grade and spectrum to control density rulings.</p>
+            <p>2. Rezoning housing to include a grade and spectrum to control density rulings.</p>
             <p>3. Allowing a secondary suite and a backyard suite on the same property.</p>
             <p>4. Removing parking requirements for the backyard suite.</p>
             <p>5. Adding a specialized Single-Detached Dwelling to code.</p>
             <p>The proposed reason for change was simple: <b>"Calgary needs more homes. Citywide rezoning will help increase supply."</b></p>
+            
             <h2 id="What Changed">What Changed?</h2>
-            <label for="mn-demo" class="margin-toggle">&#8853;</label>
-
-            <style type="text/css">
-                .housing-data {
-                    float: right;
-                    width: 45%;
-                    margin: 0 0 1em 2em;
-                    font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
-                    font-size: 0.85em;
-                    border-collapse: collapse;
-                }
-
-                    .housing-data td, .housing-data th {
-                        padding: 0.25em 0.75em;
-                        text-align: right;
-                        border: none;
-                    }
-
-                    .housing-data th {
-                        font-weight: normal;
-                        border-bottom: 1px solid #333;
-                        text-align: right;
-                    }
-
-                        .housing-data th:first-child,
-                        .housing-data td:first-child {
-                            text-align: left;
-                        }
-
-
-                .rezoning-mark {
-                    position: relative;
-                }
-
-                    .rezoning-mark td {
-                        border-top: 1.5px solid #cc0000;
-                        padding-top: 0.5em;
-                    }
-
-                        .rezoning-mark td:first-child::before {
-                            content: "→ ";
-                            color: #cc0000;
-                            font-weight: bold;
-                        }
-
-                
-                .housing-data tr:hover td {
-                    background-color: #fffbf0;
-                }
-
-               
-                .peak-month td:last-child {
-                    font-weight: bold;
-                }
-
-                .crash-month td:last-child {
-                    font-weight: bold;
-                    color: #cc0000;
-                }
-            </style>
-
-            <table class="housing-data">
+            
+            <table class="data-table">
+                <caption style="caption-side: top; text-align: left; font-style: italic; margin-bottom: 0.5em; color: #333;">Housing Construction Starts by Month (November 2023 - March 2025)</caption>
                 <thead>
                     <tr>
                         <th>Year/Month</th>
                         <th>Single</th>
+                        <th>Semi-Det.</th>
+                        <th>Row</th>
                         <th>Apartment</th>
-                        <th>All</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2023-01</td>
-                        <td>304</td>
-                        <td>774</td>
-                        <td>1295</td>
-                    </tr>
-                    <tr>
-                        <td>2023-02</td>
-                        <td>391</td>
-                        <td>492</td>
-                        <td>1238</td>
-                    </tr>
-                    <tr>
-                        <td>2023-03</td>
-                        <td>341</td>
-                        <td>449</td>
-                        <td>1094</td>
-                    </tr>
-                    <tr>
+                    <tr class="pre-period">
                         <td>2023-11</td>
                         <td>594</td>
+                        <td>110</td>
+                        <td>277</td>
                         <td>827</td>
-                        <td>1808</td>
+                        <td>1,808</td>
                     </tr>
-                    <tr>
+                    <tr class="pre-period">
                         <td>2023-12</td>
                         <td>538</td>
+                        <td>160</td>
+                        <td>282</td>
                         <td>513</td>
-                        <td>1493</td>
+                        <td>1,493</td>
                     </tr>
-                    <tr>
+                    <tr class="pre-period">
                         <td>2024-01</td>
                         <td>487</td>
-                        <td>1103</td>
-                        <td>1951</td>
+                        <td>112</td>
+                        <td>249</td>
+                        <td>1,103</td>
+                        <td>1,951</td>
                     </tr>
-                    <tr>
+                    <tr class="pre-period">
                         <td>2024-02</td>
                         <td>460</td>
+                        <td>154</td>
+                        <td>279</td>
                         <td>781</td>
-                        <td>1674</td>
+                        <td>1,674</td>
                     </tr>
-                    <tr>
+                    <tr class="pre-period">
                         <td>2024-03</td>
                         <td>532</td>
+                        <td>200</td>
+                        <td>182</td>
                         <td>846</td>
-                        <td>1760</td>
+                        <td>1,760</td>
                     </tr>
-                    <tr>
+                    <tr class="pre-period">
                         <td>2024-04</td>
                         <td>528</td>
+                        <td>198</td>
+                        <td>228</td>
                         <td>877</td>
-                        <td>1831</td>
+                        <td>1,831</td>
                     </tr>
-                    <tr>
+                    <tr class="pre-period">
                         <td>2024-05</td>
                         <td>617</td>
+                        <td>206</td>
+                        <td>236</td>
                         <td>937</td>
-                        <td>1996</td>
+                        <td>1,996</td>
                     </tr>
-                    <tr>
+                    <tr class="pre-period">
                         <td>2024-06</td>
                         <td>719</td>
+                        <td>210</td>
+                        <td>307</td>
                         <td>730</td>
-                        <td>1996</td>
+                        <td>1,966</td>
                     </tr>
-                    <tr>
+                    <tr class="pre-period">
                         <td>2024-07</td>
                         <td>625</td>
-                        <td>1326</td>
-                        <td>2471</td>
+                        <td>240</td>
+                        <td>280</td>
+                        <td class="peak-value">1,326</td>
+                        <td class="peak-value">2,471</td>
                     </tr>
-                    <tr class="rezoning-break">
+                    <tr class="intervention-mark post-period">
                         <td>2024-08</td>
                         <td>597</td>
-                        <td>552</td>
-                        <td>1675</td>
+                        <td>198</td>
+                        <td>328</td>
+                        <td class="crash-value">552</td>
+                        <td class="crash-value">1,675</td>
                     </tr>
-                    <tr>
+                    <tr class="post-period">
                         <td>2024-09</td>
                         <td>660</td>
+                        <td>162</td>
+                        <td>271</td>
                         <td>997</td>
-                        <td>2090</td>
+                        <td>2,090</td>
                     </tr>
-                    <tr>
+                    <tr class="post-period">
                         <td>2024-10</td>
                         <td>644</td>
-                        <td>1372</td>
-                        <td>2690</td>
+                        <td>220</td>
+                        <td>454</td>
+                        <td>1,372</td>
+                        <td>2,690</td>
                     </tr>
-                    <tr>
+                    <tr class="post-period">
                         <td>2024-11</td>
                         <td>717</td>
-                        <td>1295</td>
-                        <td>2548</td>
+                        <td>198</td>
+                        <td>338</td>
+                        <td>1,295</td>
+                        <td>2,548</td>
                     </tr>
-                    <tr>
+                    <tr class="post-period">
                         <td>2024-12</td>
                         <td>514</td>
+                        <td>154</td>
+                        <td>360</td>
                         <td>689</td>
-                        <td>1717</td>
+                        <td>1,717</td>
                     </tr>
-                    <tr>
+                    <tr class="post-period">
                         <td>2025-01</td>
                         <td>552</td>
+                        <td>176</td>
+                        <td>370</td>
                         <td>531</td>
-                        <td>1629</td>
+                        <td>1,629</td>
                     </tr>
-                    <tr>
+                    <tr class="post-period">
                         <td>2025-02</td>
                         <td>500</td>
-                        <td>1390</td>
-                        <td>2407</td>
+                        <td>238</td>
+                        <td>279</td>
+                        <td>1,390</td>
+                        <td>2,407</td>
                     </tr>
-                    <tr>
+                    <tr class="post-period">
                         <td>2025-03</td>
                         <td>455</td>
-                        <td>1352</td>
-                        <td>2235</td>
+                        <td>154</td>
+                        <td>274</td>
+                        <td>1,352</td>
+                        <td>2,235</td>
                     </tr>
                 </tbody>
             </table>
-            <p>Initial analysis suggests... that a simple linear analysis at the line of August 2024 a clear and positive trend post-rezoning, indicating more housing and more dense housing. It tells a nice, convincing story: remove restrictions on housing → more housing of different types AND more total construction.</p>
-            <p>But a feel-good story with a linear line at the date with a trend line isn't quite convincing enough to me. I decided to use an Interrupted Time Series analysis to see if this change affected housing beyond pre-existing trends. If rezoning was the treatment, what effect did it have on an immediate basis beyond  the initial trend and what behaviors did it illicit on post-rezoning trends.</p>
-            <p>My hypothesis and expectation was that housing would increase and become more dense, it seems intristic to the idea of deregulating a particularly locked-in and heavily regulated market. I just wasn't convinced the trend was as high as implied by the linear analysis.</p>
-            <figure>
-                <label for="linear graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote">A simple linear analysis showing percentage difference in averages before/after August 2024, when blanket rezoning took effect.</span>
-                <img src="img/calgarygraphsimple.png" alt="Simple Graph of Calgary Rezoning Changes" />
-            </figure>
-
-            <figure>
-                <label for="linear graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote">Another simpler linear analysis showing percentage difference between dense construction and single detached family homes as a fraction of total construction starts to calculate the density ratio.</span>
-                <img src="img/densityrevolution.png" alt="Density Revolution Graph" />
-            </figure>
+            
+            <p>Initial analysis suggested a simple linear analysis at August 2024 shows a clear positive trend post-rezoning, indicating more housing and greater density. This tells a compelling story: remove restrictions on housing → more housing of different types AND more total construction.</p>
+            <p>However, a linear trend line at the intervention date wasn't sufficiently convincing. An Interrupted Time Series analysis was used to determine if this change affected housing beyond pre-existing trends. If rezoning was the treatment, what effect did it have on an immediate basis beyond the initial trend, and what behaviors did it elicit regarding post-rezoning trends?</p>
+            <p>The hypothesis was that housing would increase and become more dense—intrinsic to deregulating a particularly locked-in and heavily regulated market. The conviction remained that the trend wasn't as strong as implied by simple linear analysis.</p>
+        </section>
+        
+        <section>
             <h1 id="The Real Analysis">The Real Analysis</h1>
             <div class="epigraph">
                 <blockquote>
                     <p>I propose in this inquiry to take nothing for granted, but to bring even accepted theories to the test of first principles, and should they not stand the test, freshly to interrogate facts in the endeavor to discover their law. I propose to beg no question, to shrink from no conclusion, but to follow truth wherever it may lead.</p>
-                    <footer>Henry George, “Progress and Poverty; Introductory:The Problem" (1879)</footer>
+                    <footer>Henry George, "Progress and Poverty; Introductory: The Problem" (1879)</footer>
                 </blockquote>
             </div>
-            <p>What I actually found was paradoxical to the YIMBY derugulation theory of housing managment, from 2023/01 to 2024/07 the actual growth rate increased and was 92.5 construction starts per month, after the policy took effect the immediate jump of 642, with the before rezoning construction starts per month averaging 1715 units/month (Jan 2023 - Jul 2024) and after 2124 units/month (Aug 2024 - Mar 2025), with a raw increase of 23.9%.<b>But</b>, the pre-policy growth trend was 92.5 units/month, and housing growth was increasing, extrapolating the growth trend to today it would amount to 2685 units/month compared to the actual 2124 units/month, gives us a -562 difference below the expected pre-policy trend. The types of construction starting changed as well with single family home construction growing from 511 to 580, while apartment construction grew from 805 to 1,022, 13.4% and 27.1% respectively. The substitution in construction of denser homes is not enough to fill the pre-policy trend of the decline in growth of single family construction. </p>
-            <p>The rezoning paradox, is real, and despite making development genuinely easier, with a completly blanket level city wide removal of market restrictions on housing, housing starts fell below the expected trends by 21%, disrupting what was already a strong growth rate, and (much like the change) isn't localized by sectors (groupings of neighbourhoods), and persists across seasonal variations while remaining statistically relevant.</p>
-            <p><b>An important question is, did uncertainty increase?</b> Volatility  before was 385, volatility after was 415 with an F-statistic of 1.16 (critical value: 3.01). The volatility remained similar. Cohen's d measures the effect size at 1.062, indicating a large effect. Bootstrap 95% confidence interval with policy effect of 409 units/month, 95% CI: [94,769]. The effect is statistically robust.</p>
-            <p>
-                Something statistically relevant <label for="sn-extensive-use-of-sidenotes" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-extensive-use-of-sidenotes" class="margin-toggle" /><span class="sidenote">
-                    d = (M_actual - M_expected) / SD_pooled
-                    d = (2,124 - 2,685) / 530 = -1.06 (Large negative effect)
-                </span>,and I would argue philosophically important, happened here.
-            </p>
-            <figure>
-                <label for="ITS graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="linear graph" class="margin-toggle" /><span class="marginnote">
-                    Y = β₀ + β₁(time) + β₂(policy) + β₃(time_after_policy) + ε
+            
+            <p>The findings were paradoxical to the YIMBY deregulation theory of housing management. From 2023/01 to 2024/07, the actual growth rate was 92.5 construction starts per month. After policy implementation, an immediate jump of 642 units occurred, with pre-rezoning construction starts averaging 1,715 units/month (Jan 2023 - Jul 2024) and post-rezoning 2,124 units/month (Aug 2024 - Mar 2025), representing a raw increase of 23.9%.</p>
+            
+            <p><b>However,</b> the pre-policy growth trend was 92.5 units/month, and housing growth was increasing. Extrapolating the growth trend to today yields 2,685 units/month compared to actual 2,124 units/month—a -562 unit difference below expected pre-policy trend. Construction types changed: single-family home construction grew from 511 to 580, while apartment construction grew from 805 to 1,022 (13.4% and 27.1% respectively). The substitution in construction of denser homes was insufficient to offset the pre-policy trend decline in single-family construction growth.</p>
+            
+            <p>The rezoning paradox is real. Despite genuinely making development easier through complete blanket-level citywide removal of market restrictions on housing, housing starts fell below expected trends by 21%, disrupting an already strong growth rate. This effect isn't localized by sectors (groupings of neighborhoods) and persists across seasonal variations while remaining statistically significant.</p>
 
-                    Where:
-                    β₀ = 1,233 (baseline)
-                    β₁ = 92.5 (pre-policy trend)
-                    β₂ = 642 (immediate jump)
-                    β₃ = -74.7 (trend change after policy)
-                </span>
-                <img src="img/ITS.png" alt="ITS Graph" />
+            <!-- Interactive ITS Chart -->
+            <div class="chart-container">
+                <h3 style="font-weight: normal; font-style: italic; margin-bottom: 0.5rem;">Figure 1. Interrupted Time Series Analysis</h3>
+                <div class="controls">
+                    <button class="control-btn active" data-chart="its" data-toggle="counterfactual">Show Counterfactual</button>
+                    <button class="control-btn" data-chart="its" data-toggle="difference">Show Difference Shading</button>
+                    <button class="control-btn" data-chart="its" data-toggle="trend">Show Trend Lines</button>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="itsChart"></canvas>
+                    <div class="chart-tooltip" id="itsTooltip"></div>
+                </div>
+                <div id="itsHighlight" class="highlight-period"></div>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
+                    Hover over data points for exact values and differences from counterfactual projection. Click any point to lock tooltip and view detailed statistics. The intervention line marks August 2024 rezoning implementation. The dashed line represents projected housing starts had the policy not been enacted.
+                </p>
+                <p style="font-family: 'Computer Modern', 'Latin Modern Math', serif; font-size: 0.9rem; color: #333; margin: 1rem 0; padding: 0.5rem; background: #f9f9f9; border-left: 2px solid #ccc;">
+                    Y = β₀ + β₁(time) + β₂(policy) + β₃(time_after_policy) + ε<br>
+                    Where: β₀ = 1,233 (baseline) | β₁ = 92.5 (pre-policy trend) | β₂ = 642 (immediate jump) | β₃ = -74.7 (trend change after policy)
+                </p>
+            </div>
+
+            <!-- Interactive Composition Chart -->
+            <div class="chart-container">
+                <h3 style="font-weight: normal; font-style: italic; margin-bottom: 0.5rem;">Figure 2. Housing Composition by Type</h3>
+                <div class="controls">
+                    <button class="control-btn active" data-chart="composition" data-toggle="stacked">Stacked View</button>
+                    <button class="control-btn" data-chart="composition" data-toggle="separate">Separate Lines</button>
+                    <button class="control-btn" data-chart="composition" data-toggle="percentage">Show Percentages</button>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="compositionChart"></canvas>
+                    <div class="chart-tooltip" id="compositionTooltip"></div>
+                </div>
+                <div id="compositionHighlight" class="highlight-period"></div>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
+                    Single-family construction was devastated at -47% while multi-family increased +27%, indicating a shift in construction types but overall construction rates saw a net decrease. Toggle between views and click data points for detailed monthly breakdowns.
+                </p>
+            </div>
+
+            <!-- Interactive Density Chart -->
+            <div class="chart-container">
+                <h3 style="font-weight: normal; font-style: italic; margin-bottom: 0.5rem;">Figure 3. Density Revolution: Multi-Family Ratio Over Time</h3>
+                <div class="controls">
+                    <button class="control-btn active" data-chart="density" data-toggle="ratio">Ratio View</button>
+                    <button class="control-btn" data-chart="density" data-toggle="average">Show Period Averages</button>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="densityChart"></canvas>
+                    <div class="chart-tooltip" id="densityTooltip"></div>
+                </div>
+                <div id="densityHighlight" class="highlight-period"></div>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
+                    The ratio of multi-family to single-family housing starts. Values above 2.0 indicate multi-family construction exceeds double that of single-family. Pre-intervention average: 2.32; post-intervention: 2.66, representing a 14.7% increase in density preference.
+                </p>
+            </div>
+
+            <!-- Statistical Measures -->
+            <div class="stats-container">
+                <h3 style="font-weight: normal; margin-bottom: 1rem;">Statistical Robustness</h3>
+                <div>
+                    <div class="stat-metric" title="Cohen's d measures effect size. Values > 0.8 indicate large effects.">
+                        <span class="stat-metric-label">Effect Size (Cohen's d)</span>
+                        <span class="stat-metric-value">-1.06</span>
+                        <span class="stat-metric-desc">Large negative effect</span>
+                    </div>
+                    <div class="stat-metric" title="Standard deviation of housing starts before rezoning">
+                        <span class="stat-metric-label">Pre-Volatility (σ)</span>
+                        <span class="stat-metric-value">385</span>
+                        <span class="stat-metric-desc">units/month</span>
+                    </div>
+                    <div class="stat-metric" title="Standard deviation of housing starts after rezoning">
+                        <span class="stat-metric-label">Post-Volatility (σ)</span>
+                        <span class="stat-metric-value">415</span>
+                        <span class="stat-metric-desc">units/month</span>
+                    </div>
+                    <div class="stat-metric" title="F-test comparing variances. Critical value at α=0.05 is 3.01">
+                        <span class="stat-metric-label">Variance Ratio (F)</span>
+                        <span class="stat-metric-value">1.16</span>
+                        <span class="stat-metric-desc">not significant</span>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
+                    <b>Did uncertainty increase?</b> Volatility before was 385, volatility after was 415 with an F-statistic of 1.16 (critical value: 3.01). The volatility remained similar. Cohen's d = -1.06 indicates a large negative effect. Bootstrap 95% confidence interval: policy effect of -409 units/month, 95% CI: [-769, -94]. The effect is statistically robust.
+                </p>
+                <p style="font-size: 0.9rem; color: #555;">
+                    <i>Calculation: d = (M_actual - M_expected) / SD_pooled = (2,124 - 2,685) / 530 = -1.06</i>
+                </p>
+            </div>
+            
+            <!-- Sparkline Table -->
+            <div class="chart-container">
+                <h3 style="font-weight: normal; font-style: italic; margin-bottom: 0.5rem;">Figure 4. Housing Type Trends at a Glance</h3>
+                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                    Sparklines show 17 months of data in miniature. Each line reveals the pattern of construction starts over time.
+                </p>
+                <table class="sparkline-table">
+                    <thead>
+                        <tr>
+                            <th style="color: #111;">Housing Type</th>
+                            <th style="color: #111;">Trend</th>
+                            <th class="metric-cell" style="color: #111;">Pre-Avg</th>
+                            <th class="metric-cell" style="color: #111;">Expected</th>
+                            <th class="metric-cell" style="color: #111;">Actual</th>
+                            <th class="metric-cell" style="color: #111;">vs. Expected</th>
+                            <th class="metric-cell" style="color: #111;">% vs. Expected</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sparklineTableBody">
+                    </tbody>
+                </table>
+                <p style="font-size: 0.85rem; color: #666; font-style: italic;">
+                    Gray vertical line marks the intervention (August 2024). <strong>Expected</strong> shows what would have happened if the pre-trend continued. <strong>Actual</strong> is the post-rezoning average. The comparison reveals the policy's true impact.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2 id="The Cost of Victory">The Cost of Victory</h2>
+            <figure class="fullwidth">
+                <img src="img/childhoodmemories.JPEG" />
+            </figure>
+            <p>In lieu of appropriate community feeling and police data, this personal observation comes from someone living in a community experiencing substantial development. These photos are all within five minutes of my house. This analysis explains observed changes: empty lots, torn single-family homes remaining undeveloped for extended periods. It's rather sad—families who took the money and moved, leaving literal holes in the community. That's the human cost of progress. Lower rent prices, denser buildings, and more construction mean good things, but that's mutually exclusive to families staying in the same homes as their childhood memories.</p>
+            <p>This leads to images like this one, where a handmade birdhouse—perhaps made as a summer project by a parent and child—hangs in the ruins of their house. You can see where the house was opened and where birds were meant to nest when returning from winter. To say something is lost here is an understatement. While policy goals of lower rent and affordable housing are worth striving for, the human and community cost shouldn't be forgotten.</p>
+            <p>The people who made up a thriving community may have taken real estate value and cashed out. With no fault to them, it leaves a feeling of emptiness without new people and families arriving through new construction. It leaves literal holes.</p>
+            <figure class="fullwidth">
+                <img src="img/holeincommunity.JPEG" />
             </figure>
         </section>
-        <section>
-            <h1 id="Interpretation">Interpretation of Data</h1>
-            <h2 id="Rezoning Paradox Explained">Rezoning Paradox Explained</h2>
-            <p>1. With the data shown and proven statistically significant, what does this mean? Single Family construction was devastated at -47% while multi-family increased +27%, indicating a change in construction types but overall construction rates saw a net decrease.</p>
-            <figure>
-                <label for="type graph" class="margin-toggle">&#8853;</label><input type="checkbox" id="type graph" class="margin-toggle" /><span class="marginnote">Analysis of construction starts by type, with the blanket rezoning marked.</span>
-                <img src="img/HousingStartsbyType.png" alt="Type Graph" />
-            </figure>
-            <p>2. The reality of time: developers need time to redesign projects, navigate new markets, expectations, and approval processes. Financing now looks different as projects differ in style, funding, and market.</p>
-            <p>3. Market uncertainty: slightly increased volatility shows developers are still trying to understand what large-scale rezoning might mean before committing to new projects.</p>
-            <p>Most importantly, this project showcased the need for more stringent data analysis and challenging even seemingly intrinsic ideas. The idea that making development easier and lessening restrictions led to less development, not more, was something I never expected.</p>
-            <p>I chose ITS over a simple before/after because it accounted for pre-existing trends and gave us three parameters to test: baseline, immediate impact, and trend change, which proved vital.</p>
-            <p>The reason for the paradox can be summed up as transition costs: developers abandoned projects and couldn't move fast enough to new ones, leading to a total loss.</p>
-            <p>Still, it's far too early to tell if the policy was a failure. Post 24+ months and market stabilization could provide proper data to see if this was temporary or fundamental.</p>
-            <p>My final words: support for the transitional period would alleviate these concerns. While rezoning is a free decision by Calgary council, the changes imposed on the market require support to developers through monetary support or, importantly, time. Ultimately, this policy did lead to changes—single family construction fell off a cliff while denser homes rose up—but the scale needed to cover the "More Homes for Calgary" solution wasn't supported as it should have been.</p>
-        </section>
-        <h2 id="The Cost of Victory">The Cost of Victory</h2>
-        <figure class="fullwidth">
-            <img src="img/childhoodmemories.JPEG" />
-        </figure>
-        <p>In lieu of appropriate community feeling and police data, I'd like to offer a personal piece as someone who lives in a community with tons of development. These photos are all within five minutes of my house. This analysis actually explains changes I've been seeing: empty lots, torn single family homes not developed for a while. It's rather sad—families who took the money and moved, leaving literal holes in the community. That's the human cost of progress. Lower rent prices, more dense buildings, and more construction mean good things, but that's mutually exclusive to families staying in the same homes as their childhood memories.</p>
-        <p>It leads to images like this one, where a handmade birdhouse—maybe made as a summer project by a parent and child—is left hanging in the ruins of their house. You can see where the house was ripped open and where the birds were meant to nest when returning from winter. To say something is lost here is an understatement. While the policy goals of lower rent and affordable housing are worth striving for, the human and community cost shouldn't be forgotten.</p>
-        <p>The people who made up a thriving community may have taken the real estate value and cashed in. With no fault to them, it leaves a feeling of emptiness without new people and families coming by way of new construction. It leaves literal holes.</p>
-        <figure class="fullwidth">
-            <img src="img/holeincommunity.JPEG" />
-        </figure>
 
         <section>
-            <h2 id="Limitations">Methodological Reflections</h2>
-            <p>Initially this project was meant to be a simple comparative analysis. I wanted to take a city within the province and compare it to Calgary post-rezoning to counter confounding factors from provincial and federal levels.</p>
-            <p>However, my comparison city (Edmonton) went through the same rezoning, which meant I couldn't compare on this level. My initial questions were far too broad and reaching. I had to narrow down and focus on the scale of home building pre-post change.</p>
-            <p>Using linear analysis was simple and presented a convenient story aligned with my ideological goals, but I wanted to investigate more. It felt too clean considering the scope of data and results.</p>
-            <p>Community feeling surveys were not available through the City of Calgary, and neither were crime and disturbance data distributed by neighborhood, so I couldn't use pre-existing official data for community aspects.</p>
-            <p>Despite coming up on a year since the change, the time frame available isn't nearly sufficient for a holistic analysis of changes.<label for="sn-proprietary-monotype-bembo" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-proprietary-monotype-bembo" class="margin-toggle" /><span class="sidenote">See<a href="https://drive.google.com/file/d/1BYoq5fnjimBCvPTSMJ3Lrm8D0ASmasLW/view"> A Manufactured Crisis of Housing Affordability: A Community-Based Research Report of Affordable Housing in Calgary</a></span></p>
+            <h1 id="Conclusion">Conclusion</h1>
+            
+            <h2 id="Understanding">How to Understand the Paradox from Here On?</h2>
+            
+            <p>Something statistically relevant and philosophically important happened here. With Cohen's d = -1.06 indicating a large negative effect and bootstrap confidence intervals confirming a reduction of approximately 409 units per month below trend, we observe not measurement noise but a genuine disruption of construction momentum. Single-family construction fell 47% while multi-family increased 27%—the policy achieved its compositional goal while failing its quantitative target.</p>
+            
+            <p>The paradox emerges from temporal dynamics. Developers need time to redesign projects for new typologies, renegotiate financing structures adapted to different construction scales, and navigate approval processes under revised regulatory frameworks. The pre-rezoning market had momentum—not just in aggregate starts but in accumulated expertise, established relationships between developers and lenders, and well-worn pathways through permitting bureaucracies. These constituted the market's operating infrastructure.</p>
+            
+            <p>When rezoning invalidated thousands of planned single-family projects overnight, it didn't just change what could be built. It disrupted the network of commitments, contracts, and expectations that made building anything possible. Financing arrangements designed for $600,000 single-family homes don't translate directly to $400,000 townhouse units—different loan structures, different risk assessments, different exit strategies for capital. Contractors specialized in single-family construction can't immediately pivot to row house developments—different sequencing, different trades, different equipment. The knowledge that made the old system productive became suddenly obsolete.</p>
+            
+            <p>The lag we observe—the growing gap between actual construction and what pre-rezoning trends projected—represents the time required to rebuild this infrastructure. Developers must learn what financing is available for new typologies. Lenders must develop new risk models. Contractors must acquire new capabilities. The entire network of relationships connecting ideas to capital to labor to regulatory approval must be rewoven around new parameters.</p>
+            
+            <p>Increased volatility (pre: σ = 385, post: σ = 415, F = 1.16) shows developers experimenting with different approaches rather than converging on established patterns. This is what market adjustment looks like—not smooth adaptation but scattered exploration as actors search for what works under new constraints. The intervention happened in August 2024. As of March 2025, we remain in the exploratory phase.</p>
+            
+            <p>It's far too early to determine if the policy was a failure. Twenty-four months or more beyond intervention—sufficient time for projects conceived under new rules to proceed from concept through financing, permitting, and ground-breaking—would provide the data needed to assess whether this represents temporary disruption or fundamental incompatibility between policy intent and market capacity. The policy did produce compositional change: denser housing now accounts for a larger share of construction. The question is whether total volume recovers once new infrastructure stabilizes.</p>
+            
+            <h2 id="What-Went-Wrong">What Went Wrong and How I Fixed It: Initial Scopes and Methodological Decisions</h2>
+            
+            <p>This project was initially conceived as comparative analysis. The intention was to compare Calgary post-rezoning to Edmonton, controlling for provincial and federal policy confounds by examining two cities within the same regulatory environment. However, Edmonton implemented similar blanket rezoning simultaneously, eliminating the natural control group. The initial research design was invalidated before data collection began.</p>
+            
+            <p>The first set of research questions was too ambitious. I had proposed examining housing prices, rental rates, community sentiment surveys, crime statistics, and cross-city comparisons—a holistic assessment of rezoning's effects across economic, social, and safety dimensions. This proved infeasible for three reasons. First, price effects lag construction changes by years; isolating rezoning's impact from concurrent federal mortgage reforms would require sophisticated controls unavailable with current data. Second, community sentiment surveys weren't available on timelines compatible with before-after analysis; Calgary's annual surveys don't align with the intervention date. Third, neighborhood-level crime and disorder data either weren't publicly distributed or lacked sufficient granularity for meaningful analysis.</p>
+            
+            <p>Confronting these limitations forced methodological discipline. The project narrowed to a single empirical question answerable with available data: Did blanket rezoning increase construction starts? This question has the virtue of being both measurable and theoretically prior—supply changes must precede price effects, making construction starts the leading indicator of policy impact.</p>
+            
+            <p>The second major correction involved analytical approach. Initial linear regression suggested a clean story: upward trend post-intervention, consistent with YIMBY predictions. But this felt too convenient given the data's complexity and the intervention's scope. Simple before-after comparison ignores pre-existing momentum—the Calgary construction market wasn't static before rezoning but already experiencing strong growth (92.5 units/month increase). Any analysis failing to account for this baseline trajectory would misattribute natural growth to policy intervention.</p>
+            
+            <p>Interrupted time series regression proved essential. It provides three parameters: baseline level, immediate jump at intervention, and trend change post-intervention. This structure captures what matters—not whether construction increased in absolute terms (it did), but whether it increased beyond what would have occurred absent intervention (it didn't). The counterfactual projection—what trend-line extension predicts for post-intervention months—became the comparison point. Actual construction ran 562 units below this projection, a 21% shortfall.</p>
+            
+            <p>The lesson extends beyond this project. When testing policy interventions, resist the temptation to find confirming evidence in absolute changes. Markets have momentum. Economies have trends. The question isn't "did things change after the policy" but "did they change differently than they would have anyway." This requires modeling the counterfactual explicitly—not as speculation but as quantitative projection from pre-intervention data. When actual outcomes diverge from well-founded projections, that gap measures policy effect. In this case, the gap was negative and large.</p>
+            
+            <p>Methodological humility also means acknowledging temporal constraints. Less than one year post-intervention provides insufficient data for definitive conclusions about long-term effects. Construction markets operate on multi-year cycles—from concept to occupancy takes 18-36 months depending on project scale. We observe immediate disruption clearly; we cannot yet observe eventual adaptation. This analysis documents what happened in the short term and identifies mechanisms likely responsible. Whether these mechanisms resolve or persist requires patience and continued observation.</p>
+        </section>
+        
+        <section>
+            <h1 id="Systems-Logic">Why Did This Happen? On the Logics of Systems and Their Interactions on Plateaus</h1>
+            
+            <p>The rezoning paradox reveals a fundamental incompatibility between two modes of organization operating on different logical principles. City councils function through arborescent logic—hierarchical, centralized, necessitist in structure. Construction markets function through rhizomatic logic—networked, distributed, contingentist in operation. The collision between these organizational forms explains why deregulation produced disruption rather than acceleration.</p>
+            
+            <h2 id="Arborescent-City">The Arborescent Logic of Municipal Governance</h2>
+            
+            <p>Consider how Calgary City Council enacted blanket rezoning. Thirteen elected representatives voted on a single bylaw affecting every residential parcel across 848 square kilometers. The vote was binary—yes or no, enacted or defeated. Once passed, the bylaw applied uniformly and immediately to approximately 260,000 existing lots. This is arborescent logic: a single decision point ramifying downward through a fixed hierarchy, binding all subordinate elements by decree.</p>
+            
+            <p>The council's reasoning reflected what modal logic calls necessitism—the assumption that domains are fixed and stable across possible worlds. They treated "the domain of housing construction" as a single, controllable entity. Change one parameter (allow denser construction) and the system responds predictably: more duplexes where single-family homes would have stood. This mirrors the Barcan Formula's logic, which works when domains remain constant. The council assumed that developers, financing sources, contractors, and projects would persist as stable entities, simply adapting their behavior to new rules. They thought: "If it is now possible to build duplexes on every lot, then it is now possible that many lots will become duplexes."</p>
+            
+            <p>This logic isn't wrong in principle. Hierarchies can coordinate action at scale—that's their evolutionary advantage. But the logic assumes that commanded changes propagate smoothly through subordinate layers, that the system being governed shares the hierarchical structure of governance itself. When the council voted, they acted as though housing construction was a machine they could reprogram—change the input parameters, get different but predictable outputs.</p>
+            
+            <h2 id="Rhizomatic-Market">The Rhizomatic Logic of Construction Markets</h2>
+            
+            <p>Housing construction in Calgary operates nothing like a machine. It functions as a rhizome—a distributed network of connections without central coordination or hierarchical structure. Consider the path from concept to completed dwelling. A developer identifies an opportunity (perhaps acquiring an older single-family property in an established neighborhood). They must ampliate this opportunity across distinct zones of operation, each with its own logic and gatekeepers.</p>
+            
+            <p>First, the zone of finance: the developer must translate their vision into forms legible to lenders—pro formas, comparable sales, risk assessments. Different lenders have different appetites for different projects; financing for a $600,000 single-family home comes from different sources than financing for four $350,000 townhouses on the same parcel. The developer must know which banks or private investors fund which typologies and at what rates. This knowledge is tacit, earned through relationships and experience.</p>
+            
+            <p>Second, the zone of regulation: the developer must navigate permitting processes, building codes, site plan approvals. Even after blanket rezoning, each project requires specific permits reflecting its particular details. The city's planning department may have removed one barrier (zoning restrictions) but didn't eliminate the need for detailed engagement with regulatory requirements. A developer experienced in single-family permitting doesn't automatically know the paths for townhouse approvals—different departments, different standards, different expertise required.</p>
+            
+            <p>Third, the zone of labor: the developer must coordinate contractors, trades, and suppliers. Single-family construction operates through established networks—a developer knows which framing contractor they call, which electrician, which supplier delivers materials when needed. Transitioning to row housing or multiplexes means finding contractors with different capabilities, managing different construction sequences, coordinating more complex utility installations. Some contractors are unionized with formal procedures; others are informal operators paid in cash working on verbal agreements. The network is heterogeneous and relationship-dependent.</p>
+            
+            <p>Each zone operates independently. A bank doesn't care whether the city permits the project—that's the developer's problem. The city doesn't care whether the developer secured financing—that's their responsibility. Contractors don't care about either—they want clear plans and reliable payment. The developer's task is ampliation: taking a concept from one zone (the initial idea) and successfully instantiating it across all necessary zones simultaneously. A viable project is one that exists across all these domains at once—financially viable AND regulatorily approved AND constructible with available labor.</p>
+            
+            <p>This is contingentist logic. The set of viable projects isn't fixed—it depends on which connections can be forged across zones at any given moment. When Calgary's bylaw passed, thousands of planned single-family projects became non-denoting terms. The phrase "the Smith family's planned bungalow on lot 4275" suddenly referred to nothing buildable under new rules. Plans that were progressing through financing became invalid. Permits in process became obsolete. Contractor agreements became void. These weren't adjustments to existing plans—they were ontological eliminations. Projects ceased to exist.</p>
+            
+            <p>The recovery period we observe in the data—the lag causing the paradox—represents the slow work of building new connections. Developers must learn which lenders finance townhouses. Lenders must develop new risk models for denser typologies. Planners must establish new permit pathways. Contractors must acquire new capabilities or enter the market from other cities. This isn't adaptation of existing infrastructure—it's reconstruction of the network itself, connection by connection, relationship by relationship. The work is rhizomatic: distributed, bottom-up, without central coordination. It proceeds at the pace relationships form and knowledge diffuses, not at the pace bylaws change.</p>
+            
+            <h2 id="The-Collision">The Collision: When Arborescent Commands Meet Contingent Realities</h2>
+            
+            <p>We can model this collision formally using concepts from modal logic. Think of the housing construction system as a hypersequent—a structure tracking truth across multiple parallel contexts simultaneously. A successful housing project must satisfy conditions across several domains: [financially viable in the capital market | regulatorally approved in the city's system | constructible with available labor | marketable to eventual buyers]. Each zone has its own constraints and logics. A project succeeds only when all zones align.</p>
+            
+            <p>The city council's bylaw changed one zone: regulatory requirements. But it didn't and couldn't change the others directly. Financial institutions still had loan products designed for single-family construction, not townhouse projects. Contractors still had crews trained for single-family techniques. Buyers still had expectations shaped by existing housing stock. The bylaw created immediate misalignment—projects that were viable in the regulatory zone became non-viable in financial and labor zones because the infrastructure connecting these zones hadn't adjusted.</p>
+            
+            <p>This explains the statistical paradox. Construction didn't decline because rezoning was bad policy or because developers opposed density. Construction declined because the network infrastructure enabling construction was optimized for the old regulatory environment and became temporarily incompatible with the new one. The gap between actual construction (2,124 units/month) and trend projection (2,685 units/month) measures the destruction of network capacity faster than new capacity could form.</p>
+            
+            <p>The compositional shift—single-family down 47%, multi-family up 27%—shows the network beginning to rebuild around new parameters. Some developers successfully forged new connections, securing financing for denser projects and finding capable contractors. But the substitution was insufficient because building rhizomatic networks takes time. You cannot command relationships into existence. You cannot decree that lenders will fund townhouses or that contractors will acquire new skills. These capabilities emerge through distributed experimentation—some developers succeed, others learn from them, knowledge diffuses gradually through the network. This is ampliation at network scale, and it operates on organic rather than bureaucratic timelines.</p>
+            
+            <h2 id="Implications">Implications for Policy Design: Working with Rhizomatic Structures</h2>
+            
+            <p>The lesson isn't that blanket rezoning was wrong. Removing artificial restrictions on density remains sound policy—Calgary's zoning code was genuinely restrictive, preventing construction of housing types many people want and need. The lesson is that hierarchical interventions into rhizomatic systems produce transition costs proportional to the intervention's scope and speed. Calgary changed every residential parcel simultaneously and immediately. The corresponding disruption was massive.</p>
+            
+            <p>An alternative approach would recognize the rhizomatic nature of the construction market and design interventions to work with rather than against that structure. Instead of citywide instant implementation, phase the rezoning over 36 months across different neighborhoods. Early neighborhoods serve as laboratories—developers experiment with new typologies, lenders develop financing products, contractors build capabilities, and knowledge diffuses through the network. Later neighborhoods benefit from established infrastructure. The total timeline is longer, but construction momentum never breaks.</p>
+            
+            <p>Or maintain blanket rezoning but provide transition support acknowledging destroyed network capacity. Establish a city loan program funding the delta between old and new typologies—bridging finance for developers converting single-family projects to townhouses. Create fast-track permitting for first-movers building denser housing, reducing regulatory uncertainty. Fund training programs for contractors learning new construction techniques. These aren't subsidies in the traditional sense—they're infrastructure investments recognizing that the city's regulatory change imposed real costs on market participants who must now rebuild their operational networks.</p>
+            
+            <p>The deeper point is epistemological. Policymakers operating from arborescent positions—elected councils with legitimate authority to legislate—must resist the temptation to assume the systems they govern share their hierarchical logic. Most complex social systems are rhizomatic: markets, ecosystems, cultural practices, informal institutions. These systems don't respond to commands the way machines respond to inputs. They respond through distributed adaptation as individual nodes forge new connections in response to changed environments. This adaptation takes time, follows bottom-up rather than top-down paths, and succeeds through experimentation and knowledge diffusion rather than through compliance with decrees.</p>
+            
+            <p>If we want large-scale transitions—moving from postwar car-dependent sprawl to dense walkable urbanism, shifting from fossil fuel economies to renewable energy systems, transforming extractive industries to regenerative practices—we cannot simply legislate the end state and expect systems to adapt instantly. We must design interventions that acknowledge the rhizomatic structure of the systems we're trying to change and work with their internal logics. Provide time for networks to reconfigure. Support early adopters who bear transition costs. Create conditions enabling distributed experimentation. Allow knowledge to diffuse through existing channels rather than trying to impose it from above.</p>
+            
+            <p>The Calgary rezoning paradox is a case study in what happens when we ignore this principle. A well-intentioned policy, correctly identifying an artificial constraint on housing construction, produced temporary reduction in construction because it treated a rhizomatic system as if it were a machine to be reprogrammed. The construction market will eventually adapt—new connections will form, new expertise will develop, new infrastructure will emerge. But the transition cost, measured in hundreds of foregone housing units during a housing crisis, represents the price of governing rhizomes with arborescent logic. We can do better by designing policies that respect the ontologies of the systems they aim to change.</p>
         </section>
     </article>
+
+    <script>
+        // Housing data
+        const housingData = [
+            { date: '2023-11', single: 594, semi_detached: 110, row: 277, apartment: 827, total: 1808, time: 1 },
+            { date: '2023-12', single: 538, semi_detached: 160, row: 282, apartment: 513, total: 1493, time: 2 },
+            { date: '2024-01', single: 487, semi_detached: 112, row: 249, apartment: 1103, total: 1951, time: 3 },
+            { date: '2024-02', single: 460, semi_detached: 154, row: 279, apartment: 781, total: 1674, time: 4 },
+            { date: '2024-03', single: 532, semi_detached: 200, row: 182, apartment: 846, total: 1760, time: 5 },
+            { date: '2024-04', single: 528, semi_detached: 198, row: 228, apartment: 877, total: 1831, time: 6 },
+            { date: '2024-05', single: 617, semi_detached: 206, row: 236, apartment: 937, total: 1996, time: 7 },
+            { date: '2024-06', single: 719, semi_detached: 210, row: 307, apartment: 730, total: 1966, time: 8 },
+            { date: '2024-07', single: 625, semi_detached: 240, row: 280, apartment: 1326, total: 2471, time: 9 },
+            { date: '2024-08', single: 597, semi_detached: 198, row: 328, apartment: 552, total: 1675, time: 10 },
+            { date: '2024-09', single: 660, semi_detached: 162, row: 271, apartment: 997, total: 2090, time: 11 },
+            { date: '2024-10', single: 644, semi_detached: 220, row: 454, apartment: 1372, total: 2690, time: 12 },
+            { date: '2024-11', single: 717, semi_detached: 198, row: 338, apartment: 1295, total: 2548, time: 13 },
+            { date: '2024-12', single: 514, semi_detached: 154, row: 360, apartment: 689, total: 1717, time: 14 },
+            { date: '2025-01', single: 552, semi_detached: 176, row: 370, apartment: 531, total: 1629, time: 15 },
+            { date: '2025-02', single: 500, semi_detached: 238, row: 279, apartment: 1390, total: 2407, time: 16 },
+            { date: '2025-03', single: 455, semi_detached: 154, row: 274, apartment: 1352, total: 2235, time: 17 }
+        ];
+
+        housingData.forEach((d, i) => {
+            d.postRezoning = i >= 9;
+            d.multiFamilyTotal = d.semi_detached + d.row + d.apartment;
+            d.densityRatio = d.multiFamilyTotal / d.single;
+        });
+
+        const preTrend = { slope: 72.0, intercept: 1524 };
+        housingData.forEach(d => {
+            d.counterfactual = d.postRezoning ? preTrend.intercept + preTrend.slope * d.time : null;
+            d.difference = d.counterfactual ? d.total - d.counterfactual : null;
+        });
+
+        const tufteStyle = {
+            backgroundColor: '#fffff8',
+            textColor: '#111',
+            lineColor: '#111',
+            gridColor: '#e5e7eb',
+            accentColor: '#cc0000',
+            mutedBlue: '#4a5a8a',
+            mutedGreen: '#6b8e6b'
+        };
+
+        // State management
+        const state = {
+            its: { counterfactual: true, difference: false, trend: false, hoveredIndex: null, selectedIndex: null },
+            composition: { mode: 'stacked', percentage: false, hoveredIndex: null, selectedIndex: null },
+            density: { ratio: true, average: false, hoveredIndex: null, selectedIndex: null }
+        };
+
+        // Interactive Chart Base Class
+        class InteractiveChart {
+            constructor(canvasId, tooltipId, highlightId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.tooltip = document.getElementById(tooltipId);
+                this.highlight = document.getElementById(highlightId);
+                this.setupCanvas();
+                this.setupEventListeners();
+            }
+
+            setupCanvas() {
+                this.width = this.canvas.width = 1200;
+                this.height = this.canvas.height = 450;
+                this.padding = { top: 40, right: 80, bottom: 60, left: 80 };
+                this.chartWidth = this.width - this.padding.left - this.padding.right;
+                this.chartHeight = this.height - this.padding.top - this.padding.bottom;
+            }
+
+            setupEventListeners() {
+                this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
+                this.canvas.addEventListener('click', (e) => this.handleClick(e));
+            }
+
+            getMousePosition(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+            }
+
+            findNearestDataPoint(mouseX) {
+                const distances = housingData.map((d, i) => Math.abs(this.xScale(i) - mouseX));
+                const minDistance = Math.min(...distances);
+                return minDistance < 30 ? distances.indexOf(minDistance) : null;
+            }
+
+            xScale(i) {
+                return this.padding.left + (i / (housingData.length - 1)) * this.chartWidth;
+            }
+
+            showTooltip(content, x, y) {
+                this.tooltip.innerHTML = content;
+                this.tooltip.classList.add('visible');
+                const tooltipRect = this.tooltip.getBoundingClientRect();
+                let left = x + 15;
+                let top = y - tooltipRect.height / 2;
+                if (left + tooltipRect.width > window.innerWidth - 20) {
+                    left = x - tooltipRect.width - 15;
+                }
+                this.tooltip.style.left = left + 'px';
+                this.tooltip.style.top = top + 'px';
+            }
+
+            hideTooltip() {
+                this.tooltip.classList.remove('visible');
+            }
+
+            drawCrosshair(x, y) {
+                this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+                this.ctx.lineWidth = 1;
+                this.ctx.setLineDash([2, 2]);
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, this.padding.top);
+                this.ctx.lineTo(x, this.height - this.padding.bottom);
+                this.ctx.stroke();
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.padding.left, y);
+                this.ctx.lineTo(this.width - this.padding.right, y);
+                this.ctx.stroke();
+                this.ctx.setLineDash([]);
+            }
+
+            handleMouseLeave() {
+                this.hideTooltip();
+                if (this.currentState && this.currentState.selectedIndex === null) {
+                    this.currentState.hoveredIndex = null;
+                    this.draw();
+                }
+            }
+        }
+
+        // ITS Chart
+        class ITSChart extends InteractiveChart {
+            constructor() {
+                super('itsChart', 'itsTooltip', 'itsHighlight');
+                this.currentState = state.its;
+                this.draw();
+            }
+
+            yScale(value) {
+                const yMax = 3000;
+                const yMin = 1000;
+                return this.padding.top + this.chartHeight - ((value - yMin) / (yMax - yMin)) * this.chartHeight;
+            }
+
+            handleMouseMove(e) {
+                const pos = this.getMousePosition(e);
+                const index = this.findNearestDataPoint(pos.x);
+                
+                if (index !== null && this.currentState.selectedIndex === null) {
+                    this.currentState.hoveredIndex = index;
+                    this.draw();
+                    const d = housingData[index];
+                    let tooltipContent = `<div class="tooltip-date">${d.date}</div>`;
+                    tooltipContent += `<div class="tooltip-value">Actual: ${d.total} units</div>`;
+                    if (d.counterfactual) {
+                        tooltipContent += `<div class="tooltip-value">Expected: ${Math.round(d.counterfactual)} units</div>`;
+                        tooltipContent += `<div class="tooltip-diff">Difference: ${d.difference > 0 ? '+' : ''}${Math.round(d.difference)} units</div>`;
+                    }
+                    this.showTooltip(tooltipContent, e.clientX, e.clientY);
+                } else if (index === null) {
+                    this.currentState.hoveredIndex = null;
+                    this.hideTooltip();
+                    this.draw();
+                }
+            }
+
+            handleClick(e) {
+                const pos = this.getMousePosition(e);
+                const index = this.findNearestDataPoint(pos.x);
+                if (index !== null) {
+                    if (this.currentState.selectedIndex === index) {
+                        this.currentState.selectedIndex = null;
+                        this.highlight.textContent = '';
+                        this.hideTooltip();
+                    } else {
+                        this.currentState.selectedIndex = index;
+                        const d = housingData[index];
+                        this.highlight.textContent = `Selected: ${d.date} - ${d.total} units` + 
+                            (d.counterfactual ? ` (${d.difference > 0 ? '+' : ''}${Math.round(d.difference)} vs. expected)` : '');
+                    }
+                    this.draw();
+                }
+            }
+
+            draw() {
+                this.ctx.fillStyle = tufteStyle.backgroundColor;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+
+                // Grid
+                this.ctx.strokeStyle = tufteStyle.gridColor;
+                this.ctx.lineWidth = 0.5;
+                [1500, 2000, 2500].forEach(val => {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.padding.left, this.yScale(val));
+                    this.ctx.lineTo(this.width - this.padding.right, this.yScale(val));
+                    this.ctx.stroke();
+                });
+
+                // Difference shading
+                if (this.currentState.difference && this.currentState.counterfactual) {
+                    this.ctx.fillStyle = 'rgba(204, 0, 0, 0.1)';
+                    this.ctx.beginPath();
+                    for (let i = 9; i < housingData.length; i++) {
+                        const d = housingData[i];
+                        if (i === 9) this.ctx.moveTo(this.xScale(i), this.yScale(d.counterfactual));
+                        this.ctx.lineTo(this.xScale(i), this.yScale(d.counterfactual));
+                    }
+                    for (let i = housingData.length - 1; i >= 9; i--) {
+                        this.ctx.lineTo(this.xScale(i), this.yScale(housingData[i].total));
+                    }
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                }
+
+                // Range frame
+                this.ctx.strokeStyle = tufteStyle.lineColor;
+                this.ctx.lineWidth = 1.5;
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.padding.left, this.padding.top);
+                this.ctx.lineTo(this.padding.left, this.height - this.padding.bottom);
+                this.ctx.lineTo(this.width - this.padding.right, this.height - this.padding.bottom);
+                this.ctx.stroke();
+
+                // Intervention line
+                const interventionX = this.xScale(9);
+                this.ctx.strokeStyle = tufteStyle.accentColor;
+                this.ctx.lineWidth = 1;
+                this.ctx.setLineDash([5, 5]);
+                this.ctx.beginPath();
+                this.ctx.moveTo(interventionX, this.padding.top);
+                this.ctx.lineTo(interventionX, this.height - this.padding.bottom);
+                this.ctx.stroke();
+                this.ctx.setLineDash([]);
+
+                // Counterfactual line
+                if (this.currentState.counterfactual) {
+                    this.ctx.strokeStyle = '#999';
+                    this.ctx.lineWidth = 1.5;
+                    this.ctx.setLineDash([4, 4]);
+                    this.ctx.beginPath();
+                    housingData.forEach((d, i) => {
+                        if (d.counterfactual) {
+                            const x = this.xScale(i);
+                            const y = this.yScale(d.counterfactual);
+                            if (i === 9) this.ctx.moveTo(x, y);
+                            else this.ctx.lineTo(x, y);
+                        }
+                    });
+                    this.ctx.stroke();
+                    this.ctx.setLineDash([]);
+                }
+
+                // Trend lines
+                if (this.currentState.trend) {
+                    this.ctx.strokeStyle = 'rgba(0, 100, 0, 0.5)';
+                    this.ctx.lineWidth = 1.5;
+                    this.ctx.setLineDash([3, 3]);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.xScale(0), this.yScale(preTrend.intercept + preTrend.slope * 1));
+                    this.ctx.lineTo(this.xScale(8), this.yScale(preTrend.intercept + preTrend.slope * 9));
+                    this.ctx.stroke();
+                    this.ctx.setLineDash([]);
+                }
+
+                // Actual line
+                this.ctx.strokeStyle = tufteStyle.lineColor;
+                this.ctx.lineWidth = 2;
+                this.ctx.beginPath();
+                housingData.forEach((d, i) => {
+                    const x = this.xScale(i);
+                    const y = this.yScale(d.total);
+                    if (i === 0) this.ctx.moveTo(x, y);
+                    else this.ctx.lineTo(x, y);
+                });
+                this.ctx.stroke();
+
+                // Data points
+                housingData.forEach((d, i) => {
+                    const x = this.xScale(i);
+                    const y = this.yScale(d.total);
+                    const isHovered = this.currentState.hoveredIndex === i;
+                    const isSelected = this.currentState.selectedIndex === i;
+                    this.ctx.fillStyle = d.postRezoning ? tufteStyle.accentColor : tufteStyle.lineColor;
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, y, isHovered || isSelected ? 5 : 3, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    if (isSelected) {
+                        this.ctx.strokeStyle = tufteStyle.accentColor;
+                        this.ctx.lineWidth = 2;
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, y, 8, 0, Math.PI * 2);
+                        this.ctx.stroke();
+                    }
+                });
+
+                // Crosshair
+                if (this.currentState.hoveredIndex !== null) {
+                    const i = this.currentState.hoveredIndex;
+                    this.drawCrosshair(this.xScale(i), this.yScale(housingData[i].total));
+                }
+
+                // Labels
+                this.ctx.fillStyle = tufteStyle.textColor;
+                this.ctx.font = '12px et-book, Georgia, serif';
+                this.ctx.textAlign = 'center';
+                housingData.forEach((d, i) => {
+                    if (i % 3 === 0) this.ctx.fillText(d.date, this.xScale(i), this.height - this.padding.bottom + 25);
+                });
+                this.ctx.textAlign = 'right';
+                [1500, 2000, 2500].forEach(val => {
+                    this.ctx.fillText(val.toString(), this.padding.left - 15, this.yScale(val) + 5);
+                });
+            }
+        }
+
+        // Composition Chart
+        class CompositionChart extends InteractiveChart {
+            constructor() {
+                super('compositionChart', 'compositionTooltip', 'compositionHighlight');
+                this.currentState = state.composition;
+                this.draw();
+            }
+
+            yScale(value) {
+                const yMax = this.currentState.percentage ? 100 : 3000;
+                return this.padding.top + this.chartHeight - (value / yMax) * this.chartHeight;
+            }
+
+            handleMouseMove(e) {
+                const pos = this.getMousePosition(e);
+                const index = this.findNearestDataPoint(pos.x);
+                if (index !== null && this.currentState.selectedIndex === null) {
+                    this.currentState.hoveredIndex = index;
+                    this.draw();
+                    const d = housingData[index];
+                    let tooltipContent = `<div class="tooltip-date">${d.date}</div>`;
+                    if (this.currentState.percentage) {
+                        const singlePct = (d.single / d.total * 100).toFixed(1);
+                        const multiPct = (d.multiFamilyTotal / d.total * 100).toFixed(1);
+                        tooltipContent += `<div class="tooltip-value">Single-Family: ${singlePct}%</div>`;
+                        tooltipContent += `<div class="tooltip-value">Multi-Family: ${multiPct}%</div>`;
+                    } else {
+                        tooltipContent += `<div class="tooltip-value">Single-Family: ${d.single} units</div>`;
+                        tooltipContent += `<div class="tooltip-value">Multi-Family: ${d.multiFamilyTotal} units</div>`;
+                        tooltipContent += `<div class="tooltip-value">Total: ${d.total} units</div>`;
+                    }
+                    this.showTooltip(tooltipContent, e.clientX, e.clientY);
+                } else if (index === null) {
+                    this.currentState.hoveredIndex = null;
+                    this.hideTooltip();
+                    this.draw();
+                }
+            }
+
+            handleClick(e) {
+                const pos = this.getMousePosition(e);
+                const index = this.findNearestDataPoint(pos.x);
+                if (index !== null) {
+                    if (this.currentState.selectedIndex === index) {
+                        this.currentState.selectedIndex = null;
+                        this.highlight.textContent = '';
+                        this.hideTooltip();
+                    } else {
+                        this.currentState.selectedIndex = index;
+                        const d = housingData[index];
+                        const ratio = (d.multiFamilyTotal / d.single).toFixed(2);
+                        this.highlight.textContent = `Selected: ${d.date} - Single: ${d.single}, Multi: ${d.multiFamilyTotal} (Ratio: ${ratio})`;
+                    }
+                    this.draw();
+                }
+            }
+
+            draw() {
+                this.ctx.fillStyle = tufteStyle.backgroundColor;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+
+                // Range frame
+                this.ctx.strokeStyle = tufteStyle.lineColor;
+                this.ctx.lineWidth = 1.5;
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.padding.left, this.padding.top);
+                this.ctx.lineTo(this.padding.left, this.height - this.padding.bottom);
+                this.ctx.lineTo(this.width - this.padding.right, this.height - this.padding.bottom);
+                this.ctx.stroke();
+
+                // Intervention line
+                const interventionX = this.xScale(9);
+                this.ctx.strokeStyle = tufteStyle.accentColor;
+                this.ctx.lineWidth = 1;
+                this.ctx.setLineDash([5, 5]);
+                this.ctx.beginPath();
+                this.ctx.moveTo(interventionX, this.padding.top);
+                this.ctx.lineTo(interventionX, this.height - this.padding.bottom);
+                this.ctx.stroke();
+                this.ctx.setLineDash([]);
+
+                if (this.currentState.mode === 'stacked') {
+                    // Multi-family area
+                    this.ctx.fillStyle = 'rgba(107, 142, 107, 0.4)';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.xScale(0), this.yScale(0));
+                    housingData.forEach((d, i) => {
+                        const val = this.currentState.percentage ? (d.multiFamilyTotal / d.total * 100) : d.multiFamilyTotal;
+                        this.ctx.lineTo(this.xScale(i), this.yScale(val));
+                    });
+                    for (let i = housingData.length - 1; i >= 0; i--) {
+                        this.ctx.lineTo(this.xScale(i), this.yScale(0));
+                    }
+                    this.ctx.closePath();
+                    this.ctx.fill();
+
+                    // Single-family area
+                    this.ctx.fillStyle = 'rgba(74, 90, 138, 0.4)';
+                    this.ctx.beginPath();
+                    housingData.forEach((d, i) => {
+                        const multiVal = this.currentState.percentage ? (d.multiFamilyTotal / d.total * 100) : d.multiFamilyTotal;
+                        if (i === 0) this.ctx.moveTo(this.xScale(i), this.yScale(multiVal));
+                        const totalVal = this.currentState.percentage ? 100 : d.total;
+                        this.ctx.lineTo(this.xScale(i), this.yScale(totalVal));
+                    });
+                    for (let i = housingData.length - 1; i >= 0; i--) {
+                        const val = this.currentState.percentage ? (housingData[i].multiFamilyTotal / housingData[i].total * 100) : housingData[i].multiFamilyTotal;
+                        this.ctx.lineTo(this.xScale(i), this.yScale(val));
+                    }
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                } else {
+                    // Separate lines
+                    this.ctx.strokeStyle = tufteStyle.mutedGreen;
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    housingData.forEach((d, i) => {
+                        const val = this.currentState.percentage ? (d.multiFamilyTotal / d.total * 100) : d.multiFamilyTotal;
+                        const x = this.xScale(i);
+                        const y = this.yScale(val);
+                        if (i === 0) this.ctx.moveTo(x, y);
+                        else this.ctx.lineTo(x, y);
+                    });
+                    this.ctx.stroke();
+
+                    this.ctx.strokeStyle = tufteStyle.mutedBlue;
+                    this.ctx.beginPath();
+                    housingData.forEach((d, i) => {
+                        const val = this.currentState.percentage ? (d.single / d.total * 100) : d.single;
+                        const x = this.xScale(i);
+                        const y = this.yScale(val);
+                        if (i === 0) this.ctx.moveTo(x, y);
+                        else this.ctx.lineTo(x, y);
+                    });
+                    this.ctx.stroke();
+                }
+
+                // Data points
+                housingData.forEach((d, i) => {
+                    const x = this.xScale(i);
+                    const isHovered = this.currentState.hoveredIndex === i;
+                    const isSelected = this.currentState.selectedIndex === i;
+                    if (isHovered || isSelected) {
+                        const totalVal = this.currentState.percentage ? 100 : d.total;
+                        this.ctx.fillStyle = tufteStyle.mutedBlue;
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, this.yScale(totalVal), 4, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    }
+                    if (isSelected) {
+                        const totalVal = this.currentState.percentage ? 100 : d.total;
+                        this.ctx.strokeStyle = tufteStyle.accentColor;
+                        this.ctx.lineWidth = 2;
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, this.yScale(totalVal), 7, 0, Math.PI * 2);
+                        this.ctx.stroke();
+                    }
+                });
+
+                // Crosshair
+                if (this.currentState.hoveredIndex !== null) {
+                    const i = this.currentState.hoveredIndex;
+                    const val = this.currentState.percentage ? 100 : housingData[i].total;
+                    this.drawCrosshair(this.xScale(i), this.yScale(val));
+                }
+
+                // Labels
+                this.ctx.fillStyle = tufteStyle.textColor;
+                this.ctx.font = '12px et-book, Georgia, serif';
+                this.ctx.textAlign = 'center';
+                housingData.forEach((d, i) => {
+                    if (i % 3 === 0) this.ctx.fillText(d.date, this.xScale(i), this.height - this.padding.bottom + 25);
+                });
+            }
+        }
+
+        // Density Chart
+        class DensityChart extends InteractiveChart {
+            constructor() {
+                super('densityChart', 'densityTooltip', 'densityHighlight');
+                this.currentState = state.density;
+                this.draw();
+            }
+
+            yScale(value) {
+                const yMax = 4.0;
+                const yMin = 1.0;
+                return this.padding.top + this.chartHeight - ((value - yMin) / (yMax - yMin)) * this.chartHeight;
+            }
+
+            handleMouseMove(e) {
+                const pos = this.getMousePosition(e);
+                const index = this.findNearestDataPoint(pos.x);
+                if (index !== null && this.currentState.selectedIndex === null) {
+                    this.currentState.hoveredIndex = index;
+                    this.draw();
+                    const d = housingData[index];
+                    let tooltipContent = `<div class="tooltip-date">${d.date}</div>`;
+                    tooltipContent += `<div class="tooltip-value">Density Ratio: ${d.densityRatio.toFixed(2)}</div>`;
+                    tooltipContent += `<div class="tooltip-value">Multi-Family: ${d.multiFamilyTotal} units</div>`;
+                    tooltipContent += `<div class="tooltip-value">Single-Family: ${d.single} units</div>`;
+                    const preAvg = 2.32;
+                    const postAvg = 2.66;
+                    const avgDiff = d.postRezoning ? d.densityRatio - postAvg : d.densityRatio - preAvg;
+                    tooltipContent += `<div class="tooltip-diff">${avgDiff > 0 ? '+' : ''}${avgDiff.toFixed(2)} vs. period average</div>`;
+                    this.showTooltip(tooltipContent, e.clientX, e.clientY);
+                } else if (index === null) {
+                    this.currentState.hoveredIndex = null;
+                    this.hideTooltip();
+                    this.draw();
+                }
+            }
+
+            handleClick(e) {
+                const pos = this.getMousePosition(e);
+                const index = this.findNearestDataPoint(pos.x);
+                if (index !== null) {
+                    if (this.currentState.selectedIndex === index) {
+                        this.currentState.selectedIndex = null;
+                        this.highlight.textContent = '';
+                        this.hideTooltip();
+                    } else {
+                        this.currentState.selectedIndex = index;
+                        const d = housingData[index];
+                        this.highlight.textContent = `Selected: ${d.date} - Ratio: ${d.densityRatio.toFixed(2)} (${d.postRezoning ? 'Post' : 'Pre'}-Rezoning)`;
+                    }
+                    this.draw();
+                }
+            }
+
+            draw() {
+                this.ctx.fillStyle = tufteStyle.backgroundColor;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+
+                // Reference line at 2.0
+                this.ctx.strokeStyle = tufteStyle.gridColor;
+                this.ctx.lineWidth = 0.5;
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.padding.left, this.yScale(2.0));
+                this.ctx.lineTo(this.width - this.padding.right, this.yScale(2.0));
+                this.ctx.stroke();
+
+                // Average lines
+                if (this.currentState.average) {
+                    this.ctx.strokeStyle = 'rgba(74, 90, 138, 0.5)';
+                    this.ctx.lineWidth = 1.5;
+                    this.ctx.setLineDash([3, 3]);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.xScale(0), this.yScale(2.32));
+                    this.ctx.lineTo(this.xScale(8), this.yScale(2.32));
+                    this.ctx.stroke();
+
+                    this.ctx.strokeStyle = 'rgba(204, 0, 0, 0.5)';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.xScale(9), this.yScale(2.66));
+                    this.ctx.lineTo(this.xScale(housingData.length - 1), this.yScale(2.66));
+                    this.ctx.stroke();
+                    this.ctx.setLineDash([]);
+                }
+
+                // Range frame
+                this.ctx.strokeStyle = tufteStyle.lineColor;
+                this.ctx.lineWidth = 1.5;
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.padding.left, this.padding.top);
+                this.ctx.lineTo(this.padding.left, this.height - this.padding.bottom);
+                this.ctx.lineTo(this.width - this.padding.right, this.height - this.padding.bottom);
+                this.ctx.stroke();
+
+                // Intervention line
+                const interventionX = this.xScale(9);
+                this.ctx.strokeStyle = tufteStyle.accentColor;
+                this.ctx.lineWidth = 1;
+                this.ctx.setLineDash([5, 5]);
+                this.ctx.beginPath();
+                this.ctx.moveTo(interventionX, this.padding.top);
+                this.ctx.lineTo(interventionX, this.height - this.padding.bottom);
+                this.ctx.stroke();
+                this.ctx.setLineDash([]);
+
+                // Density line
+                this.ctx.strokeStyle = tufteStyle.lineColor;
+                this.ctx.lineWidth = 2;
+                this.ctx.beginPath();
+                housingData.forEach((d, i) => {
+                    const x = this.xScale(i);
+                    const y = this.yScale(d.densityRatio);
+                    if (i === 0) this.ctx.moveTo(x, y);
+                    else this.ctx.lineTo(x, y);
+                });
+                this.ctx.stroke();
+
+                // Data points
+                housingData.forEach((d, i) => {
+                    const x = this.xScale(i);
+                    const y = this.yScale(d.densityRatio);
+                    const isHovered = this.currentState.hoveredIndex === i;
+                    const isSelected = this.currentState.selectedIndex === i;
+                    this.ctx.fillStyle = d.postRezoning ? tufteStyle.accentColor : tufteStyle.lineColor;
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, y, isHovered || isSelected ? 5 : 3, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    if (isSelected) {
+                        this.ctx.strokeStyle = tufteStyle.accentColor;
+                        this.ctx.lineWidth = 2;
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, y, 8, 0, Math.PI * 2);
+                        this.ctx.stroke();
+                    }
+                });
+
+                // Crosshair
+                if (this.currentState.hoveredIndex !== null) {
+                    const i = this.currentState.hoveredIndex;
+                    this.drawCrosshair(this.xScale(i), this.yScale(housingData[i].densityRatio));
+                }
+
+                // Labels
+                this.ctx.fillStyle = tufteStyle.textColor;
+                this.ctx.font = '12px et-book, Georgia, serif';
+                this.ctx.textAlign = 'center';
+                housingData.forEach((d, i) => {
+                    if (i % 3 === 0) this.ctx.fillText(d.date, this.xScale(i), this.height - this.padding.bottom + 25);
+                });
+                this.ctx.textAlign = 'right';
+                [1.5, 2.0, 2.5, 3.0, 3.5].forEach(val => {
+                    this.ctx.fillText(val.toFixed(1), this.padding.left - 15, this.yScale(val) + 5);
+                });
+            }
+        }
+
+        // Initialize charts
+        const itsChart = new ITSChart();
+        const compositionChart = new CompositionChart();
+        const densityChart = new DensityChart();
+
+        // Control button handlers
+        document.querySelectorAll('.control-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const chart = this.dataset.chart;
+                const toggle = this.dataset.toggle;
+                
+                if (chart === 'its') {
+                    if (toggle === 'counterfactual') {
+                        state.its.counterfactual = !state.its.counterfactual;
+                    } else if (toggle === 'difference') {
+                        state.its.difference = !state.its.difference;
+                    } else if (toggle === 'trend') {
+                        state.its.trend = !state.its.trend;
+                    }
+                    this.classList.toggle('active');
+                    itsChart.draw();
+                } else if (chart === 'composition') {
+                    const btns = document.querySelectorAll('[data-chart="composition"]');
+                    if (toggle === 'stacked') {
+                        state.composition.mode = 'stacked';
+                        btns[0].classList.add('active');
+                        btns[1].classList.remove('active');
+                    } else if (toggle === 'separate') {
+                        state.composition.mode = 'separate';
+                        btns[0].classList.remove('active');
+                        btns[1].classList.add('active');
+                    } else if (toggle === 'percentage') {
+                        state.composition.percentage = !state.composition.percentage;
+                        this.classList.toggle('active');
+                    }
+                    compositionChart.draw();
+                } else if (chart === 'density') {
+                    if (toggle === 'ratio') {
+                        state.density.ratio = !state.density.ratio;
+                    } else if (toggle === 'average') {
+                        state.density.average = !state.density.average;
+                        this.classList.toggle('active');
+                    }
+                    densityChart.draw();
+                }
+            });
+        });
+
+        // Sparklines - Tufte's data-dense trend visualizations with counterfactual analysis
+        function createSparklines() {
+            const tbody = document.getElementById('sparklineTableBody');
+            
+            const categories = [
+                { name: 'Single-Family', key: 'single' },
+                { name: 'Semi-Detached', key: 'semi_detached' },
+                { name: 'Row Houses', key: 'row' },
+                { name: 'Apartments', key: 'apartment' },
+                { name: 'Total', key: 'total' }
+            ];
+            
+            categories.forEach(cat => {
+                const preData = housingData.slice(0, 9);
+                const postData = housingData.slice(9);
+                const values = housingData.map(d => d[cat.key]);
+                const preAvg = Math.round(preData.reduce((sum, d) => sum + d[cat.key], 0) / preData.length);
+                const postAvg = Math.round(postData.reduce((sum, d) => sum + d[cat.key], 0) / postData.length);
+                
+                // Calculate trend line for pre-period using linear regression
+                const n = preData.length;
+                let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+                preData.forEach((d, i) => {
+                    const x = i + 1;
+                    const y = d[cat.key];
+                    sumX += x;
+                    sumY += y;
+                    sumXY += x * y;
+                    sumX2 += x * x;
+                });
+                const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+                const intercept = (sumY - slope * sumX) / n;
+                
+                // Calculate expected value if trend continued (average of post-period timepoints)
+                const postMidpoint = 9 + (postData.length / 2); // Midpoint of post period
+                const expectedAvg = Math.round(intercept + slope * postMidpoint);
+                
+                // Calculate difference from counterfactual
+                const vsExpected = postAvg - expectedAvg;
+                const pctVsExpected = (vsExpected / expectedAvg * 100).toFixed(1);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${cat.name}</strong></td>
+                    <td class="sparkline-cell"></td>
+                    <td class="metric-cell">${preAvg.toLocaleString()}</td>
+                    <td class="metric-cell" style="color: #666; font-style: italic;">${expectedAvg.toLocaleString()}</td>
+                    <td class="metric-cell"><strong>${postAvg.toLocaleString()}</strong></td>
+                    <td class="metric-cell ${vsExpected >= 0 ? 'change-positive' : 'change-negative'}">${vsExpected > 0 ? '+' : ''}${vsExpected.toLocaleString()}</td>
+                    <td class="metric-cell ${vsExpected >= 0 ? 'change-positive' : 'change-negative'}">${vsExpected > 0 ? '+' : ''}${pctVsExpected}%</td>
+                `;
+                tbody.appendChild(row);
+                
+                // Create sparkline
+                const sparklineCell = row.querySelector('.sparkline-cell');
+                const canvas = document.createElement('canvas');
+                canvas.className = 'sparkline';
+                canvas.width = 200;
+                canvas.height = 30;
+                sparklineCell.appendChild(canvas);
+                
+                const ctx = canvas.getContext('2d');
+                const minVal = Math.min(...values);
+                const maxVal = Math.max(...values);
+                const range = maxVal - minVal;
+                
+                // Draw sparkline
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                values.forEach((val, i) => {
+                    const x = (i / (values.length - 1)) * 200;
+                    const y = 30 - ((val - minVal) / range * 25) - 2;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+                
+                // Intervention line
+                const interventionX = (9 / (values.length - 1)) * 200;
+                ctx.strokeStyle = '#ccc';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(interventionX, 0);
+                ctx.lineTo(interventionX, 30);
+                ctx.stroke();
+                
+                // Highlight endpoints
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.arc(0, 30 - ((values[0] - minVal) / range * 25) - 2, 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(200, 30 - ((values[values.length-1] - minVal) / range * 25) - 2, 2, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        // Initialize Tufte visualizations
+        createSparklines();
+    </script>
 </body>
 </html>
