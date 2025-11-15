@@ -1,0 +1,49 @@
+{
+  "title": "CMHC Housing Data Repository",
+  "subtitle": "Calgary Metropolitan Area Housing Starts and Rental Data",
+  "version": "1.0",
+  "author": {
+    "name": "Camille Elot",
+    "email": "camillefromraytheon2023@gmail.com",
+    "affiliation": "Athabasca University, Political Science"
+  },
+  "dates": {
+    "published": "2025-11-15",
+    "last_updated": "2025-11-15",
+    "data_coverage": "2023-11 to 2025-03"
+  },
+  "abstract": "Curated dataset of housing construction and rental market data for the Calgary Census Metropolitan Area, sourced from Canada Mortgage and Housing Corporation (CMHC). This repository supports policy analysis of Calgary's housing market, including the 2024 blanket rezoning intervention. Data includes monthly housing starts by dwelling type, raw CMHC survey data, and rental market indicators.",
+  "keywords": [
+    "housing data",
+    "CMHC",
+    "Calgary",
+    "housing starts",
+    "rental market",
+    "open data"
+  ],
+  "research_type": "Data Repository",
+  "data_sources": [
+    "Canada Mortgage and Housing Corporation (CMHC) Housing Starts Survey",
+    "CMHC Rental Market Survey"
+  ],
+  "datasets": [
+    {
+      "name": "housing_starts",
+      "description": "Monthly housing starts by dwelling type (single-detached, semi-detached, row, apartment)",
+      "format": "CSV",
+      "temporal_coverage": "2023-11 to 2025-03"
+    },
+    {
+      "name": "raw_data",
+      "description": "Raw CMHC survey data as downloaded",
+      "format": "Various"
+    },
+    {
+      "name": "rental_data",
+      "description": "Rental market indicators for Calgary CMA",
+      "format": "CSV"
+    }
+  ],
+  "license": "Data sourced from CMHC under Statistics Canada Open License",
+  "identifier": "camille-2025-housing-data-v1.0"
+}

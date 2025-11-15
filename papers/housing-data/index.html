@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>CMHC Housing Data Repository - Camille's Lot</title>
+    <link rel="stylesheet" href="../../tufte.css"/>
+    <link rel="stylesheet" href="../../latex.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .version-list {
+            margin: 2rem 0;
+        }
+        .version-item {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 2px solid #333;
+            background: #fffff8;
+        }
+        .version-item.current {
+            border-left: 4px solid #cc0000;
+            background: #fff9f0;
+        }
+        .version-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #333;
+            color: #fff;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        .version-badge.current {
+            background: #cc0000;
+        }
+    </style>
+</head>
+
+<body>
+    <article>
+        <h1>CMHC Housing Data Repository</h1>
+        <p class="subtitle">Calgary Metropolitan Area Housing Starts and Rental Data</p>
+
+        <section>
+            <p><a href="../../index.html">← Back to Home</a> | <a href="../index.html">← Back to Publications</a></p>
+
+            <h2>About This Repository</h2>
+            <p><b>Curator:</b> Camille Elot</p>
+            <p><b>Type:</b> Data Repository</p>
+            <p><b>Geographic Coverage:</b> Calgary Census Metropolitan Area</p>
+
+            <h3>Description</h3>
+            <p>Curated dataset of housing construction and rental market data for the Calgary Census Metropolitan Area, sourced from Canada Mortgage and Housing Corporation (CMHC). This repository supports policy analysis of Calgary's housing market, including the 2024 blanket rezoning intervention. Data includes monthly housing starts by dwelling type, raw CMHC survey data, and rental market indicators.</p>
+        </section>
+
+        <section>
+            <h2>Available Versions</h2>
+            <p><i>Dataset versions track updates to data coverage, additions of new indicators, and improvements to data quality.</i></p>
+
+            <div class="version-list">
+                <div class="version-item current">
+                    <h3>Version 1.0 <span class="version-badge current">CURRENT</span></h3>
+                    <p><b>Published:</b> November 15, 2025</p>
+                    <p><b>Data Coverage:</b> November 2023 - March 2025</p>
+                    <p><b>Summary:</b> Initial publication. Contains monthly housing starts by dwelling type, raw CMHC survey data, and rental market indicators for Calgary CMA.</p>
+                    <p>
+                        <a href="v1.0/index.html"><b>→ Access Version 1.0</b></a> |
+                        <a href="v1.0/metadata.json">Metadata (JSON)</a>
+                    </p>
+                </div>
+            </div>
+
+            <p><a href="changelog.md"><b>View Complete Changelog</b></a></p>
+        </section>
+
+        <section>
+            <h2>Using This Data</h2>
+            <p>This dataset is provided for research and analysis purposes. Data is sourced from CMHC under Statistics Canada's Open License.</p>
+
+            <h3>Related Publications</h3>
+            <ul>
+                <li><a href="../calgary-rezoning/v1.0/index.html">The Rezoning Paradox</a> - Uses housing starts data to analyze Calgary's 2024 blanket rezoning</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Citation</h2>
+            <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; background: #f5f5f5; padding: 1rem; border-left: 2px solid #333;">
+                Elot, C. (2025). CMHC Housing Data Repository: Calgary Metropolitan Area Housing Starts and Rental Data (v1.0).
+                <i>Camille's Lot</i>.
+                https://camilleelot.github.io/papers/housing-data/v1.0/<br><br>
+                Data sourced from: Canada Mortgage and Housing Corporation (CMHC). Housing Starts and Construction Survey; Rental Market Survey. 2023-2025.
+            </p>
+        </section>
+
+        <section>
+            <h2>Data Transparency</h2>
+            <p>All versions of this dataset are preserved and accessible. Version history is tracked via:</p>
+            <ul>
+                <li><b>Changelog:</b> Human-readable summary of changes between versions</li>
+                <li><b>Git History:</b> Full commit-level tracking via <a href="https://github.com/Camilleelot/Camilleelot.github.io">GitHub repository</a></li>
+                <li><b>Metadata:</b> Machine-readable dataset information in JSON format</li>
+            </ul>
+        </section>
+    </article>
+</body>
+</html>

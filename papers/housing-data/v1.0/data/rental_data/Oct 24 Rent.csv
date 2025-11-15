@@ -1,0 +1,21 @@
+Calgary — Rental Market Statistics Summary by Zone
+October 2024 Row / Apartment Bedroom Type - Total
+,Vacancy Rate (%),,Availability Rate (%),,Average Rent ($),,Median Rent ($),,% Change,,Units,
+Downtown,6.9,c ,**,,"1,716",a ,"1,623",a ,4.1,d ,"7,655",
+Beltline,5.5,b ,**,,"1,768",a ,"1,694",a ,**,,"12,746",
+North Hill,2.9,a ,**,,"1,657",a ,"1,550",a ,12.1,c ,"4,385",
+Southwest,**,,**,,"1,744",b ,"1,649",a ,7.2,c ,"6,138",
+Southeast,2.1,a ,**,,"1,681",a ,"1,650",a ,8.8,b ,"4,522",
+Northwest,5.4,d ,**,,"1,727",a ,"1,700",a ,10.4,d ,"9,991",
+Northeast,1.0,a ,**,,"1,834",a ,"1,840",a ,7.2,b ,"4,705",
+Chinook,4.4,b ,**,,"1,757",a ,"1,750",a ,**,,"3,298",
+Fish Creek,1.7,a ,**,,"1,788",a ,"1,800",a ,11.9,d ,"5,380",
+Other Centres,5.3,c ,**,,"1,744",a ,"1,707",a ,11.5,d ,"2,539",
+Calgary,4.6,b ,**,,"1,744",a ,"1,700",a ,8.5,b ,"61,359",
+
+Notes
+"The following letter codes are used to indicate the reliability of the estimates: a — Excellent, b — Very good, c — Good, d — Poor (Use with Caution))"
+** — Data suppressed to protect confidentiality or data not statistically reliable
+++ — Change in rent is not statistically significant. This means that the change in rent is not statistically different than zero (0). (Applies only to % Change of Average Rent Tables).
+"CMA, CA and CSD definitions are based on 2016 Census Geography Definitions"
+Source,CMHC Rental Market Survey
