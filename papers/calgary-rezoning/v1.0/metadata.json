@@ -1,0 +1,33 @@
+{
+  "title": "The Rezoning Paradox",
+  "subtitle": "Why does every single person around me say housing sucks?",
+  "version": "1.0",
+  "author": {
+    "name": "Camille Elot",
+    "email": "camillefromraytheon2023@gmail.com",
+    "affiliation": "Athabasca University, Political Science"
+  },
+  "dates": {
+    "published": "2025-11-15",
+    "last_updated": "2025-11-15"
+  },
+  "abstract": "When Calgary implemented citywide blanket rezoning in August 2024, removing density restrictions across residential neighborhoods, it offered a natural experiment to test YIMBY theory in practice. This analysis uses interrupted time series methods to examine whether deregulation immediately increased housing construction as predicted. The data reveals a counterintuitive finding: despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend. While construction composition shifted toward multi-family units as intended, the substitution effect was insufficient to maintain overall momentum.",
+  "keywords": [
+    "housing policy",
+    "urban planning",
+    "YIMBY",
+    "rezoning",
+    "Calgary",
+    "interrupted time series",
+    "policy analysis",
+    "municipal politics"
+  ],
+  "research_type": "Policy Analysis",
+  "methodology": "Interrupted Time Series Regression",
+  "data_sources": [
+    "Canada Mortgage and Housing Corporation (CMHC) Housing Starts Survey",
+    "City of Calgary Planning Commission",
+    "Calgary Land Use Bylaw"
+  ],
+  "identifier": "camille-2025-calgary-rezoning-v1.0"
+}
