@@ -111,6 +111,53 @@
                 height: 200px;
             }
         }
+
+        @media (prefers-color-scheme: dark) {
+            .publication-card {
+                background: #1a1a1a;
+                border-color: #333;
+            }
+            .publication-card:hover {
+                background: #252525;
+                box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+            }
+            .publication-content {
+                color: #e5e5e5;
+            }
+            .publication-card h2 {
+                color: #e5e5e5;
+            }
+            .publication-meta {
+                color: #999;
+            }
+            .publication-abstract {
+                color: #d0d0d0;
+            }
+            .publication-links {
+                border-top-color: #333;
+            }
+            .publication-links a {
+                color: #d0d0d0;
+            }
+            .publication-links a:hover {
+                color: #ff6b6b;
+            }
+            .stat-box {
+                background: #1a1a1a;
+                border-color: #333;
+            }
+            .stat-number {
+                color: #e5e5e5;
+            }
+            .stat-label {
+                color: #999;
+            }
+            p[style*="background: #f5f5f5"] {
+                background: #1a1a1a !important;
+                color: #e5e5e5 !important;
+                border-left-color: #666 !important;
+            }
+        }
     </style>
 </head>
 
