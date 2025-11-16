@@ -8,29 +8,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         .publication-card {
-            margin: 2.5rem 0;
-            padding: 1.5rem;
+            margin: 3rem 0;
+            padding: 0;
             background: #fffff8;
-            border-left: 4px solid #333;
-            transition: all 0.2s;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+            overflow: hidden;
         }
         .publication-card:hover {
             background: #fff9f0;
-            border-left-color: #cc0000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        .publication-header {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 0;
+        }
+        .publication-image {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        .publication-content {
+            padding: 1.5rem 2rem;
         }
         .publication-card h2 {
             margin-top: 0;
             font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
         .publication-meta {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
             margin: 0.5rem 0;
         }
         .publication-abstract {
             margin: 1rem 0;
             line-height: 1.6;
+            font-size: 0.95rem;
         }
         .publication-links {
             margin-top: 1rem;
@@ -39,19 +56,27 @@
         }
         .publication-links a {
             margin-right: 1.5rem;
+            text-decoration: none;
+            color: #333;
+            transition: color 0.2s;
+        }
+        .publication-links a:hover {
+            color: #cc0000;
         }
         .badge {
             display: inline-block;
-            padding: 2px 8px;
-            font-size: 0.75rem;
+            padding: 3px 10px;
+            font-size: 0.7rem;
             border-radius: 3px;
             margin-left: 0.5rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
-        .badge-paper {
+        .badge-policy {
             background: #4a5a8a;
             color: #fff;
         }
-        .badge-data {
+        .badge-tool {
             background: #6b8e6b;
             color: #fff;
         }
@@ -77,23 +102,32 @@
             color: #666;
             margin-top: 0.5rem;
         }
+        @media (max-width: 768px) {
+            .publication-header {
+                grid-template-columns: 1fr;
+            }
+            .publication-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <article>
         <h1>Publications</h1>
-        <p class="subtitle">Policy Research & Data Repositories</p>
+        <p class="subtitle">Policy Research & Interactive Tools</p>
 
         <section>
             <p><a href="../index.html">← Back to Home</a></p>
 
-            <p>This page collects all research papers and datasets published through Camille's Lot. Following the academic preprint model (inspired by arXiv and Zenodo), all work is versioned for transparency. Each publication maintains a complete version history, allowing readers to see how research evolves over time.</p>
+            <p>Featured work combining policy analysis with data visualization. Following the academic preprint model (inspired by arXiv and Zenodo), all work is versioned for transparency.</p>
 
             <div class="stats-grid">
                 <div class="stat-box">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Total Publications</div>
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Featured Projects</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-number">1</div>
@@ -101,119 +135,74 @@
                 </div>
                 <div class="stat-box">
                     <div class="stat-number">1</div>
-                    <div class="stat-label">Data Analysis Tools</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">1</div>
-                    <div class="stat-label">Data Repositories</div>
+                    <div class="stat-label">Data Tools</div>
                 </div>
             </div>
         </section>
 
         <section>
-            <h2>Research Papers</h2>
+            <h2>Featured Publications</h2>
 
             <div class="publication-card">
-                <h2>
-                    The Rezoning Paradox
-                    <span class="badge badge-paper">POLICY ANALYSIS</span>
-                </h2>
-                <p class="publication-meta">
-                    <b>Camille Elot</b> • Published November 15, 2025 • Version 1.0
-                </p>
-                <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
-                    Why does every single person around me say housing sucks?
-                </p>
+                <div class="publication-header">
+                    <img src="calgary-rezoning/v1.0/img/housing-developments.JPEG" alt="Calgary housing developments" class="publication-image">
+                    <div class="publication-content">
+                        <h2>
+                            The Rezoning Paradox
+                            <span class="badge badge-policy">POLICY ANALYSIS</span>
+                        </h2>
+                        <p class="publication-meta">
+                            <b>Camille Elot</b> • Published November 15, 2025 • Version 1.0
+                        </p>
+                        <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
+                            Why does every single person around me say housing sucks?
+                        </p>
 
-                <div class="publication-abstract">
-                    <p>When Calgary implemented citywide blanket rezoning in August 2024, removing density restrictions across residential neighborhoods, it offered a natural experiment to test YIMBY theory in practice. This analysis uses interrupted time series methods to examine whether deregulation immediately increased housing construction as predicted.</p>
+                        <div class="publication-abstract">
+                            <p>When Calgary implemented citywide blanket rezoning in August 2024, removing density restrictions across residential neighborhoods, it offered a natural experiment to test YIMBY theory in practice. Despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend.</p>
+                        </div>
 
-                    <p><b>Key Finding:</b> Despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend. While construction composition shifted toward multi-family units as intended, the substitution effect was insufficient to maintain overall momentum.</p>
-                </div>
+                        <p class="publication-meta">
+                            <b>Method:</b> Interrupted Time Series • <b>Data:</b> CMHC Housing Starts (17 months)
+                        </p>
 
-                <p class="publication-meta">
-                    <b>Methodology:</b> Interrupted Time Series Regression •
-                    <b>Data:</b> CMHC Housing Starts (17 months) •
-                    <b>Keywords:</b> housing policy, YIMBY, rezoning, Calgary, municipal politics
-                </p>
-
-                <div class="publication-links">
-                    <a href="calgary-rezoning/v1.0/index.html"><b>→ Read Paper</b></a>
-                    <a href="calgary-rezoning/index.html">All Versions</a>
-                    <a href="calgary-rezoning/changelog.md">Changelog</a>
-                    <a href="calgary-rezoning/v1.0/metadata.json">Metadata (JSON)</a>
+                        <div class="publication-links">
+                            <a href="calgary-rezoning/v1.0/index.html"><b>→ Read Paper</b></a>
+                            <a href="calgary-rezoning/index.html">All Versions</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <section>
-            <h2>Data Analysis Tools</h2>
 
             <div class="publication-card">
-                <h2>
-                    NGO Turnover Analysis Tool
-                    <span class="badge badge-paper">INTERACTIVE TOOL</span>
-                </h2>
-                <p class="publication-meta">
-                    <b>Camille Elot</b> • Published November 16, 2025 • Version 1.0
-                </p>
-                <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
-                    Transforming employee data into actionable retention insights
-                </p>
+                <div class="publication-header">
+                    <img src="../turnover-analysis/assets/sankey-preview.png" alt="Employee flow Sankey diagram" class="publication-image">
+                    <div class="publication-content">
+                        <h2>
+                            NGO Turnover Analysis Tool
+                            <span class="badge badge-tool">INTERACTIVE TOOL</span>
+                        </h2>
+                        <p class="publication-meta">
+                            <b>Camille Elot</b> • Published November 16, 2025 • Version 1.0
+                        </p>
+                        <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
+                            Transforming employee data into actionable retention insights
+                        </p>
 
-                <div class="publication-abstract">
-                    <p>An interactive dashboard that transforms employee data into case-based tenure analysis. Let <i>T</i> denote the set of all employees and <i>T</i>₀ ⊂ <i>T</i> denote those who have terminated. The turnover rate <i>r</i> = |<i>T</i>₀| / |<i>T</i>| × 100 is easily calculated—but this scalar obscures the temporal distribution. <i>When</i> do people leave? <i>Why</i>? At what cost <i>C</i>?</p>
+                        <div class="publication-abstract">
+                            <p>An interactive dashboard that transforms employee data into case-based tenure analysis. Let <i>T</i> denote all employees and <i>T</i>₀ ⊂ <i>T</i> those who terminated. The rate <i>r</i> = |<i>T</i>₀| / |<i>T</i>| × 100 is easily calculated—but <i>when</i> do people leave? At what cost <i>C</i>? Visualizes department flows via Sankey diagrams, calculates true turnover costs (<i>C</i> ≈ 0.8<i>S</i>).</p>
+                        </div>
 
-                    <p><b>Key Features:</b> Categorizes terminations by tenure into six windows (0-3 months → 5+ years), visualizes department flows via Sankey diagrams, calculates true turnover costs (<i>C</i> ≈ 0.8<i>S</i> where <i>S</i> = salary), and flags at-risk employees. Designed for HR managers who've never written code.</p>
-                </div>
+                        <p class="publication-meta">
+                            <b>Tech:</b> Python, Streamlit, Plotly • <b>Deploy:</b> Web & Local
+                        </p>
 
-                <p class="publication-meta">
-                    <b>Technology:</b> Python, Streamlit, Plotly •
-                    <b>Deployment:</b> Web & Local Installation •
-                    <b>Keywords:</b> HR analytics, turnover analysis, nonprofit management, retention
-                </p>
-
-                <div class="publication-links">
-                    <a href="turnover-tool/v1.0/index.html"><b>→ Read Documentation</b></a>
-                    <a href="https://hrturnoveranalysis.streamlit.app/"><b>Launch Tool</b></a>
-                    <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">Source Code</a>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>Data Repositories</h2>
-
-            <div class="publication-card">
-                <h2>
-                    CMHC Housing Data Repository
-                    <span class="badge badge-data">DATASET</span>
-                </h2>
-                <p class="publication-meta">
-                    <b>Camille Elot</b> • Published November 15, 2025 • Version 1.0
-                </p>
-                <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
-                    Calgary Metropolitan Area Housing Starts and Rental Data
-                </p>
-
-                <div class="publication-abstract">
-                    <p>Curated dataset of housing construction and rental market data for the Calgary Census Metropolitan Area, sourced from Canada Mortgage and Housing Corporation (CMHC). This repository supports policy analysis of Calgary's housing market, including the 2024 blanket rezoning intervention.</p>
-
-                    <p><b>Contents:</b> Monthly housing starts by dwelling type (Nov 2023 - Mar 2025), raw CMHC survey data, and rental market indicators. Data provided under Statistics Canada Open License.</p>
-                </div>
-
-                <p class="publication-meta">
-                    <b>Coverage:</b> Nov 2023 - Mar 2025 (17 months) •
-                    <b>Geographic Area:</b> Calgary CMA •
-                    <b>Format:</b> CSV, various •
-                    <b>License:</b> Statistics Canada Open License
-                </p>
-
-                <div class="publication-links">
-                    <a href="housing-data/v1.0/index.html"><b>→ Access Dataset</b></a>
-                    <a href="housing-data/index.html">All Versions</a>
-                    <a href="housing-data/changelog.md">Changelog</a>
-                    <a href="housing-data/v1.0/metadata.json">Metadata (JSON)</a>
+                        <div class="publication-links">
+                            <a href="turnover-tool/v1.0/index.html"><b>→ Documentation</b></a>
+                            <a href="https://hrturnoveranalysis.streamlit.app/"><b>Launch Tool</b></a>
+                            <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">Source Code</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
