@@ -29,12 +29,19 @@ from cost_calculator import (
 from visualizations import (
     plot_cohort_retention, plot_turnover_trend, plot_department_comparison,
     plot_tenure_distribution, plot_cost_breakdown, plot_cost_by_department,
-    plot_yearly_costs, plot_survival_curve
+    plot_yearly_costs, plot_survival_curve, plot_case_distribution,
+    plot_case_by_role_heatmap, plot_voluntary_by_case, plot_sankey_flow,
+    plot_role_comparison, plot_employment_type_by_case
 )
 from predictive import (
     identify_high_risk_tenure_periods, flag_at_risk_employees,
     predict_future_turnover, analyze_seasonal_patterns,
     calculate_turnover_velocity
+)
+from case_analysis import (
+    assign_case_type, calculate_case_distribution, calculate_case_by_role,
+    calculate_voluntary_by_case, identify_high_risk_roles,
+    generate_case_insights, create_sankey_data, calculate_employment_type_by_case
 )
 
 
@@ -126,6 +133,7 @@ employee_id | name | hire_date | termination_date | department | role | salary
     tabs = st.tabs([
         "📈 Overview",
         "👥 Cohort Analysis",
+        "🔍 Case Analysis",
         "💰 Cost Analysis",
         "⚠️ Risk Assessment",
         "📊 Raw Data"
@@ -236,8 +244,131 @@ employee_id | name | hire_date | termination_date | department | role | salary
         else:
             st.info("Insufficient data for seasonal analysis")
 
-    # ==================== COST ANALYSIS TAB ====================
+    # ==================== CASE ANALYSIS TAB ====================
     with tabs[2]:
+        st.header("Case Analysis")
+        st.markdown("Understand **when** and **why** employees leave through case-based tenure analysis")
+
+        # Assign case types
+        df_with_cases = assign_case_type(df, only_terminated=True)
+
+        # Generate insights
+        insights = generate_case_insights(df_with_cases)
+
+        # Display key insights
+        if insights:
+            st.subheader("🔍 Key Insights")
+            for insight in insights:
+                st.info(insight)
+
+        st.markdown("---")
+
+        # Case distribution
+        col1, col2 = st.columns([1, 1])
+
+        with col1:
+            st.subheader("Case Distribution")
+            case_dist = calculate_case_distribution(df_with_cases)
+            if not case_dist.empty:
+                fig = plot_case_distribution(case_dist)
+                st.plotly_chart(fig, use_container_width=True)
+
+                # Show case definitions
+                with st.expander("📖 Case Definitions"):
+                    for _, row in case_dist.iterrows():
+                        st.markdown(f"**{row['case_type']} - {row['case_name']}**")
+                        st.caption(row['description'])
+                        st.caption(f"Count: {row['count']:.0f} ({row['percentage']:.1f}%)")
+                        st.markdown("---")
+            else:
+                st.info("No termination data available")
+
+        with col2:
+            st.subheader("Voluntary vs Involuntary by Case")
+            if 'termination_reason' in df_with_cases.columns:
+                vol_by_case = calculate_voluntary_by_case(df_with_cases)
+                if not vol_by_case.empty:
+                    fig = plot_voluntary_by_case(vol_by_case)
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.info("No data available")
+            else:
+                st.warning("Add 'termination_reason' column to your data for this analysis")
+
+        # Sankey diagram
+        st.subheader("Employee Flow: Department → Role → Outcome")
+        st.caption("Visualize how employees flow from departments through roles to different outcomes")
+
+        sankey_data = create_sankey_data(df_with_cases)
+        if sankey_data['labels']:
+            fig = plot_sankey_flow(sankey_data)
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("Need department and role data for flow diagram")
+
+        # Role-specific case analysis
+        st.subheader("Role Distribution Across Cases")
+
+        if 'role' in df_with_cases.columns:
+            role_case = calculate_case_by_role(df_with_cases, top_n=10)
+            if not role_case.empty:
+                fig = plot_case_by_role_heatmap(role_case)
+                st.plotly_chart(fig, use_container_width=True)
+
+                st.dataframe(role_case, use_container_width=True)
+            else:
+                st.info("No role data available")
+
+            # Deep dive on specific case
+            st.markdown("---")
+            st.subheader("Case Deep Dive")
+
+            selected_case = st.selectbox(
+                "Select a case to analyze",
+                options=['Case 0', 'Case 1', 'Case 2', 'Case 3', 'Case 4', 'Case 5'],
+                index=2  # Default to Case 2 (biggest window typically)
+            )
+
+            case_details = case_dist[case_dist['case_type'] == selected_case]
+            if not case_details.empty:
+                case_name = case_details['case_name'].values[0]
+
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Case Name", case_name)
+                with col2:
+                    st.metric("Terminations", f"{case_details['count'].values[0]:.0f}")
+                with col3:
+                    st.metric("% of Total", f"{case_details['percentage'].values[0]:.1f}%")
+
+                # Top roles in this case
+                role_risk = identify_high_risk_roles(df_with_cases, case_window=selected_case)
+                if not role_risk.empty:
+                    fig = plot_role_comparison(role_risk, case_name)
+                    st.plotly_chart(fig, use_container_width=True)
+
+                    st.dataframe(
+                        role_risk[['role', 'count', 'pct_of_case', 'pct_of_all_terminations']],
+                        use_container_width=True,
+                        hide_index=True
+                    )
+        else:
+            st.warning("Add 'role' column to your data for detailed role analysis")
+
+        # Employment type analysis
+        if 'employment_type' in df_with_cases.columns:
+            st.markdown("---")
+            st.subheader("Employment Type by Case")
+
+            emp_type_case = calculate_employment_type_by_case(df_with_cases)
+            if not emp_type_case.empty:
+                fig = plot_employment_type_by_case(emp_type_case)
+                st.plotly_chart(fig, use_container_width=True)
+
+                st.caption("💡 **Insight**: Part-time or hourly roles often show higher early attrition (Case 1-2)")
+
+    # ==================== COST ANALYSIS TAB ====================
+    with tabs[3]:
         st.header("Cost Analysis")
         st.markdown("Estimate the financial impact of turnover")
 
@@ -339,7 +470,7 @@ employee_id | name | hire_date | termination_date | department | role | salary
                     st.metric("Payback Period", f"{roi['payback_period_months']:.1f} months")
 
     # ==================== RISK ASSESSMENT TAB ====================
-    with tabs[3]:
+    with tabs[4]:
         st.header("Risk Assessment")
         st.markdown("Identify employees and patterns that signal turnover risk")
 
@@ -408,7 +539,7 @@ employee_id | name | hire_date | termination_date | department | role | salary
             st.line_chart(forecast_df.set_index('date')['expected_terminations'])
 
     # ==================== RAW DATA TAB ====================
-    with tabs[4]:
+    with tabs[5]:
         st.header("Raw Data")
 
         st.subheader("Employee Data")
