@@ -333,3 +333,244 @@ def create_metric_card(title: str, value: str, delta: str = None) -> dict:
         'value': value,
         'delta': delta
     }
+
+
+def plot_case_distribution(case_df: pd.DataFrame) -> go.Figure:
+    """
+    Create bar chart of terminations by case type
+
+    Args:
+        case_df: Output from calculate_case_distribution()
+
+    Returns:
+        Plotly figure
+    """
+    # Import case definitions for colors
+    from case_analysis import CASE_DEFINITIONS
+
+    colors = [CASE_DEFINITIONS.get(case, {}).get('color', '#95a5a6')
+              for case in case_df['case_type']]
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=case_df['case_type'],
+        y=case_df['percentage'],
+        text=case_df['percentage'].round(1),
+        texttemplate='%{text}%',
+        textposition='outside',
+        marker_color=colors,
+        hovertemplate='<b>%{x}</b><br>' +
+                      '%{customdata[0]}<br>' +
+                      'Count: %{customdata[1]}<br>' +
+                      'Percentage: %{y:.1f}%<extra></extra>',
+        customdata=case_df[['case_name', 'count']].values
+    ))
+
+    fig.update_layout(
+        title="Termination Distribution by Case Type",
+        xaxis_title="Case Type",
+        yaxis_title="Percentage of All Terminations (%)",
+        height=450,
+        showlegend=False
+    )
+
+    return fig
+
+
+def plot_case_by_role_heatmap(role_case_df: pd.DataFrame) -> go.Figure:
+    """
+    Create heatmap showing role x case distribution
+
+    Args:
+        role_case_df: Output from calculate_case_by_role()
+
+    Returns:
+        Plotly figure
+    """
+    # Exclude total_terminations column for heatmap
+    heatmap_data = role_case_df.drop('total_terminations', axis=1, errors='ignore')
+
+    fig = go.Figure(data=go.Heatmap(
+        z=heatmap_data.values,
+        x=heatmap_data.columns,
+        y=heatmap_data.index,
+        colorscale='YlOrRd',
+        text=heatmap_data.values.round(1),
+        texttemplate='%{text}%',
+        textfont={"size": 10},
+        colorbar=dict(title="% of Role")
+    ))
+
+    fig.update_layout(
+        title="Role Distribution Across Case Types",
+        xaxis_title="Case Type",
+        yaxis_title="Role",
+        height=max(400, len(heatmap_data) * 30),
+        yaxis={'autorange': 'reversed'}
+    )
+
+    return fig
+
+
+def plot_voluntary_by_case(vol_case_df: pd.DataFrame) -> go.Figure:
+    """
+    Create stacked bar chart of voluntary vs involuntary by case
+
+    Args:
+        vol_case_df: Output from calculate_voluntary_by_case()
+
+    Returns:
+        Plotly figure
+    """
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        name='Voluntary',
+        x=vol_case_df['case_type'],
+        y=vol_case_df['voluntary_count'],
+        marker_color='#3498db',
+        text=vol_case_df['voluntary_pct'].round(1),
+        texttemplate='%{text}%',
+        textposition='inside'
+    ))
+
+    fig.add_trace(go.Bar(
+        name='Involuntary',
+        x=vol_case_df['case_type'],
+        y=vol_case_df['involuntary_count'],
+        marker_color='#e74c3c',
+        text=vol_case_df['involuntary_pct'].round(1),
+        texttemplate='%{text}%',
+        textposition='inside'
+    ))
+
+    fig.update_layout(
+        title="Voluntary vs Involuntary Terminations by Case",
+        xaxis_title="Case Type",
+        yaxis_title="Number of Terminations",
+        barmode='stack',
+        height=450,
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+
+    return fig
+
+
+def plot_sankey_flow(sankey_data: dict) -> go.Figure:
+    """
+    Create Sankey diagram showing Department → Role → Outcome flow
+
+    Args:
+        sankey_data: Output from create_sankey_data()
+
+    Returns:
+        Plotly figure
+    """
+    # Define colors for different node types
+    node_colors = []
+    for label in sankey_data['labels']:
+        if 'Dept:' in label:
+            node_colors.append('#3498db')  # Blue for departments
+        elif 'Role:' in label:
+            node_colors.append('#95a5a6')  # Gray for roles
+        elif 'Still Employed' in label:
+            node_colors.append('#2ecc71')  # Green for active
+        else:  # Cases
+            node_colors.append('#e74c3c')  # Red for terminations
+
+    fig = go.Figure(data=[go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=20,
+            line=dict(color="white", width=0.5),
+            label=sankey_data['labels'],
+            color=node_colors
+        ),
+        link=dict(
+            source=sankey_data['source'],
+            target=sankey_data['target'],
+            value=sankey_data['value']
+        )
+    )])
+
+    fig.update_layout(
+        title="Employee Flow: Department → Role → Outcome",
+        font_size=10,
+        height=800
+    )
+
+    return fig
+
+
+def plot_role_comparison(role_risk_df: pd.DataFrame, case_name: str) -> go.Figure:
+    """
+    Create bar chart comparing roles within a specific case
+
+    Args:
+        role_risk_df: Output from identify_high_risk_roles()
+        case_name: Name of the case being analyzed
+
+    Returns:
+        Plotly figure
+    """
+    top_10 = role_risk_df.head(10)
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=top_10['role'],
+        y=top_10['count'],
+        text=top_10['pct_of_case'].round(1),
+        texttemplate='%{text}% of case',
+        textposition='outside',
+        marker_color='#e67e22'
+    ))
+
+    fig.update_layout(
+        title=f"Top Roles in {case_name}",
+        xaxis_title="Role",
+        yaxis_title="Number of Terminations",
+        height=450,
+        showlegend=False,
+        xaxis={'tickangle': -45}
+    )
+
+    return fig
+
+
+def plot_employment_type_by_case(emp_case_df: pd.DataFrame) -> go.Figure:
+    """
+    Create stacked bar showing employment type distribution across cases
+
+    Args:
+        emp_case_df: Output from calculate_employment_type_by_case()
+
+    Returns:
+        Plotly figure
+    """
+    # Exclude total_count for stacking
+    plot_data = emp_case_df.drop('total_count', axis=1, errors='ignore')
+
+    fig = go.Figure()
+
+    colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6']
+
+    for idx, emp_type in enumerate(plot_data.index):
+        fig.add_trace(go.Bar(
+            name=emp_type,
+            x=plot_data.columns,
+            y=plot_data.loc[emp_type],
+            marker_color=colors[idx % len(colors)]
+        ))
+
+    fig.update_layout(
+        title="Employment Type Distribution Across Cases",
+        xaxis_title="Case Type",
+        yaxis_title="Percentage (%)",
+        barmode='stack',
+        height=450,
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+
+    return fig

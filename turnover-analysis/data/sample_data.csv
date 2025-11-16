@@ -1,21 +1,101 @@
-employee_id,name,hire_date,termination_date,department,role,termination_reason,salary
-1001,Alice Johnson,2022-01-15,,Programs,Coordinator,,45000
-1002,Bob Smith,2022-03-01,2023-02-15,Programs,Manager,Voluntary,65000
-1003,Carol Williams,2022-06-10,,Development,Officer,,52000
-1004,David Brown,2022-08-20,2022-12-01,Operations,Specialist,Voluntary,58000
-1005,Emma Davis,2023-01-05,,Programs,Associate,,48000
-1006,Frank Miller,2023-04-12,,Development,Manager,,70000
-1007,Grace Wilson,2023-07-01,2024-08-30,Operations,Coordinator,Involuntary,50000
-1008,Henry Moore,2023-10-15,,Programs,Associate,,47000
-1009,Iris Taylor,2022-05-20,2023-06-10,Development,Coordinator,Voluntary,46000
-1010,Jack Anderson,2022-09-15,,Operations,Manager,,68000
-1011,Kate Thompson,2021-11-01,2022-08-15,Programs,Officer,Voluntary,54000
-1012,Liam Martinez,2023-02-20,,Development,Associate,,49000
-1013,Mia Garcia,2022-04-05,2023-11-20,Operations,Specialist,Voluntary,56000
-1014,Noah Rodriguez,2023-06-12,,Programs,Coordinator,,47000
-1015,Olivia Lee,2021-08-30,,Development,Manager,,72000
-1016,Paul Walker,2022-12-01,2024-01-15,Operations,Coordinator,Voluntary,48000
-1017,Quinn Hall,2023-03-18,,Programs,Associate,,46000
-1018,Rachel Allen,2022-07-25,,Development,Officer,,53000
-1019,Sam Young,2021-10-10,2023-04-05,Operations,Specialist,Voluntary,57000
-1020,Tara King,2023-05-08,,Programs,Manager,,66000
+employee_id,name,hire_date,termination_date,department,role,termination_reason,salary,employment_type
+2001,Jordan Mitchell,2023-02-10,,Programs,Program Coordinator,,51000,Full-time
+2002,Taylor Brooks,2023-11-20,2024-01-15,Operations,Support Worker,Voluntary,39000,Hourly Part-time
+2003,Morgan Chen,2021-05-18,,Development,Development Officer,,54000,Full-time
+2004,Casey Zhang,2024-01-25,2024-02-10,Programs,Case Manager,Voluntary,46000,Full-time
+2005,Riley Kumar,2022-08-30,,Programs,Senior Counselor,,52000,Full-time
+2006,Avery Thompson,2020-03-15,,Development,Director of Partnerships,,78000,Full-time
+2007,Parker Johnson,2024-04-12,2024-09-20,Operations,Night Support,Involuntary,43000,Full-time
+2008,Quinn Martinez,2023-07-22,,Programs,Counselor,,48000,Full-time
+2009,Drew Anderson,2022-02-08,2023-01-15,Programs,Senior Counselor,Voluntary,50000,Full-time
+2010,Sage Williams,2021-11-05,,Operations,Operations Manager,,67000,Full-time
+2011,Cameron Lee,2024-02-18,2024-03-25,Programs,Support Worker,Voluntary,38000,Hourly Part-time
+2012,Skyler Robinson,2022-09-12,,Development,Communications Specialist,,50000,Full-time
+2013,Reese Taylor,2021-12-20,2023-05-10,Programs,Senior Counselor,Voluntary,49000,Full-time
+2014,Dakota Brown,2024-05-08,,Programs,Counselor,,47000,Full-time
+2015,Phoenix Garcia,2019-06-14,,Development,Senior Manager,,82000,Full-time
+2016,River Davis,2023-10-22,2024-02-05,Operations,Support Worker,Voluntary,37000,Hourly Part-time
+2017,Rowan White,2024-01-30,,Programs,Case Manager,,48000,Full-time
+2018,Emerson Clark,2021-09-17,,Development,Grants Coordinator,,55000,Full-time
+2019,Finley Lewis,2020-01-28,2022-11-12,Operations,Administrative Assistant,Voluntary,44000,Full-time
+2020,Lennon Walker,2023-04-05,,Programs,Program Manager,,64000,Full-time
+2021,Marley Hall,2024-03-10,2024-04-22,Programs,Support Worker,Voluntary,36000,Hourly Part-time
+2022,Hayden Young,2022-12-01,2023-07-15,Programs,Counselor,Voluntary,47000,Full-time
+2023,Ellis King,2024-06-18,,Programs,Counselor,,48000,Full-time
+2024,August Scott,2021-10-05,2022-04-20,Programs,Case Manager,Voluntary,45000,Full-time
+2025,Sawyer Green,2024-04-28,2024-05-30,Programs,Support Worker,Voluntary,37000,Hourly Part-time
+2026,Frankie Adams,2023-03-14,2024-01-08,Programs,Counselor,Voluntary,46000,Full-time
+2027,Charlie Hill,2020-07-20,,Operations,Finance Coordinator,,56000,Full-time
+2028,Blake Nelson,2024-01-12,2024-01-12,Programs,Counselor,Voluntary,45000,Full-time
+2029,Harley Carter,2023-05-25,2023-08-10,Programs,Support Worker,Voluntary,36000,Hourly Part-time
+2030,Micah Collins,2024-02-15,2024-07-28,Programs,Case Manager,Voluntary,44000,Full-time
+2031,Peyton Turner,2022-06-08,,Programs,Counselor,,49000,Full-time
+2032,Logan Phillips,2023-11-15,2024-04-30,Programs,Senior Counselor,Voluntary,48000,Full-time
+2033,Jules Campbell,2023-01-20,,Development,Fundraising Associate,,52000,Full-time
+2034,Remy Parker,2024-03-22,2024-05-18,Programs,Support Worker,Voluntary,38000,Hourly Part-time
+2035,Kendall Evans,2022-11-10,2024-06-22,Programs,Counselor,Voluntary,47000,Full-time
+2036,Shiloh Edwards,2024-06-05,,Programs,Case Manager,,46000,Full-time
+2037,Indie Stewart,2021-08-16,2022-03-05,Programs,Support Worker,Voluntary,39000,Hourly Part-time
+2038,Arden Morris,2023-08-28,,Programs,Counselor,,48000,Full-time
+2039,Sutton Rogers,2024-05-12,2024-10-20,Programs,Senior Counselor,Voluntary,47000,Full-time
+2040,Bellamy Reed,2020-04-09,,Programs,Senior Program Manager,,68000,Full-time
+2041,Ira Cook,2024-02-28,2024-03-15,Programs,Case Manager,Voluntary,43000,Hourly Part-time
+2042,Monroe Morgan,2023-06-15,2024-03-22,Programs,Counselor,Voluntary,48000,Full-time
+2043,Winter Bell,2024-08-01,,Programs,Counselor,,46000,Full-time
+2044,Stevie Cooper,2022-07-19,2023-02-08,Programs,Support Worker,Voluntary,37000,Hourly Part-time
+2045,Memphis Bailey,2024-01-08,2024-02-12,Programs,Support Worker,Voluntary,36000,Hourly Part-time
+2046,Atlas Rivera,2023-02-22,,Operations,HR Coordinator,,57000,Full-time
+2047,Cypress Torres,2024-03-05,2024-08-14,Programs,Case Manager,Voluntary,44000,Full-time
+2048,Harbor Peterson,2024-05-20,2024-10-05,Operations,Night Support,Involuntary,42000,Full-time
+2049,Story Gray,2022-10-14,,Programs,Counselor,,49000,Full-time
+2050,Canyon Ramirez,2024-04-18,2024-06-02,Programs,Support Worker,Voluntary,38000,Hourly Part-time
+2051,Armani James,2021-02-25,,Development,Associate Director,,73000,Full-time
+2052,Marlowe Watson,2024-05-22,2024-09-28,Programs,Counselor,Voluntary,46000,Full-time
+2053,Wren Brooks,2023-04-10,2024-01-15,Programs,Case Manager,Voluntary,45000,Full-time
+2054,Hollis Price,2024-07-12,,Programs,Counselor,,47000,Full-time
+2055,Navy Bennett,2022-12-08,2023-06-18,Operations,Night Support,Involuntary,43000,Full-time
+2056,Poet Wood,2024-01-19,2024-03-28,Programs,Support Worker,Voluntary,37000,Hourly Part-time
+2057,Story Sanders,2021-05-30,,Programs,Senior Program Manager,,65000,Full-time
+2058,Zephyr Hughes,2024-02-05,2024-06-12,Programs,Counselor,Voluntary,46000,Full-time
+2059,Nova Foster,2023-09-14,,Development,Major Gifts Officer,,59000,Full-time
+2060,Ever Russell,2024-03-18,2024-08-25,Programs,Senior Counselor,Voluntary,48000,Full-time
+2061,Sparrow Griffin,2020-10-22,,Operations,Director of Operations,,71000,Full-time
+2062,Echo Diaz,2024-04-25,2024-10-10,Programs,Case Manager,Voluntary,44000,Full-time
+2063,Arrow Hayes,2023-10-08,,Programs,Counselor,,48000,Full-time
+2064,Harbor Myers,2024-06-15,2024-07-20,Programs,Support Worker,Voluntary,37000,Hourly Part-time
+2065,Bear Ford,2022-05-12,2023-03-08,Programs,Counselor,Voluntary,47000,Full-time
+2066,Atlas Hamilton,2024-02-20,,Programs,Case Manager,,45000,Full-time
+2067,Journey Graham,2023-07-05,2024-01-18,Operations,Night Support,Involuntary,42000,Full-time
+2068,Story Butler,2024-07-28,,Programs,Counselor,,46000,Full-time
+2069,Poet Barnes,2024-03-12,2024-04-05,Programs,Support Worker,Voluntary,36000,Hourly Part-time
+2070,Ocean Fisher,2022-08-18,,Development,Database Manager,,53000,Full-time
+2071,Frost Henderson,2024-04-08,2024-09-15,Programs,Counselor,Voluntary,47000,Full-time
+2072,Prairie Coleman,2021-04-14,,Programs,Senior Program Manager,,66000,Full-time
+2073,Harbor Jenkins,2024-05-02,2024-11-08,Programs,Case Manager,Voluntary,44000,Full-time
+2074,Canyon Perry,2022-09-25,,Operations,IT Coordinator,,58000,Full-time
+2075,Wilder Powell,2024-06-10,2024-08-05,Programs,Support Worker,Voluntary,38000,Hourly Part-time
+2076,Story Long,2020-08-19,,Development,Director of Development,,74000,Full-time
+2077,Harbor Patterson,2024-01-22,2024-07-08,Programs,Counselor,Voluntary,46000,Full-time
+2078,Ever Hughes,2023-06-28,,Programs,Case Manager,,45000,Full-time
+2079,Navy Flores,2024-07-05,2024-11-18,Operations,Night Support,Involuntary,43000,Full-time
+2080,Poet Washington,2024-01-15,,Programs,Counselor,,47000,Full-time
+2081,Harbor Butler,2023-05-18,2024-02-20,Programs,Support Worker,Voluntary,37000,Hourly Part-time
+2082,Prairie Simmons,2021-06-22,,Development,Communications Manager,,61000,Full-time
+2083,Canyon Foster,2024-03-28,2024-10-05,Programs,Senior Counselor,Voluntary,46000,Full-time
+2084,Story Bryant,2023-09-20,,Programs,Case Manager,,46000,Full-time
+2085,Ocean Alexander,2024-05-15,2024-09-10,Programs,Counselor,Voluntary,47000,Full-time
+2086,Atlas Russell,2020-05-08,,Operations,Facilities Manager,,63000,Full-time
+2087,Harbor Ross,2024-06-22,2024-10-15,Programs,Support Worker,Voluntary,38000,Hourly Part-time
+2088,Ever Griffin,2023-02-05,,Programs,Counselor,,49000,Full-time
+2089,Navy Diaz,2024-02-08,2024-02-25,Programs,Case Manager,Voluntary,43000,Hourly Part-time
+2090,Poet Hayes,2021-09-12,,Development,Donor Relations Manager,,62000,Full-time
+2091,Journey Cole,2024-04-15,2024-11-02,Programs,Counselor,Voluntary,46000,Full-time
+2092,Prairie Kelly,2022-11-28,,Programs,Senior Program Manager,,65000,Full-time
+2093,Harbor Howard,2024-07-18,2024-11-25,Programs,Case Manager,Voluntary,44000,Full-time
+2094,Canyon Ward,2024-01-25,,Programs,Counselor,,48000,Full-time
+2095,Story Torres,2023-07-10,2024-03-15,Programs,Support Worker,Voluntary,37000,Hourly Part-time
+2096,Ocean Richardson,2020-02-18,,Development,Executive Director,,92000,Full-time
+2097,Atlas Cox,2024-05-05,2024-10-22,Programs,Counselor,Voluntary,46000,Full-time
+2098,Harbor Howard,2023-03-22,,Operations,Quality Assurance Coordinator,,59000,Full-time
+2099,Ever Ramirez,2024-01-10,2024-05-18,Programs,Case Manager,Voluntary,44000,Full-time
+2100,Wilder Gray,2024-08-15,,Programs,Counselor,,47000,Full-time

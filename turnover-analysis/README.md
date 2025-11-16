@@ -6,9 +6,12 @@ A lightweight, user-friendly tool for HR managers at non-profits to analyze empl
 
 - **Easy Data Import**: Upload Excel spreadsheets with employee data
 - **Cohort Analysis**: Track retention by hire cohort, department, role
+- **Case-Based Analysis**: Categorize terminations by tenure windows (0-3mo, 3-12mo, 1-3yr, etc.)
+- **Sankey Flow Diagrams**: Visualize Department → Role → Outcome flows
 - **Cost Calculator**: Estimate true turnover costs (recruitment + training + productivity loss)
 - **Visual Dashboards**: Interactive charts showing trends over time
 - **Predictive Insights**: Flag potential at-risk employees
+- **Voluntary/Involuntary Tracking**: Separate analysis of voluntary vs involuntary exits
 - **Benchmark Comparisons**: Compare against sector averages
 
 ## Quick Start
@@ -34,15 +37,23 @@ Your Excel file should have these columns (minimum):
 - `role`: Job title or role category
 
 Optional but recommended:
-- `termination_reason`: Voluntary/Involuntary/Retirement
-- `salary`: Annual compensation
-- `performance_rating`: Most recent rating
+- `termination_reason`: Voluntary/Involuntary/Retirement (enables case-based analysis)
+- `salary`: Annual compensation (needed for cost calculations)
+- `employment_type`: Full-time/Part-time/Hourly/Contract (enables employment type analysis)
 
-A sample template is provided in `data/sample_data.xlsx`
+A sample template is provided in `data/sample_data.csv`
 
 ## Methodology
 
 **Cohort Analysis**: Groups employees by hire period and tracks retention rates over time. Shows what percentage remain after 3, 6, 12, 24 months.
+
+**Case-Based Analysis**: Categorizes terminations into 6 tenure windows:
+- **Case 0**: Never Worked (0 days) - onboarding failures
+- **Case 1**: Quick Exits (< 3 months) - poor fit or expectations mismatch
+- **Case 2**: Post-Onboarding Crash (3-12 months) - role clarity or training issues
+- **Case 3**: Mid-Term Fallout (1-3 years) - career progression or burnout
+- **Case 4**: Established Turnover (3-5 years) - competitive opportunities
+- **Case 5**: Veteran Turnover (5+ years) - retirement or major life changes
 
 **Cost Calculation**: Based on SHRM research:
 - Recruitment costs: ~20% of annual salary
@@ -78,11 +89,12 @@ turnover-analysis/
 ├── src/
 │   ├── data_loader.py      # Excel import & validation
 │   ├── cohort_analysis.py  # Retention calculations
+│   ├── case_analysis.py    # Case-based tenure analysis
 │   ├── cost_calculator.py  # Financial impact modeling
-│   ├── visualizations.py   # Chart generation
+│   ├── visualizations.py   # Chart generation (including Sankey diagrams)
 │   └── predictive.py       # Risk flagging logic
 └── data/
-    └── sample_data.xlsx    # Template file
+    └── sample_data.csv     # Template file (100 sample employees)
 ```
 
 ## Privacy Note
