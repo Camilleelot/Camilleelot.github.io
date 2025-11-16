@@ -54,13 +54,287 @@ st.set_page_config(
 )
 
 
+def show_landing_page():
+    """Display landing page with setup instructions"""
+
+    # Custom CSS for Tufte-style aesthetics
+    st.markdown("""
+    <style>
+    .big-title {
+        font-size: 2.5rem;
+        font-weight: 300;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.5rem;
+    }
+    .subtitle {
+        font-size: 1.2rem;
+        font-weight: 300;
+        color: #666;
+        font-style: italic;
+        margin-bottom: 2rem;
+    }
+    .section-header {
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #ccc;
+    }
+    .math-notation {
+        font-family: 'Courier New', monospace;
+        background: #f5f5f5;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 0.95em;
+    }
+    .sidenote {
+        font-size: 0.9rem;
+        color: #666;
+        font-style: italic;
+        padding-left: 1rem;
+        border-left: 2px solid #ddd;
+        margin: 1rem 0;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Hero section
+    st.markdown('<div class="big-title">Turnover Analysis Tool</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">A formal approach to understanding organizational retention</div>', unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # Introduction
+    st.markdown("""
+    ### The Problem
+
+    Let *T* denote the set of all employees and *T*₀ ⊂ *T* denote those who have terminated.
+    The turnover rate *r* is defined as:
+
+    <div style='text-align: center; font-size: 1.1em; margin: 1.5rem 0;'>
+    <i>r</i> = |<i>T</i>₀| / |<i>T</i>| × 100
+    </div>
+
+    For nonprofits, *r* ∈ [40%, 65%] is typical. But this single number obscures the underlying dynamics:
+    **when** do people leave? **why** do they leave? **what** does it cost?
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="sidenote">
+    <b>Note:</b> Traditional HR reporting treats turnover as a scalar.
+    This tool treats it as a temporal distribution with causal structure.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # What this does
+    st.markdown('<div class="section-header">What This Tool Does</div>', unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("""
+        **Case-Based Analysis**
+        Categorizes terminations ∀*e* ∈ *T*₀ by tenure *t*:
+
+        - **Case 0**: *t* = 0 (never started)
+        - **Case 1**: 0 < *t* < 90 days
+        - **Case 2**: 90 ≤ *t* < 365 days
+        - **Case 3**: 1 ≤ *t* < 3 years
+        - **Case 4**: 3 ≤ *t* < 5 years
+        - **Case 5**: *t* ≥ 5 years
+
+        **Cohort Retention**
+        Tracks survival function *S*(*t*) by hire cohort
+
+        **Flow Analysis**
+        Sankey diagrams: Department → Role → Outcome
+        """)
+
+    with col2:
+        st.markdown("""
+        **Cost Modeling**
+        Total cost *C* per termination:
+
+        *C* = *S* × (0.20 + 0.10 + 0.50)
+        where *S* = annual salary
+
+        - Recruitment: 20%
+        - Training: 10%
+        - Productivity loss: 50%
+
+        **Predictive Risk**
+        Flags employees *e* ∈ *T* where *P*(terminate) > *θ*
+
+        **Temporal Patterns**
+        Seasonal analysis, velocity, trends
+        """)
+
+    # Setup instructions
+    st.markdown('<div class="section-header">Setup Instructions</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="sidenote">
+    <b>First time doing this?</b> Don't forget to read the manul! →
+    (A distinguished gentleman in a top hat will guide you)
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    ### For the Non-Programmer
+
+    **Axiom 1:** You need data in Excel format
+    **Axiom 2:** The sidebar accepts `.xlsx` or `.xls` files
+    **Axiom 3:** Therefore, export → upload → analyze
+
+    #### Step-by-Step (truly from scratch)
+
+    **1. Prepare Your Data**
+
+    You need a spreadsheet with these columns:
+
+    | employee_id | name | hire_date | termination_date | department | role | salary |
+    |-------------|------|-----------|------------------|------------|------|--------|
+    | 2001 | Jordan Mitchell | 2023-02-10 | | Programs | Coordinator | 51000 |
+    | 2002 | Taylor Brooks | 2023-11-20 | 2024-01-15 | Operations | Support Worker | 39000 |
+
+    - **hire_date**: When they started (YYYY-MM-DD)
+    - **termination_date**: When they left (empty if still employed)
+    - **Optional**: `termination_reason` (Voluntary/Involuntary), `employment_type` (Full-time/Part-time)
+
+    **2. Upload**
+
+    Look to the left sidebar → "Upload your Excel file" → Click → Select file → Done
+
+    **3. Explore**
+
+    Six tabs await you:
+    - **Overview**: High-level metrics
+    - **Cohort Analysis**: Who stays, who goes, when
+    - **Case Analysis**: The six tenure windows (this is where the magic happens)
+    - **Cost Analysis**: Financial impact
+    - **Risk Assessment**: Who might leave next
+    - **Raw Data**: Your data table
+
+    **4. Try Sample Data First**
+
+    Check the box "Use sample data" in the sidebar to see how it works before uploading your own.
+    """)
+
+    # Philosophy section
+    st.markdown('<div class="section-header">Philosophical Foundation</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    This tool embodies three principles:
+
+    **Clarity** ≡ showing the data without distortion
+    **Precision** ≡ measuring what matters, not what's easy
+    **Utility** ≡ insights → decisions → actions
+
+    *Turnover is not failure. Turnover is information.*
+
+    The question is not "how do we reduce turnover to zero?" (impossible, undesirable).
+    The question is "what is turnover telling us?" (actionable, valuable).
+    """)
+
+    st.markdown("---")
+
+    # Call to action
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.info("""
+        **To begin:** Upload data via the sidebar, or check "Use sample data" to explore with synthetic examples.
+        """)
+
+    # Download template
+    template = create_sample_template()
+    st.download_button(
+        "📥 Download Template Spreadsheet",
+        template.to_csv(index=False),
+        "turnover_template.csv",
+        "text/csv",
+        help="Download a template with the correct format"
+    )
+
+
+def show_manul_help():
+    """Display the manul help page"""
+    st.markdown("""
+    <style>
+    .manul-container {
+        text-align: center;
+        padding: 2rem;
+    }
+    .manul-title {
+        font-size: 2rem;
+        font-weight: 300;
+        margin-bottom: 1rem;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="manul-title">📖 Read the Manul</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    ### First time doing this?
+
+    **Don't forget to read the manul!**
+    """)
+
+    # Placeholder for manul image
+    st.info("""
+    🎩 **[Image placeholder: Distinguished manul in top hat goes here]**
+
+    *A wise manul once said: "The best way to understand turnover is to visualize it.
+    The second best way is to read documentation. I recommend both."*
+    """)
+
+    st.markdown("---")
+
+    st.markdown("""
+    ### Quick Guide
+
+    **What is a manul?**
+    A small wild cat (*Otocolobus manul*) known for its wisdom and excellent taste in haberdashery.
+
+    **What should I do first?**
+    1. Check "Use sample data" in the sidebar
+    2. Click through the tabs to see what's possible
+    3. Export your own data from your HRIS
+    4. Upload and explore
+
+    **I'm stuck. What now?**
+    - Check that your date columns are formatted as YYYY-MM-DD
+    - Make sure employee_id, name, and hire_date are present
+    - Look at the sample data format (download template button on main page)
+
+    **Where do I find my organization's data?**
+    Most HRIS systems (BambooHR, Rippling, Gusto, etc.) have an "Export" button.
+    Look for "Employee Report" or "Termination Report" in your admin panel.
+    """)
+
+
 def main():
+    # Check if showing manul help
+    if st.session_state.get('show_manul', False):
+        show_manul_help()
+        if st.button("← Back to Main"):
+            st.session_state['show_manul'] = False
+            st.rerun()
+        st.stop()
+
     st.title("📊 NGO Turnover Analysis Tool")
     st.markdown("Transform your employee data into actionable insights")
 
     # Sidebar
     with st.sidebar:
         st.header("⚙️ Settings")
+
+        # Help link
+        if st.button("🎩 Read the Manul", help="First time? Start here!"):
+            st.session_state['show_manul'] = True
+            st.rerun()
+
+        st.markdown("---")
 
         # Data upload
         st.subheader("1. Upload Data")
@@ -110,23 +384,8 @@ def main():
         df = clean_data(df)
         st.info("📝 Using sample data for demonstration")
     else:
-        st.warning("👆 Please upload an Excel file or use sample data to get started")
-        st.markdown("### Template Format")
-        st.markdown("Your Excel file should include these columns:")
-        st.code("""
-employee_id | name | hire_date | termination_date | department | role | salary
-1001 | John Doe | 2022-01-15 | | Programs | Manager | 65000
-1002 | Jane Smith | 2021-06-01 | 2023-03-15 | Development | Officer | 52000
-        """)
-
-        # Download template
-        template = create_sample_template()
-        st.download_button(
-            "📥 Download Template",
-            template.to_csv(index=False),
-            "turnover_analysis_template.csv",
-            "text/csv"
-        )
+        # ==================== LANDING PAGE ====================
+        show_landing_page()
         st.stop()
 
     # Main dashboard
