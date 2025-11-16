@@ -8,29 +8,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         .publication-card {
-            margin: 2.5rem 0;
-            padding: 1.5rem;
+            margin: 3rem 0;
+            padding: 0;
             background: #fffff8;
-            border-left: 4px solid #333;
-            transition: all 0.2s;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+            overflow: hidden;
         }
         .publication-card:hover {
             background: #fff9f0;
-            border-left-color: #cc0000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        .publication-header {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 0;
+        }
+        .publication-image {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        .publication-content {
+            padding: 1.5rem 2rem;
         }
         .publication-card h2 {
             margin-top: 0;
             font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
         .publication-meta {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
             margin: 0.5rem 0;
         }
         .publication-abstract {
             margin: 1rem 0;
             line-height: 1.6;
+            font-size: 0.95rem;
         }
         .publication-links {
             margin-top: 1rem;
@@ -39,19 +56,27 @@
         }
         .publication-links a {
             margin-right: 1.5rem;
+            text-decoration: none;
+            color: #333;
+            transition: color 0.2s;
+        }
+        .publication-links a:hover {
+            color: #cc0000;
         }
         .badge {
             display: inline-block;
-            padding: 2px 8px;
-            font-size: 0.75rem;
+            padding: 3px 10px;
+            font-size: 0.7rem;
             border-radius: 3px;
             margin-left: 0.5rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
-        .badge-paper {
+        .badge-policy {
             background: #4a5a8a;
             color: #fff;
         }
-        .badge-data {
+        .badge-tool {
             background: #6b8e6b;
             color: #fff;
         }
@@ -77,23 +102,32 @@
             color: #666;
             margin-top: 0.5rem;
         }
+        @media (max-width: 768px) {
+            .publication-header {
+                grid-template-columns: 1fr;
+            }
+            .publication-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <article>
         <h1>Publications</h1>
-        <p class="subtitle">Policy Research & Data Repositories</p>
+        <p class="subtitle">Policy Research & Interactive Tools</p>
 
         <section>
             <p><a href="../index.html">← Back to Home</a></p>
 
-            <p>This page collects all research papers and datasets published through Camille's Lot. Following the academic preprint model (inspired by arXiv and Zenodo), all work is versioned for transparency. Each publication maintains a complete version history, allowing readers to see how research evolves over time.</p>
+            <p>Featured work combining policy analysis with data visualization. Following the academic preprint model (inspired by arXiv and Zenodo), all work is versioned for transparency.</p>
 
             <div class="stats-grid">
                 <div class="stat-box">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Total Publications</div>
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Featured Projects</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-number">1</div>
@@ -101,17 +135,13 @@
                 </div>
                 <div class="stat-box">
                     <div class="stat-number">1</div>
-                    <div class="stat-label">Data Analysis Tools</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">1</div>
-                    <div class="stat-label">Data Repositories</div>
+                    <div class="stat-label">Data Tools</div>
                 </div>
             </div>
         </section>
 
         <section>
-            <h2>Research Papers</h2>
+            <h2>Featured Publications</h2>
 
             <div class="publication-card">
                 <h2>
@@ -144,10 +174,6 @@
                     <a href="calgary-rezoning/v1.0/metadata.json">Metadata (JSON)</a>
                 </div>
             </div>
-        </section>
-
-        <section>
-            <h2>Data Analysis Tools</h2>
 
             <div class="publication-card">
                 <h2>
