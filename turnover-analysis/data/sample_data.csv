@@ -1,0 +1,21 @@
+employee_id,name,hire_date,termination_date,department,role,termination_reason,salary
+1001,Alice Johnson,2022-01-15,,Programs,Coordinator,,45000
+1002,Bob Smith,2022-03-01,2023-02-15,Programs,Manager,Voluntary,65000
+1003,Carol Williams,2022-06-10,,Development,Officer,,52000
+1004,David Brown,2022-08-20,2022-12-01,Operations,Specialist,Voluntary,58000
+1005,Emma Davis,2023-01-05,,Programs,Associate,,48000
+1006,Frank Miller,2023-04-12,,Development,Manager,,70000
+1007,Grace Wilson,2023-07-01,2024-08-30,Operations,Coordinator,Involuntary,50000
+1008,Henry Moore,2023-10-15,,Programs,Associate,,47000
+1009,Iris Taylor,2022-05-20,2023-06-10,Development,Coordinator,Voluntary,46000
+1010,Jack Anderson,2022-09-15,,Operations,Manager,,68000
+1011,Kate Thompson,2021-11-01,2022-08-15,Programs,Officer,Voluntary,54000
+1012,Liam Martinez,2023-02-20,,Development,Associate,,49000
+1013,Mia Garcia,2022-04-05,2023-11-20,Operations,Specialist,Voluntary,56000
+1014,Noah Rodriguez,2023-06-12,,Programs,Coordinator,,47000
+1015,Olivia Lee,2021-08-30,,Development,Manager,,72000
+1016,Paul Walker,2022-12-01,2024-01-15,Operations,Coordinator,Voluntary,48000
+1017,Quinn Hall,2023-03-18,,Programs,Associate,,46000
+1018,Rachel Allen,2022-07-25,,Development,Officer,,53000
+1019,Sam Young,2021-10-10,2023-04-05,Operations,Specialist,Voluntary,57000
+1020,Tara King,2023-05-08,,Programs,Manager,,66000
