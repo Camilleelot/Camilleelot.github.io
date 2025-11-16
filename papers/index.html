@@ -144,65 +144,102 @@
             <h2>Featured Publications</h2>
 
             <div class="publication-card">
-                <div class="publication-header">
-                    <img src="calgary-rezoning/v1.0/img/housing-developments.JPEG" alt="Calgary housing developments" class="publication-image">
-                    <div class="publication-content">
-                        <h2>
-                            The Rezoning Paradox
-                            <span class="badge badge-policy">POLICY ANALYSIS</span>
-                        </h2>
-                        <p class="publication-meta">
-                            <b>Camille Elot</b> • Published November 15, 2025 • Version 1.0
-                        </p>
-                        <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
-                            Why does every single person around me say housing sucks?
-                        </p>
+                <h2>
+                    The Rezoning Paradox
+                    <span class="badge badge-paper">POLICY ANALYSIS</span>
+                </h2>
+                <p class="publication-meta">
+                    <b>Camille Moreau</b> • Published November 15, 2025 • Version 1.0
+                </p>
+                <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
+                    Why does every single person around me say housing sucks?
+                </p>
 
-                        <div class="publication-abstract">
-                            <p>When Calgary implemented citywide blanket rezoning in August 2024, removing density restrictions across residential neighborhoods, it offered a natural experiment to test YIMBY theory in practice. Despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend.</p>
-                        </div>
+                <div class="publication-abstract">
+                    <p>When Calgary implemented citywide blanket rezoning in August 2024, removing density restrictions across residential neighborhoods, it offered a natural experiment to test YIMBY theory in practice. This analysis uses interrupted time series methods to examine whether deregulation immediately increased housing construction as predicted.</p>
 
-                        <p class="publication-meta">
-                            <b>Method:</b> Interrupted Time Series • <b>Data:</b> CMHC Housing Starts (17 months)
-                        </p>
+                    <p><b>Key Finding:</b> Despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend. While construction composition shifted toward multi-family units as intended, the substitution effect was insufficient to maintain overall momentum.</p>
+                </div>
 
-                        <div class="publication-links">
-                            <a href="calgary-rezoning/v1.0/index.html"><b>→ Read Paper</b></a>
-                            <a href="calgary-rezoning/index.html">All Versions</a>
-                        </div>
-                    </div>
+                <p class="publication-meta">
+                    <b>Methodology:</b> Interrupted Time Series Regression •
+                    <b>Data:</b> CMHC Housing Starts (17 months) •
+                    <b>Keywords:</b> housing policy, YIMBY, rezoning, Calgary, municipal politics
+                </p>
+
+                <div class="publication-links">
+                    <a href="calgary-rezoning/v1.0/index.html"><b>→ Read Paper</b></a>
+                    <a href="calgary-rezoning/index.html">All Versions</a>
+                    <a href="calgary-rezoning/changelog.md">Changelog</a>
+                    <a href="calgary-rezoning/v1.0/metadata.json">Metadata (JSON)</a>
                 </div>
             </div>
 
             <div class="publication-card">
-                <div class="publication-header">
-                    <img src="../turnover-analysis/assets/sankey-preview.png" alt="Employee flow Sankey diagram" class="publication-image">
-                    <div class="publication-content">
-                        <h2>
-                            NGO Turnover Analysis Tool
-                            <span class="badge badge-tool">INTERACTIVE TOOL</span>
-                        </h2>
-                        <p class="publication-meta">
-                            <b>Camille Elot</b> • Published November 16, 2025 • Version 1.0
-                        </p>
-                        <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
-                            Transforming employee data into actionable retention insights
-                        </p>
+                <h2>
+                    NGO Turnover Analysis Tool
+                    <span class="badge badge-paper">INTERACTIVE TOOL</span>
+                </h2>
+                <p class="publication-meta">
+                    <b>Camille Elot</b> • Published November 16, 2025 • Version 1.0
+                </p>
+                <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
+                    Transforming employee data into actionable retention insights
+                </p>
 
-                        <div class="publication-abstract">
-                            <p>An interactive dashboard that transforms employee data into case-based tenure analysis. Let <i>T</i> denote all employees and <i>T</i>₀ ⊂ <i>T</i> those who terminated. The rate <i>r</i> = |<i>T</i>₀| / |<i>T</i>| × 100 is easily calculated—but <i>when</i> do people leave? At what cost <i>C</i>? Visualizes department flows via Sankey diagrams, calculates true turnover costs (<i>C</i> ≈ 0.8<i>S</i>).</p>
-                        </div>
+                <div class="publication-abstract">
+                    <p>An interactive dashboard that transforms employee data into case-based tenure analysis. Let <i>T</i> denote the set of all employees and <i>T</i>₀ ⊂ <i>T</i> denote those who have terminated. The turnover rate <i>r</i> = |<i>T</i>₀| / |<i>T</i>| × 100 is easily calculated—but this scalar obscures the temporal distribution. <i>When</i> do people leave? <i>Why</i>? At what cost <i>C</i>?</p>
 
-                        <p class="publication-meta">
-                            <b>Tech:</b> Python, Streamlit, Plotly • <b>Deploy:</b> Web & Local
-                        </p>
+                    <p><b>Key Features:</b> Categorizes terminations by tenure into six windows (0-3 months → 5+ years), visualizes department flows via Sankey diagrams, calculates true turnover costs (<i>C</i> ≈ 0.8<i>S</i> where <i>S</i> = salary), and flags at-risk employees. Designed for HR managers who've never written code.</p>
+                </div>
 
-                        <div class="publication-links">
-                            <a href="turnover-tool/v1.0/index.html"><b>→ Documentation</b></a>
-                            <a href="https://hrturnoveranalysis.streamlit.app/"><b>Launch Tool</b></a>
-                            <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">Source Code</a>
-                        </div>
-                    </div>
+                <p class="publication-meta">
+                    <b>Technology:</b> Python, Streamlit, Plotly •
+                    <b>Deployment:</b> Web & Local Installation •
+                    <b>Keywords:</b> HR analytics, turnover analysis, nonprofit management, retention
+                </p>
+
+                <div class="publication-links">
+                    <a href="turnover-tool/v1.0/index.html"><b>→ Read Documentation</b></a>
+                    <a href="https://hrturnoveranalysis.streamlit.app/"><b>Launch Tool</b></a>
+                    <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">Source Code</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Data Repositories</h2>
+
+            <div class="publication-card">
+                <h2>
+                    CMHC Housing Data Repository
+                    <span class="badge badge-data">DATASET</span>
+                </h2>
+                <p class="publication-meta">
+                    <b>Camille Moreau</b> • Published November 15, 2025 • Version 1.0
+                </p>
+                <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
+                    Calgary Metropolitan Area Housing Starts and Rental Data
+                </p>
+
+                <div class="publication-abstract">
+                    <p>Curated dataset of housing construction and rental market data for the Calgary Census Metropolitan Area, sourced from Canada Mortgage and Housing Corporation (CMHC). This repository supports policy analysis of Calgary's housing market, including the 2024 blanket rezoning intervention.</p>
+
+                    <p><b>Contents:</b> Monthly housing starts by dwelling type (Nov 2023 - Mar 2025), raw CMHC survey data, and rental market indicators. Data provided under Statistics Canada Open License.</p>
+                </div>
+
+                <p class="publication-meta">
+                    <b>Coverage:</b> Nov 2023 - Mar 2025 (17 months) •
+                    <b>Geographic Area:</b> Calgary CMA •
+                    <b>Format:</b> CSV, various •
+                    <b>License:</b> Statistics Canada Open License
+                </p>
+
+                <div class="publication-links">
+                    <a href="housing-data/v1.0/index.html"><b>→ Access Dataset</b></a>
+                    <a href="housing-data/index.html">All Versions</a>
+                    <a href="housing-data/changelog.md">Changelog</a>
+                    <a href="housing-data/v1.0/metadata.json">Metadata (JSON)</a>
                 </div>
             </div>
         </section>
@@ -235,7 +272,7 @@
 
             <p><b>Example citation:</b></p>
             <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; background: #f5f5f5; padding: 1rem; border-left: 2px solid #333;">
-                Elot, C. (2025). The Rezoning Paradox: Why does every single person around me say housing sucks? <i>Camille's Lot</i>, v1.0. https://camilleelot.github.io/papers/calgary-rezoning/v1.0/
+                Moreau, C. (2025). The Rezoning Paradox: Why does every single person around me say housing sucks? <i>Camille's Lot</i>, v1.0. https://camilleelot.github.io/papers/calgary-rezoning/v1.0/
             </p>
         </section>
 
