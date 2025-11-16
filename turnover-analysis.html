@@ -6,6 +6,31 @@
     <link rel="stylesheet" href="tufte.css" />
     <link rel="stylesheet" href="latex.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .cta-button {
+            display: inline-block;
+            background: #2d5016;
+            color: #fffff8;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 2rem 0 1rem 0;
+            transition: background 0.2s;
+            font-family: et-book, Palatino, Georgia, serif;
+        }
+
+        .cta-button:hover {
+            background: #3d6826;
+            color: #fffff8;
+        }
+
+        .cta-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,9 +38,12 @@
         <h1 id="turnover-tool">NGO Turnover Analysis Tool</h1>
         <p class="subtitle">Transforming employee data into actionable insights</p>
 
-        <section>
-            <p><a href="index.html">← Back to Home</a></p>
+        <div class="cta-container">
+            <a href="https://hrturnoveranalysis.streamlit.app/" class="cta-button">Try The Tool Online with Sample Data</a>
+            <p class="subtitle"><i>Designed for HR managers who've never written code. Trying to make it as easy as, upload Excel → receive analysis. Developed with love from someone who had to do it.</i></p>
+        </div>
 
+        <section>
             <h2>The Problem</h2>
 
             <p>Let <i>T</i> denote the set of all employees and <i>T</i>₀ ⊂ <i>T</i> denote those who have terminated. The turnover rate <i>r</i> = |<i>T</i>₀| / |<i>T</i>| × 100 is easily calculated. For nonprofits, <i>r</i> ∈ [40%, 65%] is typical.</p>
@@ -106,8 +134,6 @@
             <p class="subtitle"><i>Turnover is not failure. Turnover is information. The question is: what does it tell you?</i></p>
 
             <p>→ <a href="https://hrturnoveranalysis.streamlit.app/">Try the tool</a> | <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">View source code</a></p>
-
-            <p><a href="index.html">← Back to Home</a></p>
         </section>
     </article>
 </body>
