@@ -80,6 +80,23 @@
             background: #6b8e6b;
             color: #fff;
         }
+        .cta-button {
+            display: inline-block;
+            background: #2d5016;
+            color: #fffff8;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 1.5rem 0 1rem 0;
+            transition: background 0.2s;
+            font-family: et-book, Palatino, Georgia, serif;
+        }
+        .cta-button:hover {
+            background: #3d6826;
+            color: #fffff8;
+        }
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -127,6 +144,12 @@
             .publication-card h2 {
                 color: #e5e5e5;
             }
+            .publication-card h2 a {
+                color: #e5e5e5;
+            }
+            .publication-card h2 a:hover {
+                color: #ff6b6b;
+            }
             .publication-meta {
                 color: #999;
             }
@@ -156,6 +179,14 @@
                 background: #1a1a1a !important;
                 color: #e5e5e5 !important;
                 border-left-color: #666 !important;
+            }
+            .cta-button {
+                background: #3d6826;
+                color: #fffff8;
+            }
+            .cta-button:hover {
+                background: #4d7836;
+                color: #fffff8;
             }
         }
     </style>
@@ -195,7 +226,7 @@
                     <img src="calgary-rezoning/v1.0/img/housing-developments.JPEG" alt="Calgary housing developments" class="publication-image">
                     <div class="publication-content">
                         <h2>
-                            The Rezoning Paradox
+                            <a href="calgary-rezoning/v1.0/index.html" style="text-decoration: none; color: inherit;">The Rezoning Paradox</a>
                             <span class="badge badge-policy">POLICY ANALYSIS</span>
                         </h2>
                         <p class="publication-meta">
@@ -226,11 +257,11 @@
                     <img src="../img/sankey diagram .jpg" alt="Employee flow Sankey diagram" class="publication-image">
                     <div class="publication-content">
                         <h2>
-                            NGO Turnover Analysis Tool
+                            <a href="turnover-tool/v1.0/index.html" style="text-decoration: none; color: inherit;">NGO Turnover Analysis Tool</a>
                             <span class="badge badge-tool">INTERACTIVE TOOL</span>
                         </h2>
                         <p class="publication-meta">
-                            <b>Camille Elot</b> • Published November 16, 2025 • Version 1.0
+                            <b>Camille Moreau</b> • Published November 16, 2025 • Version 1.0
                         </p>
                         <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
                             Transforming temporal distributions into actionable governance insights
@@ -244,9 +275,12 @@
                             <b>Tech:</b> Python, Streamlit, Plotly • <b>Deploy:</b> Web & Local
                         </p>
 
+                        <div style="text-align: center; margin: 1.5rem 0;">
+                            <a href="https://hrturnoveranalysis.streamlit.app/" class="cta-button">Launch Tool</a>
+                        </div>
+
                         <div class="publication-links">
                             <a href="turnover-tool/v1.0/index.html"><b>→ Read Full Documentation</b></a>
-                            <a href="https://hrturnoveranalysis.streamlit.app/">Launch Tool</a>
                             <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">Source Code</a>
                         </div>
                     </div>
