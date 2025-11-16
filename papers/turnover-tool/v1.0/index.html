@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>NGO Turnover Analysis Tool</title>
+    <link rel="stylesheet" href="../../../tufte.css" />
+    <link rel="stylesheet" href="../../../latex.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <article>
+        <h1 id="turnover-tool">NGO Turnover Analysis Tool</h1>
+        <p class="subtitle">Transforming temporal distributions into actionable governance insights</p>
+
+        <section>
+            <h2 id="abstract">Abstract</h2>
+            <p><b>Let <i>T</i> denote the set of all employees in an organization and <i>T</i>₀ ⊂ <i>T</i> denote those who have terminated employment. The turnover rate <i>r</i> = |<i>T</i>₀| / |<i>T</i>| × 100 is trivially calculated. For nonprofit organizations in the social services sector, <i>r</i> ∈ [40%, 65%] is empirically typical.</b></p>
+
+            <p>Yet this scalar obscures the temporal distribution. <i>When</i> do employees leave? <i>Why</i> do specific roles show differential attrition? At what financial cost <i>C</i>? Traditional HR reporting treats turnover as a single number presented quarterly to governance bodies. This approach fails to surface the causal mechanisms driving organizational churn.</p>
+
+            <p>This tool implements a case-based analytical framework, categorizing each termination <i>e</i> ∈ <i>T</i>₀ by tenure <i>t</i> into six temporal windows: Case 0 (<i>t</i> = 0 days, onboarding failures), Case 1 (0 < <i>t</i> < 90 days, role misfit), Case 2 (90 ≤ <i>t</i> < 365 days, training gaps), Case 3 (1 ≤ <i>t</i> < 3 years, career progression), Case 4 (3 ≤ <i>t</i> < 5 years, competitive poaching), Case 5 (<i>t</i> ≥ 5 years, retirement/burnout).</p>
+
+            <p>The methodology combines cohort retention analysis (survival functions <i>S</i>(<i>t</i>) by hire cohort), flow visualization (Sankey diagrams mapping Department → Role → Outcome), financial modeling (total cost <i>C</i> ≈ 0.8<i>S</i> where <i>S</i> = annual salary, based on SHRM research), and predictive risk flagging (identifying employees ∀<i>e</i> ∈ <i>T</i> where <i>P</i>(terminate | <i>t</i>, dept, role) > <i>θ</i>).<label for="mn-manul" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-manul" class="margin-toggle" /><span class="marginnote"><img src="../../../turnover-analysis/assets/manul_tophat.png" alt="Distinguished manul" /> <i>A wise manul once said: "The best way to understand turnover is to visualize it."</i></span></p>
+
+            <p><b>Design Philosophy:</b> Built for HR managers who have never written code. Upload Excel → receive analysis. The interface abstracts computational complexity, presenting results through interactive dashboards requiring zero technical expertise. Data can be processed via web deployment (ephemeral, recommended for anonymized data) or local installation (maximum privacy, recommended for files containing PII).</p>
+
+            <p class="subtitle"><i>Turnover is not organizational failure. Turnover is information. The question is: what does it tell you?</i></p>
+        </section>
+
+        <section>
+            <h2 id="access">Access & Deployment</h2>
+            <p><b>Web Version (Immediate):</b> <a href="https://hrturnoveranalysis.streamlit.app/">Launch the tool →</a></p>
+            <p><b>Source Code:</b> <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">GitHub Repository →</a></p>
+            <p><b>Local Installation:</b> See Technical Implementation section below</p>
+        </section>
+
+        <section>
+            <h2 id="methodology">Methodology & Features</h2>
+
+            <h3>Case-Based Tenure Analysis</h3>
+            <p>Traditional cohort analysis groups employees by hire date and tracks retention over time. This tool extends that framework by categorizing <i>why</i> and <i>when</i> employees depart:</p>
+            <ul>
+                <li><b>Case 0 (Never Worked):</b> <i>t</i> = 0 days. Onboarding process failures or role abandonment before start date.</li>
+                <li><b>Case 1 (Quick Exits):</b> 0 < <i>t</i> < 90 days. Role expectations mismatch, poor cultural fit, inadequate screening.</li>
+                <li><b>Case 2 (Post-Onboarding Crash):</b> 90 ≤ <i>t</i> < 365 days. Training insufficiencies, role clarity issues, early burnout.</li>
+                <li><b>Case 3 (Mid-Term Fallout):</b> 1 ≤ <i>t</i> < 3 years. Career advancement barriers, compensation compression, skill stagnation.</li>
+                <li><b>Case 4 (Established Turnover):</b> 3 ≤ <i>t</i> < 5 years. External competitive offers, lateral moves for advancement.</li>
+                <li><b>Case 5 (Veteran Turnover):</b> <i>t</i> ≥ 5 years. Retirement, major life transitions, long-term burnout.</li>
+            </ul>
+
+            <h3>Cohort Retention Tracking</h3>
+            <p>Survival curves <i>S</i>(<i>t</i>) by hire cohort reveal temporal patterns. If cohort 2023-Q1 shows 60% retention at <i>t</i> = 12 months while cohort 2024-Q1 shows 45% retention at the same mark, this signals degradation in onboarding, compensation competitiveness, or organizational stability.</p>
+
+            <h3>Sankey Flow Diagrams</h3>
+            <p>Visual representation of employee paths: Department → Role → Outcome (specific case or "Still Employed"). Identifies bottlenecks (e.g., "Programs Department → Counselor → Case 2" as dominant termination flow suggests counselor training gaps).</p>
+
+            <h3>Financial Modeling</h3>
+            <p>Cost per termination <i>C</i> calculated as:</p>
+            <p style="text-align: center; font-style: italic; margin: 1.5rem 0;"><i>C</i> = <i>S</i> × (0.20 + 0.10 + 0.50) = 0.8<i>S</i></p>
+            <p>Where:
+                <ul>
+                    <li>Recruitment costs: 20% of annual salary <i>S</i> (advertising, screening, interviewing)</li>
+                    <li>Training costs: 10% of <i>S</i> (onboarding, shadowing, certification)</li>
+                    <li>Productivity loss: 50% of <i>S</i> (6-month ramp to full effectiveness)</li>
+                </ul>
+            </p>
+            <p>Aggregate organizational cost: <i>C</i><sub>total</sub> = Σ<sub><i>e</i> ∈ <i>T</i>₀</sub> <i>C</i>(<i>e</i>). For an organization with 50 annual terminations at median salary $48,000, <i>C</i><sub>total</sub> ≈ $1.92M.</p>
+
+            <h3>Predictive Risk Flagging</h3>
+            <p>Currently active employees <i>e</i> ∈ <i>T</i> \ <i>T</i>₀ receive risk scores based on:
+                <ul>
+                    <li>Tenure proximity to high-risk windows (Case 1-2 historically show 54% of total attrition)</li>
+                    <li>Department-level turnover rates (if dept rate > 30%, flag all members)</li>
+                    <li>Temporal milestones (6-month and 12-month marks correlate with departure decisions)</li>
+                </ul>
+            </p>
+        </section>
+
+        <section>
+            <h2 id="data">Data Requirements</h2>
+            <p><b>Minimum Required Fields:</b></p>
+            <ul>
+                <li><code>employee_id</code>: Unique identifier (anonymized acceptable)</li>
+                <li><code>hire_date</code>: Employment start date (YYYY-MM-DD format)</li>
+                <li><code>termination_date</code>: Employment end date (blank if currently employed)</li>
+            </ul>
+
+            <p><b>Recommended Optional Fields:</b></p>
+            <ul>
+                <li><code>department</code>: Organizational unit (enables departmental analysis)</li>
+                <li><code>role</code>: Job title or position category (enables role-specific patterns)</li>
+                <li><code>salary</code>: Annual compensation (enables cost calculations, median imputation if missing)</li>
+                <li><code>termination_reason</code>: "Voluntary" or "Involuntary" (separates resignations from terminations)</li>
+                <li><code>employment_type</code>: "Full-time", "Part-time", "Hourly" (identifies vulnerable employment categories)</li>
+            </ul>
+
+            <p><b>Export Sources:</b> Most HRIS systems (BambooHR, Rippling, Gusto, ADP) provide employee roster exports. Look for "Employee Report" or "Termination Report" functionality in admin panels.</p>
+
+            <p><b>Sample Template:</b> <a href="../../../turnover-analysis/data/sample_data.csv">Download CSV template →</a></p>
+        </section>
+
+        <section>
+            <h2 id="privacy">Data Privacy & Security</h2>
+            <p class="subtitle"><i>Critical consideration: HR data often contains personally identifiable information (PII). Understand where your data flows before upload.</i></p>
+
+            <h3>Streamlit Cloud Deployment (Web Version)</h3>
+            <p><b>Data flow:</b> Uploaded files are processed on Streamlit's servers, not your local machine.</p>
+            <p><b>Retention:</b> Data is ephemeral—deleted when browser session ends. No permanent storage.</p>
+            <p><b>Encryption:</b> HTTPS in transit. Standard cloud security protocols.</p>
+            <p><b>Recommended for:</b> Anonymized data, aggregate data, testing with sample datasets.</p>
+            <p><b>Not recommended for:</b> Files containing employee names, social security numbers, detailed salary data, termination reasons with attribution.</p>
+
+            <h3>Local Installation (Maximum Privacy)</h3>
+            <p><b>Data flow:</b> All processing occurs on your machine. No external servers involved.</p>
+            <p><b>Retention:</b> You control all files. Data persists only where you store it.</p>
+            <p><b>Encryption:</b> Dependent on your system security. Recommended: encrypted drives for sensitive HR data.</p>
+            <p><b>Recommended for:</b> Real employee data with PII, confidential organizational information, compliance-sensitive contexts.</p>
+
+            <h3>What We Don't Do</h3>
+            <ul>
+                <li>Store uploaded data after session termination</li>
+                <li>Collect analytics on uploaded datasets</li>
+                <li>Share data with third parties or advertisers</li>
+                <li>Require user accounts, authentication, or login credentials</li>
+                <li>Track individual organizations using the tool</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 id="technical">Technical Implementation</h2>
+
+            <h3>Technology Stack</h3>
+            <ul>
+                <li><b>Backend:</b> Python 3.9+ with pandas (data processing), numpy (numerical operations)</li>
+                <li><b>Frontend:</b> Streamlit (interactive web interface)</li>
+                <li><b>Visualization:</b> Plotly (interactive charts), includes Sankey diagrams, heatmaps, survival curves</li>
+                <li><b>Statistical:</b> Scikit-learn (predictive modeling, risk classification)</li>
+                <li><b>Data I/O:</b> openpyxl (Excel file parsing)</li>
+            </ul>
+
+            <h3>Local Installation Instructions</h3>
+            <p><b>Prerequisites:</b> Python 3.9 or later. Check installation: <code>python --version</code></p>
+
+            <p><b>Step 1: Install Python</b> (if not present)</p>
+            <ul>
+                <li>Download from <a href="https://python.org/downloads">python.org/downloads</a></li>
+                <li>During installation: ☑ "Add Python to PATH" (Windows) or use Homebrew (Mac)</li>
+                <li>Verify: Open terminal, run <code>python --version</code></li>
+            </ul>
+
+            <p><b>Step 2: Download Source</b></p>
+            <ul>
+                <li>Visit <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">GitHub repository</a></li>
+                <li>Click green "Code" button → Download ZIP</li>
+                <li>Extract to accessible location (Desktop, Documents, etc.)</li>
+            </ul>
+
+            <p><b>Step 3: Install Dependencies</b></p>
+            <p>Open terminal/command prompt, navigate to extracted folder:</p>
+            <pre><code>cd path/to/turnover-analysis
+pip install -r requirements.txt</code></pre>
+            <p>Installation takes ~2 minutes. Downloads ~150MB of packages.</p>
+
+            <p><b>Step 4: Launch Application</b></p>
+            <pre><code>streamlit run app.py</code></pre>
+            <p>Browser automatically opens to <code>localhost:8501</code>. All processing occurs locally. Data never leaves your machine.</p>
+
+            <h3>Project Structure</h3>
+            <pre><code>turnover-analysis/
+├── app.py                  # Main Streamlit application
+├── src/
+│   ├── data_loader.py      # Excel parsing, validation
+│   ├── cohort_analysis.py  # Retention calculations
+│   ├── case_analysis.py    # Tenure categorization
+│   ├── cost_calculator.py  # Financial modeling
+│   ├── visualizations.py   # Plotly chart generation
+│   └── predictive.py       # Risk scoring algorithms
+├── data/
+│   └── sample_data.csv     # 100 synthetic employee records
+└── requirements.txt        # Python dependencies</code></pre>
+        </section>
+
+        <section>
+            <h2 id="board">For Board Reports & Governance</h2>
+            <p><b>The Use Case:</b> Quarterly board meetings require workforce metrics. Traditional approach: manually constructed Excel pivot tables, static charts, scalar summaries (<i>r</i> = 42%). <i>Insufficient for governance.</i></p>
+
+            <p>Board members need <i>actionable</i> insights, not raw numbers. "35% annual turnover" is data. "48% of counselor turnover occurs in months 3-12, costing $180,000 annually, suggesting training gaps in role transition" is <i>information</i>.<label for="mn-board" class="margin-toggle sidenote-number"></label>
+            <input type="checkbox" id="mn-board" class="margin-toggle"/>
+            <span class="sidenote">Governance bodies allocate resources based on demonstrated need. Showing <i>where</i> and <i>why</i> turnover concentrates enables targeted intervention rather than diffuse spending.</span></p>
+
+            <h3>Workflow for Quarterly Reporting</h3>
+            <ol>
+                <li><b>Data Export:</b> From HRIS, export employee roster with hire dates, termination dates, departments, roles, salaries. CSV or Excel format.</li>
+                <li><b>Upload & Validate:</b> Upload to tool (web or local). Validation checks for required fields, date formatting, duplicate IDs.</li>
+                <li><b>Overview Tab:</b> Capture current <i>r</i>, YoY trend, comparison to sector benchmark (40-65% for NGOs). Screenshot for executive summary.</li>
+                <li><b>Case Analysis Tab:</b> Identify which tenure windows show concentration. If Case 1-2 dominate (0-12 months), signals onboarding/training failures. If Case 3+ dominate, signals retention/advancement issues. Export case distribution chart.</li>
+                <li><b>Department Breakdown:</b> Identify problematic departments. If "Programs" shows 55% turnover while "Development" shows 18%, resource allocation question emerges. Export department comparison.</li>
+                <li><b>Cost Analysis Tab:</b> Calculate total <i>C</i>, present as budget line item. Show forecasted annual impact at current <i>r</i>. Calculate ROI for proposed retention initiatives (e.g., if investing $50K in training reduces turnover by 5%, net savings = $240K).</li>
+                <li><b>Risk Assessment Tab:</b> Flag currently employed individuals at high risk. Present as intervention opportunity, not surveillance. "12 employees in high-risk tenure windows; recommend check-ins."</li>
+                <li><b>Recommendations:</b> Ground proposals in patterns. "Case 2 concentration suggests 6-month structured check-ins" is stronger than "we should do more check-ins."</li>
+            </ol>
+
+            <h3>Board Deck Structure</h3>
+            <p>Recommended slide sequence:</p>
+            <ol>
+                <li><b>Executive Summary:</b> Current <i>r</i> with YoY comparison and sector benchmark</li>
+                <li><b>Temporal Distribution:</b> Case analysis showing <i>when</i> employees leave (bar chart, case percentages)</li>
+                <li><b>Departmental Analysis:</b> Department comparison identifying hot spots (bar chart, sorted by rate)</li>
+                <li><b>Financial Impact:</b> Total cost <i>C</i>, cost by department, forecasted annual impact (tables + totals)</li>
+                <li><b>Flow Analysis:</b> Sankey diagram showing Department → Role → Outcome (visual complexity acceptable here; boards appreciate systems thinking)</li>
+                <li><b>Interventions:</b> Specific, costed proposals grounded in data (e.g., "Counselor training enhancement: $30K investment, projected $150K annual savings")</li>
+            </ol>
+
+            <p><b>Exporting Artifacts:</b> All charts support download (hover over chart → camera icon → save as PNG). Data tables have CSV download buttons. For PDF generation, export charts individually and assemble in presentation software.</p>
+        </section>
+
+        <section>
+            <h2 id="future">Future Development</h2>
+            <ul>
+                <li>Direct HRIS API integration (BambooHR, Rippling, Gusto webhooks for automated data refresh)</li>
+                <li>Machine learning models for turnover prediction (currently rule-based; move to gradient boosting on historical patterns)</li>
+                <li>Diversity/equity metrics (demographic breakdowns by case type, pay equity analysis)</li>
+                <li>Multi-organization benchmarking platform (anonymous aggregate comparison across similar NGOs)</li>
+                <li>Automated report generation (PDF export with customizable templates)</li>
+                <li>Time series forecasting (ARIMA models for quarterly projections)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 id="license">License & Attribution</h2>
+            <p><b>License:</b> MIT License. Free to use, modify, and distribute. See <a href="https://github.com/Camilleelot/Camilleelot.github.io/blob/main/turnover-analysis/LICENSE">LICENSE</a> for details.</p>
+            <p><b>Citation:</b> If using this tool in published research or board presentations, attribution appreciated but not required.</p>
+            <p><b>Author:</b> Built by someone who wrestled with NGO HR data and wanted better analytical infrastructure. <a href="mailto:camillefromraytheon2023@gmail.com">Contact</a></p>
+            <p><b>Acknowledgments:</b> Methodology inspired by organizational behavior literature, SHRM cost research, and frustrations with manual Excel-based HR reporting.</p>
+        </section>
+
+        <p style="text-align: center; margin-top: 3rem;"><a href="../../../index.html">← Back to Portfolio</a> | <a href="https://hrturnoveranalysis.streamlit.app/">Try the Tool →</a></p>
+    </article>
+</body>
+</html>
