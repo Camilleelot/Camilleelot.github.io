@@ -25,10 +25,93 @@
           </section>
           <section>
               <h2>Data Analysis Tools</h2>
-              <p><b><a href="./turnover-analysis/">NGO Turnover Analysis Tool</a></b> - An interactive dashboard for nonprofit organizations to understand employee retention patterns.</p>
-              <p>Built to address a fundamental challenge in the social services sector: turnover rates <i>r</i> ∈ [40%, 65%] are known, but the underlying dynamics—<i>when</i> people leave, <i>why</i> they leave, and <i>what</i> it costs—remain obscured.</p>
-              <p>The tool implements case-based tenure analysis (categorizing terminations ∀<i>e</i> ∈ <i>T</i>₀ by tenure <i>t</i>), cohort retention tracking, Sankey flow diagrams, and cost modeling. Upload Excel data → receive actionable insights.</p>
-              <p class="subtitle">Features: Six case types (0-3mo, 3-12mo, 1-3yr, etc.), voluntary/involuntary breakdowns, department flows, predictive risk flags. Designed for HR managers who've never touched code.</p>
+
+              <h3><a href="https://hrturnoveranalysis.streamlit.app/">NGO Turnover Analysis Tool</a></h3>
+
+              <p><b>The Problem:</b> Let <i>T</i> denote the set of all employees and <i>T</i>₀ ⊂ <i>T</i> denote those who have terminated. The turnover rate <i>r</i> = |<i>T</i>₀| / |<i>T</i>| × 100 is easily calculated. For nonprofits, <i>r</i> ∈ [40%, 65%] is typical.</p>
+
+              <p>But this scalar obscures the temporal distribution. <i>When</i> do people leave? <i>Why</i>? At what cost <i>C</i>?</p>
+
+              <p><b>The Tool:</b> An interactive dashboard that transforms employee data into case-based tenure analysis. Categorizes terminations ∀<i>e</i> ∈ <i>T</i>₀ by tenure <i>t</i> into six windows (0-3 months → 5+ years), visualizes department flows via Sankey diagrams, calculates true turnover costs (<i>C</i> ≈ 0.8<i>S</i> where <i>S</i> = salary), and flags at-risk employees.</p>
+
+              <p class="subtitle"><i>Designed for HR managers who've never written code. Upload Excel → receive analysis.</i></p>
+
+              <h3>How to Use</h3>
+
+              <p><b>Option 1: Web Version</b> (Immediate)<br>
+              → <a href="https://hrturnoveranalysis.streamlit.app/">Launch the tool</a> in your browser<br>
+              → Upload your Excel file (or use sample data)<br>
+              → Explore the six analysis tabs<br>
+              → Export insights for board reports</p>
+
+              <p><label for="sn-privacy" class="margin-toggle sidenote-number"></label>
+              <input type="checkbox" id="sn-privacy" class="margin-toggle"/>
+              <span class="sidenote"><b>Privacy note:</b> Web version processes data on Streamlit's servers (ephemeral, deleted after session). For confidential HR data containing PII, use local installation.</span>
+              <b>Data implications:</b> Uploaded data is processed on external servers. Safe for anonymized or sample data. Not recommended for files containing employee names, salaries, or termination reasons unless you trust the infrastructure.</p>
+
+              <p><b>Option 2: Local Installation</b> (Maximum Privacy)<br>
+              For sensitive organizational data, run on your own computer.</p>
+
+              <p><b>What is Python?</b> A programming language. The medium through which the tool executes. Think of it as the interpreter between your data and the analysis—the necessary substrate for computation.<label for="sn-python" class="margin-toggle sidenote-number"></label>
+              <input type="checkbox" id="sn-python" class="margin-toggle"/>
+              <span class="sidenote">Python is to data analysis what LaTeX is to mathematical typesetting: a precise language that transforms symbolic instructions into realized output.</span></p>
+
+              <ol>
+                  <li><b>Install Python:</b>
+                      <ul>
+                          <li>Navigate to <a href="https://python.org/downloads">python.org/downloads</a></li>
+                          <li>Download latest version (currently 3.12+)</li>
+                          <li>During installation: ☑ "Add Python to PATH" (critical)</li>
+                          <li>Complete installation</li>
+                          <li>Verify: Open terminal/command prompt, type <code>python --version</code></li>
+                      </ul>
+                  </li>
+                  <li><b>Download the tool:</b>
+                      <ul>
+                          <li>Visit <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">GitHub repository</a></li>
+                          <li>Click green "Code" button → Download ZIP</li>
+                          <li>Extract to known location (e.g., Desktop/turnover-analysis)</li>
+                      </ul>
+                  </li>
+                  <li><b>Install dependencies:</b>
+                      <ul>
+                          <li>Open terminal/command prompt</li>
+                          <li>Navigate: <code>cd Desktop/turnover-analysis</code></li>
+                          <li>Install: <code>pip install -r requirements.txt</code></li>
+                          <li>Wait ~2 minutes for completion</li>
+                      </ul>
+                  </li>
+                  <li><b>Run:</b>
+                      <ul>
+                          <li>Execute: <code>streamlit run app.py</code></li>
+                          <li>Browser opens automatically at localhost:8501</li>
+                          <li><i>All data remains on your machine</i></li>
+                      </ul>
+                  </li>
+              </ol>
+
+              <h3>For Board Reports</h3>
+
+              <p><b>The use case:</b> Quarterly board meetings require turnover metrics. Traditional approach: manual Excel pivot tables, static charts, scalar summaries. <i>Insufficient for governance.</i></p>
+
+              <p><b>With this tool:</b></p>
+              <ul>
+                  <li><b>Upload</b> your HRIS export (employee_id, hire_date, termination_date, department, role, salary)</li>
+                  <li><b>Generate</b> in Overview tab: current <i>r</i>, trends, department comparisons</li>
+                  <li><b>Analyze</b> in Case Analysis tab: which tenure windows show highest attrition (Case 1-2 suggests onboarding issues; Case 3+ suggests retention failures)</li>
+                  <li><b>Calculate</b> in Cost Analysis tab: total <i>C</i>, forecasted annual impact, ROI of retention initiatives</li>
+                  <li><b>Identify</b> in Risk Assessment tab: employees flagged for intervention</li>
+                  <li><b>Export</b> charts (hover → camera icon) and data tables (download buttons)</li>
+              </ul>
+
+              <p><label for="sn-board" class="margin-toggle sidenote-number"></label>
+              <input type="checkbox" id="sn-board" class="margin-toggle"/>
+              <span class="sidenote">Board members respond to <i>actionable</i> insights, not raw numbers. "35% turnover" is data. "48% of counselor turnover occurs in months 3-12, costing $180K annually" is <i>information</i>.</span>
+              <b>Presenting findings:</b> Board decks should include: (1) Overall <i>r</i> with sector benchmark comparison, (2) Department-level breakdown identifying problem areas, (3) Case distribution showing <i>when</i> employees leave, (4) Total cost <i>C</i> with budget implications, (5) Recommendations grounded in patterns (e.g., "Invest in 6-month check-ins for Case 2 intervention").</p>
+
+              <p class="subtitle"><i>Turnover is not failure. Turnover is information. The question is: what does it tell you?</i></p>
+
+              <p>→ <a href="https://hrturnoveranalysis.streamlit.app/">Try the tool</a> | <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">View source code</a></p>
           </section>
           <section>
               <p> The entymology of this project is based on my name, Camille and the mythical castle of King Arthur, Camelot, as well as a play on words; this is a place to store 'a lot'. </p>

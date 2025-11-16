@@ -290,6 +290,38 @@ def show_landing_page():
     The question is "what is turnover telling us?" (actionable, valuable).
     """)
 
+    # Privacy section
+    st.markdown('<div class="section-header">Data Privacy & Security</div>', unsafe_allow_html=True)
+
+    st.warning("""
+    **⚠️ Important for Sensitive Data:**
+    If you're using the web version (Streamlit Cloud), uploaded data is processed on Streamlit's servers.
+    For confidential HR data, we recommend running locally on your computer.
+    """)
+
+    st.markdown("""
+    **If using Streamlit Cloud (this website):**
+    - Data is uploaded to Streamlit's servers for processing
+    - Data is **ephemeral** (not permanently stored)
+    - Deleted when you close your browser session
+    - Encrypted in transit (HTTPS)
+    - Best for: Testing with sample data or anonymized data
+
+    **If running locally on your computer:**
+    - All data stays on your machine
+    - No external servers involved
+    - Full control and privacy
+    - Best for: Confidential employee information
+
+    **What we don't do:**
+    - Store your data after session ends
+    - Collect analytics on your data
+    - Share data with third parties
+    - Require accounts or login
+
+    **For maximum security:** Use the local installation (instructions above).
+    """)
+
     st.markdown("---")
 
     # Call to action
