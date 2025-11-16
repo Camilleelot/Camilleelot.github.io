@@ -97,9 +97,32 @@ turnover-analysis/
     └── sample_data.csv     # Template file (100 sample employees)
 ```
 
-## Privacy Note
+## Privacy & Data Security
 
-This tool runs locally on your machine. No data is uploaded to external servers. All analysis happens in your browser.
+**Important:** Understand where your data goes.
+
+### Streamlit Cloud Deployment (Web Version)
+If you're using the hosted version on Streamlit Cloud:
+- ⚠️ **Data is processed on Streamlit's servers** (not your local machine)
+- Data is **ephemeral** - deleted when you close your browser
+- Encrypted in transit (HTTPS)
+- **Recommended for:** Testing with sample data or anonymized data
+- **Not recommended for:** Confidential employee information
+
+### Local Installation
+If you run this on your own computer:
+- ✅ **All data stays on your machine**
+- No external servers involved
+- Complete privacy and control
+- **Recommended for:** Real employee data with PII
+
+**What we don't do:**
+- Store your data permanently
+- Collect analytics on your data
+- Share data with third parties
+- Require accounts or login
+
+**For maximum security with sensitive HR data:** Use the local installation method below.
 
 ## Future Enhancements
 
