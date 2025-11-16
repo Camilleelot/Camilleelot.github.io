@@ -182,11 +182,65 @@ def show_landing_page():
     st.markdown("""
     ### For the Non-Programmer
 
+    **Two Ways to Use This Tool:**
+
+    **Option A: Use the Web Version** (Easiest)
+    - You're already here! Just use the sidebar to upload data
+    - No installation needed
+    - Works in any browser
+
+    **Option B: Run Locally on Your Computer** (Advanced)
+
+    If you want to run this on your own computer:
+
+    **Step 0: Install Python** (if you don't have it)
+
+    *What is Python?* A programming language. Think of it like Microsoft Word, but for running code instead of writing documents.
+
+    1. Go to [python.org/downloads](https://www.python.org/downloads/)
+    2. Download the latest version (big yellow button)
+    3. Run the installer
+    4. **Important**: Check the box "Add Python to PATH" during installation
+    5. Click "Install Now"
+
+    *What is pip?* It comes with Python. It's like an app store for code libraries. You'll use it to install the tools this project needs.
+
+    **Step 1: Download This Project**
+    - Click the green "Code" button on GitHub → Download ZIP
+    - Unzip the folder somewhere you can find it
+
+    **Step 2: Open Terminal/Command Prompt**
+    - **Windows**: Press Windows key, type "cmd", press Enter
+    - **Mac**: Press Cmd+Space, type "terminal", press Enter
+
+    **Step 3: Navigate to the Folder**
+    ```
+    cd Downloads/turnover-analysis
+    ```
+    (Replace "Downloads" with wherever you unzipped it)
+
+    **Step 4: Install Required Packages**
+    ```
+    pip install -r requirements.txt
+    ```
+    This downloads all the libraries the tool needs. Takes ~2 minutes.
+
+    **Step 5: Run the Tool**
+    ```
+    streamlit run app.py
+    ```
+    A browser window will open automatically!
+
+    **Step 6: Use It**
+    Follow the instructions below ↓
+
+    ---
+
+    #### Using the Tool (Web or Local)
+
     **Axiom 1:** You need data in Excel format
     **Axiom 2:** The sidebar accepts `.xlsx` or `.xls` files
     **Axiom 3:** Therefore, export → upload → analyze
-
-    #### Step-by-Step (truly from scratch)
 
     **1. Prepare Your Data**
 

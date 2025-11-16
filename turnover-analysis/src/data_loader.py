@@ -83,6 +83,9 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
         axis=1
     )
 
+    # Calculate tenure in months (for survival analysis)
+    df['tenure_months'] = df['tenure_days'] / 30.0
+
     # Extract hire cohort (year-month)
     df['hire_cohort'] = df['hire_date'].dt.to_period('M').astype(str)
 
