@@ -58,6 +58,27 @@
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
         }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .system-diagram {
+                background: #1a1a1a;
+                border-left-color: #5a7fb8;
+            }
+            .impact-metric {
+                background: #1a1a1a;
+                border: 1px solid #333;
+            }
+            .impact-metric strong {
+                color: #6b9bd1;
+            }
+            .feature-box {
+                border-color: #333;
+            }
+            .feature-box h3 {
+                color: #6b9bd1;
+            }
+        }
     </style>
 </head>
 <body>
