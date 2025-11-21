@@ -8,46 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         .publication-card {
-            margin: 3rem 0;
-            padding: 0;
+            margin: 2.5rem 0;
+            padding: 1.5rem;
             background: #fffff8;
-            border: 1px solid #e5e7eb;
-            transition: all 0.3s;
-            overflow: hidden;
+            border-left: 4px solid #333;
+            transition: all 0.2s;
         }
         .publication-card:hover {
             background: #fff9f0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transform: translateY(-2px);
-        }
-        .publication-header {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 0;
-        }
-        .publication-image {
-            width: 250px;
-            height: 250px;
-            object-fit: cover;
-            display: block;
-        }
-        .publication-content {
-            padding: 1.5rem 2rem;
+            border-left-color: #cc0000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .publication-card h2 {
             margin-top: 0;
             font-size: 1.5rem;
-            margin-bottom: 0.5rem;
         }
         .publication-meta {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #666;
             margin: 0.5rem 0;
         }
         .publication-abstract {
             margin: 1rem 0;
             line-height: 1.6;
-            font-size: 0.95rem;
         }
         .publication-links {
             margin-top: 1rem;
@@ -56,46 +39,21 @@
         }
         .publication-links a {
             margin-right: 1.5rem;
-            text-decoration: none;
-            color: #333;
-            transition: color 0.2s;
-        }
-        .publication-links a:hover {
-            color: #cc0000;
         }
         .badge {
             display: inline-block;
-            padding: 3px 10px;
-            font-size: 0.7rem;
+            padding: 2px 8px;
+            font-size: 0.75rem;
             border-radius: 3px;
             margin-left: 0.5rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
         }
-        .badge-policy {
+        .badge-paper {
             background: #4a5a8a;
             color: #fff;
         }
-        .badge-tool {
+        .badge-data {
             background: #6b8e6b;
             color: #fff;
-        }
-        .cta-button {
-            display: inline-block;
-            background: #2d5016;
-            color: #fffff8;
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 4px;
-            margin: 1.5rem 0 1rem 0;
-            transition: background 0.2s;
-            font-family: et-book, Palatino, Georgia, serif;
-        }
-        .cta-button:hover {
-            background: #3d6826;
-            color: #fffff8;
         }
         .stats-grid {
             display: grid;
@@ -119,93 +77,23 @@
             color: #666;
             margin-top: 0.5rem;
         }
-        @media (max-width: 768px) {
-            .publication-header {
-                grid-template-columns: 1fr;
-            }
-            .publication-image {
-                width: 100%;
-                height: 200px;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .publication-card {
-                background: #1a1a1a;
-                border-color: #333;
-            }
-            .publication-card:hover {
-                background: #252525;
-                box-shadow: 0 4px 12px rgba(255,255,255,0.1);
-            }
-            .publication-content {
-                color: #e5e5e5;
-            }
-            .publication-card h2 {
-                color: #e5e5e5;
-            }
-            .publication-card h2 a {
-                color: #e5e5e5;
-            }
-            .publication-card h2 a:hover {
-                color: #ff6b6b;
-            }
-            .publication-meta {
-                color: #999;
-            }
-            .publication-abstract {
-                color: #d0d0d0;
-            }
-            .publication-links {
-                border-top-color: #333;
-            }
-            .publication-links a {
-                color: #d0d0d0;
-            }
-            .publication-links a:hover {
-                color: #ff6b6b;
-            }
-            .stat-box {
-                background: #1a1a1a;
-                border-color: #333;
-            }
-            .stat-number {
-                color: #e5e5e5;
-            }
-            .stat-label {
-                color: #999;
-            }
-            p[style*="background: #f5f5f5"] {
-                background: #1a1a1a !important;
-                color: #e5e5e5 !important;
-                border-left-color: #666 !important;
-            }
-            .cta-button {
-                background: #3d6826;
-                color: #fffff8;
-            }
-            .cta-button:hover {
-                background: #4d7836;
-                color: #fffff8;
-            }
-        }
     </style>
 </head>
 
 <body>
     <article>
         <h1>Publications</h1>
-        <p class="subtitle">Policy Research & Interactive Tools</p>
+        <p class="subtitle">Policy Research & Data Repositories</p>
 
         <section>
             <p><a href="../index.html">← Back to Home</a></p>
 
-            <p>Featured work combining policy analysis with data visualization. Following the academic preprint model (inspired by arXiv and Zenodo), all work is versioned for transparency.</p>
+            <p>This page collects all research papers and datasets published through Camille's Lot. Following the academic preprint model (inspired by arXiv and Zenodo), all work is versioned for transparency. Each publication maintains a complete version history, allowing readers to see how research evolves over time.</p>
 
             <div class="stats-grid">
                 <div class="stat-box">
                     <div class="stat-number">2</div>
-                    <div class="stat-label">Featured Projects</div>
+                    <div class="stat-label">Total Publications</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-number">1</div>
@@ -213,77 +101,43 @@
                 </div>
                 <div class="stat-box">
                     <div class="stat-number">1</div>
-                    <div class="stat-label">Data Tools</div>
+                    <div class="stat-label">Data Repositories</div>
                 </div>
             </div>
         </section>
 
         <section>
-            <h2>Featured Publications</h2>
+            <h2>Research Papers</h2>
 
             <div class="publication-card">
-                <div class="publication-header">
-                    <img src="calgary-rezoning/v1.0/img/housing-developments.JPEG" alt="Calgary housing developments" class="publication-image">
-                    <div class="publication-content">
-                        <h2>
-                            <a href="calgary-rezoning/v1.0/index.html" style="text-decoration: none; color: inherit;">The Rezoning Paradox</a>
-                            <span class="badge badge-policy">POLICY ANALYSIS</span>
-                        </h2>
-                        <p class="publication-meta">
-                            <b>Camille Moreau</b> • Published November 15, 2025 • Version 1.0
-                        </p>
-                        <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
-                            Why does every single person around me say housing sucks?
-                        </p>
+                <h2>
+                    The Rezoning Paradox
+                    <span class="badge badge-paper">POLICY ANALYSIS</span>
+                </h2>
+                <p class="publication-meta">
+                    <b>Camille Moreau</b> • Published November 15, 2025 • Version 1.0
+                </p>
+                <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
+                    Why does every single person around me say housing sucks?
+                </p>
 
-                        <div class="publication-abstract">
-                            <p>When Calgary implemented citywide blanket rezoning in August 2024, it offered a natural experiment to test YIMBY theory. Despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend.</p>
-                        </div>
+                <div class="publication-abstract">
+                    <p>When Calgary implemented citywide blanket rezoning in August 2024, removing density restrictions across residential neighborhoods, it offered a natural experiment to test YIMBY theory in practice. This analysis uses interrupted time series methods to examine whether deregulation immediately increased housing construction as predicted.</p>
 
-                        <p class="publication-meta">
-                            <b>Method:</b> Interrupted Time Series • <b>Data:</b> CMHC Housing Starts (17 months)
-                        </p>
-
-                        <div class="publication-links">
-                            <a href="calgary-rezoning/v1.0/index.html"><b>→ Read Paper</b></a>
-                            <a href="calgary-rezoning/index.html">All Versions</a>
-                        </div>
-                    </div>
+                    <p><b>Key Finding:</b> Despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend. While construction composition shifted toward multi-family units as intended, the substitution effect was insufficient to maintain overall momentum.</p>
                 </div>
-            </div>
 
-            <div class="publication-card">
-                <div class="publication-header">
-                    <img src="../img/cost analysis.jpg" alt="Employee flow Sankey diagram" class="publication-image">
-                    <div class="publication-content">
-                        <h2>
-                            <a href="turnover-tool/v1.0/index.html" style="text-decoration: none; color: inherit;">NGO Turnover Analysis Tool</a>
-                            <span class="badge badge-tool">INTERACTIVE TOOL</span>
-                        </h2>
-                        <p class="publication-meta">
-                            <b>Camille Moreau</b> • Published November 16, 2025 • Version 1.0
-                        </p>
-                        <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
-                            Transforming temporal distributions into actionable governance insights
-                        </p>
+                <p class="publication-meta">
+                    <b>Methodology:</b> Interrupted Time Series Regression •
+                    <b>Data:</b> CMHC Housing Starts (17 months) •
+                    <b>Keywords:</b> housing policy, YIMBY, rezoning, Calgary, municipal politics
+                </p>
 
-                        <div class="publication-abstract">
-                            <p>Absolute and total turnover is easy to calculate. But,<i>When</i> do employees leave? <i>Why</i>? At what cost <i>C</i>? This tool categorizes terminations by tenure into six analytical windows (0-3mo → 5+yr), visualizes flows via Sankey diagrams, calculates true costs (<i>C</i> ≈ 0.8<i>S</i>), and flags at-risk employees. Built by someone who had to do it, for HR managers who've never written code.</p>
-                        </div>
-
-                        <p class="publication-meta">
-                            <b>Tech:</b> Python, Streamlit, Plotly • <b>Deploy:</b> Web & Local
-                        </p>
-
-                        <div style="text-align: center; margin: 1.5rem 0;">
-                            <a href="https://hrturnoveranalysis.streamlit.app/" class="cta-button">Launch Tool</a>
-                        </div>
-
-                        <div class="publication-links">
-                            <a href="turnover-tool/v1.0/index.html"><b>→ Read Full Documentation</b></a>
-                            <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">Source Code</a>
-                        </div>
-                    </div>
+                <div class="publication-links">
+                    <a href="calgary-rezoning/v1.0/index.html"><b>→ Read Paper</b></a>
+                    <a href="calgary-rezoning/index.html">All Versions</a>
+                    <a href="calgary-rezoning/changelog.md">Changelog</a>
+                    <a href="calgary-rezoning/v1.0/metadata.json">Metadata (JSON)</a>
                 </div>
             </div>
         </section>

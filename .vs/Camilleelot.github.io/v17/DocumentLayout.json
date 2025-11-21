@@ -5,13 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Camille\\Documents\\GitHub\\Camilleelot.github.io\\CalgaryRezoningProject.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CalgaryRezoningProject.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Camille\\Desktop\\Vss\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Camille\\Documents\\GitHub\\Camilleelot.github.io\\CalgaryRezoningProject - Copy.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CalgaryRezoningProject - Copy.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,21 +14,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "index.html",
-              "DocumentMoniker": "C:\\Users\\Camille\\Desktop\\Vss\\index.html",
-              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\Vss\\index.html",
-              "ToolTip": "C:\\Users\\Camille\\Desktop\\Vss\\index.html",
-              "RelativeToolTip": "..\\..\\..\\Desktop\\Vss\\index.html",
-              "ViewState": "AgIAACYAAAAAAAAAAAAawD8AAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-07-06T23:29:05.754Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -44,22 +24,9 @@
               "RelativeDocumentMoniker": "CalgaryRezoningProject.html",
               "ToolTip": "C:\\Users\\Camille\\Documents\\GitHub\\Camilleelot.github.io\\CalgaryRezoningProject.html",
               "RelativeToolTip": "CalgaryRezoningProject.html",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAAwBQAAADJAgAAAAAAAA==",
+              "ViewState": "AgIAAIMCAAAAAAAAAAAowI0CAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-07-06T19:57:17.735Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CalgaryRezoningProject - Copy.html",
-              "DocumentMoniker": "C:\\Users\\Camille\\Documents\\GitHub\\Camilleelot.github.io\\CalgaryRezoningProject - Copy.html",
-              "RelativeDocumentMoniker": "CalgaryRezoningProject - Copy.html",
-              "ToolTip": "C:\\Users\\Camille\\Documents\\GitHub\\Camilleelot.github.io\\CalgaryRezoningProject - Copy.html",
-              "RelativeToolTip": "CalgaryRezoningProject - Copy.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-07-06T19:57:11.837Z",
               "EditorCaption": ""
             }
           ]
