@@ -90,7 +90,7 @@
 
 .scrolly-progress-bar {
   height: 100%;
-  background: #ff6b35;
+  background: var(--color-secondary, #a0522d);
   width: 0%;
   transition: width 0.3s ease;
 }
@@ -180,8 +180,8 @@
 }
 
 .scrolly-narrative .step.active::before {
-  background: #ff6b35;
-  box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+  background: var(--color-secondary, #a0522d);
+  box-shadow: 0 0 10px rgba(160, 82, 45, 0.5);
 }
 
 @media (prefers-color-scheme: light) {
@@ -190,6 +190,6 @@
   }
 
   .scrolly-narrative .step.active::before {
-    background: #ff6b35;
+    background: var(--color-secondary, #a0522d);
   }
 }
