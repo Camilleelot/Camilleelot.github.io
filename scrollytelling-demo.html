@@ -8,6 +8,9 @@
   <!-- Tufte CSS -->
   <link rel="stylesheet" href="tufte.css"/>
 
+  <!-- Colors CSS -->
+  <link rel="stylesheet" href="colors.css"/>
+
   <!-- Scrollytelling CSS -->
   <link rel="stylesheet" href="scrollytelling.css"/>
 
@@ -16,12 +19,12 @@
     .demo-chart {
       width: 100%;
       height: 400px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: var(--color-primary);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: #fffff8;
       font-size: 2rem;
       font-weight: bold;
       text-align: center;
@@ -30,23 +33,28 @@
     }
 
     .demo-chart.step-0 {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: var(--color-primary);
+      opacity: 0.9;
     }
 
     .demo-chart.step-1 {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      background: var(--color-accent);
+      opacity: 0.95;
     }
 
     .demo-chart.step-2 {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      background: var(--color-secondary);
+      opacity: 0.9;
     }
 
     .demo-chart.step-3 {
-      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      background: var(--color-success);
+      opacity: 0.95;
     }
 
     .demo-chart.step-4 {
-      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      background: var(--color-primary);
+      opacity: 1;
     }
 
     /* Chart data visualization */
