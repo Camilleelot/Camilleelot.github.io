@@ -86,6 +86,41 @@
             padding: 0.75rem;
             border-bottom: 1px solid #e2e8f0;
         }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .step-box {
+                background: #1a1a1a;
+                border-color: #333;
+            }
+            .step-box h3 {
+                color: #6b9bd1;
+            }
+            .code-inline {
+                background: #2a2a2a;
+                color: #d4d4d4;
+            }
+            .warning {
+                background: #2a2015;
+                border-left-color: #ed8936;
+            }
+            .tip {
+                background: #152a1a;
+                border-left-color: #48bb78;
+            }
+            .screenshot-placeholder {
+                background: #1a1a1a;
+                border-color: #444;
+                color: #aaa;
+            }
+            th {
+                background: #1a1a1a;
+                border-bottom-color: #333;
+            }
+            td {
+                border-bottom-color: #333;
+            }
+        }
     </style>
 </head>
 <body>
