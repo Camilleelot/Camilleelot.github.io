@@ -11,9 +11,6 @@ This image will appear on the "Read the Manul" help page.
 
 To use it in the app, update `show_manul_help()` function in `app.py`:
 
-```python
-# Replace this line:
-st.info("🎩 **[Image placeholder: Distinguished manul in top hat goes here]**")
 
 # With:
 from PIL import Image
