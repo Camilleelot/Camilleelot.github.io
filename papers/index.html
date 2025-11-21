@@ -77,6 +77,46 @@
             color: #666;
             margin-top: 0.5rem;
         }
+        .citation-example {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            background: #f5f5f5;
+            padding: 1rem;
+            border-left: 2px solid #333;
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .publication-card {
+                background: #1a1a1a;
+                border-left-color: #ddd;
+            }
+            .publication-card:hover {
+                background: #222;
+                border-left-color: #cc0000;
+                box-shadow: 0 2px 8px rgba(255,255,255,0.1);
+            }
+            .publication-meta {
+                color: #999;
+            }
+            .publication-links {
+                border-top-color: #333;
+            }
+            .stat-box {
+                background: #1a1a1a;
+                border-color: #333;
+            }
+            .stat-number {
+                color: #ddd;
+            }
+            .stat-label {
+                color: #999;
+            }
+            .citation-example {
+                background: #1a1a1a;
+                border-left-color: #ddd;
+            }
+        }
     </style>
 </head>
 
@@ -206,7 +246,7 @@
             </ul>
 
             <p><b>Example citation:</b></p>
-            <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; background: #f5f5f5; padding: 1rem; border-left: 2px solid #333;">
+            <p class="citation-example">
                 Moreau, C. (2025). The Rezoning Paradox: Why does every single person around me say housing sucks? <i>Camille's Lot</i>, v1.0. https://camilleelot.github.io/papers/calgary-rezoning/v1.0/
             </p>
         </section>
