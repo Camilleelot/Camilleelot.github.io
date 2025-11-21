@@ -52,6 +52,12 @@
             padding: 1rem 1.5rem;
             margin: 1rem 0;
         }
+        .info-box {
+            border-left: 4px solid #3182ce;
+            background: #f7fafc;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
         .checklist {
             list-style: none;
             padding-left: 0;
@@ -107,6 +113,10 @@
             .tip {
                 background: #152a1a;
                 border-left-color: #48bb78;
+            }
+            .info-box {
+                background: #1a2530;
+                border-left-color: #5a9bd1;
             }
             .screenshot-placeholder {
                 background: #1a1a1a;
@@ -254,7 +264,7 @@
                 </p>
 
                 <h4>Recommended Structure:</h4>
-                <pre style="font-family: monospace; background: #f7fafc; padding: 1rem; border-left: 4px solid #3182ce;">
+                <pre class="info-box" style="font-family: monospace;">
 📁 Fleet Management (Root Folder)
   ├── 📁 Vehicle ABC-1234 (Honda Civic)
   │   ├── 📄 Insurance Policy.pdf
@@ -614,7 +624,7 @@
                 </ol>
 
                 <h4>Sample Training Message:</h4>
-                <div style="background: #f7fafc; padding: 1rem; border-left: 4px solid #3182ce; margin: 1rem 0;">
+                <div class="info-box">
                     <p><strong>Subject:</strong> New Vehicle Incident Reporting System</p>
                     <p>
                         Hi team,<br><br>
