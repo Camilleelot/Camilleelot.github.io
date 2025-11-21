@@ -363,6 +363,14 @@ YYYY-MM-DD - Incident - [Driver Name] - [Vehicle Make/Model] (Plate)
             </ul>
 
             <h3>Code Architecture</h3>
+             <p>
+                <label for="code-note" class="margin-toggle"></label>
+                <input type="checkbox" id="code-note" class="margin-toggle"/>
+                <span class="sidenote">
+                    The maintenance date parser uses regex to extract dates from filenames in multiple formats
+                    (YYYY-MM-DD, YYYY/MM/DD, YYYY_MM_DD) and falls back to file creation date if no match is found.
+                </span>
+            </p>
             <p>The script is modular and defensive:</p>
             <ol>
                 <li><strong>Configuration block</strong> - All IDs/settings in one place (easy for other orgs to adapt)</li>
@@ -371,14 +379,7 @@ YYYY-MM-DD - Incident - [Driver Name] - [Vehicle Make/Model] (Plate)
                 <li><strong>Fallback logic</strong> - Gracefully handles missing data (e.g., new vehicles not yet in map)</li>
             </ol>
 
-            <p>
-                <label for="code-note" class="margin-toggle"></label>
-                <input type="checkbox" id="code-note" class="margin-toggle"/>
-                <span class="sidenote">
-                    The maintenance date parser uses regex to extract dates from filenames in multiple formats
-                    (YYYY-MM-DD, YYYY/MM/DD, YYYY_MM_DD) and falls back to file creation date if no match is found.
-                </span>
-            </p>
+
 
             <h3>Sample Code: Maintenance Lookup</h3>
             <div class="code-sample">
