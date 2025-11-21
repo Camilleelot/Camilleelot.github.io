@@ -182,7 +182,7 @@
 .cta-button,
 .btn-primary {
   background: var(--color-primary);
-  color: var(--color-bg);
+  color: #fff;
   border: none;
   transition: background 0.2s ease;
 }
@@ -190,25 +190,26 @@
 .cta-button:hover,
 .btn-primary:hover {
   background: var(--color-secondary);
+  color: #fff;
 }
 
 /* Tags/Badges */
 .tag-research,
 .badge-research {
   background: var(--color-primary);
-  color: var(--color-bg);
+  color: #fff;
 }
 
 .tag-tool,
 .badge-tool {
   background: var(--color-secondary);
-  color: var(--color-bg);
+  color: #fff;
 }
 
 .tag-policy,
 .badge-policy {
   background: var(--color-accent);
-  color: var(--color-bg);
+  color: #fff;
 }
 
 /* Emphasis/Warning Text */
