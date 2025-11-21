@@ -185,6 +185,8 @@
   color: #fffff8;  /* Warm off-white, softer than pure white */
   border: none;
   transition: background 0.2s ease;
+  text-shadow: none;
+  -webkit-text-stroke: 0;
 }
 
 .cta-button:hover,
