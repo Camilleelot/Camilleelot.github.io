@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleetTracker Technical Deep Dive - Camille's Lot</title>
+    <link rel="stylesheet" href="../tufte.css"/>
+    <link rel="stylesheet" href="../latex.css"/>
+    <style>
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 1.5rem 0;
+        }
+        .code-comment {
+            color: #6a9955;
+        }
+        .code-keyword {
+            color: #569cd6;
+        }
+        .code-function {
+            color: #dcdcaa;
+        }
+        .code-string {
+            color: #ce9178;
+        }
+        .code-number {
+            color: #b5cea8;
+        }
+        .code-type {
+            color: #4ec9b0;
+        }
+        .design-principle {
+            border-left: 4px solid #48bb78;
+            background: #f0fff4;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .warning-box {
+            border-left: 4px solid #ed8936;
+            background: #fffaf0;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .flow-step {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+        .flow-step h4 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>FleetTracker: Technical Deep Dive</h1>
+        <p class="subtitle">Architecture, Code Patterns, and Design Decisions</p>
+
+        <section>
+            <h2>System Overview</h2>
+            <p>
+                FleetTracker is a <strong>serverless automation system</strong> built on Google Apps Script.
+                It orchestrates multiple Google Workspace APIs (Forms, Sheets, Drive, Docs, Gmail) to create
+                a complete incident management workflow.
+            </p>
+
+            <p>
+                <label for="arch-note" class="margin-toggle sidenote-number"></label>
+                <input type="checkbox" id="arch-note" class="margin-toggle"/>
+                <span class="sidenote">
+                    Google Apps Script runs on Google's infrastructure with automatic scaling, authentication,
+                    and API quota management. This means zero DevOps overhead for the organization.
+                </span>
+            </p>
+
+            <h3>Technology Stack</h3>
+            <ul>
+                <li><strong>Runtime:</strong> Google Apps Script (V8 engine)</li>
+                <li><strong>Language:</strong> JavaScript ES6</li>
+                <li><strong>APIs:</strong> Drive API v3, Sheets API v4, Gmail API, Forms API</li>
+                <li><strong>Trigger:</strong> Form submission event (installable trigger)</li>
+                <li><strong>Execution:</strong> ~5-10 seconds per incident (well under quota limits)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Code Architecture</h2>
+
+            <h3>Design Principles</h3>
+            <div class="design-principle">
+                <h4>1. Configuration Over Code</h4>
+                <p>
+                    All organization-specific settings (folder IDs, email addresses, field names) live in a
+                    single configuration block. This allows other nonprofits to deploy the system by editing
+                    ~20 lines instead of hunting through 300+ lines of logic.
+                </p>
+            </div>
+
+            <div class="design-principle">
+                <h4>2. Defensive Programming</h4>
+                <p>
+                    Every external lookup has fallback logic. Missing data degrades gracefully rather than
+                    crashing the workflow. This is critical when non-technical staff maintain the system.
+                </p>
+            </div>
+
+            <div class="design-principle">
+                <h4>3. Separation of Concerns</h4>
+                <p>
+                    Lookup functions are isolated from the main handler. This makes the code testable
+                    (you can call <code>lookupMaintenanceData()</code> without triggering a full incident)
+                    and easier to extend (add new lookups without touching core logic).
+                </p>
+            </div>
+
+            <div class="design-principle">
+                <h4>4. Audit Trail by Default</h4>
+                <p>
+                    Everything is logged: email content archived to Drive, timestamps on all folders,
+                    structured Google Doc summaries. This isn't optional—compliance demands it.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Configuration Block</h2>
+            <p>
+                The script starts with a centralized configuration section. This is the <strong>only part
+                other organizations need to modify</strong> during deployment.
+            </p>
+
+            <div class="code-block">
+<span class="code-comment">// --- CONFIGURATION ---</span>
+
+<span class="code-comment">// Email recipients (comma-separated)</span>
+<span class="code-keyword">const</span> RECIPIENT_EMAILS = <span class="code-string">'ops@example.org,fleet@example.org'</span>;
+
+<span class="code-comment">// Master List Spreadsheet (vehicle database)</span>
+<span class="code-keyword">const</span> MASTER_LIST_SPREADSHEET_ID = <span class="code-string">'1895NA95MNA054MA9590AJMT9401JM'</span>;
+<span class="code-keyword">const</span> MASTER_LIST_SHEET_NAME = <span class="code-string">'Master Sheet'</span>;
+<span class="code-keyword">const</span> MASTER_LIST_KEY_HEADER = <span class="code-string">'License Plate'</span>;
+<span class="code-keyword">const</span> MASTER_LIST_SUMMARY_HEADER = <span class="code-string">'Lease/Coverage Summary'</span>;
+
+<span class="code-comment">// Folder IDs for file organization</span>
+<span class="code-keyword">const</span> NEW_VEHICLE_ARCHIVE_FOLDER_ID = <span class="code-string">'902jnfc901ndiweh840dnmqaH495NMFHJ'</span>;
+<span class="code-keyword">const</span> UPLOAD_FOLDER_ID = <span class="code-string">'123412351231514asdab123tb78v9s093n690vbhw905n6t0'</span>;
+
+<span class="code-comment">// Form field names (MUST match Google Form column headers)</span>
+<span class="code-keyword">const</span> DATE_FIELD_NAME = <span class="code-string">'Date of Incident'</span>;
+<span class="code-keyword">const</span> DRIVER_NAME_FIELD_NAME = <span class="code-string">'Full Legal Name of the Driver'</span>;
+<span class="code-keyword">const</span> UPLOAD_FIELD_NAME = <span class="code-string">'Vehicle Damage/Photos & Scene Diagram'</span>;
+
+<span class="code-comment">// Vehicle-to-Folder mapping (maintenance records)</span>
+<span class="code-keyword">const</span> VEHICLE_FOLDER_MAP = {
+  <span class="code-string">"ABC-1234"</span>: <span class="code-string">"1A2-42ydOzwGw4qasaPfjw4_jlUdNR2ld"</span>,
+  <span class="code-string">"XYZ-5678"</span>: <span class="code-string">"9B8-73xdPawHx5rbtBgkx5_kmVeOS3me"</span>,
+  <span class="code-comment">// Add more vehicles here...</span>
+};
+            </div>
+
+            <p>
+                <label for="config-note" class="margin-toggle">⊕</label>
+                <input type="checkbox" id="config-note" class="margin-toggle"/>
+                <span class="marginnote">
+                    <strong>Why this matters:</strong> Non-developers can add new vehicles to the system
+                    by simply adding a line to <code>VEHICLE_FOLDER_MAP</code>. No code logic changes needed.
+                </span>
+            </p>
+        </section>
+
+        <section>
+            <h2>Core Functions</h2>
+
+            <h3>1. lookupMaintenanceData(licensePlate)</h3>
+            <p>
+                This function scans a vehicle's Drive folder to find the most recent service record,
+                then calculates the next service due date.
+            </p>
+
+            <div class="code-block">
+<span class="code-keyword">function</span> <span class="code-function">lookupMaintenanceData</span>(licensePlate) {
+  <span class="code-comment">// Get the folder ID from the static map</span>
+  <span class="code-keyword">const</span> incidentFolderId = VEHICLE_FOLDER_MAP[licensePlate];
+
+  <span class="code-comment">// Default return object (used if no data found)</span>
+  <span class="code-keyword">const</span> maintenanceData = {
+    lastServiceDate: <span class="code-string">'N/A (No service file found)'</span>,
+    lastServiceLink: <span class="code-string">'N/A'</span>,
+    nextServiceDate: <span class="code-string">'N/A'</span>
+  };
+
+  <span class="code-keyword">if</span> (!incidentFolderId) {
+    maintenanceData.lastServiceDate = <span class="code-string">'Error: Vehicle folder ID not configured'</span>;
+    <span class="code-keyword">return</span> maintenanceData;
+  }
+
+  <span class="code-keyword">try</span> {
+    <span class="code-keyword">const</span> folder = DriveApp.<span class="code-function">getFolderById</span>(incidentFolderId);
+    <span class="code-keyword">const</span> files = folder.<span class="code-function">getFiles</span>();
+
+    <span class="code-keyword">let</span> latestDate = <span class="code-keyword">null</span>;
+    <span class="code-keyword">let</span> latestFileUrl = <span class="code-string">''</span>;
+
+    <span class="code-comment">// Regex patterns to identify service files</span>
+    <span class="code-keyword">const</span> serviceRegex = <span class="code-string">/service/i</span>; <span class="code-comment">// Case-insensitive "service"</span>
+    <span class="code-keyword">const</span> yyyyDateRegex = <span class="code-string">/(\d{4}[-/_]\d{2}[-/_]\d{2})/</span>; <span class="code-comment">// YYYY-MM-DD variants</span>
+
+    <span class="code-keyword">while</span> (files.<span class="code-function">hasNext</span>()) {
+      <span class="code-keyword">const</span> file = files.<span class="code-function">next</span>();
+      <span class="code-keyword">const</span> fileName = file.<span class="code-function">getName</span>();
+
+      <span class="code-comment">// Only process files with "service" in the name</span>
+      <span class="code-keyword">if</span> (serviceRegex.<span class="code-function">test</span>(fileName)) {
+        <span class="code-keyword">let</span> currentDate = <span class="code-keyword">null</span>;
+        <span class="code-keyword">let</span> dateMatch = fileName.<span class="code-function">match</span>(yyyyDateRegex);
+
+        <span class="code-keyword">if</span> (dateMatch) {
+          <span class="code-comment">// Parse date from filename</span>
+          <span class="code-keyword">const</span> dateString = dateMatch[<span class="code-number">1</span>].<span class="code-function">replace</span>(<span class="code-string">/[-/_]/g</span>, <span class="code-string">'-'</span>);
+          currentDate = <span class="code-keyword">new</span> <span class="code-type">Date</span>(dateString);
+        } <span class="code-keyword">else</span> {
+          <span class="code-comment">// FALLBACK: Use file creation date</span>
+          currentDate = file.<span class="code-function">getDateCreated</span>();
+        }
+
+        <span class="code-comment">// Track the most recent service date</span>
+        <span class="code-keyword">if</span> (currentDate && !<span class="code-function">isNaN</span>(currentDate.<span class="code-function">getTime</span>())) {
+          <span class="code-keyword">if</span> (!latestDate || currentDate.<span class="code-function">getTime</span>() > latestDate.<span class="code-function">getTime</span>()) {
+            latestDate = currentDate;
+            latestFileUrl = file.<span class="code-function">getUrl</span>();
+          }
+        }
+      }
+    }
+
+    <span class="code-keyword">if</span> (latestDate) {
+      <span class="code-comment">// Format the last service date (YYYY-MM-DD)</span>
+      <span class="code-keyword">const</span> yyyy = latestDate.<span class="code-function">getFullYear</span>();
+      <span class="code-keyword">const</span> mm = <span class="code-type">String</span>(latestDate.<span class="code-function">getMonth</span>() + <span class="code-number">1</span>).<span class="code-function">padStart</span>(<span class="code-number">2</span>, <span class="code-string">'0'</span>);
+      <span class="code-keyword">const</span> dd = <span class="code-type">String</span>(latestDate.<span class="code-function">getDate</span>()).<span class="code-function">padStart</span>(<span class="code-number">2</span>, <span class="code-string">'0'</span>);
+      maintenanceData.lastServiceDate = <span class="code-string">`<span class="code-keyword">${</span>yyyy<span class="code-keyword">}</span>-<span class="code-keyword">${</span>mm<span class="code-keyword">}</span>-<span class="code-keyword">${</span>dd<span class="code-keyword">}</span>`</span>;
+      maintenanceData.lastServiceLink = latestFileUrl;
+
+      <span class="code-comment">// Calculate next service date (add 3 months)</span>
+      <span class="code-keyword">const</span> nextService = <span class="code-keyword">new</span> <span class="code-type">Date</span>(latestDate);
+      nextService.<span class="code-function">setMonth</span>(nextService.<span class="code-function">getMonth</span>() + <span class="code-number">3</span>);
+
+      <span class="code-keyword">const</span> nextMm = <span class="code-type">String</span>(nextService.<span class="code-function">getMonth</span>() + <span class="code-number">1</span>).<span class="code-function">padStart</span>(<span class="code-number">2</span>, <span class="code-string">'0'</span>);
+      <span class="code-keyword">const</span> nextDd = <span class="code-type">String</span>(nextService.<span class="code-function">getDate</span>()).<span class="code-function">padStart</span>(<span class="code-number">2</span>, <span class="code-string">'0'</span>);
+      <span class="code-keyword">const</span> nextYyyy = nextService.<span class="code-function">getFullYear</span>();
+      maintenanceData.nextServiceDate = <span class="code-string">`<span class="code-keyword">${</span>nextMm<span class="code-keyword">}</span>/<span class="code-keyword">${</span>nextDd<span class="code-keyword">}</span>/<span class="code-keyword">${</span>nextYyyy<span class="code-keyword">}</span>`</span>;
+    }
+  } <span class="code-keyword">catch</span> (err) {
+    Logger.<span class="code-function">log</span>(<span class="code-string">`Error accessing folder: <span class="code-keyword">${</span>err.<span class="code-function">toString</span>()<span class="code-keyword">}</span>`</span>);
+    maintenanceData.lastServiceDate = <span class="code-string">'CRITICAL ERROR retrieving service history'</span>;
+  }
+
+  <span class="code-keyword">return</span> maintenanceData;
+}
+            </div>
+
+            <div class="design-principle">
+                <h4>Key Design Decisions:</h4>
+                <ul>
+                    <li><strong>Regex Flexibility:</strong> The date regex accepts multiple separators (-/_) to handle inconsistent file naming</li>
+                    <li><strong>Fallback to File Creation Date:</strong> If no date is in the filename, use the upload date (better than failing)</li>
+                    <li><strong>Error Isolation:</strong> Errors are caught and logged, but the function always returns a valid object (never crashes)</li>
+                    <li><strong>Explicit Return Structure:</strong> The object shape is predictable, making email template logic simple</li>
+                </ul>
+            </div>
+
+            <p>
+                <label for="maintenance-edge" class="margin-toggle">⊕</label>
+                <input type="checkbox" id="maintenance-edge" class="margin-toggle"/>
+                <span class="marginnote">
+                    <strong>Edge Case Handling:</strong> What if there are multiple "service" files with the same date?
+                    The code picks the first one encountered (file iteration order), which is acceptable since the dates
+                    match. A future enhancement could sum costs from same-date files.
+                </span>
+            </p>
+        </section>
+
+        <section>
+            <h3>2. lookupVehicleData(fullVehicleString)</h3>
+            <p>
+                This function extracts the license plate from the form submission and looks up vehicle metadata
+                from the Master Sheet (insurance, lease status, make/model).
+            </p>
+
+            <div class="code-block">
+<span class="code-keyword">function</span> <span class="code-function">lookupVehicleData</span>(fullVehicleString) {
+  <span class="code-comment">// Extract license plate (assumes format: "2020 Honda Civic ABC-1234")</span>
+  <span class="code-keyword">const</span> parts = fullVehicleString.<span class="code-function">split</span>(<span class="code-string">' '</span>);
+  <span class="code-keyword">const</span> licensePlate = parts[parts.length - <span class="code-number">1</span>];
+
+  <span class="code-comment">// Default values if lookup fails</span>
+  <span class="code-keyword">let</span> coverageSummary = <span class="code-string">`License Plate (<span class="code-keyword">${</span>licensePlate<span class="code-keyword">}</span>) not found in Master List.`</span>;
+  <span class="code-keyword">let</span> vehicleMakeModel = licensePlate;
+
+  <span class="code-keyword">try</span> {
+    <span class="code-keyword">const</span> ss = SpreadsheetApp.<span class="code-function">openById</span>(MASTER_LIST_SPREADSHEET_ID);
+    <span class="code-keyword">const</span> sheet = ss.<span class="code-function">getSheetByName</span>(MASTER_LIST_SHEET_NAME);
+
+    <span class="code-keyword">if</span> (!sheet) {
+      <span class="code-keyword">return</span> { key: licensePlate, summary: <span class="code-string">'Error: Sheet not found'</span>, makeModel: licensePlate };
+    }
+
+    <span class="code-keyword">const</span> data = sheet.<span class="code-function">getDataRange</span>().<span class="code-function">getValues</span>();
+    <span class="code-keyword">const</span> headers = data[<span class="code-number">0</span>];
+    <span class="code-keyword">const</span> dataRows = data.<span class="code-function">slice</span>(<span class="code-number">1</span>);
+
+    <span class="code-comment">// Find column indices dynamically (resilient to column reordering)</span>
+    <span class="code-keyword">const</span> keyColIndex = headers.<span class="code-function">indexOf</span>(MASTER_LIST_KEY_HEADER);
+    <span class="code-keyword">const</span> summaryColIndex = headers.<span class="code-function">indexOf</span>(MASTER_LIST_SUMMARY_HEADER);
+    <span class="code-keyword">const</span> makeColIndex = headers.<span class="code-function">indexOf</span>(MASTER_LIST_VEHICLE_HEADER);
+
+    <span class="code-comment">// Search for matching license plate</span>
+    <span class="code-keyword">for</span> (<span class="code-keyword">const</span> row <span class="code-keyword">of</span> dataRows) {
+      <span class="code-keyword">if</span> (row[keyColIndex] === licensePlate) {
+        coverageSummary = row[summaryColIndex] || <span class="code-string">'No summary provided'</span>;
+        vehicleMakeModel = makeColIndex !== <span class="code-number">-1</span>
+          ? <span class="code-string">`<span class="code-keyword">${</span>row[makeColIndex]<span class="code-keyword">}</span> (<span class="code-keyword">${</span>licensePlate<span class="code-keyword">}</span>)`</span>
+          : licensePlate;
+        <span class="code-keyword">break</span>;
+      }
+    }
+  } <span class="code-keyword">catch</span> (err) {
+    Logger.<span class="code-function">log</span>(<span class="code-string">`CRITICAL ERROR accessing Master List: <span class="code-keyword">${</span>err.<span class="code-function">toString</span>()<span class="code-keyword">}</span>`</span>);
+    coverageSummary = <span class="code-string">`CRITICAL ERROR: <span class="code-keyword">${</span>err.<span class="code-function">toString</span>()<span class="code-keyword">}</span>`</span>;
+  }
+
+  <span class="code-keyword">return</span> { key: licensePlate, summary: coverageSummary, makeModel: vehicleMakeModel };
+}
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ Critical Assumption:</h4>
+                <p>
+                    The function assumes the license plate is the <strong>last space-separated token</strong>
+                    in the form field. This works because the Google Form uses a dropdown populated from the
+                    Master Sheet with the format <code>Year Make Model PLATE</code>.
+                </p>
+                <p>
+                    <strong>Why this matters:</strong> If staff manually type the vehicle instead of using the
+                    dropdown, this could break. The deployment guide should emphasize using the dropdown.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h3>3. onFormSubmit(e) - Main Handler</h3>
+            <p>
+                This is the <strong>entry point</strong> for the entire system. It's triggered automatically
+                when the Google Form is submitted.
+            </p>
+
+            <h4>Execution Flow</h4>
+            <div class="flow-step">
+                <h4>Step 1: Extract Form Data</h4>
+                <p>Pull values from the event object using field names from configuration.</p>
+            </div>
+
+            <div class="flow-step">
+                <h4>Step 2: Lookup Context</h4>
+                <p>Call <code>lookupVehicleData()</code> and <code>lookupMaintenanceData()</code> to enrich the incident with metadata.</p>
+            </div>
+
+            <div class="flow-step">
+                <h4>Step 3: Create Incident Folder</h4>
+                <p>
+                    Generate a timestamped folder inside the vehicle's permanent folder.
+                    Format: <code>YYYY-MM-DD - Incident - [Driver] - [Vehicle]</code>
+                </p>
+            </div>
+
+            <div class="flow-step">
+                <h4>Step 4: Move Uploaded Files</h4>
+                <p>
+                    Extract file IDs from the form upload field, copy files to the incident folder,
+                    then remove from the temporary upload folder.
+                </p>
+            </div>
+
+            <div class="flow-step">
+                <h4>Step 5: Generate Summary Document</h4>
+                <p>
+                    Create a formatted Google Doc with all form data, lookup results, and descriptions.
+                    Move it to the incident folder.
+                </p>
+            </div>
+
+            <div class="flow-step">
+                <h4>Step 6: Send Email Notification</h4>
+                <p>
+                    Compose an HTML email with incident details, maintenance alerts, and a direct link
+                    to the incident folder. Archive the email content to a text file.
+                </p>
+            </div>
+
+            <h4>Code Sample: Folder Naming and Creation</h4>
+            <div class="code-block">
+<span class="code-comment">// Determine parent folder (vehicle-specific or archive)</span>
+<span class="code-keyword">let</span> parentFolderId = VEHICLE_FOLDER_MAP[licensePlate];
+<span class="code-keyword">if</span> (!parentFolderId) {
+  Logger.<span class="code-function">log</span>(<span class="code-string">`Vehicle <span class="code-keyword">${</span>licensePlate<span class="code-keyword">}</span> not in map. Filing in archive.`</span>);
+  parentFolderId = NEW_VEHICLE_ARCHIVE_FOLDER_ID;
+}
+<span class="code-keyword">const</span> parentFolder = DriveApp.<span class="code-function">getFolderById</span>(parentFolderId);
+
+<span class="code-comment">// Create incident folder with standardized name</span>
+<span class="code-keyword">const</span> incidentFolderName = <span class="code-string">`<span class="code-keyword">${</span>Utilities.<span class="code-function">formatDate</span>(<span class="code-keyword">new</span> <span class="code-type">Date</span>(submissionDate), Session.<span class="code-function">getScriptTimeZone</span>(), <span class="code-string">'yyyy-MM-dd'</span>)<span class="code-keyword">}</span> - Incident - <span class="code-keyword">${</span>driverName<span class="code-keyword">}</span> - <span class="code-keyword">${</span>makeModel<span class="code-keyword">}</span>`</span>;
+<span class="code-keyword">const</span> incidentFolder = parentFolder.<span class="code-function">createFolder</span>(incidentFolderName);
+            </div>
+
+            <p>
+                <label for="folder-note" class="margin-toggle sidenote-number"></label>
+                <input type="checkbox" id="folder-note" class="margin-toggle"/>
+                <span class="sidenote">
+                    The date prefix (YYYY-MM-DD) ensures folders sort chronologically in Drive.
+                    This makes it trivial to find "incidents from Q1 2024" during audits.
+                </span>
+            </p>
+        </section>
+
+        <section>
+            <h2>Email Notification System</h2>
+            <p>
+                The email is the <strong>primary interface</strong> for stakeholders. It must be scannable,
+                actionable, and include all critical context without requiring clicks.
+            </p>
+
+            <h3>Email Template Structure</h3>
+            <div class="code-block">
+<span class="code-keyword">const</span> emailSubject = <span class="code-string">`🚨 Vehicle Incident: <span class="code-keyword">${</span>driverName<span class="code-keyword">}</span> - <span class="code-keyword">${</span>makeModel<span class="code-keyword">}</span>`</span>;
+
+<span class="code-keyword">const</span> emailBody = <span class="code-string">`
+  &lt;p&gt;A new &lt;b&gt;Vehicle Incident Report&lt;/b&gt; has been filed.&lt;/p&gt;
+  &lt;hr&gt;
+
+  &lt;h3&gt;Incident Details:&lt;/h3&gt;
+  &lt;p&gt;&lt;b&gt;Driver:&lt;/b&gt; <span class="code-keyword">${</span>driverName<span class="code-keyword">}</span>&lt;/p&gt;
+  &lt;p&gt;&lt;b&gt;Date/Time:&lt;/b&gt; <span class="code-keyword">${</span>dateValue<span class="code-keyword">}</span> at <span class="code-keyword">${</span>timeValue<span class="code-keyword">}</span>&lt;/p&gt;
+  &lt;p&gt;&lt;b&gt;Vehicle:&lt;/b&gt; <span class="code-keyword">${</span>makeModel<span class="code-keyword">}</span>&lt;/p&gt;
+
+  &lt;h3&gt;Coverage Context:&lt;/h3&gt;
+  &lt;p&gt;<span class="code-keyword">${</span>coverageSummary<span class="code-keyword">}</span>&lt;/p&gt;
+
+  &lt;h3&gt;Maintenance Context:&lt;/h3&gt;
+  &lt;p&gt;&lt;b&gt;Last Service:&lt;/b&gt;
+    <span class="code-keyword">${</span>maintenanceData.lastServiceLink !== <span class="code-string">'N/A'</span>
+      ? <span class="code-string">`&lt;a href="<span class="code-keyword">${</span>maintenanceData.lastServiceLink<span class="code-keyword">}</span>"&gt;<span class="code-keyword">${</span>maintenanceData.lastServiceDate<span class="code-keyword">}</span>&lt;/a&gt;`</span>
+      : maintenanceData.lastServiceDate
+    <span class="code-keyword">}</span>
+  &lt;/p&gt;
+  &lt;p&gt;&lt;b&gt;Next Service Due:&lt;/b&gt; &lt;b&gt;<span class="code-keyword">${</span>maintenanceData.nextServiceDate<span class="code-keyword">}</span>&lt;/b&gt; (Quarterly)&lt;/p&gt;
+
+  &lt;hr&gt;
+
+  &lt;p&gt;&lt;b&gt;Brief Description:&lt;/b&gt;&lt;/p&gt;
+  &lt;p&gt;<span class="code-keyword">${</span>briefDescription<span class="code-keyword">}</span>&lt;/p&gt;
+
+  &lt;hr&gt;
+
+  &lt;p&gt;👉 &lt;a href="<span class="code-keyword">${</span>incidentFolderUrl<span class="code-keyword">}</span>"&gt;VIEW INCIDENT FOLDER&lt;/a&gt;&lt;/p&gt;
+`</span>;
+
+MailApp.<span class="code-function">sendEmail</span>({
+  to: RECIPIENT_EMAILS,
+  subject: emailSubject,
+  htmlBody: emailBody
+});
+            </div>
+
+            <h3>Why This Design Works</h3>
+            <ul>
+                <li><strong>Subject Line:</strong> Includes driver and vehicle for instant context (searchable in Gmail)</li>
+                <li><strong>Coverage Summary First:</strong> Managers immediately see "who pays for this?" (owned vs. leased)</li>
+                <li><strong>Maintenance Alerts:</strong> Proactively flags overdue service (prevents "why wasn't this maintained?" questions)</li>
+                <li><strong>One-Click Access:</strong> The folder link is the primary CTA—no need to navigate Drive manually</li>
+                <li><strong>Archived Copy:</strong> The email content is saved to a .txt file in the incident folder for audit trails</li>
+            </ul>
+
+            <p>
+                <label for="email-edge" class="margin-toggle">⊕</label>
+                <input type="checkbox" id="email-edge" class="margin-toggle"/>
+                <span class="marginnote">
+                    <strong>Edge Case:</strong> What if <code>RECIPIENT_EMAILS</code> is empty?
+                    The email send fails silently (logged), but the incident folder/doc are still created.
+                    This ensures data isn't lost even if email breaks.
+                </span>
+            </p>
+        </section>
+
+        <section>
+            <h2>Error Handling Philosophy</h2>
+            <p>
+                This system runs <strong>unattended in production</strong>. Users are not developers—they're
+                busy program staff. Error handling must be bulletproof.
+            </p>
+
+            <h3>Defensive Patterns Used</h3>
+            <ol>
+                <li>
+                    <strong>Try-Catch Around External APIs</strong>
+                    <p>
+                        Every <code>DriveApp</code>, <code>SpreadsheetApp</code>, and <code>MailApp</code> call
+                        is wrapped in try-catch. If the Sheets API is down, the script degrades gracefully.
+                    </p>
+                </li>
+                <li>
+                    <strong>Default Values Everywhere</strong>
+                    <p>
+                        Functions return valid objects even on failure. The email template can safely reference
+                        <code>maintenanceData.lastServiceDate</code> knowing it's always a string (never undefined).
+                    </p>
+                </li>
+                <li>
+                    <strong>Explicit Logging</strong>
+                    <p>
+                        Every error logs to <code>Logger</code> with context. Admins can view logs in the Apps Script dashboard.
+                    </p>
+                </li>
+                <li>
+                    <strong>Fallback Folder</strong>
+                    <p>
+                        If a vehicle's folder ID isn't in <code>VEHICLE_FOLDER_MAP</code>, files go to
+                        <code>NEW_VEHICLE_ARCHIVE_FOLDER_ID</code> instead of failing.
+                    </p>
+                </li>
+            </ol>
+
+            <div class="warning-box">
+                <h4>⚠️ Known Limitation: Form Field Name Changes</h4>
+                <p>
+                    If someone renames a Google Form question (e.g., "Driver Name" → "Driver's Full Name"),
+                    the script breaks because <code>responseData[DRIVER_NAME_FIELD_NAME]</code> returns undefined.
+                </p>
+                <p>
+                    <strong>Mitigation:</strong> The deployment guide includes a warning to <em>never rename form fields</em>
+                    without updating the script constants. A future enhancement could add validation to detect this.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Performance Considerations</h2>
+
+            <h3>Execution Time</h3>
+            <p>
+                Typical execution: <strong>5-10 seconds</strong>
+            </p>
+            <ul>
+                <li>Form data extraction: ~0.1s</li>
+                <li>Master Sheet lookup: ~1s (depends on sheet size)</li>
+                <li>Maintenance folder scan: ~2-4s (depends on file count)</li>
+                <li>Folder creation + file moves: ~1-2s</li>
+                <li>Google Doc generation: ~1s</li>
+                <li>Email send: ~0.5s</li>
+            </ul>
+
+            <p>
+                <label for="perf-note" class="margin-toggle sidenote-number"></label>
+                <input type="checkbox" id="perf-note" class="margin-toggle"/>
+                <span class="sidenote">
+                    Google Apps Script has a 6-minute execution limit for triggers. This system uses ~0.3%
+                    of that limit, leaving ample headroom for scaling.
+                </span>
+            </p>
+
+            <h3>Quota Limits</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Resource</th>
+                        <th>Daily Limit</th>
+                        <th>Usage Per Incident</th>
+                        <th>Max Incidents/Day</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Email sends</td>
+                        <td>1,500</td>
+                        <td>1</td>
+                        <td>1,500</td>
+                    </tr>
+                    <tr>
+                        <td>Drive API calls</td>
+                        <td>20,000</td>
+                        <td>~10-15</td>
+                        <td>~1,500</td>
+                    </tr>
+                    <tr>
+                        <td>Execution time</td>
+                        <td>90 min</td>
+                        <td>~10s</td>
+                        <td>~540</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                <strong>Conclusion:</strong> The system can handle <strong>500+ incidents per day</strong> before
+                hitting any quota limits. A 30-vehicle fleet averaging 2-3 incidents/month is well within capacity.
+            </p>
+        </section>
+
+        <section>
+            <h2>Future Enhancements</h2>
+
+            <h3>1. Cost Tracking</h3>
+            <p>
+                Parse repair invoices to calculate total cost of ownership per vehicle.
+                Could use OCR (Drive API's <code>files.export</code> with text extraction) to auto-populate costs.
+            </p>
+
+            <h3>2. Dashboard Integration</h3>
+            <p>
+                Connect the response sheet to Looker Studio for visualizations:
+            </p>
+            <ul>
+                <li>Incidents per vehicle (identify problem vehicles)</li>
+                <li>Incidents per driver (training opportunities)</li>
+                <li>Seasonal trends (e.g., winter weather spike)</li>
+            </ul>
+
+            <h3>3. Automated Insurance Filing</h3>
+            <p>
+                For high-severity incidents (marked via form checkbox), auto-generate a pre-filled
+                insurance claim form PDF and attach it to the email.
+            </p>
+
+            <h3>4. Mileage-Based Maintenance</h3>
+            <p>
+                Replace the fixed 3-month service interval with odometer-based tracking.
+                Would require adding a "Current Mileage" field to the form.
+            </p>
+        </section>
+
+        <section>
+            <h2>Lessons Learned</h2>
+
+            <h3>What Worked Well</h3>
+            <ul>
+                <li><strong>Configuration-first design:</strong> Made deployment to other orgs trivial</li>
+                <li><strong>Fallback logic:</strong> System never crashes—it degrades gracefully</li>
+                <li><strong>Email as interface:</strong> Managers don't need to learn a new tool</li>
+                <li><strong>Structured file naming:</strong> Makes audits and searches fast</li>
+            </ul>
+
+            <h3>What I'd Improve</h3>
+            <ul>
+                <li><strong>Unit tests:</strong> Should have written tests for lookup functions (used manual testing instead)</li>
+                <li><strong>Version control from day 1:</strong> Iterated in the Apps Script editor; git would have helped</li>
+                <li><strong>More validation:</strong> Should check form field names on first run and alert if misconfigured</li>
+                <li><strong>Metrics logging:</strong> Could track execution time per step for performance optimization</li>
+            </ul>
+
+            <h3>Most Surprising Discovery</h3>
+            <p>
+                The <strong>maintenance date parsing</strong> was way harder than expected. Staff uploaded files
+                with inconsistent naming (Service_2024-03-15.pdf, service 03/15/24.pdf, oil change 3-15.pdf).
+                Had to iterate on the regex multiple times and add the "file creation date fallback" to handle
+                the long tail of edge cases.
+            </p>
+        </section>
+
+        <footer>
+            <p>
+                <a href="index.html">← Back to FleetTracker Overview</a> |
+                <a href="deployment-guide.html">Deployment Guide →</a>
+            </p>
+            <p style="color: #718096; font-size: 0.9rem;">
+                Technical documentation by Camille Moreau | MIT License
+            </p>
+        </footer>
+    </article>
+</body>
+</html>

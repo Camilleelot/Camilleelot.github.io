@@ -1,0 +1,210 @@
+FleetTracker - Recommended Google Drive Folder Structure
+========================================================
+
+This document outlines the recommended folder organization for FleetTracker.
+All folders should be created under a single root folder (e.g., "Fleet Management").
+
+---
+
+Root Structure
+--------------
+
+📁 Fleet Management (Root Folder)
+  ├── 📁 Vehicle ABC-1234 (Honda Civic)
+  ├── 📁 Vehicle XYZ-5678 (Toyota Camry)
+  ├── 📁 Vehicle DEF-9012 (Ford Transit)
+  ├── 📁 [... one folder per vehicle ...]
+  ├── 📁 New Vehicle Archive
+  └── 📁 Form Upload Temp
+
+---
+
+Per-Vehicle Folder Structure
+-----------------------------
+
+Each vehicle gets its own permanent folder. Name it clearly:
+"Vehicle [LICENSE-PLATE] ([MAKE/MODEL])"
+
+Example: Vehicle ABC-1234 (Honda Civic)
+
+Inside each vehicle folder, you should manually upload:
+  ├── 📄 Insurance Policy.pdf (current policy document)
+  ├── 📄 Lease Agreement.pdf (if leased)
+  ├── 📄 Registration.pdf
+  ├── 📄 Service - YYYY-MM-DD.pdf (maintenance/oil change receipts)
+  └── 📁 [Incident folders - auto-created by script]
+
+IMPORTANT: Maintenance File Naming Convention
+----------------------------------------------
+To enable automatic service tracking, name maintenance files using this format:
+
+  Service - YYYY-MM-DD.pdf
+
+Examples:
+  ✅ Service - 2024-03-15.pdf
+  ✅ service - 2024-03-15.pdf (case-insensitive)
+  ✅ Service_2024-03-15.pdf (underscores ok)
+  ✅ Service 2024/03/15.pdf (slashes ok)
+  ✅ Oil Change Service - 2024-03-15.pdf (extra text ok, as long as "service" and date are present)
+
+  ❌ March Service.pdf (no date - will fall back to file upload date)
+  ❌ 2024-03-15.pdf (no "service" keyword - won't be detected)
+
+The script will:
+1. Scan for files containing "service" (case-insensitive)
+2. Extract the date from the filename using regex
+3. If no date is found, use the file's creation date as a fallback
+
+---
+
+Auto-Generated Incident Folders
+--------------------------------
+
+When an incident is reported, the script creates a subfolder inside the vehicle's folder:
+
+Format: YYYY-MM-DD - Incident - [Driver Name] - [Vehicle Make/Model] (Plate)
+
+Example:
+📁 Vehicle ABC-1234 (Honda Civic)
+  └── 📁 2024-03-15 - Incident - Jane Smith - Honda Civic (ABC-1234)
+      ├── 📄 2024-03-15 - Incident - Jane Smith - Honda Civic (ABC-1234) - Summary.gdoc
+      ├── 📷 Damage Photo 1.jpg
+      ├── 📷 Damage Photo 2.jpg
+      ├── 📷 Scene Diagram.png
+      └── 📄 2024-03-15 - Incident - Jane Smith - Honda Civic (ABC-1234) - Email Notification Log.txt
+
+DO NOT manually create incident folders. Let the script handle it.
+
+---
+
+New Vehicle Archive Folder
+---------------------------
+
+Purpose: Stores incidents for vehicles that are NOT yet in VEHICLE_FOLDER_MAP.
+
+Example scenarios:
+- A newly acquired vehicle (not yet added to the script)
+- A rental vehicle used temporarily
+- A personal vehicle involved in an incident (if applicable)
+
+The script checks VEHICLE_FOLDER_MAP for the license plate. If not found, it files the incident here instead of crashing.
+
+This gives you time to:
+1. Add the vehicle to your Master List spreadsheet
+2. Create a permanent folder for the vehicle
+3. Update VEHICLE_FOLDER_MAP in the script
+4. Manually move the incident folder from the archive to the vehicle's permanent folder
+
+---
+
+Form Upload Temp Folder
+------------------------
+
+Purpose: Temporary storage for files uploaded via the Google Form.
+
+Google Forms requires a destination folder for file uploads. This is that folder.
+
+Workflow:
+1. Driver submits form with photos → Files go to "Form Upload Temp"
+2. Script runs → Extracts file IDs from form response
+3. Script copies files to the incident folder
+4. Script removes files from "Form Upload Temp" (cleanup)
+
+IMPORTANT:
+- This folder should stay mostly empty (only files mid-processing)
+- If you see old files accumulating here, it means the script failed to move them
+- Check Apps Script execution logs for errors
+
+---
+
+Folder ID Mapping
+-----------------
+
+You'll need to copy folder IDs from Google Drive URLs for script configuration.
+
+Example:
+https://drive.google.com/drive/folders/1A2-42ydOzwGw4qasaPfjw4_jlUdNR2ld
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                          This is the Folder ID
+
+Required IDs for script configuration:
+
+1. NEW_VEHICLE_ARCHIVE_FOLDER_ID
+   Folder: "New Vehicle Archive"
+   URL: https://drive.google.com/drive/folders/[COPY_THIS_ID]
+
+2. UPLOAD_FOLDER_ID
+   Folder: "Form Upload Temp"
+   URL: https://drive.google.com/drive/folders/[COPY_THIS_ID]
+
+3. VEHICLE_FOLDER_MAP (one entry per vehicle)
+   Folder: "Vehicle ABC-1234 (Honda Civic)"
+   URL: https://drive.google.com/drive/folders/[COPY_THIS_ID]
+
+   Add to script as:
+   "ABC-1234": "[COPIED_ID]",
+
+---
+
+Permissions
+-----------
+
+Who needs access to these folders?
+
+Fleet Management (Root Folder):
+  - Operations Manager: Full edit access
+  - Fleet Coordinator: Full edit access
+  - Program Managers: View access (read-only)
+
+Per-Vehicle Folders:
+  - Same as root folder (permissions inherit)
+
+New Vehicle Archive:
+  - Operations Manager: Edit access (to move files out)
+  - Fleet Coordinator: Edit access
+
+Form Upload Temp:
+  - Google Form: Edit access (auto-configured when you link the form)
+  - Fleet Coordinator: Edit access (for manual cleanup if needed)
+
+The Google Apps Script runs as the user who installed the trigger.
+Make sure that user has edit access to all folders.
+
+---
+
+Backup Recommendations
+----------------------
+
+Google Drive has version history, but for critical compliance:
+
+1. Set up Google Takeout for monthly exports (optional)
+2. Consider Google Workspace's Vault for legal holds (if available)
+3. For high-stakes incidents (lawsuits, severe injuries), manually download PDFs of:
+   - The incident summary doc
+   - All photos
+   - Email notification log
+
+   Store these in a secure off-Drive location (encrypted backup, legal system, etc.)
+
+---
+
+Cleanup & Maintenance
+---------------------
+
+Monthly tasks:
+☐ Review "Form Upload Temp" - should be empty or nearly empty
+☐ Scan incident folders for completeness (photos present, summary doc generated)
+☐ Check for duplicate files (e.g., if someone manually uploaded the same service receipt twice)
+
+Quarterly tasks:
+☐ Review "New Vehicle Archive" - move any incidents to permanent vehicle folders
+☐ Update VEHICLE_FOLDER_MAP if new vehicles were added
+☐ Archive folders for retired/sold vehicles (move to a separate "Retired Fleet" folder)
+
+Annual tasks:
+☐ Audit all vehicle folders for missing insurance/registration docs
+☐ Review folder permissions (remove access for former staff)
+
+---
+
+Need help setting this up? See the deployment guide: ../deployment-guide.html

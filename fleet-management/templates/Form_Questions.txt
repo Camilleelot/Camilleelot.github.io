@@ -1,0 +1,421 @@
+FleetTracker - Production Google Form Questions
+================================================
+
+This document reflects the ACTUAL production form deployed at CTH.
+All question titles must EXACTLY match for the script to work correctly.
+
+CRITICAL: If you rename ANY form question, you MUST update the corresponding
+constant in FleetTracker.gs (see the CONFIGURATION section).
+
+---
+
+FORM HEADER
+-----------
+
+Title: Vehicle Incident Reporting
+
+Description/Instructions:
+"
+IMMEDIATE ACTIONS AT THE SCENE
+
+Stop and Assess Safety: Check on passengers and others involved for injuries and move to a safe place.
+
+Call 911 IMMEDIATELY IF:
+• Anyone is injured or requires medical attention.
+• There is a fire or risk of fire.
+• The collision is blocking live traffic lanes and creating a major hazard.
+• You suspect another driver is impaired by alcohol or drugs.
+
+Contact Your On-Duty Manager: This is a MANDATORY step. Before proceeding further, call the On-Duty Manager to report the situation and receive immediate guidance.
+
+Determine if Police Are Required at the Scene: you must wait for police to arrive if the collision involves ANY of the following:
+• An injury or fatality.
+• An impaired driver.
+• An out-of-province vehicle.
+• An unidentified vehicle (e.g., hit and run).
+• Significant vehicle or property damage (appearing to be over $5,000 combined).
+• The collision involves a government vehicle.
+
+If the situation does not meet these criteria but damage still exceeds $5,000, you must file a report at a police station within 24 hours.
+
+• DO be polite and cooperative with others involved.
+• DO NOT admit fault, apologize for the collision, or assign blame to others.
+• DO NOT promise payment or agree to forget about the damage.
+• State only the facts of what happened when speaking to the police.
+"
+
+---
+
+FORM QUESTIONS
+--------------
+
+Question 1: Email *
+Type: Email collection
+Required: Yes
+Notes: Used to send confirmation receipt to driver
+
+---
+
+Question 2: Full Legal Name of the Driver *
+Type: Short answer
+Required: Yes
+Help text: "We require this for reporting purposes."
+Notes: Used for incident folder naming and driver identification
+
+---
+
+Question 3: What location does the driver fall under? *
+Type: Multiple choice
+Required: Yes
+Options: (Customize for your organization's programs/locations)
+  - Set Up Multiple choices here, make them short/unique
+  - Other: [text field]
+Notes: Routes incident to appropriate program manager
+
+---
+
+Question 4: Date of Incident *
+Type: Date
+Required: Yes
+Placeholder: "Example: January 7, 2019"
+Notes: Primary date for incident tracking
+
+---
+
+Question 5: Time of Incident (if known)
+Type: Short answer
+Required: No
+Placeholder: "Example: 8:30 AM"
+Notes: Optional since time may be uncertain
+
+---
+
+Question 6: Location (Street/Avenue, City, nearest intersection or landmark) *
+Type: Short answer
+Required: Yes
+Notes: Critical for insurance claims and context
+
+---
+
+Question 7: Weather and Road Conditions *
+Type: Multiple choice
+Required: Yes
+Options:
+  - Clear/Dry
+  - Light Rain/Wet Roads
+  - Non-Severe Wind
+  - Fog/Low Visibility
+  - Darkness/Dusk/Dawn
+  - Snow/Icy
+  - Other: [text field]
+Notes: Environmental context for incident analysis
+
+---
+
+Question 8: Is this a Company vehicle? *
+Type: Multiple choice
+Required: Yes
+Options:
+  - Yes (Skip to question 9)
+  - No (Skip to question 28)
+Notes: Conditional branching - personal vehicle incidents skip vehicle lookup
+
+---
+
+VEHICLE INFORMATION SECTION
+----------------------------
+
+Question 9: Vehicle In Question (Year/Make/Model/License Plate)
+Type: Dropdown
+Required: Yes (if company vehicle)
+Options: (Populate from your Master Vehicle List)
+  - This will be the most tedious part, list out all vehicles like this, same format
+  - 2024 Honda ABC-1234
+  - [Add one entry per vehicle in your fleet]
+
+CRITICAL FORMAT REQUIREMENT:
+- Format MUST be: Year Make Model PLATE
+- License plate MUST be the last word (after the last space)
+- License plate MUST match EXACTLY what's in Master List and VEHICLE_FOLDER_MAP
+- Example: "2024 Honda ABC-1234" (script extracts "ABC-1234")
+
+Notes: The script extracts the license plate by taking the last space-separated token
+
+---
+
+INCIDENT INFORMATION SECTION
+-----------------------------
+
+Question 10: Brief Description of What Happened *
+Type: Paragraph
+Required: Yes
+Notes: Primary narrative for incident summary and insurance claims
+
+---
+
+Question 11: Were other drivers or vehicles involved? *
+Type: Multiple choice
+Required: Yes
+Options:
+  - Yes (Skip to question 12)
+  - No (Skip to question 20)
+Notes: Conditional branching to capture other driver info
+
+---
+
+OTHER DRIVER & VEHICLE INFORMATION SECTION
+-------------------------------------------
+(Only shown if "Yes" to question 11)
+
+Question 12: Driver's Name
+Type: Short answer
+Notes: Other driver's full name
+
+Question 13: Address
+Type: Paragraph (long text)
+Notes: Other driver's full address
+
+Question 14: Phone Number
+Type: Short answer
+Notes: Other driver's contact
+
+Question 15: Driver's License #
+Type: Short answer
+Notes: Other driver's license number
+
+Question 16: Vehicle Make/Model/Year/Colour
+Type: Short answer
+Notes: Other vehicle details
+
+Question 17: Other persons License Plate #
+Type: Short answer
+Notes: Other vehicle plate
+
+Question 18: Insurance Company
+Type: Short answer
+Notes: Other driver's insurer
+
+Question 19: Policy #
+Type: Short answer
+Notes: Other driver's policy number
+
+---
+
+POLICE INVOLVEMENT SECTION
+---------------------------
+
+Question 20: Did the police attend the scene? *
+Type: Multiple choice
+Required: Yes
+Options:
+  - Yes (Skip to question 21)
+  - No (Skip to question 25)
+Notes: Conditional branching for police information
+
+---
+
+POLICE INFORMATION SECTION
+---------------------------
+(Only shown if "Yes" to question 20)
+
+Question 21: Officer's Name
+Type: Short answer
+Notes: Attending officer
+
+Question 22: Badge Number
+Type: Short answer
+Notes: Officer's badge ID
+
+Question 23: Police File
+Type: Short answer
+Notes: Police report/file number
+
+Question 24: Police Service/Detachment
+Type: Short answer
+Notes: Which police service responded (e.g., "Calgary Police Service - District 3")
+
+---
+
+WITNESSES SECTION
+-----------------
+
+Question 25: Did anyone else witness the incident? *
+Type: Multiple choice
+Required: Yes
+Options:
+  - Yes (Skip to question 26)
+  - No (Skip to question 27)
+Notes: Conditional branching for witness details
+
+Question 26: Witness(es) Information that you gathered (Name/Phone, any other information?)
+Type: Paragraph (long text)
+Notes: Capture all witness contact info
+
+---
+
+PHOTOS & SCENE DIAGRAM SECTION
+-------------------------------
+
+Question 27: Upload Screenshots here
+Type: File upload
+Settings:
+  - Allow multiple files: Yes
+  - Maximum number of files: 20 (adjust as needed)
+  - Maximum file size: 10 MB per file
+  - File types: Images (jpg, png), PDFs
+  - Upload location: Your "Form Upload Temp" folder
+
+Instructions shown to user:
+"Photos & Scene Diagram
+
+Take multiple photos:
+• Wide-angle shots showing the entire scene and position of all vehicles.
+• Close-up shots of the damage to all vehicles/property.
+• Photos of the other driver's license plate, insurance slip, and driver's license.
+
+Please upload them below.
+
+If possible, download this image and circle where damage occurred, and upload it."
+
+[Vehicle damage diagram shown: side, top, and front/rear views of a car]
+
+Notes:
+1. The damage diagram template should be embedded as an image in the form description
+2. Drivers can screenshot it, mark it up on their phone, and upload
+3. This is incredibly useful for insurance claims
+
+---
+
+INJURY TRACKING SECTION
+------------------------
+
+Question 28: Were any employees injured? *
+Type: Multiple choice
+Required: Yes
+Options:
+  - Yes
+  - No
+Notes: Flags incidents requiring workers' comp/HR follow-up
+
+Question 29: Were any other non-employees (clients, other drivers, etc) injured? *
+Type: Multiple choice
+Required: Yes
+Options:
+  - Yes
+  - No
+Notes: Flags incidents requiring additional liability review
+
+---
+
+INFORMATION/FINAL SUBMISSION SECTION
+-------------------------------------
+
+Final text shown:
+"Any final details, anything resources you might want to list"
+
+(No additional questions - just informational text before submit button)
+
+---
+
+FORM SETTINGS RECOMMENDATIONS
+------------------------------
+
+General Settings:
+☐ Collect email addresses: Yes (used for confirmation receipts)
+☐ Response receipts: "Always" (drivers get copy of submission)
+☐ Limit to 1 response: No (drivers may need to submit multiple incidents)
+☐ Restrict to [Your Domain]: Optional (depends on contractor access needs)
+☐ Allow response editing: No (prevents tampering; use new submission for corrections)
+
+Confirmation Message:
+"Thank you for submitting your incident report. The operations team has been notified automatically and will follow up within 24 hours. If this is an emergency, call [EMERGENCY NUMBER] immediately."
+
+Presentation Settings:
+☐ Show progress bar: Yes (helps drivers see how much is left)
+☐ Shuffle question order: No
+☐ Show link to submit another response: Yes (for drivers who witness multiple incidents)
+
+---
+
+FIELD NAME CONSTANTS MAPPING
+-----------------------------
+
+These constants in FleetTracker.gs MUST match your form question titles:
+
+const DATE_FIELD_NAME = 'Date of Incident';
+const TIME_FIELD_NAME = 'Time of Incident (if known)';
+const HOME_FIELD_NAME = 'What location does the driver fall under?';
+const DRIVER_NAME_FIELD_NAME = 'Full Legal Name of the Driver';
+const UPLOAD_FIELD_NAME = 'Upload Screenshots here';
+const DESCRIPTION_FIELD_NAME = 'Brief Description of What Happened';
+const FORM_VEHICLE_FIELD_NAME = 'Vehicle In Question (Year/Make/Model/License Plate)';
+
+If you rename ANY of these questions in your form, update the constants immediately.
+
+---
+
+CONDITIONAL LOGIC SUMMARY
+--------------------------
+
+The form uses skip logic to show/hide sections based on responses:
+
+1. "Is this a Company vehicle?"
+   - Yes → Show vehicle dropdown (Q9) → Continue to incident details
+   - No → Skip to injury tracking (Q28)
+
+2. "Were other drivers or vehicles involved?"
+   - Yes → Show other driver info section (Q12-19)
+   - No → Skip to police involvement (Q20)
+
+3. "Did the police attend the scene?"
+   - Yes → Show police information (Q21-24)
+   - No → Skip to witnesses (Q25)
+
+4. "Did anyone else witness the incident?"
+   - Yes → Show witness information (Q26)
+   - No → Skip to photos (Q27)
+
+This keeps the form streamlined - drivers only see relevant questions.
+
+---
+
+TESTING CHECKLIST
+-----------------
+
+Before going live, test all conditional paths:
+
+☐ Submit with company vehicle (full flow)
+☐ Submit with personal vehicle (should skip to Q28)
+☐ Submit with other drivers involved (verify Q12-19 appear)
+☐ Submit with police attendance (verify Q21-24 appear)
+☐ Submit with witnesses (verify Q26 appears)
+☐ Submit with file uploads (verify files appear in "Form Upload Temp")
+☐ Verify email confirmation is sent to driver
+☐ Verify response appears in linked Google Sheet
+☐ Verify script trigger fires and processes incident
+
+---
+
+DEPLOYMENT NOTES
+----------------
+
+1. Question titles are CASE-SENSITIVE and SPACE-SENSITIVE
+   - "Date of Incident" ≠ "Date Of Incident" ≠ "Date of incident"
+   - Match the constants EXACTLY
+
+2. The vehicle dropdown is tedious but critical
+   - List EVERY vehicle in your fleet
+   - Use EXACT format: Year Make Model PLATE
+   - Double-check license plates match your Master List
+
+3. File uploads require special setup
+   - Form creates a folder automatically for uploads
+   - Note the folder ID for UPLOAD_FOLDER_ID in the script
+
+4. Conditional logic is managed in Google Forms
+   - Edit each multiple choice question → Click three dots → "Go to section based on answer"
+   - Set up skip logic as documented above
+
+---
+
+Need help? See the deployment guide: ../deployment-guide.html

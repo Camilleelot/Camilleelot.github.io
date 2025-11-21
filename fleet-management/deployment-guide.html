@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleetTracker Deployment Guide - Camille's Lot</title>
+    <link rel="stylesheet" href="../tufte.css"/>
+    <link rel="stylesheet" href="../latex.css"/>
+    <style>
+        .step-box {
+            background: #f7fafc;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .step-box h3 {
+            margin-top: 0;
+            color: #2c5282;
+            display: flex;
+            align-items: center;
+        }
+        .step-number {
+            background: #3182ce;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            font-weight: bold;
+        }
+        .code-inline {
+            background: #edf2f7;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            color: #2d3748;
+        }
+        .warning {
+            border-left: 4px solid #ed8936;
+            background: #fffaf0;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+        }
+        .tip {
+            border-left: 4px solid #48bb78;
+            background: #f0fff4;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+        }
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            color: #3182ce;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        .screenshot-placeholder {
+            background: #e2e8f0;
+            border: 2px dashed #a0aec0;
+            padding: 3rem;
+            text-align: center;
+            color: #4a5568;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        th {
+            background: #edf2f7;
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 2px solid #cbd5e0;
+        }
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>FleetTracker Deployment Guide</h1>
+        <p class="subtitle">Step-by-Step Setup for Nonprofit Organizations</p>
+
+        <section>
+            <h2>Overview</h2>
+            <p>
+                This guide will walk you through deploying FleetTracker at your nonprofit organization.
+                <strong>No coding experience required.</strong> If you can use Google Sheets and copy-paste,
+                you can deploy this system.
+            </p>
+
+            <h3>Time Estimate</h3>
+            <ul>
+                <li><strong>Initial setup:</strong> 2-3 hours (one-time)</li>
+                <li><strong>Testing:</strong> 30 minutes</li>
+                <li><strong>Staff training:</strong> 15 minutes</li>
+            </ul>
+
+            <h3>Prerequisites</h3>
+            <ul class="checklist">
+                <li>Google Workspace account (free for nonprofits via <a href="https://www.google.com/nonprofits/">Google for Nonprofits</a>)</li>
+                <li>Admin access to create Google Forms and manage Drive folders</li>
+                <li>A list of your fleet vehicles (make/model, license plates, insurance info)</li>
+                <li>Email addresses for incident notification recipients</li>
+            </ul>
+
+            <div class="tip">
+                <strong>💡 Tip:</strong> Set aside a dedicated block of time for setup. While each step is straightforward,
+                interruptions can make it harder to track where you left off.
+            </div>
+        </section>
+
+        <section>
+            <h2>Step-by-Step Setup</h2>
+
+            <div class="step-box">
+                <h3><span class="step-number">1</span> Download the Template Files</h3>
+                <p>
+                    Get the FleetTracker template package from the GitHub repository:
+                </p>
+                <ol>
+                    <li>Visit <a href="https://github.com/Camilleelot/FleetTracker-NGO">github.com/Camilleelot/FleetTracker-NGO</a></li>
+                    <li>Click the green <strong>"Code"</strong> button → <strong>"Download ZIP"</strong></li>
+                    <li>Extract the ZIP file to your computer</li>
+                </ol>
+
+                <p><strong>What's included:</strong></p>
+                <ul>
+                    <li><span class="code-inline">FleetTracker.gs</span> - The main Google Apps Script code</li>
+                    <li><span class="code-inline">Master_Vehicle_List_Template.xlsx</span> - Spreadsheet template for vehicle data</li>
+                    <li><span class="code-inline">Form_Questions.txt</span> - Suggested form fields and options</li>
+                    <li><span class="code-inline">Drive_Structure.txt</span> - Recommended folder organization</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <h3><span class="step-number">2</span> Create Your Master Vehicle List</h3>
+                <p>
+                    This spreadsheet is the "source of truth" for your fleet. The script looks up vehicle
+                    details here when incidents are reported.
+                </p>
+
+                <ol>
+                    <li>Open <span class="code-inline">Master_Vehicle_List_Template.xlsx</span> in Excel or Google Sheets</li>
+                    <li>Fill in one row per vehicle with the following columns:</li>
+                </ol>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>License Plate</strong></td>
+                            <td>Unique identifier (MUST match form dropdown)</td>
+                            <td>ABC-1234</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Make</strong></td>
+                            <td>Vehicle manufacturer and model</td>
+                            <td>Honda Civic</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Year</strong></td>
+                            <td>Model year</td>
+                            <td>2020</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lease/Coverage Summary</strong></td>
+                            <td>Ownership type, insurance carrier, policy #</td>
+                            <td>Owned / Full Coverage / State Farm #12345</td>
+                        </tr>
+                        <tr>
+                            <td><strong>VIN</strong></td>
+                            <td>Vehicle Identification Number (optional but recommended)</td>
+                            <td>1HGBH41JXMN109186</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="warning">
+                    <strong>⚠️ CRITICAL:</strong> The <strong>License Plate</strong> column MUST use the exact same format
+                    you'll use in the Google Form. If you write "ABC-1234" here, don't use "ABC1234" (no dash) in the form.
+                </div>
+
+                <ol start="3">
+                    <li>Upload the completed spreadsheet to Google Drive</li>
+                    <li>Right-click the file → <strong>Get link</strong> → Copy the <strong>Spreadsheet ID</strong></li>
+                </ol>
+
+                <p>The Spreadsheet ID is the long string in the URL:</p>
+                <div class="code-inline" style="display: block; padding: 0.5rem;">
+                    https://docs.google.com/spreadsheets/d/<strong style="color: #e53e3e;">1895NA95MNA054MA9590AJMT9401JM</strong>/edit
+                </div>
+
+                <p><strong>Save this ID</strong> - you'll need it in Step 5.</p>
+            </div>
+
+            <div class="step-box">
+                <h3><span class="step-number">3</span> Set Up Your Drive Folder Structure</h3>
+                <p>
+                    Organize your Drive to store vehicle documents and incident reports.
+                </p>
+
+                <h4>Recommended Structure:</h4>
+                <pre style="font-family: monospace; background: #f7fafc; padding: 1rem; border-left: 4px solid #3182ce;">
+📁 Fleet Management (Root Folder)
+  ├── 📁 Vehicle ABC-1234 (Honda Civic)
+  │   ├── 📄 Insurance Policy.pdf
+  │   ├── 📄 Service - 2024-01-15.pdf
+  │   └── 📄 Service - 2024-04-20.pdf
+  │   (Incident folders will be auto-created here)
+  │
+  ├── 📁 Vehicle XYZ-5678 (Toyota Camry)
+  │   ├── 📄 Lease Agreement.pdf
+  │   └── 📄 Service - 2024-03-10.pdf
+  │
+  ├── 📁 New Vehicle Archive (for vehicles not yet mapped)
+  │
+  └── 📁 Form Upload Temp (temporary storage for form uploads)
+                </pre>
+
+                <h4>Steps:</h4>
+                <ol>
+                    <li>Create a root folder (e.g., "Fleet Management")</li>
+                    <li>Inside it, create <strong>one folder per vehicle</strong> (name them clearly: "Vehicle ABC-1234 - Honda Civic")</li>
+                    <li>Create a folder called <strong>"New Vehicle Archive"</strong> (for incidents involving unlisted vehicles)</li>
+                    <li>Create a folder called <strong>"Form Upload Temp"</strong> (Google Forms uploads go here temporarily)</li>
+                </ol>
+
+                <h4>Get Folder IDs:</h4>
+                <p>You'll need the Google Drive folder IDs for configuration. To find them:</p>
+                <ol>
+                    <li>Open each folder in Google Drive</li>
+                    <li>Look at the URL in your browser</li>
+                    <li>Copy the ID from the URL:</li>
+                </ol>
+                <div class="code-inline" style="display: block; padding: 0.5rem;">
+                    https://drive.google.com/drive/folders/<strong style="color: #e53e3e;">1A2-42ydOzwGw4qasaPfjw4_jlUdNR2ld</strong>
+                </div>
+
+                <div class="tip">
+                    <strong>💡 Tip:</strong> Create a temporary text file to track folder IDs as you copy them.
+                    You'll need them in Step 5.
+                </div>
+
+                <p><strong>Required IDs:</strong></p>
+                <ul class="checklist">
+                    <li>ID for "New Vehicle Archive" folder</li>
+                    <li>ID for "Form Upload Temp" folder</li>
+                    <li>ID for each individual vehicle folder (ABC-1234, XYZ-5678, etc.)</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <h3><span class="step-number">4</span> Create the Google Form</h3>
+                <p>
+                    This form is what drivers will use to report incidents (typically from their phones).
+                </p>
+
+                <ol>
+                    <li>Go to <a href="https://forms.google.com">forms.google.com</a></li>
+                    <li>Click <strong>Blank Form</strong></li>
+                    <li>Title it: <strong>"Vehicle Incident Report"</strong></li>
+                    <li>Add the following questions:</li>
+                </ol>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Question Title</th>
+                            <th>Type</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Date of Incident</td>
+                            <td>Date</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td>Time of Incident (if known)</td>
+                            <td>Short answer</td>
+                            <td>Optional</td>
+                        </tr>
+                        <tr>
+                            <td>What home does the driver fall under?</td>
+                            <td>Dropdown</td>
+                            <td>List your programs/locations</td>
+                        </tr>
+                        <tr>
+                            <td>Full Legal Name of the Driver</td>
+                            <td>Short answer</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td>Vehicle In Question</td>
+                            <td>Dropdown</td>
+                            <td><strong>CRITICAL:</strong> Populate from Master List</td>
+                        </tr>
+                        <tr>
+                            <td>Vehicle Damage/Photos & Scene Diagram</td>
+                            <td>File upload</td>
+                            <td>Upload to "Form Upload Temp" folder</td>
+                        </tr>
+                        <tr>
+                            <td>Brief Description of What Happened</td>
+                            <td>Paragraph</td>
+                            <td>Required</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="warning">
+                    <strong>⚠️ CRITICAL - Vehicle Dropdown Setup:</strong>
+                    <p>For the "Vehicle In Question" dropdown, format entries EXACTLY like this:</p>
+                    <ul>
+                        <li>2020 Honda Civic ABC-1234</li>
+                        <li>2019 Toyota Camry XYZ-5678</li>
+                    </ul>
+                    <p>
+                        The script extracts the license plate by taking the <strong>last word</strong> (after the last space).
+                        If you use a different format, the lookup will fail.
+                    </p>
+                </div>
+
+                <h4>Configure File Upload:</h4>
+                <ol>
+                    <li>Click on the "File upload" question</li>
+                    <li>Click the three dots (⋮) → <strong>Go to folder</strong></li>
+                    <li>Move the default upload folder to your "Form Upload Temp" folder location</li>
+                    <li>Or: Note the folder ID of where uploads go (you'll need this in Step 5)</li>
+                </ol>
+
+                <h4>Link Form to Spreadsheet:</h4>
+                <ol>
+                    <li>Click the <strong>Responses</strong> tab in the form editor</li>
+                    <li>Click the green Sheets icon</li>
+                    <li>Choose <strong>"Create a new spreadsheet"</strong></li>
+                    <li>Name it "Vehicle Incident Responses"</li>
+                </ol>
+
+                <p><strong>Copy the Spreadsheet ID</strong> from the URL (you won't need it for the script, but good to save).</p>
+            </div>
+
+            <div class="step-box">
+                <h3><span class="step-number">5</span> Configure the Google Apps Script</h3>
+                <p>
+                    Now we'll add the automation code to your form's response spreadsheet.
+                </p>
+
+                <ol>
+                    <li>Open the <strong>"Vehicle Incident Responses"</strong> spreadsheet (created in Step 4)</li>
+                    <li>Click <strong>Extensions</strong> → <strong>Apps Script</strong></li>
+                    <li>Delete any default code in the editor</li>
+                    <li>Open <span class="code-inline">FleetTracker.gs</span> from the downloaded template</li>
+                    <li>Copy the entire contents and paste into the Apps Script editor</li>
+                </ol>
+
+                <h4>Edit the Configuration Block:</h4>
+                <p>At the top of the script, you'll see a section labeled <span class="code-inline">// --- CONFIGURATION ---</span></p>
+
+                <p><strong>Update these values:</strong></p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>What to Enter</th>
+                            <th>Where to Find It</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="code-inline">RECIPIENT_EMAILS</span></td>
+                            <td>Comma-separated email addresses</td>
+                            <td>Your team (e.g., 'ops@org.org,fleet@org.org')</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-inline">MASTER_LIST_SPREADSHEET_ID</span></td>
+                            <td>Spreadsheet ID from Step 2</td>
+                            <td>URL of your Master Vehicle List</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-inline">NEW_VEHICLE_ARCHIVE_FOLDER_ID</span></td>
+                            <td>Folder ID from Step 3</td>
+                            <td>Your "New Vehicle Archive" folder URL</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-inline">UPLOAD_FOLDER_ID</span></td>
+                            <td>Folder ID from Step 3/4</td>
+                            <td>Your "Form Upload Temp" folder URL</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-inline">VEHICLE_FOLDER_MAP</span></td>
+                            <td>License plate → Folder ID pairs</td>
+                            <td>See example below</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>VEHICLE_FOLDER_MAP Example:</h4>
+                <div class="code-inline" style="display: block; padding: 1rem; background: #1e1e1e; color: #d4d4d4;">
+<span style="color: #569cd6;">const</span> VEHICLE_FOLDER_MAP = {<br>
+&nbsp;&nbsp;<span style="color: #ce9178;">"ABC-1234"</span>: <span style="color: #ce9178;">"1A2-42ydOzwGw4qasaPfjw4_jlUdNR2ld"</span>,<br>
+&nbsp;&nbsp;<span style="color: #ce9178;">"XYZ-5678"</span>: <span style="color: #ce9178;">"9B8-73xdPawHx5rbtBgkx5_kmVeOS3me"</span>,<br>
+&nbsp;&nbsp;<span style="color: #ce9178;">"DEF-9012"</span>: <span style="color: #ce9178;">"7C6-51wdOaxIv3qbtAfjv3_jmUdNQ1ld"</span>,<br>
+};
+                </div>
+
+                <div class="tip">
+                    <strong>💡 Tip:</strong> Add one line per vehicle. Make sure license plates EXACTLY match
+                    the format in your Master List and Google Form dropdown.
+                </div>
+
+                <ol start="6">
+                    <li>Click <strong>File</strong> → <strong>Save</strong></li>
+                    <li>Name the project: <strong>"FleetTracker Automation"</strong></li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h3><span class="step-number">6</span> Set Up the Form Submission Trigger</h3>
+                <p>
+                    This tells Google to run your script automatically when someone submits the form.
+                </p>
+
+                <ol>
+                    <li>In the Apps Script editor, click the <strong>clock icon</strong> (Triggers) in the left sidebar</li>
+                    <li>Click <strong>+ Add Trigger</strong> (bottom right)</li>
+                    <li>Configure the trigger:</li>
+                </ol>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Setting</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Choose which function to run</td>
+                            <td><strong>onFormSubmit</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Choose which deployment should run</td>
+                            <td><strong>Head</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Select event source</td>
+                            <td><strong>From spreadsheet</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Select event type</td>
+                            <td><strong>On form submit</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <ol start="4">
+                    <li>Click <strong>Save</strong></li>
+                    <li>You'll be prompted to authorize the script:</li>
+                    <ul>
+                        <li>Click <strong>Review Permissions</strong></li>
+                        <li>Choose your Google account</li>
+                        <li>Click <strong>Advanced</strong> → <strong>Go to FleetTracker (unsafe)</strong></li>
+                        <li>Click <strong>Allow</strong></li>
+                    </ul>
+                </ol>
+
+                <div class="warning">
+                    <strong>⚠️ Security Note:</strong> Google shows "unsafe" because this is a custom script
+                    (not a published app). It's safe—you wrote it. Only grant permissions to accounts you trust.
+                </div>
+            </div>
+
+            <div class="step-box">
+                <h3><span class="step-number">7</span> Test the System</h3>
+                <p>
+                    Before rolling out to your team, test the full workflow.
+                </p>
+
+                <h4>Test Checklist:</h4>
+                <ul class="checklist">
+                    <li>Submit a test incident report via the form</li>
+                    <li>Check the response spreadsheet (new row should appear)</li>
+                    <li>Verify email notification was sent to <span class="code-inline">RECIPIENT_EMAILS</span></li>
+                    <li>Check the vehicle folder for the new incident subfolder</li>
+                    <li>Open the incident folder and verify:</li>
+                    <ul>
+                        <li>Incident Summary.gdoc exists and contains correct data</li>
+                        <li>Uploaded photos were moved from "Form Upload Temp"</li>
+                        <li>Email Notification Log.txt exists</li>
+                    </ul>
+                    <li>Verify the email contains correct vehicle coverage info</li>
+                    <li>Check maintenance data (last service date, next due date)</li>
+                </ul>
+
+                <h4>If Something Goes Wrong:</h4>
+                <ol>
+                    <li>Open the Apps Script editor</li>
+                    <li>Click <strong>Executions</strong> (left sidebar)</li>
+                    <li>Find the failed execution and click to view logs</li>
+                    <li>Common issues:</li>
+                </ol>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Error Message</th>
+                            <th>Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>"Cannot read property of undefined"</td>
+                            <td>Form field name mismatch - check <span class="code-inline">*_FIELD_NAME</span> constants</td>
+                        </tr>
+                        <tr>
+                            <td>"Spreadsheet not found"</td>
+                            <td>Wrong <span class="code-inline">MASTER_LIST_SPREADSHEET_ID</span></td>
+                        </tr>
+                        <tr>
+                            <td>"Folder not found"</td>
+                            <td>Wrong folder ID in <span class="code-inline">VEHICLE_FOLDER_MAP</span> or config</td>
+                        </tr>
+                        <tr>
+                            <td>"License plate not found"</td>
+                            <td>Vehicle not in <span class="code-inline">VEHICLE_FOLDER_MAP</span> (should file in archive)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="tip">
+                    <strong>💡 Debugging Tip:</strong> If the script runs but data looks wrong, check the
+                    <strong>column headers</strong> in your response spreadsheet. They must EXACTLY match
+                    the question titles in your Google Form.
+                </div>
+            </div>
+
+            <div class="step-box">
+                <h3><span class="step-number">8</span> Train Your Team</h3>
+                <p>
+                    Once testing is successful, share the form with your staff.
+                </p>
+
+                <h4>For Drivers:</h4>
+                <ol>
+                    <li>Share the form link (get it from the form's <strong>Send</strong> button)</li>
+                    <li>Emphasize: <strong>Take photos immediately at the scene</strong></li>
+                    <li>Bookmark the form on their phones for quick access</li>
+                    <li>Explain: Submitting the form alerts the ops team instantly</li>
+                </ol>
+
+                <h4>For Managers:</h4>
+                <ol>
+                    <li>Show them the email notification format</li>
+                    <li>Explain how to access the incident folder (one-click link)</li>
+                    <li>Walk through the Google Doc summary</li>
+                    <li>Show how to view all incidents (Drive folder view)</li>
+                </ol>
+
+                <h4>Sample Training Message:</h4>
+                <div style="background: #f7fafc; padding: 1rem; border-left: 4px solid #3182ce; margin: 1rem 0;">
+                    <p><strong>Subject:</strong> New Vehicle Incident Reporting System</p>
+                    <p>
+                        Hi team,<br><br>
+                        We've streamlined our vehicle incident reporting process. If you're involved in any
+                        incident (damage, accident, near-miss), please:
+                    </p>
+                    <ol>
+                        <li>Take photos of the damage and scene</li>
+                        <li>Fill out this form: [LINK]</li>
+                        <li>Continue with your day - the ops team is automatically notified</li>
+                    </ol>
+                    <p>
+                        The system organizes everything automatically, so we can respond faster and keep
+                        better records for insurance and compliance.
+                    </p>
+                    <p>Questions? Contact [OPS MANAGER].</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Ongoing Maintenance</h2>
+
+            <h3>Adding New Vehicles</h3>
+            <ol>
+                <li>Add a row to the Master Vehicle List spreadsheet</li>
+                <li>Create a new folder in Drive for the vehicle</li>
+                <li>Add the license plate and folder ID to <span class="code-inline">VEHICLE_FOLDER_MAP</span> in the script</li>
+                <li>Add the vehicle to the form dropdown options</li>
+            </ol>
+
+            <h3>Updating Email Recipients</h3>
+            <ol>
+                <li>Open the Apps Script editor</li>
+                <li>Update the <span class="code-inline">RECIPIENT_EMAILS</span> variable</li>
+                <li>Save the script (changes take effect immediately)</li>
+            </ol>
+
+            <h3>Uploading Maintenance Records</h3>
+            <p>When you receive service invoices:</p>
+            <ol>
+                <li>Name the file: <span class="code-inline">Service - YYYY-MM-DD.pdf</span> (e.g., "Service - 2024-03-15.pdf")</li>
+                <li>Upload to the vehicle's folder</li>
+                <li>The script will automatically detect it for the next incident</li>
+            </ol>
+
+            <div class="tip">
+                <strong>💡 Tip:</strong> The date in the filename should be the <strong>service date</strong>,
+                not the invoice date. This ensures accurate "next service due" calculations.
+            </div>
+        </section>
+
+        <section>
+            <h2>Troubleshooting</h2>
+
+            <h3>Emails Not Sending</h3>
+            <ul>
+                <li>Check the Apps Script execution logs for errors</li>
+                <li>Verify <span class="code-inline">RECIPIENT_EMAILS</span> uses valid addresses</li>
+                <li>Check your Google Workspace admin console - is Gmail enabled?</li>
+                <li>Daily limit: 1,500 emails per day (unlikely to hit with fleet incidents)</li>
+            </ul>
+
+            <h3>Files Not Moving from Upload Folder</h3>
+            <ul>
+                <li>Verify <span class="code-inline">UPLOAD_FOLDER_ID</span> matches the form's upload destination</li>
+                <li>Check Drive permissions - the script account needs edit access</li>
+                <li>File IDs are extracted from the form response - check the spreadsheet column</li>
+            </ul>
+
+            <h3>Maintenance Data Shows "N/A"</h3>
+            <ul>
+                <li>Check that service files have "service" in the filename (case-insensitive)</li>
+                <li>Verify date format in filename: YYYY-MM-DD, YYYY/MM/DD, or YYYY_MM_DD</li>
+                <li>If no date in filename, the script uses file creation date (check when it was uploaded)</li>
+            </ul>
+
+            <h3>Vehicle Lookup Failing</h3>
+            <ul>
+                <li>Verify license plate format matches EXACTLY in:</li>
+                <ul>
+                    <li>Master Vehicle List spreadsheet</li>
+                    <li>Google Form dropdown options</li>
+                    <li><span class="code-inline">VEHICLE_FOLDER_MAP</span> in the script</li>
+                </ul>
+                <li>Check for extra spaces, different capitalization, or punctuation differences</li>
+            </ul>
+
+            <h3>Script Not Running</h3>
+            <ul>
+                <li>Verify the trigger is installed (Apps Script → Triggers)</li>
+                <li>Check that the trigger is set to <strong>"On form submit"</strong> (not "On open" or "Time-driven")</li>
+                <li>Try deleting and recreating the trigger</li>
+                <li>Check Apps Script execution quota (View → Executions → see if errors exist)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Support & Community</h2>
+
+            <h3>Getting Help</h3>
+            <ul>
+                <li><strong>GitHub Issues:</strong> <a href="https://github.com/Camilleelot/FleetTracker-NGO/issues">Report bugs or request features</a></li>
+                <li><strong>Documentation:</strong> <a href="technical-walkthrough.html">Technical deep dive</a> for advanced users</li>
+                <li><strong>Email:</strong> [Your contact email for support inquiries]</li>
+            </ul>
+
+            <h3>Contributing</h3>
+            <p>
+                If you extend FleetTracker with new features (cost tracking, dashboard integration, etc.),
+                please consider contributing back! Submit a pull request on GitHub.
+            </p>
+
+            <h3>Sharing Your Experience</h3>
+            <p>
+                Using FleetTracker at your org? We'd love to hear about it:
+            </p>
+            <ul>
+                <li>How many vehicles are you managing?</li>
+                <li>What improvements have you seen?</li>
+                <li>What features would you like added?</li>
+            </ul>
+            <p>Share your story in the <a href="https://github.com/Camilleelot/FleetTracker-NGO/discussions">GitHub Discussions</a>.</p>
+        </section>
+
+        <footer>
+            <p>
+                <a href="index.html">← Back to FleetTracker Overview</a> |
+                <a href="technical-walkthrough.html">Technical Deep Dive →</a>
+            </p>
+            <p style="color: #718096; font-size: 0.9rem;">
+                Deployment guide by Camille Moreau | Free for nonprofit use
+            </p>
+        </footer>
+    </article>
+</body>
+</html>
