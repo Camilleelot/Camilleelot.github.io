@@ -248,6 +248,75 @@ YYYY-MM-DD - Incident - [Driver Name] - [Vehicle Make/Model] (Plate)
                     Everything is timestamped, searchable, and linked to the vehicle.
                 </p>
             </div>
+
+            <div class="feature-box">
+                <h3>🚓 Police & Witness Tracking</h3>
+                <p>
+                    The form uses <strong>conditional branching</strong> to capture critical details only when relevant:
+                </p>
+                <ul>
+                    <li><strong>Police attendance:</strong> Officer name, badge number, police file #, detachment</li>
+                    <li><strong>Witness information:</strong> Names, phone numbers, any other contact details</li>
+                    <li><strong>Other driver details:</strong> Insurance, license, vehicle info (if multi-vehicle incident)</li>
+                </ul>
+                <p>
+                    <em>Drivers only see the sections they need—streamlined UX without sacrificing data completeness.</em>
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>🩹 Injury & Liability Tracking</h3>
+                <p>
+                    Automatically flags high-risk incidents requiring immediate follow-up:
+                </p>
+                <ul>
+                    <li>Employee injuries (triggers workers' comp notification)</li>
+                    <li>Non-employee injuries (clients, other drivers, pedestrians)</li>
+                    <li>Weather/road conditions captured for liability context</li>
+                </ul>
+                <p>
+                    <label for="injury-note" class="margin-toggle sidenote-number"></label>
+                    <input type="checkbox" id="injury-note" class="margin-toggle"/>
+                    <span class="sidenote">
+                        The injury flags allow HR to proactively reach out before incidents escalate
+                        to formal complaints or claims.
+                    </span>
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>📷 Vehicle Damage Diagram</h3>
+                <p>
+                    The form includes a <strong>downloadable damage diagram template</strong> (top, side, front/rear views)
+                    that drivers can mark up on their phones and upload.
+                </p>
+                <ul>
+                    <li>Standardizes damage documentation across all incidents</li>
+                    <li>Insurance adjusters <em>love</em> this (saves hours of back-and-forth)</li>
+                    <li>Combines with photo uploads for complete visual record</li>
+                </ul>
+                <p>
+                    <em>Photo guidance prompts drivers to capture: wide-angle scene, close-up damage,
+                    license plates, insurance slips, and driver's licenses.</em>
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>🚨 Built-In Safety Instructions</h3>
+                <p>
+                    The form header includes <strong>immediate action guidance</strong> for drivers:
+                </p>
+                <ul>
+                    <li>When to call 911 (injuries, impaired drivers, blocking traffic)</li>
+                    <li><strong>Mandatory on-duty manager contact</strong> before proceeding</li>
+                    <li>When police are required at the scene (injuries, hit-and-run, government vehicles, >$5k damage)</li>
+                    <li>What NOT to do (don't admit fault, don't promise payment)</li>
+                </ul>
+                <p>
+                    This ensures compliance and protects the organization from liability—especially critical
+                    for inexperienced drivers who've never been in an accident.
+                </p>
+            </div>
         </section>
 
         <section>
