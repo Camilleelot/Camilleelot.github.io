@@ -228,6 +228,3 @@ Upload your own HR data or use the sample dataset to explore features.
 
 ---
 
-**Contact**: [Your Email]
-**LinkedIn**: [Your Profile]
-**Portfolio**: [Your Website]
