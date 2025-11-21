@@ -5,11 +5,12 @@
     <title>NGO Turnover Analysis Tool</title>
     <link rel="stylesheet" href="tufte.css" />
     <link rel="stylesheet" href="latex.css" />
+    <link rel="stylesheet" href="colors.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         .cta-button {
             display: inline-block;
-            background: #2d5016;
+            background: var(--color-secondary);
             color: #fffff8;
             padding: 1rem 2rem;
             font-size: 1.2rem;
@@ -19,10 +20,12 @@
             margin: 2rem 0 1rem 0;
             transition: background 0.2s;
             font-family: et-book, Palatino, Georgia, serif;
+            text-shadow: none;
+            -webkit-text-stroke: 0;
         }
 
         .cta-button:hover {
-            background: #3d6826;
+            background: var(--color-primary);
             color: #fffff8;
         }
 

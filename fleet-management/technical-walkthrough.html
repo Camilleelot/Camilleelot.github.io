@@ -6,10 +6,11 @@
     <title>FleetTracker Technical Deep Dive - Camille's Lot</title>
     <link rel="stylesheet" href="../tufte.css"/>
     <link rel="stylesheet" href="../latex.css"/>
+    <link rel="stylesheet" href="../colors.css"/>
     <style>
         .code-block {
-            background: #1e1e1e;
-            color: #d4d4d4;
+            background: var(--color-code-bg);
+            color: var(--color-code-text);
             padding: 1.5rem;
             border-radius: 4px;
             overflow-x: auto;
@@ -19,65 +20,48 @@
             margin: 1.5rem 0;
         }
         .code-comment {
-            color: #6a9955;
+            color: var(--color-code-comment);
         }
         .code-keyword {
-            color: #569cd6;
+            color: var(--color-code-keyword);
         }
         .code-function {
-            color: #dcdcaa;
+            color: var(--color-code-function);
         }
         .code-string {
-            color: #ce9178;
+            color: var(--color-code-string);
         }
         .code-number {
-            color: #b5cea8;
+            color: var(--color-code-number);
         }
         .code-type {
-            color: #4ec9b0;
+            color: var(--color-code-type);
         }
         .design-principle {
-            border-left: 4px solid #48bb78;
-            background: #f0fff4;
+            border-left: 4px solid var(--color-success);
+            background: var(--color-bg-card);
             padding: 1rem 1.5rem;
             margin: 1.5rem 0;
         }
         .warning-box {
-            border-left: 4px solid #ed8936;
-            background: #fffaf0;
+            border-left: 4px solid var(--color-secondary);
+            background: var(--color-bg-card);
             padding: 1rem 1.5rem;
             margin: 1.5rem 0;
         }
         .flow-step {
-            background: #edf2f7;
-            border: 2px solid #cbd5e0;
+            background: var(--color-bg-card-alt);
+            border: 2px solid var(--color-gray-200);
             padding: 1rem;
             margin: 0.5rem 0;
             border-radius: 6px;
         }
         .flow-step h4 {
             margin: 0 0 0.5rem 0;
-            color: #2d3748;
+            color: var(--color-text);
         }
 
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            .design-principle {
-                background: #152a1a;
-                border-left-color: #48bb78;
-            }
-            .warning-box {
-                background: #2a2015;
-                border-left-color: #ed8936;
-            }
-            .flow-step {
-                background: #1a1a1a;
-                border-color: #333;
-            }
-            .flow-step h4 {
-                color: #ddd;
-            }
-        }
+        /* Dark mode - handled by colors.css */
     </style>
 </head>
 <body>

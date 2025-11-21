@@ -6,23 +6,24 @@
     <title>FleetTracker Deployment Guide - Camille's Lot</title>
     <link rel="stylesheet" href="../tufte.css"/>
     <link rel="stylesheet" href="../latex.css"/>
+    <link rel="stylesheet" href="../colors.css"/>
     <style>
         .step-box {
-            background: #f7fafc;
-            border: 2px solid #cbd5e0;
+            background: var(--color-bg-card);
+            border: 2px solid var(--color-gray-200);
             border-radius: 8px;
             padding: 1.5rem;
             margin: 1.5rem 0;
         }
         .step-box h3 {
             margin-top: 0;
-            color: #2c5282;
+            color: var(--color-primary);
             display: flex;
             align-items: center;
         }
         .step-number {
-            background: #3182ce;
-            color: white;
+            background: var(--color-primary);
+            color: #fffff8;
             width: 2rem;
             height: 2rem;
             border-radius: 50%;
@@ -33,28 +34,28 @@
             font-weight: bold;
         }
         .code-inline {
-            background: #edf2f7;
+            background: var(--color-bg-card-alt);
             padding: 0.2rem 0.5rem;
             border-radius: 3px;
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 0.9em;
-            color: #2d3748;
+            color: var(--color-text);
         }
         .warning {
-            border-left: 4px solid #ed8936;
-            background: #fffaf0;
+            border-left: 4px solid var(--color-secondary);
+            background: var(--color-bg-card);
             padding: 1rem 1.5rem;
             margin: 1rem 0;
         }
         .tip {
-            border-left: 4px solid #48bb78;
-            background: #f0fff4;
+            border-left: 4px solid var(--color-success);
+            background: var(--color-bg-card);
             padding: 1rem 1.5rem;
             margin: 1rem 0;
         }
         .info-box {
-            border-left: 4px solid #3182ce;
-            background: #f7fafc;
+            border-left: 4px solid var(--color-primary);
+            background: var(--color-bg-card);
             padding: 1rem;
             margin: 1rem 0;
         }
@@ -64,16 +65,16 @@
         }
         .checklist li:before {
             content: "☐ ";
-            color: #3182ce;
+            color: var(--color-primary);
             font-weight: bold;
             margin-right: 0.5rem;
         }
         .screenshot-placeholder {
-            background: #e2e8f0;
-            border: 2px dashed #a0aec0;
+            background: var(--color-bg-card-alt);
+            border: 2px dashed var(--color-gray-200);
             padding: 3rem;
             text-align: center;
-            color: #4a5568;
+            color: var(--color-text-muted);
             margin: 1rem 0;
             border-radius: 4px;
         }
@@ -83,54 +84,17 @@
             margin: 1rem 0;
         }
         th {
-            background: #edf2f7;
+            background: var(--color-bg-card-alt);
             padding: 0.75rem;
             text-align: left;
-            border-bottom: 2px solid #cbd5e0;
+            border-bottom: 2px solid var(--color-gray-200);
         }
         td {
             padding: 0.75rem;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid var(--color-gray-200);
         }
 
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            .step-box {
-                background: #1a1a1a;
-                border-color: #333;
-            }
-            .step-box h3 {
-                color: #6b9bd1;
-            }
-            .code-inline {
-                background: #2a2a2a;
-                color: #d4d4d4;
-            }
-            .warning {
-                background: #2a2015;
-                border-left-color: #ed8936;
-            }
-            .tip {
-                background: #152a1a;
-                border-left-color: #48bb78;
-            }
-            .info-box {
-                background: #1a2530;
-                border-left-color: #5a9bd1;
-            }
-            .screenshot-placeholder {
-                background: #1a1a1a;
-                border-color: #444;
-                color: #aaa;
-            }
-            th {
-                background: #1a1a1a;
-                border-bottom-color: #333;
-            }
-            td {
-                border-bottom-color: #333;
-            }
-        }
+        /* Dark mode - handled by colors.css */
     </style>
 </head>
 <body>
