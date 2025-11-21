@@ -13,11 +13,24 @@
             background: #fffff8;
             border-left: 4px solid #333;
             transition: all 0.2s;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
         }
         .publication-card:hover {
             background: #fff9f0;
             border-left-color: #cc0000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .publication-card-content {
+            flex: 1;
+        }
+        .publication-thumbnail {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            flex-shrink: 0;
         }
         .publication-card h2 {
             margin-top: 0;
@@ -55,6 +68,10 @@
             background: #6b8e6b;
             color: #fff;
         }
+        .badge-tool {
+            background: #8a6b4a;
+            color: #fff;
+        }
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -77,6 +94,61 @@
             color: #666;
             margin-top: 0.5rem;
         }
+        .citation-example {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            background: #f5f5f5;
+            padding: 1rem;
+            border-left: 2px solid #333;
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .publication-card {
+                background: #1a1a1a;
+                border-left-color: #ddd;
+            }
+            .publication-card:hover {
+                background: #222;
+                border-left-color: #cc0000;
+                box-shadow: 0 2px 8px rgba(255,255,255,0.1);
+            }
+            .publication-meta {
+                color: #999;
+            }
+            .publication-links {
+                border-top-color: #333;
+            }
+            .stat-box {
+                background: #1a1a1a;
+                border-color: #333;
+            }
+            .stat-number {
+                color: #ddd;
+            }
+            .stat-label {
+                color: #999;
+            }
+            .citation-example {
+                background: #1a1a1a;
+                border-left-color: #ddd;
+            }
+            .publication-thumbnail {
+                opacity: 0.9;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 760px) {
+            .publication-card {
+                flex-direction: column;
+            }
+            .publication-thumbnail {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+            }
+        }
     </style>
 </head>
 
@@ -92,7 +164,7 @@
 
             <div class="stats-grid">
                 <div class="stat-box">
-                    <div class="stat-number">2</div>
+                    <div class="stat-number">3</div>
                     <div class="stat-label">Total Publications</div>
                 </div>
                 <div class="stat-box">
@@ -103,6 +175,10 @@
                     <div class="stat-number">1</div>
                     <div class="stat-label">Data Repositories</div>
                 </div>
+                <div class="stat-box">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">Tools</div>
+                </div>
             </div>
         </section>
 
@@ -110,34 +186,37 @@
             <h2>Research Papers</h2>
 
             <div class="publication-card">
-                <h2>
-                    The Rezoning Paradox
-                    <span class="badge badge-paper">POLICY ANALYSIS</span>
-                </h2>
-                <p class="publication-meta">
-                    <b>Camille Moreau</b> • Published November 15, 2025 • Version 1.0
-                </p>
-                <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
-                    Why does every single person around me say housing sucks?
-                </p>
+                <img src="calgary-rezoning/v1.0/img/ITS.png" alt="Interrupted Time Series Analysis" class="publication-thumbnail">
+                <div class="publication-card-content">
+                    <h2>
+                        The Rezoning Paradox
+                        <span class="badge badge-paper">POLICY ANALYSIS</span>
+                    </h2>
+                    <p class="publication-meta">
+                        <b>Camille Moreau</b> • Published November 15, 2025 • Version 1.0
+                    </p>
+                    <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
+                        Why does every single person around me say housing sucks?
+                    </p>
 
-                <div class="publication-abstract">
-                    <p>When Calgary implemented citywide blanket rezoning in August 2024, removing density restrictions across residential neighborhoods, it offered a natural experiment to test YIMBY theory in practice. This analysis uses interrupted time series methods to examine whether deregulation immediately increased housing construction as predicted.</p>
+                    <div class="publication-abstract">
+                        <p>When Calgary implemented citywide blanket rezoning in August 2024, removing density restrictions across residential neighborhoods, it offered a natural experiment to test YIMBY theory in practice. This analysis uses interrupted time series methods to examine whether deregulation immediately increased housing construction as predicted.</p>
 
-                    <p><b>Key Finding:</b> Despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend. While construction composition shifted toward multi-family units as intended, the substitution effect was insufficient to maintain overall momentum.</p>
-                </div>
+                        <p><b>Key Finding:</b> Despite removing barriers, monthly housing starts fell 16% below the pre-existing growth trend. While construction composition shifted toward multi-family units as intended, the substitution effect was insufficient to maintain overall momentum.</p>
+                    </div>
 
-                <p class="publication-meta">
-                    <b>Methodology:</b> Interrupted Time Series Regression •
-                    <b>Data:</b> CMHC Housing Starts (17 months) •
-                    <b>Keywords:</b> housing policy, YIMBY, rezoning, Calgary, municipal politics
-                </p>
+                    <p class="publication-meta">
+                        <b>Methodology:</b> Interrupted Time Series Regression •
+                        <b>Data:</b> CMHC Housing Starts (17 months) •
+                        <b>Keywords:</b> housing policy, YIMBY, rezoning, Calgary, municipal politics
+                    </p>
 
-                <div class="publication-links">
-                    <a href="calgary-rezoning/v1.0/index.html"><b>→ Read Paper</b></a>
-                    <a href="calgary-rezoning/index.html">All Versions</a>
-                    <a href="calgary-rezoning/changelog.md">Changelog</a>
-                    <a href="calgary-rezoning/v1.0/metadata.json">Metadata (JSON)</a>
+                    <div class="publication-links">
+                        <a href="calgary-rezoning/v1.0/index.html"><b>→ Read Paper</b></a>
+                        <a href="calgary-rezoning/index.html">All Versions</a>
+                        <a href="calgary-rezoning/changelog.md">Changelog</a>
+                        <a href="calgary-rezoning/v1.0/metadata.json">Metadata (JSON)</a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -146,35 +225,77 @@
             <h2>Data Repositories</h2>
 
             <div class="publication-card">
-                <h2>
-                    CMHC Housing Data Repository
-                    <span class="badge badge-data">DATASET</span>
-                </h2>
-                <p class="publication-meta">
-                    <b>Camille Moreau</b> • Published November 15, 2025 • Version 1.0
-                </p>
-                <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
-                    Calgary Metropolitan Area Housing Starts and Rental Data
-                </p>
+                <img src="calgary-rezoning/v1.0/img/HousingStartsbyType.png" alt="Housing Starts by Type" class="publication-thumbnail">
+                <div class="publication-card-content">
+                    <h2>
+                        CMHC Housing Data Repository
+                        <span class="badge badge-data">DATASET</span>
+                    </h2>
+                    <p class="publication-meta">
+                        <b>Camille Moreau</b> • Published November 15, 2025 • Version 1.0
+                    </p>
+                    <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
+                        Calgary Metropolitan Area Housing Starts and Rental Data
+                    </p>
 
-                <div class="publication-abstract">
-                    <p>Curated dataset of housing construction and rental market data for the Calgary Census Metropolitan Area, sourced from Canada Mortgage and Housing Corporation (CMHC). This repository supports policy analysis of Calgary's housing market, including the 2024 blanket rezoning intervention.</p>
+                    <div class="publication-abstract">
+                        <p>Curated dataset of housing construction and rental market data for the Calgary Census Metropolitan Area, sourced from Canada Mortgage and Housing Corporation (CMHC). This repository supports policy analysis of Calgary's housing market, including the 2024 blanket rezoning intervention.</p>
 
-                    <p><b>Contents:</b> Monthly housing starts by dwelling type (Nov 2023 - Mar 2025), raw CMHC survey data, and rental market indicators. Data provided under Statistics Canada Open License.</p>
+                        <p><b>Contents:</b> Monthly housing starts by dwelling type (Nov 2023 - Mar 2025), raw CMHC survey data, and rental market indicators. Data provided under Statistics Canada Open License.</p>
+                    </div>
+
+                    <p class="publication-meta">
+                        <b>Coverage:</b> Nov 2023 - Mar 2025 (17 months) •
+                        <b>Geographic Area:</b> Calgary CMA •
+                        <b>Format:</b> CSV, various •
+                        <b>License:</b> Statistics Canada Open License
+                    </p>
+
+                    <div class="publication-links">
+                        <a href="housing-data/v1.0/index.html"><b>→ Access Dataset</b></a>
+                        <a href="housing-data/index.html">All Versions</a>
+                        <a href="housing-data/changelog.md">Changelog</a>
+                        <a href="housing-data/v1.0/metadata.json">Metadata (JSON)</a>
+                    </div>
                 </div>
+            </div>
+        </section>
 
-                <p class="publication-meta">
-                    <b>Coverage:</b> Nov 2023 - Mar 2025 (17 months) •
-                    <b>Geographic Area:</b> Calgary CMA •
-                    <b>Format:</b> CSV, various •
-                    <b>License:</b> Statistics Canada Open License
-                </p>
+        <section>
+            <h2>Tools</h2>
 
-                <div class="publication-links">
-                    <a href="housing-data/v1.0/index.html"><b>→ Access Dataset</b></a>
-                    <a href="housing-data/index.html">All Versions</a>
-                    <a href="housing-data/changelog.md">Changelog</a>
-                    <a href="housing-data/v1.0/metadata.json">Metadata (JSON)</a>
+            <div class="publication-card">
+                <img src="../img/sankey diagram .jpg" alt="Sankey Flow Diagram" class="publication-thumbnail">
+                <div class="publication-card-content">
+                    <h2>
+                        NGO Turnover Analysis Tool
+                        <span class="badge badge-tool">TOOL</span>
+                    </h2>
+                    <p class="publication-meta">
+                        <b>Camille Moreau</b> • Published November 15, 2025 • Version 1.0
+                    </p>
+                    <p class="subtitle" style="margin-top: 0.5rem; font-style: italic;">
+                        Transforming temporal distributions into actionable governance insights
+                    </p>
+
+                    <div class="publication-abstract">
+                        <p>Built to address a fundamental challenge in the social services sector: turnover rates <i>r</i> ∈ [40%, 65%] are known, but the underlying dynamics—<i>when</i> people leave, <i>why</i> they leave, and <i>what</i> it costs—remain obscured.</p>
+
+                        <p><b>Features:</b> Case-based tenure analysis (categorizing terminations ∀<i>e</i> ∈ <i>T</i>₀ by tenure <i>t</i>), cohort retention tracking, Sankey flow diagrams, and cost modeling. Upload Excel data → receive actionable insights. Designed for HR managers who've never touched code.</p>
+                    </div>
+
+                    <p class="publication-meta">
+                        <b>Methodology:</b> Six case types (0-3mo, 3-12mo, 1-3yr, etc.) •
+                        <b>Features:</b> Voluntary/involuntary breakdowns, department flows, predictive risk flags •
+                        <b>Deployment:</b> Web app (Streamlit) & local installation
+                    </p>
+
+                    <div class="publication-links">
+                        <a href="turnover-tool/v1.0/index.html"><b>→ Read Documentation</b></a>
+                        <a href="https://hrturnoveranalysis.streamlit.app/" target="_blank">Launch Tool</a>
+                        <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis" target="_blank">GitHub</a>
+                        <a href="turnover-tool/v1.0/metadata.json">Metadata (JSON)</a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -206,7 +327,7 @@
             </ul>
 
             <p><b>Example citation:</b></p>
-            <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; background: #f5f5f5; padding: 1rem; border-left: 2px solid #333;">
+            <p class="citation-example">
                 Moreau, C. (2025). The Rezoning Paradox: Why does every single person around me say housing sucks? <i>Camille's Lot</i>, v1.0. https://camilleelot.github.io/papers/calgary-rezoning/v1.0/
             </p>
         </section>
