@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleetTracker for NGOs - Camille's Lot</title>
+    <link rel="stylesheet" href="../tufte.css"/>
+    <link rel="stylesheet" href="../latex.css"/>
+    <style>
+        .system-diagram {
+            background: #f8f9fa;
+            border-left: 4px solid #2c5282;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        .impact-metric {
+            display: inline-block;
+            background: #edf2f7;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .impact-metric strong {
+            display: block;
+            font-size: 2rem;
+            color: #2c5282;
+            margin-bottom: 0.25rem;
+        }
+        .code-sample {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .feature-box {
+            border: 2px solid #e2e8f0;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+        }
+        .feature-box h3 {
+            margin-top: 0;
+            color: #2c5282;
+        }
+        .tag {
+            display: inline-block;
+            background: #3182ce;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>FleetTracker for NGOs</h1>
+        <p class="subtitle">Open-Source Fleet Incident Management System</p>
+
+        <section>
+            <p>
+                <span class="tag">Production Deployment</span>
+                <span class="tag">Google Apps Script</span>
+                <span class="tag">Workflow Automation</span>
+                <span class="tag">Open Source</span>
+            </p>
+
+            <p class="sans">
+                <strong>Deployed at:</strong> Community Treatment Homes (250+ employee behavioral health NGO)<br>
+                <strong>Status:</strong> Production system since 2024<br>
+                <strong>Repository:</strong> <a href="https://github.com/Camilleelot/FleetTracker-NGO">GitHub</a><br>
+                <strong>License:</strong> MIT (Free for nonprofit use)
+            </p>
+        </section>
+
+        <section>
+            <h2>The Problem</h2>
+            <p>
+                Most small-to-medium nonprofits manage vehicle fleets using fragmented workflows:
+            </p>
+            <ul>
+                <li><strong>Email chains</strong> for incident reporting (lost context, no accountability)</li>
+                <li><strong>PDF forms</strong> printed, scanned, and manually filed</li>
+                <li><strong>Spreadsheet chaos</strong> with no standardized process</li>
+                <li><strong>Missing maintenance records</strong> when insurance claims arise</li>
+                <li><strong>No stakeholder visibility</strong> into incident status or vehicle history</li>
+            </ul>
+
+            <p>
+                <label for="problem-quote" class="margin-toggle">⊕</label>
+                <input type="checkbox" id="problem-quote" class="margin-toggle"/>
+                <span class="marginnote">
+                    <em>"We had incidents sitting in managers' inboxes for weeks. No one knew if insurance was contacted,
+                    if repairs were scheduled, or even which vehicle was involved. It was embarrassing during audits."</em>
+                    <br>— Operations Director, CTH
+                </span>
+            </p>
+
+            <p>
+                For organizations with 10-30 vehicles serving vulnerable populations, this creates
+                <strong>compliance risks, financial waste, and operational chaos</strong>.
+            </p>
+        </section>
+
+        <section>
+            <h2>The Solution</h2>
+            <p>
+                FleetTracker is a <strong>zero-cost automation system</strong> built entirely on Google Workspace
+                (which most nonprofits already use). It transforms incident reporting from a manual nightmare
+                into a structured, automated workflow.
+            </p>
+
+            <div class="system-diagram">
+                <h3>System Architecture</h3>
+                <pre style="font-family: monospace; font-size: 0.9rem; line-height: 1.6;">
+┌─────────────────┐
+│  Google Form    │  ← Driver submits incident report (mobile-friendly)
+│  (Public Link)  │
+└────────┬────────┘
+         │ Form Submit Trigger
+         ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Google Apps Script (Automated Processing)                  │
+│  ───────────────────────────────────────────────────────────│
+│  1. Extract license plate → Lookup vehicle in Master Sheet  │
+│  2. Find maintenance folder → Parse service history         │
+│  3. Calculate next service date (quarterly schedule)        │
+│  4. Create timestamped incident folder                      │
+│  5. Move uploaded photos to permanent archive               │
+│  6. Generate formatted incident summary (Google Doc)        │
+│  7. Email stakeholders with context + links                 │
+└─────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Organized Google Drive Structure                           │
+│  ───────────────────────────────────────────────────────────│
+│  📁 Vehicle ABC-1234/                                       │
+│     ├── 📁 2024-03-15 - Incident - John Doe - Honda Civic  │
+│     │   ├── 📄 Incident Summary.gdoc                       │
+│     │   ├── 📷 Damage Photo 1.jpg                          │
+│     │   ├── 📷 Scene Diagram.png                           │
+│     │   └── 📄 Email Notification Log.txt                  │
+│     ├── 📄 Service - 2024-01-10.pdf                        │
+│     └── 📄 Insurance Policy.pdf                            │
+└─────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Stakeholder Email (HTML formatted)                         │
+│  ───────────────────────────────────────────────────────────│
+│  🚨 Vehicle Incident: John Doe - Honda Civic (ABC-1234)    │
+│                                                             │
+│  Coverage: Owned / Full Coverage (State Farm #12345)       │
+│  Last Service: 2024-01-10 (Link to invoice)               │
+│  Next Service Due: 04/10/2024 ⚠️ OVERDUE                   │
+│                                                             │
+│  👉 [VIEW INCIDENT FOLDER]                                 │
+└─────────────────────────────────────────────────────────────┘
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Key Features</h2>
+
+            <div class="feature-box">
+                <h3>🔍 Intelligent Vehicle Context</h3>
+                <p>
+                    The system automatically looks up critical data from a <strong>Master Vehicle List</strong>:
+                </p>
+                <ul>
+                    <li>Lease vs. ownership status</li>
+                    <li>Insurance carrier and policy number</li>
+                    <li>Coverage type (liability vs. comprehensive)</li>
+                    <li>Vehicle make/model/year</li>
+                </ul>
+                <p>
+                    <em>This means managers get actionable context immediately—no digging through files
+                    to find "which insurance company covers this vehicle?"</em>
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>📅 Automated Maintenance Tracking</h3>
+                <p>
+                    The script scans each vehicle's folder for service records and:
+                </p>
+                <ul>
+                    <li>Parses dates from filenames (e.g., <code>Service - 2024-03-15.pdf</code>)</li>
+                    <li>Calculates the next quarterly service due date</li>
+                    <li>Flags overdue maintenance in incident emails</li>
+                    <li>Links directly to the last service invoice</li>
+                </ul>
+                <p>
+                    <label for="maintenance-note" class="margin-toggle sidenote-number"></label>
+                    <input type="checkbox" id="maintenance-note" class="margin-toggle"/>
+                    <span class="sidenote">
+                        This feature caught two vehicles that were 6+ months overdue for oil changes.
+                        The automated alerts saved thousands in potential engine damage.
+                    </span>
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>📧 Smart Email Notifications</h3>
+                <p>
+                    Every incident triggers an HTML email to configurable stakeholders:
+                </p>
+                <ul>
+                    <li>Operations Director (always)</li>
+                    <li>Program Manager (if known)</li>
+                    <li>Fleet Coordinator</li>
+                    <li>Insurance liaison (for damage claims)</li>
+                </ul>
+                <p>
+                    Emails include one-click links to the incident folder, formatted summaries,
+                    and all relevant context. No more "forward this to insurance" email chains.
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>🗂️ Structured File Organization</h3>
+                <p>
+                    Files are automatically organized using a standardized naming convention:
+                </p>
+                <div class="code-sample">
+<strong>Folder Name Format:</strong>
+YYYY-MM-DD - Incident - [Driver Name] - [Vehicle Make/Model] (Plate)
+
+<strong>Example:</strong>
+2024-03-15 - Incident - Jane Smith - Toyota Camry (XYZ-5678)/
+├── 2024-03-15 - Incident - Jane Smith - Toyota Camry (XYZ-5678) - Summary.gdoc
+├── Damage Photo 1.jpg
+├── Scene Diagram.png
+└── Email Notification Log.txt
+                </div>
+                <p>
+                    This makes audits, insurance claims, and historical reviews trivial.
+                    Everything is timestamped, searchable, and linked to the vehicle.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Business Impact</h2>
+
+            <div style="text-align: center; margin: 2rem 0;">
+                <div class="impact-metric">
+                    <strong>~8 hrs/week</strong>
+                    <span>Admin time saved</span>
+                </div>
+                <div class="impact-metric">
+                    <strong>100%</strong>
+                    <span>Incident documentation rate</span>
+                </div>
+                <div class="impact-metric">
+                    <strong>$0</strong>
+                    <span>Infrastructure cost</span>
+                </div>
+                <div class="impact-metric">
+                    <strong>~30 min</strong>
+                    <span>Average response time</span>
+                </div>
+            </div>
+
+            <h3>Measured Outcomes (6-month pilot)</h3>
+            <ul>
+                <li><strong>Compliance:</strong> 100% of incidents documented with photos (vs. ~60% pre-system)</li>
+                <li><strong>Response Time:</strong> Average manager response dropped from 3-5 days to same-day</li>
+                <li><strong>Insurance Claims:</strong> 2 claims processed 40% faster due to organized documentation</li>
+                <li><strong>Maintenance:</strong> Identified 3 vehicles with overdue service (prevented breakdowns)</li>
+                <li><strong>Audit Readiness:</strong> State compliance audit passed with zero document requests</li>
+            </ul>
+
+            <p>
+                <label for="impact-quote" class="margin-toggle">⊕</label>
+                <input type="checkbox" id="impact-quote" class="margin-toggle"/>
+                <span class="marginnote">
+                    <em>"This system paid for itself in the first month. We avoided a $4,000 insurance deductible
+                    because we had timestamped photos proving the damage was pre-existing."</em>
+                    <br>— Fleet Coordinator, CTH
+                </span>
+            </p>
+        </section>
+
+        <section>
+            <h2>Technical Highlights</h2>
+
+            <h3>Why Google Apps Script?</h3>
+            <p>
+                Unlike heavyweight solutions (fleet management SaaS, custom databases), this system:
+            </p>
+            <ul>
+                <li><strong>Works with existing tools</strong> (Google Workspace, which nonprofits often get for free/cheap)</li>
+                <li><strong>Zero infrastructure</strong> (no servers, no hosting, no DevOps)</li>
+                <li><strong>Mobile-first</strong> (drivers submit from phones immediately after incidents)</li>
+                <li><strong>Maintainable by non-developers</strong> (ops staff can update the Master Sheet without touching code)</li>
+            </ul>
+
+            <h3>Code Architecture</h3>
+            <p>The script is modular and defensive:</p>
+            <ol>
+                <li><strong>Configuration block</strong> - All IDs/settings in one place (easy for other orgs to adapt)</li>
+                <li><strong>Lookup functions</strong> - Separate concerns (vehicle data vs. maintenance data)</li>
+                <li><strong>Main handler</strong> - Orchestrates workflow with robust error handling</li>
+                <li><strong>Fallback logic</strong> - Gracefully handles missing data (e.g., new vehicles not yet in map)</li>
+            </ol>
+
+            <p>
+                <label for="code-note" class="margin-toggle sidenote-number"></label>
+                <input type="checkbox" id="code-note" class="margin-toggle"/>
+                <span class="sidenote">
+                    The maintenance date parser uses regex to extract dates from filenames in multiple formats
+                    (YYYY-MM-DD, YYYY/MM/DD, YYYY_MM_DD) and falls back to file creation date if no match is found.
+                </span>
+            </p>
+
+            <h3>Sample Code: Maintenance Lookup</h3>
+            <div class="code-sample">
+<span style="color: #569cd6;">function</span> <span style="color: #dcdcaa;">lookupMaintenanceData</span>(licensePlate) {
+  <span style="color: #569cd6;">const</span> incidentFolderId = VEHICLE_FOLDER_MAP[licensePlate];
+  <span style="color: #569cd6;">const</span> folder = DriveApp.<span style="color: #dcdcaa;">getFolderById</span>(incidentFolderId);
+  <span style="color: #569cd6;">const</span> files = folder.<span style="color: #dcdcaa;">getFiles</span>();
+
+  <span style="color: #569cd6;">let</span> latestDate = <span style="color: #569cd6;">null</span>;
+  <span style="color: #569cd6;">const</span> serviceRegex = <span style="color: #ce9178;">/service/i</span>;
+  <span style="color: #569cd6;">const</span> dateRegex = <span style="color: #ce9178;">/(\d{4}[-/_]\d{2}[-/_]\d{2})/</span>;
+
+  <span style="color: #c586c0;">while</span> (files.<span style="color: #dcdcaa;">hasNext</span>()) {
+    <span style="color: #569cd6;">const</span> file = files.<span style="color: #dcdcaa;">next</span>();
+    <span style="color: #569cd6;">const</span> fileName = file.<span style="color: #dcdcaa;">getName</span>();
+
+    <span style="color: #c586c0;">if</span> (serviceRegex.<span style="color: #dcdcaa;">test</span>(fileName)) {
+      <span style="color: #569cd6;">let</span> dateMatch = fileName.<span style="color: #dcdcaa;">match</span>(dateRegex);
+      <span style="color: #569cd6;">let</span> currentDate = dateMatch
+        ? <span style="color: #569cd6;">new</span> <span style="color: #4ec9b0;">Date</span>(dateMatch[<span style="color: #b5cea8;">1</span>])
+        : file.<span style="color: #dcdcaa;">getDateCreated</span>(); <span style="color: #6a9955;">// Fallback</span>
+
+      <span style="color: #c586c0;">if</span> (!latestDate || currentDate > latestDate) {
+        latestDate = currentDate;
+      }
+    }
+  }
+
+  <span style="color: #c586c0;">return</span> latestDate;
+}
+            </div>
+        </section>
+
+        <section>
+            <h2>Deployment Guide for Other Nonprofits</h2>
+            <p>
+                This system is designed to be <strong>deployable by any nonprofit with Google Workspace</strong>.
+                No technical expertise required beyond basic spreadsheet skills.
+            </p>
+
+            <h3>Prerequisites</h3>
+            <ul>
+                <li>Google Workspace account (free for nonprofits via Google for Nonprofits)</li>
+                <li>~2 hours for initial setup</li>
+                <li>A list of your vehicles (make/model, plates, insurance info)</li>
+            </ul>
+
+            <h3>Setup Process</h3>
+            <ol>
+                <li><strong>Copy the template</strong> - <a href="https://github.com/Camilleelot/FleetTracker-NGO">GitHub repository</a> with step-by-step instructions</li>
+                <li><strong>Create your Master Vehicle List</strong> - Populate the spreadsheet template with your fleet data</li>
+                <li><strong>Set up Drive folder structure</strong> - One folder per vehicle (script auto-creates subfolders)</li>
+                <li><strong>Configure the script</strong> - Update folder IDs and email addresses (all in one config block)</li>
+                <li><strong>Test with a sample incident</strong> - Submit a test form to verify the workflow</li>
+                <li><strong>Train your team</strong> - Share the form link and show managers the email alerts</li>
+            </ol>
+
+            <p>
+                <strong>Full documentation:</strong> <a href="deployment-guide.html">Deployment Guide</a> |
+                <a href="templates/">Download Templates</a>
+            </p>
+        </section>
+
+        <section>
+            <h2>Future Enhancements</h2>
+            <p>Potential features for v2.0 (community contributions welcome):</p>
+            <ul>
+                <li><strong>Dashboard visualization</strong> - Looker Studio integration for incident trends</li>
+                <li><strong>Cost tracking</strong> - Parse repair invoices and calculate total cost of ownership</li>
+                <li><strong>Mileage logging</strong> - Trigger service reminders based on odometer readings</li>
+                <li><strong>Driver safety scores</strong> - Aggregate incidents by driver for training prioritization</li>
+                <li><strong>Multi-org support</strong> - Shared template repository with org-specific configs</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Lessons Learned</h2>
+
+            <h3>What Worked</h3>
+            <ul>
+                <li><strong>Start with the pain point</strong> - I built this because our director was drowning in incident emails</li>
+                <li><strong>Use existing tools</strong> - No one wants to learn a new platform; Google Forms was already familiar</li>
+                <li><strong>Design for non-technical users</strong> - The Master Sheet lets ops staff update vehicle info without touching code</li>
+                <li><strong>Obsess over edge cases</strong> - What if a vehicle isn't in the map? What if there's no service file? Fallbacks matter.</li>
+            </ul>
+
+            <h3>What I'd Do Differently</h3>
+            <ul>
+                <li><strong>Version control from day 1</strong> - I iterated in the Apps Script editor; should have used Git sooner</li>
+                <li><strong>More logging</strong> - Early bugs were hard to debug without comprehensive logs</li>
+                <li><strong>User testing earlier</strong> - Some form fields confused drivers; caught this only after launch</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Project Links</h2>
+            <ul>
+                <li><strong>GitHub Repository:</strong> <a href="https://github.com/Camilleelot/FleetTracker-NGO">Source Code & Documentation</a></li>
+                <li><strong>Deployment Guide:</strong> <a href="deployment-guide.html">Step-by-Step Setup</a></li>
+                <li><strong>Template Files:</strong> <a href="templates/">Download Spreadsheet & Folder Templates</a></li>
+                <li><strong>Technical Deep Dive:</strong> <a href="technical-walkthrough.html">Code Architecture Explained</a></li>
+            </ul>
+        </section>
+
+        <footer>
+            <p><a href="../index.html">← Back to Portfolio</a></p>
+            <p style="color: #718096; font-size: 0.9rem;">
+                Built by Camille Moreau | Licensed under MIT |
+                Free for nonprofit use
+            </p>
+        </footer>
+    </article>
+</body>
+</html>

@@ -1,0 +1,149 @@
+FleetTracker - Suggested Google Form Questions
+===============================================
+
+IMPORTANT: Question titles MUST exactly match the field name constants in FleetTracker.gs
+If you change a question title, update the corresponding constant in the script.
+
+---
+
+Question 1: Date of Incident
+Type: Date
+Required: Yes
+Notes: This will be the primary date used for incident tracking
+
+---
+
+Question 2: Time of Incident (if known)
+Type: Short answer
+Required: No
+Placeholder text: "e.g., 2:30 PM"
+Notes: Allows drivers to specify time if known; not required since it may be uncertain
+
+---
+
+Question 3: What home does the driver fall under?
+Type: Dropdown
+Required: Yes
+Options: (Customize for your organization)
+  - Main Office
+  - North Campus
+  - South Campus
+  - East Facility
+  - West Facility
+  - Other
+Notes: Helps route incidents to the appropriate program manager
+
+---
+
+Question 4: Full Legal Name of the Driver
+Type: Short answer
+Required: Yes
+Validation: None (free text to handle various name formats)
+Notes: Used for incident folder naming and accountability
+
+---
+
+Question 5: Vehicle In Question (Year/Make/Model/License Plate)
+Type: Dropdown
+Required: Yes
+Options: (Populate from your Master Vehicle List)
+  - 2020 Honda Civic ABC-1234
+  - 2019 Toyota Camry XYZ-5678
+  - 2021 Ford Transit DEF-9012
+  - 2018 Nissan Sentra GHI-3456
+
+CRITICAL FORMAT REQUIREMENT:
+- Format MUST be: Year Make Model PLATE
+- License plate MUST be the last word (after the last space)
+- License plate MUST match EXACTLY what's in your Master List and VEHICLE_FOLDER_MAP
+- Example: "2020 Honda Civic ABC-1234" (the script extracts "ABC-1234")
+
+Notes: The script uses the license plate to look up vehicle data. DO NOT allow "Other" or manual entry for this field.
+
+---
+
+Question 6: Vehicle Damage/Photos & Scene Diagram
+Type: File upload
+Required: No (but strongly encouraged)
+Settings:
+  - Allow multiple files: Yes
+  - Maximum number of files: 10
+  - Maximum file size: 10 MB per file
+  - File types: Image files (jpg, png), PDFs
+  - Upload location: Your "Form Upload Temp" folder
+
+Notes:
+1. Go to question settings → "Go to folder" to verify upload location
+2. Copy the folder ID from the URL - this is your UPLOAD_FOLDER_ID for the script
+3. Emphasize to drivers: TAKE PHOTOS IMMEDIATELY at the scene (damage, other vehicles, context)
+
+---
+
+Question 7: Brief Description of What Happened
+Type: Paragraph
+Required: Yes
+Placeholder text: "Describe the incident in detail: What happened? Where were you driving? Were other vehicles involved? What was damaged?"
+Validation: Minimum character count (optional): 50 characters
+
+Notes: This is the narrative section - encourage detail for insurance claims
+
+---
+
+Additional Optional Questions (Customize as needed):
+----------------------------------------------------
+
+Question: Were there any injuries?
+Type: Multiple choice
+Options: Yes / No / Unsure
+Notes: Helps flag incidents requiring immediate follow-up
+
+Question: Was a police report filed?
+Type: Multiple choice
+Options: Yes / No
+If Yes, ask: "Police Report Number" (Short answer)
+
+Question: Were other vehicles involved?
+Type: Multiple choice
+Options: Yes / No
+If Yes, ask: "Other Driver's Insurance Info" (Paragraph)
+
+Question: Estimated Damage Severity
+Type: Multiple choice
+Options:
+  - Minor (cosmetic damage, no mechanical issues)
+  - Moderate (functional damage, vehicle drivable)
+  - Severe (vehicle not drivable, towing required)
+
+---
+
+Form Settings Recommendations:
+-------------------------------
+
+1. Collect email addresses: Optional
+   (Useful if you want to send a confirmation to the driver)
+
+2. Response receipts: "Always"
+   (Drivers get a copy of their submission)
+
+3. Restrict to [Your Organization] domain: Optional
+   (Depends on whether contractors/volunteers need access)
+
+4. Allow response editing: No
+   (Prevents tampering after submission; use a new submission for corrections)
+
+5. Confirmation message:
+   "Thank you for submitting your incident report. The operations team has been notified automatically and will follow up within 24 hours. If this is an emergency, call [EMERGENCY NUMBER] immediately."
+
+---
+
+Testing Checklist:
+-------------------
+☐ All question titles match the script constants exactly
+☐ Vehicle dropdown uses the "Year Make Model PLATE" format
+☐ File upload destination is set to "Form Upload Temp" folder
+☐ Form is linked to a Google Sheet response spreadsheet
+☐ Apps Script trigger is installed on the response sheet
+
+---
+
+Need help? See the deployment guide: ../deployment-guide.html
