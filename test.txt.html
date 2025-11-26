@@ -15,7 +15,7 @@
     <style>
         /* --- GLOBAL & UTILITIES --- */
         body {
-            max-width: 1200px; /* Wider container to accommodate the grid layout */
+            max-width: 1200px; /* Wider container */
             padding-left: 5%;
             padding-right: 5%;
             background-color: #fffff8;
@@ -23,9 +23,20 @@
             font-family: "et-book", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
         }
 
-        a { color: inherit; text-decoration: none; border-bottom: 1px solid #111; transition: all 0.2s; }
-        a:hover { color: #cc0000; border-bottom-color: #cc0000; }
-        a.no-border { border-bottom: none; }
+        /* Default link reset for specific areas to avoid Tufte artifacts */
+        .clean-link, .clean-link:visited, .clean-link:active { 
+            color: inherit; 
+            text-decoration: none; 
+            border-bottom: none;
+            background: none !important; /* Overrides Tufte gradient */
+            text-shadow: none !important; /* Overrides Tufte shadow */
+            transition: color 0.2s; 
+        }
+        .clean-link:hover { 
+            color: #cc0000; 
+            background: none !important;
+            text-shadow: none !important;
+        }
 
         .text-accent { color: #cc0000; }
         .font-sans { font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif; }
@@ -50,28 +61,32 @@
         }
 
         .role-title {
-            font-size: 1.2rem;
-            color: #666;
+            font-size: 1.5rem; /* Increased from 1.2rem */
+            color: #444; /* Slightly darker for better readability */
             font-style: italic;
             margin-top: 0.5rem;
+            font-weight: 400;
         }
 
         nav a {
             margin-left: 2rem;
-            font-family: "Courier New", monospace;
-            font-size: 1rem;
+            font-family: inherit; /* Changed from Courier to inherit (Serif) to match screenshot */
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: bold;
         }
 
         /* --- HERO SECTION --- */
         .hero {
             margin-bottom: 5rem;
-            max-width: 900px;
+            width: 100%;
+            max-width: 100%;
         }
         .hero p {
-            font-size: 1.4rem;
-            line-height: 1.6;
+            font-size: 1.6rem;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
         }
 
         /* --- DATA PROFILE GRID --- */
@@ -108,16 +123,26 @@
             margin-bottom: 0.5rem;
         }
 
+        /* --- NEW IDE-STYLE CODE BLOCKS --- */
         .code-block {
-            background: #fff;
-            border: 1px solid #eee;
+            background: #1e1e1e; /* Dark IDE background */
+            color: #d4d4d4; /* Light code text */
+            border: 1px solid #333;
             padding: 1rem;
-            font-family: "Courier New", monospace;
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
             font-size: 0.85rem;
             margin-bottom: 0.5rem;
-            border-radius: 2px;
+            border-radius: 4px;
             overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
         }
+        
+        /* Syntax highlighting simulation */
+        .code-keyword { color: #569cd6; } /* Blue for def, import */
+        .code-string { color: #ce9178; } /* Orange for strings */
+        .code-function { color: #dcdcaa; } /* Yellow for functions */
+        .code-comment-syntax { color: #6a9955; font-style: italic; } /* Green for comments */
 
         .code-comment {
             font-family: "et-book", serif;
@@ -226,6 +251,7 @@
             margin-top: 0;
             margin-bottom: 0.5rem;
             font-weight: normal;
+            font-style: normal;
         }
 
         .business-problem {
@@ -236,7 +262,7 @@
         }
 
         .content-block {
-            display: none; /* Hidden by default, toggled by JS */
+            display: none;
             animation: fadeIn 0.4s ease;
         }
         .content-block.active { display: block; }
@@ -251,9 +277,15 @@
             margin-top: 1.5rem;
             font-weight: bold;
             color: #cc0000;
+            font-family: "Courier New", monospace;
             border-bottom: none;
+            background: none !important;
+            text-shadow: none !important;
         }
-        .action-link:hover { text-decoration: underline; }
+        .action-link:hover { 
+            text-decoration: underline; 
+            color: #a00;
+        }
 
         .red-bar-left {
             border-left: 3px solid #cc0000;
@@ -262,11 +294,6 @@
         
         .blue-bar-left {
             border-left: 3px solid #34495e;
-            padding-left: 1.5rem;
-        }
-
-        .green-bar-left {
-            border-left: 3px solid #27ae60;
             padding-left: 1.5rem;
         }
 
@@ -327,9 +354,9 @@
             <div class="role-title">Policy Researcher & Data Scientist</div>
         </div>
         <nav>
-            <a href="#products">Portfolio</a>
-            <a href="#correspondence">Contact</a>
-            <a href="https://github.com/Camilleelot">GitHub</a>
+            <a href="#products" class="clean-link">Portfolio</a>
+            <a href="#correspondence" class="clean-link">Contact</a>
+            <a href="https://github.com/Camilleelot" class="clean-link">GitHub</a>
         </nav>
     </header>
 
@@ -369,11 +396,15 @@
             <h3 style="font-style: italic; margin-top: 0;">The Bilingual Advantage</h3>
             
             <div class="code-label"><span>INPUT (PYTHON)</span><span>↓</span></div>
-            <div class="code-block">df.groupby('ward')['starts'].pct_change()</div>
+            <div class="code-block">
+df.<span class="code-function">groupby</span>(<span class="code-string">'ward'</span>)[<span class="code-string">'starts'</span>].<span class="code-function">pct_change</span>()
+            </div>
             <span class="code-comment">"Which communities are actually bearing the density?"</span>
 
             <div class="code-label"><span>INPUT (STATSMODELS)</span><span>↓</span></div>
-            <div class="code-block">model.pvalues['intervention'] < 0.05</div>
+            <div class="code-block">
+model.pvalues[<span class="code-string">'intervention'</span>] < <span class="code-keyword">0.05</span>
+            </div>
             <span class="code-comment">"Is this result a real trend, or just political noise?"</span>
         </div>
     </section>
@@ -429,13 +460,13 @@
                     <p class="business-problem">Stack: Python (Pandas, Statsmodels), Chart.js</p>
                     <p>Engineered a robust analysis pipeline to test causal impact using CMHC (Canada Mortgage & Housing) data.</p>
                     
-                    <div class="code-block" style="font-size: 0.8rem; background: #f4f4f4;">
-# Interrupted Time Series Model (ITS)
-# Y = β0 + β1(T) + β2(D) + β3(P) + ε
+                    <div class="code-block">
+<span class="code-comment-syntax"># Interrupted Time Series Model (ITS)
+# Y = β0 + β1(T) + β2(D) + β3(P) + ε</span>
 
-import statsmodels.formula.api as smf
-model = smf.ols(formula='starts ~ time + policy', data=df)
-# Result: β2 (Immediate Effect) = -568 (p < 0.05)
+<span class="code-keyword">import</span> statsmodels.formula.api <span class="code-keyword">as</span> smf
+model = smf.ols(formula=<span class="code-string">'starts ~ time + policy'</span>, data=df)
+<span class="code-comment-syntax"># Result: β2 (Immediate Effect) = -568 (p < 0.05)</span>
                     </div>
 
                     <ul>
@@ -486,13 +517,13 @@ model = smf.ols(formula='starts ~ time + policy', data=df)
                     <p class="business-problem">Stack: Python, Streamlit, Plotly</p>
                     <p>Built a production-ready data application utilizing Streamlit for frontend and Pandas for backend logic.</p>
                     
-                    <div class="code-block" style="font-size: 0.8rem; background: #f4f4f4;">
+                    <div class="code-block">
 @streamlit.cache_data
-def process_upload(file):
-    df = pd.read_excel(file)
-    # Vectorized categorization
-    df['tenure'] = (df['term'] - df['hire']).dt.days
-    return df
+<span class="code-keyword">def</span> <span class="code-function">process_upload</span>(file):
+    df = pd.<span class="code-function">read_excel</span>(file)
+    <span class="code-comment-syntax"># Vectorized categorization</span>
+    df[<span class="code-string">'tenure'</span>] = (df[<span class="code-string">'term'</span>] - df[<span class="code-string">'hire'</span>]).dt.days
+    <span class="code-keyword">return</span> df
                     </div>
 
                     <ul>
@@ -505,63 +536,6 @@ def process_upload(file):
 
             </div>
         </div>
-
-        <!-- PROJECT 3: FLEETTRACKER -->
-        <div class="product-card green-bar-left">
-            <!-- Visual -->
-            <div>
-                <div class="project-thumbnail" style="background: #27ae60; display: flex; align-items: center; justify-content: center;">
-                    <i data-lucide="car" style="color: white; width: 64px; height: 64px;"></i>
-                    <div class="thumbnail-label" style="position: absolute; bottom: 0; left: 0;">Project: FleetTracker</div>
-                </div>
-                <div class="tech-tags">
-                    <span class="tech-tag">Apps Script</span>
-                    <span class="tech-tag">Google APIs</span>
-                    <span class="tech-tag">Automation</span>
-                </div>
-            </div>
-
-            <!-- Content -->
-            <div class="product-content">
-                
-                <!-- POLICY CONTENT -->
-                <div class="content-block policy-content active">
-                    <h3>Automated Fleet Incident Management</h3>
-                    <p class="business-problem">Business Problem: Fragmented vehicle reporting led to compliance risks and financial waste.</p>
-                    <p>Deployed a serverless automation system for a mid-sized nonprofit (250+ staff) to replace email chains with a structured incident workflow.</p>
-                    <ul>
-                        <li><b>Efficiency:</b> Reduced admin time by ~8 hrs/week and cut response times from 3-5 days to same-day.</li>
-                        <li><b>Compliance:</b> Achieved 100% incident documentation rate (vs. 60% pre-system) ensuring insurance viability.</li>
-                        <li><b>Cost:</b> Zero infrastructure cost leveraging existing Google Workspace nonprofit licenses.</li>
-                    </ul>
-                    <a href="index (6).html" class="action-link">View Project Case Study ↗</a>
-                </div>
-
-                <!-- TECH CONTENT -->
-                <div class="content-block tech-content">
-                    <h3>Serverless Incident Pipeline</h3>
-                    <p class="business-problem">Stack: Google Apps Script, Drive API, Gmail API</p>
-                    <p>Orchestrated a multi-service workflow that glues Google Forms, Drive, and Gmail into a cohesive application.</p>
-                    
-                    <div class="code-block" style="font-size: 0.8rem; background: #f4f4f4;">
-// Regex parsing for maintenance records
-const serviceRegex = /service/i;
-const dateRegex = /(\d{4}[-/_]\d{2}[-/_]\d{2})/;
-// Falls back to file creation date if regex fails
-// Ensures robust data handling for non-technical inputs
-                    </div>
-
-                    <ul>
-                        <li><b>Architecture:</b> Event-driven design triggered by Form submissions; runs entirely on Google infrastructure.</li>
-                        <li><b>Data Enrichment:</b> Auto-lookups of vehicle context (insurance, ownership) and maintenance history via Drive file parsing.</li>
-                        <li><b>Defensive Design:</b> Robust fallback logic prevents crashes when user data is missing or malformed.</li>
-                    </ul>
-                    <a href="technical-walkthrough.html" class="action-link">View Technical Deep Dive ↗</a>
-                </div>
-
-            </div>
-        </div>
-
     </section>
 
     <!-- HISTORY TIMELINE -->
@@ -597,9 +571,9 @@ const dateRegex = /(\d{4}[-/_]\d{2}[-/_]\d{2})/;
         <p>Research is an ongoing conversation. I am currently open to inquiries regarding data analysis, policy research, and collaborative civic tech projects for Fall 2026.</p>
         
         <div style="margin-top: 2rem; font-family: 'Courier New', monospace; font-size: 1.1rem;">
-            <a href="mailto:camillefromraytheon2023@gmail.com" class="no-border text-accent">camillefromraytheon2023@gmail.com</a>
+            <a href="mailto:camillefromraytheon2023@gmail.com" class="clean-link text-accent">camillefromraytheon2023@gmail.com</a>
             <span style="margin: 0 1rem; color: #ddd;">|</span>
-            <a href="https://github.com/Camilleelot" class="no-border text-accent">github.com/Camilleelot</a>
+            <a href="https://github.com/Camilleelot" class="clean-link text-accent">github.com/Camilleelot</a>
         </div>
 
         <div style="margin-top: 3rem; font-size: 0.7rem; color: #aaa; font-family: 'Courier New', monospace;">
