@@ -541,13 +541,13 @@ model = smf.ols(formula=<span class="code-string">'starts ~ time + policy'</span
         <div class="product-card red-bar-left">
             <!-- Visual -->
             <div>
-                <div class="project-thumbnail" style="background-image: url('img/vehicle upload.png'); background-size: cover; background-position: center;">
+                <div class="project-thumbnail" style="background-image: url('img/cost analysis.jpg'); background-size: cover; background-position: center;">
                     <div class="thumbnail-label">Project: FleetTracker</div>
                 </div>
                 <div class="tech-tags">
-                    <span class="tech-tag">Web Scraping</span>
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">Automation</span>
+                    <span class="tech-tag">Google Apps Script</span>
+                    <span class="tech-tag">Workflow Automation</span>
+                    <span class="tech-tag">Production System</span>
                 </div>
             </div>
 
@@ -556,41 +556,44 @@ model = smf.ols(formula=<span class="code-string">'starts ~ time + policy'</span
 
                 <!-- POLICY CONTENT -->
                 <div class="content-block policy-content active">
-                    <h3>Municipal Fleet Compliance Intelligence</h3>
-                    <p class="business-problem">Business Problem: Manual tracking of 500+ vehicles creates compliance gaps and resource waste.</p>
-                    <p>Municipalities struggle to maintain oversight of fleet registration status, leading to fines, insurance lapses, and operational disruptions. Built an automated monitoring system that transforms this reactive process into proactive compliance.</p>
+                    <h3>Zero-Cost Fleet Incident Management for NGOs</h3>
+                    <p class="business-problem">Business Problem: Fragmented incident reporting (email chains, PDF forms, spreadsheet chaos) creates compliance risks and wastes ~8 hours/week.</p>
+                    <p>Mid-sized nonprofits manage vehicle fleets using fragmented workflows—email chains lose context, manual filing creates gaps, and managers lack visibility into incident status. Built a zero-infrastructure automation system that transforms incident reporting into a structured, auditable workflow.</p>
                     <ul>
-                        <li><b>Outcome:</b> Automated daily monitoring of entire fleet registration status, eliminating manual checking of 500+ vehicles.</li>
-                        <li><b>Methodology:</b> Web scraping of government registry data with intelligent change detection and alert routing.</li>
-                        <li><b>Impact:</b> Prevents compliance violations before they occur, saving thousands in penalties and administrative overhead.</li>
+                        <li><b>Outcome:</b> Saved ~8 hrs/week admin time; achieved 100% incident documentation rate (vs. 60% pre-system).</li>
+                        <li><b>Methodology:</b> Mobile-first Google Form triggers automated file organization, maintenance tracking, and stakeholder email alerts.</li>
+                        <li><b>Impact:</b> Reduced manager response time from 3-5 days to same-day; processed 2 insurance claims 40% faster with organized documentation.</li>
                     </ul>
-                    <a href="#" class="action-link">View Case Study ↗</a>
+                    <a href="./fleet-management/index.html" class="action-link">Read Full Case Study ↗</a>
                 </div>
 
                 <!-- TECH CONTENT -->
                 <div class="content-block tech-content">
-                    <h3>Production Web Scraping & ETL Pipeline</h3>
-                    <p class="business-problem">Stack: Python (Selenium, Pandas), GitHub Actions, Email API</p>
-                    <p>Engineered a resilient scraping system that navigates dynamic JavaScript forms, handles CAPTCHAs, and processes structured data from unstructured sources.</p>
+                    <h3>Event-Driven Automation with Google Apps Script</h3>
+                    <p class="business-problem">Stack: Google Apps Script, Google Forms/Drive/Sheets, Regex Parsing</p>
+                    <p>Engineered a production automation system that runs entirely on Google Workspace—zero servers, zero hosting, zero infrastructure cost. Designed for non-technical maintainability.</p>
 
                     <div class="code-block">
-<span class="code-comment-syntax"># Automated scraping with headless browser</span>
-<span class="code-keyword">from</span> selenium <span class="code-keyword">import</span> webdriver
+<span class="code-comment-syntax">// Form submit trigger → automated processing</span>
+<span class="code-keyword">function</span> <span class="code-function">lookupMaintenanceData</span>(licensePlate) {
+  <span class="code-keyword">const</span> folder = DriveApp.<span class="code-function">getFolderById</span>(VEHICLE_MAP[licensePlate]);
+  <span class="code-keyword">const</span> files = folder.<span class="code-function">getFiles</span>();
 
-<span class="code-keyword">def</span> <span class="code-function">check_fleet_status</span>(vin_list):
-    driver = webdriver.<span class="code-function">Chrome</span>(options=headless_options)
-    <span class="code-keyword">for</span> vin <span class="code-keyword">in</span> vin_list:
-        status = <span class="code-function">scrape_registry</span>(driver, vin)
-        <span class="code-keyword">if</span> status == <span class="code-string">'EXPIRED'</span>:
-            <span class="code-function">send_alert</span>(vin, status)
+  <span class="code-comment-syntax">// Parse service records from filenames</span>
+  <span class="code-keyword">const</span> dateRegex = <span class="code-string">/(\d{4}[-/_]\d{2}[-/_]\d{2})/</span>;
+  <span class="code-keyword">while</span> (files.<span class="code-function">hasNext</span>()) {
+    <span class="code-keyword">const</span> match = files.<span class="code-function">next</span>().<span class="code-function">getName</span>().<span class="code-function">match</span>(dateRegex);
+    <span class="code-comment-syntax">// Calculate next quarterly service due date</span>
+  }
+}
                     </div>
 
                     <ul>
-                        <li><b>Automation:</b> Scheduled daily runs via GitHub Actions; zero-maintenance deployment.</li>
-                        <li><b>Data Engineering:</b> Parsed HTML tables into structured CSVs; implemented differential tracking to detect status changes.</li>
-                        <li><b>Error Handling:</b> Retry logic for network failures; fallback notifications when scraping fails.</li>
+                        <li><b>Architecture:</b> Event-driven (form submit triggers), modular functions, defensive fallbacks for missing data.</li>
+                        <li><b>Data Engineering:</b> Regex parsing of maintenance dates from filenames; automated folder creation with standardized naming (YYYY-MM-DD format).</li>
+                        <li><b>Integration:</b> Lookups against Master Vehicle Sheet; HTML email formatting; one-click links to incident folders for stakeholders.</li>
                     </ul>
-                    <a href="https://github.com/Camilleelot" class="action-link">View Source Code ↗</a>
+                    <a href="./fleet-management/index.html" class="action-link">View Technical Walkthrough ↗</a>
                 </div>
 
             </div>
