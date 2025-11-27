@@ -536,6 +536,65 @@ model = smf.ols(formula=<span class="code-string">'starts ~ time + policy'</span
 
             </div>
         </div>
+
+        <!-- PROJECT 3: FLEETTRACKER -->
+        <div class="product-card red-bar-left">
+            <!-- Visual -->
+            <div>
+                <div class="project-thumbnail" style="background-image: url('img/vehicle upload.png'); background-size: cover; background-position: center;">
+                    <div class="thumbnail-label">Project: FleetTracker</div>
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">Web Scraping</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Automation</span>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="product-content">
+
+                <!-- POLICY CONTENT -->
+                <div class="content-block policy-content active">
+                    <h3>Municipal Fleet Compliance Intelligence</h3>
+                    <p class="business-problem">Business Problem: Manual tracking of 500+ vehicles creates compliance gaps and resource waste.</p>
+                    <p>Municipalities struggle to maintain oversight of fleet registration status, leading to fines, insurance lapses, and operational disruptions. Built an automated monitoring system that transforms this reactive process into proactive compliance.</p>
+                    <ul>
+                        <li><b>Outcome:</b> Automated daily monitoring of entire fleet registration status, eliminating manual checking of 500+ vehicles.</li>
+                        <li><b>Methodology:</b> Web scraping of government registry data with intelligent change detection and alert routing.</li>
+                        <li><b>Impact:</b> Prevents compliance violations before they occur, saving thousands in penalties and administrative overhead.</li>
+                    </ul>
+                    <a href="#" class="action-link">View Case Study ↗</a>
+                </div>
+
+                <!-- TECH CONTENT -->
+                <div class="content-block tech-content">
+                    <h3>Production Web Scraping & ETL Pipeline</h3>
+                    <p class="business-problem">Stack: Python (Selenium, Pandas), GitHub Actions, Email API</p>
+                    <p>Engineered a resilient scraping system that navigates dynamic JavaScript forms, handles CAPTCHAs, and processes structured data from unstructured sources.</p>
+
+                    <div class="code-block">
+<span class="code-comment-syntax"># Automated scraping with headless browser</span>
+<span class="code-keyword">from</span> selenium <span class="code-keyword">import</span> webdriver
+
+<span class="code-keyword">def</span> <span class="code-function">check_fleet_status</span>(vin_list):
+    driver = webdriver.<span class="code-function">Chrome</span>(options=headless_options)
+    <span class="code-keyword">for</span> vin <span class="code-keyword">in</span> vin_list:
+        status = <span class="code-function">scrape_registry</span>(driver, vin)
+        <span class="code-keyword">if</span> status == <span class="code-string">'EXPIRED'</span>:
+            <span class="code-function">send_alert</span>(vin, status)
+                    </div>
+
+                    <ul>
+                        <li><b>Automation:</b> Scheduled daily runs via GitHub Actions; zero-maintenance deployment.</li>
+                        <li><b>Data Engineering:</b> Parsed HTML tables into structured CSVs; implemented differential tracking to detect status changes.</li>
+                        <li><b>Error Handling:</b> Retry logic for network failures; fallback notifications when scraping fails.</li>
+                    </ul>
+                    <a href="https://github.com/Camilleelot" class="action-link">View Source Code ↗</a>
+                </div>
+
+            </div>
+        </div>
     </section>
 
     <!-- HISTORY TIMELINE -->
