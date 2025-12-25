@@ -411,29 +411,27 @@ model.pvalues[<span class="code-string">'intervention'</span>] < <span class="co
     <!-- PROJECTS -->
     
     <!-- PROJECTS -->
-<section id="products">
-    <h2 class="section-title" style="margin-bottom: 2rem;">Projects</h2>
+   <section id="products">
+        <h2 class="section-title" style="margin-bottom: 2rem;">Projects</h2>
+        <label for="mn-rezoning" class="margin-toggle">&#8853;</label>
+        <input type="checkbox" id="mn-rezoning" class="margin-toggle"/>
+        <span class="marginnote"><img src="img/main index calgary construction.jpg" alt="Calgary construction"/></span>
+        <h3><a href="./papers/calgary-rezoning/v1.0/index.html" class="clean-link text-accent">Calgary Rezoning Analysis</a></h3>
 
-    <h3><a href="./papers/calgary-rezoning/v1.0/index.html" class="clean-link text-accent">Calgary Rezoning Analysis</a></h3>
-    <label for="mn-rezoning" class="margin-toggle">&#8853;</label>
-    <input type="checkbox" id="mn-rezoning" class="margin-toggle"/>
-    <span class="marginnote"><img src="img/main index calgary construction.jpg" alt="Calgary construction"/></span>
-    <p>In 2023 I wrote...</p>
-    <p>When Calgary actually...</p>
-    <p>The research caught...</p>
-
-    <h3 style="margin-top: 3rem;"><a href="./turnover-analysis.html" class="clean-link text-accent">HR Turnover Tool</a></h3>
-    <label for="mn-turnover" class="margin-toggle">&#8853;</label>
-    <input type="checkbox" id="mn-turnover" class="margin-toggle"/>
-    <span class="marginnote"><img src="img/main index hr retention tool.jpg" alt="HR turnover dashboard"/></span>
-    <p>Direct support professions...</p>
-
-    <h3 style="margin-top: 3rem;"><a href="./fleet-management/index.html" class="clean-link text-accent">FleetTracker</a></h3>
-    <label for="mn-fleet" class="margin-toggle">&#8853;</label>
-    <input type="checkbox" id="mn-fleet" class="margin-toggle"/>
-    <span class="marginnote"><img src="img/main index fleet email.jpg" alt="Fleet email"/></span>
-    <p>Nonprofits manage...</p>
-</section>
+        <p>In 2023 I wrote <a href="https://drive.google.com/file/d/1BYoq5fnjimBCvPTSMJ3Lrm8D0ASmasLW/view" class="clean-link text-accent">"A Manufactured Crisis"</a>a community research report on how financialization transforms housing into investment assets. I recommended aggressive rezoning as one of five policy solutions.</p>
+        <p>When Calgary actually implemented blanket rezoning in 2024, I came back to measure what happened. The answer surprised me: construction starts dropped 16% after deregulation. The opposite of what the policy was supposed to do. I used Interrupted Time Series analysis on CMHC data to test whether the policy caused the change, or whether I was just seeing noise.</p>
+        <p>The research caught attention from University of Calgary faculty and started conversations about how we actually evaluate whether policies work.</p>
+       
+        <h3 style="margin-top: 3rem;"><a href="./turnover-analysis.html" class="clean-link text-accent">HR Turnover Tool</a></h3>
+ 
+        <p>Direct support professions have brutal turnover, 40-45% at the organization I worked for. Everyone treats it as inevitable and I was given the chance to analyze it. I wanted to know: what does that actually cost? And can you see it coming?</p>
+        <p>Built a Streamlit dashboard that surfaces turnover costs and flags at-risk employees. The model estimated ~$250K in annual turnover costs, which made retention investments easier to justify. Most turnover occurred in months 3-6 (the onboarding failure window), which indicates where to focus. A modified version is currently in use by senior leadership; this app has a Sankey diagram, however.</p>
+ 
+        <h3 style="margin-top: 3rem;"><a href="./fleet-management/index.html" class="clean-link text-accent">FleetTracker</a></h3>
+    
+        <p>Nonprofits manage vehicle fleets with email chains and scattered spreadsheets. I had to scan manually, vehicle incident forms, leases, and service files, and I wanted a better way. Incident reports also get lost, coverage gaps go unnoticed, and insurance claims take forever because nobody can find the documentation.</p>
+        <p>I built a system that runs entirely on Google Workspace, zero servers, zero hosting costs. Form submission triggers automated folder creation, email notifications, and coverage lookups. Claims processing went from 3-5 days to same-day. I designed it so someone non-technical could maintain it after I leave.</p>
+    </section>
 
     <!-- HISTORY -->
     <section id="history">
