@@ -717,6 +717,665 @@
     <p>Lower rent prices, more dense buildings, more construction these are good things worth striving for. But when changes are made, and those promises aren't delivered, the people who made up a thriving community took the real estate value and cashed out. With no fault to them, it leaves a feeling of emptiness. It leaves literal holes.</p>
     
 </section>
+<section>
+    <h2>Why Did This Happen?</h2>
+    
+    <p>City councils work like trees. One trunk, branches splitting downward. Thirteen people vote yes or no, and it applies instantly to 260,000 lots. That's how hierarchies work—one decision ramifies down through everything beneath it.</p>
+    
+    <p>Construction markets work like root systems. No center. A developer needs financing from a bank that's willing, permits from a department that's staffed, contractors who know the technique, suppliers with materials in stock, buyers who want to live there. Each connection is separate. Each has its own logic. A project only exists when all of these align at once.</p>
+    
+    <p>The council changed one thread: zoning. But banks still had loan products for single-family homes. Contractors still had crews trained for single-family builds. The relationships that made projects work under the old rules didn't automatically translate to the new ones.</p>
+    
+    <p>That's the paradox. Construction fell not because rezoning was wrong, but because you can't command a network to reconfigure. Banks don't update their risk models because a bylaw passed. Contractors don't learn new techniques overnight. Developers don't know which lenders will fund townhouses until they ask around. These connections form slowly, through experimentation and word of mouth. Some developers figure it out; others learn from them; knowledge spreads.</p>
+    
+    <p>The 16% gap between what we got and what the trend predicted—that's the cost of treating a root system like a tree.</p>
+</section>
+ <h2 id="The-Collision">The Collision: When Arborescent Commands Meet Contingent Realities</h2>
+
+            <body>
+                <div id="narrative"></div>
+                <svg id="viz" width="1200" height="650"></svg>
+
+                <script src="https://d3js.org/d3.v7.min.js"></script>
+                <script>
+
+                    const width = 1200, height = 650;
+                    const svg = d3.select("#viz").style("background", "#fafafa");
+
+                    // Narrative overlay
+                    const narrative = d3.select("#narrative");
+                    let narrativeTimeout;
+                    function showNarrative(text, duration = 3000) {
+                        if (narrativeTimeout) clearTimeout(narrativeTimeout);
+                        narrative.html(text).classed("show", true);
+                        narrativeTimeout = setTimeout(() => narrative.classed("show", false), duration);
+                    }
+
+                    // --------------------------------------------------
+                    // Council Tree (fixed left)
+                    // --------------------------------------------------
+                    const councilData = {
+                        name: "City Councils",
+                        children: [
+                            {
+                                name: "Ordinances", children: [
+                                    { name: "Zoning" },
+                                    { name: "Permits" }
+                                ]
+                            },
+                            {
+                                name: "Planning Committees", children: [
+                                    { name: "Review Boards" },
+                                    { name: "Public Hearings" }
+                                ]
+                            }
+                        ]
+                    };
+                    const root = d3.hierarchy(councilData);
+                    d3.tree().size([250, 300])(root);
+
+                    // fix council nodes (fx/fy)
+                    root.descendants().forEach(d => {
+                        d.id = d.data.name;
+                        d.fx = d.y + 100;
+                        d.fy = d.x + 150;
+                    });
+
+                    // --------------------------------------------------
+                    // Market Rhizome Nodes with ZONE TYPES
+                    // --------------------------------------------------
+                    const marketNodes = [
+                        { id: "Developer A", zone: "connector" },
+                        { id: "Developer B", zone: "connector" },
+                        { id: "Developer C", zone: "connector" },
+                        { id: "Investor", zone: "finance" },
+                        { id: "Subcontractor 1", zone: "labor" },
+                        { id: "Subcontractor 2", zone: "labor" },
+                        { id: "Landholder", zone: "finance" },
+                        { id: "Bank", zone: "finance" },
+                        { id: "Supplier", zone: "labor" },
+                        { id: "Architect", zone: "labor" },
+                        { id: "Contractor", zone: "labor" }
+                    ];
+
+                    // Zone colors
+                    const zoneColors = {
+                        connector: "#4169E1", // royal blue
+                        finance: "#2E8B57",   // sea green
+                        labor: "#FF8C00"      // dark orange
+                    };
+
+                    // give initial positions (to avoid 0,0 snap)
+                    marketNodes.forEach((n, i) => {
+                        n.x = 700 + (i * 80) % 400;
+                        n.y = 200 + (i * 50);
+                    });
+
+                    // --------------------------------------------------
+                    // GHOST PROJECTS - planned single-family homes
+                    // --------------------------------------------------
+                    const ghostProjects = [
+                        { id: "Ghost1", x: 650, y: 180, zone: "ghost" },
+                        { id: "Ghost2", x: 820, y: 250, zone: "ghost" },
+                        { id: "Ghost3", x: 950, y: 200, zone: "ghost" },
+                        { id: "Ghost4", x: 750, y: 350, zone: "ghost" },
+                        { id: "Ghost5", x: 900, y: 400, zone: "ghost" },
+                        { id: "Ghost6", x: 1050, y: 300, zone: "ghost" }
+                    ];
+
+                    ghostProjects.forEach(g => {
+                        g.fx = g.x;
+                        g.fy = g.y;
+                    });
+
+                    const marketLinks = [
+                        { source: "Developer A", target: "Investor" },
+                        { source: "Developer B", target: "Investor" },
+                        { source: "Developer A", target: "Bank" },
+                        { source: "Developer C", target: "Bank" },
+                        { source: "Developer C", target: "Supplier" },
+                        { source: "Developer B", target: "Architect" },
+                        { source: "Developer A", target: "Contractor" },
+                        { source: "Investor", target: "Bank" },
+                        { source: "Subcontractor 1", target: "Developer A" },
+                        { source: "Subcontractor 2", target: "Developer B" },
+                        { source: "Landholder", target: "Developer A" },
+                        { source: "Landholder", target: "Developer B" },
+                        { source: "Landholder", target: "Developer C" },
+                        { source: "Architect", target: "Supplier" }
+                    ];
+
+                    // Bridge links
+                    const bridgeLinks = [
+                        { source: "Developer A", target: "Review Boards" },
+                        { source: "Developer B", target: "Zoning" },
+                        { source: "Developer C", target: "Permits" },
+                        { source: "Landholder", target: "Zoning" }
+                    ];
+
+                    // GHOST PROJECT OWNERSHIP - faint lines showing which projects belong to which developer
+                    const ghostOwnership = [
+                        { source: "Developer A", target: "Ghost1", type: "ownership" },
+                        { source: "Developer A", target: "Ghost2", type: "ownership" },
+                        { source: "Developer B", target: "Ghost3", type: "ownership" },
+                        { source: "Developer B", target: "Ghost4", type: "ownership" },
+                        { source: "Developer C", target: "Ghost5", type: "ownership" },
+                        { source: "Developer C", target: "Ghost6", type: "ownership" }
+                    ];
+
+                    // Full graph
+                    const allNodes = [...marketNodes, ...ghostProjects, ...root.descendants()];
+                    const allLinks = [...marketLinks, ...bridgeLinks, ...ghostOwnership, ...root.links().map(l => ({ source: l.source.id, target: l.target.id }))];
+
+                    // --------------------------------------------------
+                    // Force Simulation
+                    // --------------------------------------------------
+                    const simulation = d3.forceSimulation(allNodes)
+                        .force("link", d3.forceLink(allLinks).id(d => d.id).distance(100))
+                        .force("charge", d3.forceManyBody().strength(-200))
+                        .force("center", d3.forceCenter(width / 2, height / 2))
+                        .alphaDecay(0.05);
+
+                    // --------------------------------------------------
+                    // Draw Links
+                    // --------------------------------------------------
+                    const link = svg.append("g")
+                        .attr("stroke", "#ccc")
+                        .selectAll("line")
+                        .data(allLinks)
+                        .join("line")
+                        .attr("stroke-width", d => {
+                            if (d.type === "ownership") return 1;
+                            if (bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id)) return 2;
+                            return 1;
+                        })
+                        .attr("stroke-dasharray", d => {
+                            if (d.type === "ownership") return "2,4";
+                            if (bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id)) return "4,2";
+                            return null;
+                        })
+                        .attr("opacity", d => d.type === "ownership" ? 0.2 : 1)
+                        .attr("class", "network-link");
+
+                    // --------------------------------------------------
+                    // Draw Nodes
+                    // --------------------------------------------------
+                    const node = svg.append("g")
+                        .selectAll("circle")
+                        .data(allNodes)
+                        .join("circle")
+                        .attr("r", d => {
+                            if (d.zone === "ghost") return 8;
+                            return d.data ? 6 : 10;
+                        })
+                        .attr("fill", d => {
+                            if (d.id === "Zoning") return "red";
+                            if (d.zone === "ghost") return "#999";
+                            if (d.zone) return zoneColors[d.zone];
+                            return d.data ? "#333" : "#d33";
+                        })
+                        .attr("opacity", d => d.zone === "ghost" ? 0.3 : 1)
+                        .attr("stroke", d => d.zone === "ghost" ? "#666" : "none")
+                        .attr("stroke-width", d => d.zone === "ghost" ? 2 : 0)
+                        .attr("stroke-dasharray", d => d.zone === "ghost" ? "3,3" : null)
+                        .on("click", clicked)
+                        .call(drag(simulation));
+
+                    const label = svg.append("g")
+                        .selectAll("text")
+                        .data(allNodes)
+                        .join("text")
+                        .attr("dy", "0.35em")
+                        .attr("x", 10)
+                        .text(d => d.zone === "ghost" ? "Planned SF" : d.id)
+                        .attr("font-size", d => d.zone === "ghost" ? 10 : 12)
+                        .attr("opacity", d => d.zone === "ghost" ? 0.4 : 1)
+                        .style("font-style", d => d.zone === "ghost" ? "italic" : "normal");
+
+                    // --------------------------------------------------
+                    // Zone Legend
+                    // --------------------------------------------------
+                    const legend = svg.append("g").attr("transform", "translate(20, 500)");
+
+                    const legendData = [
+                        { label: "Connectors (Developers)", color: zoneColors.connector },
+                        { label: "Finance Zone", color: zoneColors.finance },
+                        { label: "Labor Zone", color: zoneColors.labor },
+                        { label: "Planned Projects", color: "#999", ghost: true }
+                    ];
+
+                    legendData.forEach((item, i) => {
+                        const g = legend.append("g").attr("transform", `translate(0, ${i * 25})`);
+                        g.append("circle")
+                            .attr("r", 6)
+                            .attr("fill", item.color)
+                            .attr("opacity", item.ghost ? 0.3 : 1)
+                            .attr("stroke", item.ghost ? "#666" : "none")
+                            .attr("stroke-width", 2)
+                            .attr("stroke-dasharray", item.ghost ? "3,3" : null);
+                        g.append("text")
+                            .attr("x", 15)
+                            .attr("y", 4)
+                            .attr("font-size", 11)
+                            .text(item.label);
+                    });
+
+                    // --------------------------------------------------
+                    // Simulation Ticks
+                    // --------------------------------------------------
+                    simulation.on("tick", () => {
+                        link
+                            .attr("x1", d => posX(d.source))
+                            .attr("y1", d => posY(d.source))
+                            .attr("x2", d => posX(d.target))
+                            .attr("y2", d => posY(d.target));
+
+                        node
+                            .attr("cx", d => posX(d))
+                            .attr("cy", d => posY(d));
+
+                        label
+                            .attr("x", d => posX(d) + 10)
+                            .attr("y", d => posY(d));
+                    });
+
+                    function posX(d) { return d.fx == null ? d.x : d.fx; }
+                    function posY(d) { return d.fy == null ? d.y : d.fy; }
+
+                    // --------------------------------------------------
+                    // Store original positions for return animation
+                    // --------------------------------------------------
+                    let savedPositions = {};
+                    let isExploding = false;
+                    let ampliationMode = false;
+
+                    function savePositions() {
+                        allNodes.forEach(n => {
+                            if (!n.data && n.zone !== "ghost") { // only market nodes
+                                savedPositions[n.id] = { x: n.x, y: n.y };
+                            }
+                        });
+                    }
+
+                    // --------------------------------------------------
+                    // Interaction: Zoning click cycles color + triggers explode
+                    // Developer click shows ampliation path
+                    // --------------------------------------------------
+                    let zoningState = 0;
+                    function clicked(event, d) {
+                        // Zoning node: trigger explosion
+                        if (d.id === "Zoning" && !isExploding) {
+                            zoningState = (zoningState + 1) % 3;
+                            if (zoningState === 0) {
+                                d3.select(this).attr("fill", "red");
+                            }
+                            if (zoningState === 1) {
+                                d3.select(this).attr("fill", "orange");
+                            }
+                            if (zoningState === 2) {
+                                d3.select(this).attr("fill", "green");
+                                explode();
+                            }
+                        }
+                        // Developer nodes: show ampliation path
+                        else if (d.zone === "connector" && !isExploding) {
+                            showAmpliationPath(d);
+                        }
+                    }
+
+                    // --------------------------------------------------
+                    // AMPLIATION VISUALIZATION
+                    // Show the path a developer must traverse through all zones
+                    // --------------------------------------------------
+                    function showAmpliationPath(developer) {
+                        if (ampliationMode) {
+                            // Reset
+                            clearAmpliation();
+                            return;
+                        }
+
+                        ampliationMode = true;
+
+                        // Find all connected nodes by zone AND ghost projects
+                        const connections = allLinks.filter(l =>
+                            (l.source.id === developer.id || l.target.id === developer.id)
+                        );
+
+                        const connectedIds = new Set();
+                        const connectedGhosts = new Set();
+
+                        connections.forEach(link => {
+                            const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                            const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+
+                            connectedIds.add(sourceId);
+                            connectedIds.add(targetId);
+
+                            // Track which ghosts are connected
+                            if (link.type === "ownership") {
+                                connectedGhosts.add(targetId);
+                            }
+                        });
+
+                        // Dim everything
+                        node.transition().duration(300).attr("opacity", 0.15);
+                        label.transition().duration(300).attr("opacity", 0.15);
+                        link.transition().duration(300).attr("opacity", 0.05);
+
+                        // Highlight the ampliation path (non-ghost connections)
+                        node.filter(n => connectedIds.has(n.id) && n.zone !== "ghost")
+                            .transition().duration(300).attr("opacity", 1)
+                            .attr("r", n => n.data ? 8 : 14);
+
+                        label.filter(n => connectedIds.has(n.id) && n.zone !== "ghost")
+                            .transition().duration(300).attr("opacity", 1)
+                            .attr("font-weight", "bold");
+
+                        // Highlight non-ownership links
+                        link.filter(l => {
+                            const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
+                            const targetId = typeof l.target === 'object' ? l.target.id : l.target;
+                            return connectedIds.has(sourceId) && connectedIds.has(targetId) && l.type !== "ownership";
+                        })
+                            .transition().duration(300).attr("opacity", 0.8)
+                            .attr("stroke", "#FF1493")
+                            .attr("stroke-width", 3);
+
+                        // Highlight connected GHOST PROJECTS in a different color
+                        node.filter(n => connectedGhosts.has(n.id))
+                            .transition().duration(300)
+                            .attr("opacity", 0.6)
+                            .attr("fill", "#9370DB") // Purple for highlighted ghosts
+                            .attr("r", 10);
+
+                        label.filter(n => connectedGhosts.has(n.id))
+                            .transition().duration(300)
+                            .attr("opacity", 0.6)
+                            .attr("font-weight", "bold");
+
+                        // Highlight ownership links
+                        link.filter(l => {
+                            const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
+                            return sourceId === developer.id && l.type === "ownership";
+                        })
+                            .transition().duration(300)
+                            .attr("opacity", 0.6)
+                            .attr("stroke", "#9370DB")
+                            .attr("stroke-width", 2);
+
+                        // Show narrative
+                        const financeConnections = [...connectedIds].filter(id => {
+                            const n = allNodes.find(node => node.id === id);
+                            return n && n.zone === "finance";
+                        }).length;
+
+                        const laborConnections = [...connectedIds].filter(id => {
+                            const n = allNodes.find(node => node.id === id);
+                            return n && n.zone === "labor";
+                        }).length;
+
+                        const regulationConnections = [...connectedIds].filter(id => {
+                            const n = allNodes.find(node => node.id === id);
+                            return n && n.data; // council nodes
+                        }).length;
+
+                        const ghostCount = connectedGhosts.size;
+
+                        showNarrative(
+                            `<strong>${developer.id}</strong> must ampliate across zones:<br>` +
+                            `Finance (${financeConnections}) • Regulation (${regulationConnections}) • Labor (${laborConnections})<br>` +
+                            `<span style="color: #9370DB; font-weight: 600;">${ghostCount} planned projects</span> depend on this alignment.<br>` +
+                            `<em style="font-size: 14px; color: #666;">Click again to reset.</em>`,
+                            10000
+                        );
+                    }
+
+                    function clearAmpliation() {
+                        ampliationMode = false;
+
+                        node.transition().duration(300)
+                            .attr("opacity", d => d.zone === "ghost" ? 0.3 : 1)
+                            .attr("fill", d => {
+                                if (d.id === "Zoning") return ["red", "orange", "green"][zoningState];
+                                if (d.zone === "ghost") return "#999";
+                                if (d.zone) return zoneColors[d.zone];
+                                return d.data ? "#333" : "#d33";
+                            })
+                            .attr("r", d => {
+                                if (d.zone === "ghost") return 8;
+                                return d.data ? 6 : 10;
+                            });
+
+                        label.transition().duration(300)
+                            .attr("opacity", d => d.zone === "ghost" ? 0.4 : 1)
+                            .attr("font-weight", "normal");
+
+                        link.transition().duration(300)
+                            .attr("opacity", d => d.type === "ownership" ? 0.2 : 1)
+                            .attr("stroke", "#ccc")
+                            .attr("stroke-width", d => {
+                                if (d.type === "ownership") return 1;
+                                if (bridgeLinks.find(b => b.source === d.source.id && b.target === d.target.id)) return 2;
+                                return 1;
+                            });
+
+                        narrative.classed("show", false);
+                    }
+
+                    // --------------------------------------------------
+                    // EPIC EXPLOSION with proper pacing
+                    // --------------------------------------------------
+                    function explode() {
+                        if (isExploding) return;
+                        isExploding = true;
+
+                        if (ampliationMode) clearAmpliation();
+
+                        // SAVE POSITIONS BEFORE CHAOS
+                        savePositions();
+
+                        // STAGE 1: Show arborescent command (3 seconds, PAUSE action)
+                        showNarrative("<strong>Arborescent command:</strong> Single decision, instant implementation", 3000);
+
+                        // STAGE 2: After 3 seconds, show impact message and eliminate ghosts (3 seconds)
+                        setTimeout(() => {
+                            showNarrative("<strong>407 units/month lost.</strong> Projects become non-denoting terms.", 3000);
+
+                            // ELIMINATE GHOST PROJECTS (ontological elimination!)
+                            node.filter(d => d.zone === "ghost")
+                                .transition()
+                                .duration(1200)
+                                .attr("opacity", 0)
+                                .attr("r", 0);
+
+                            label.filter(d => d.zone === "ghost")
+                                .transition()
+                                .duration(1200)
+                                .attr("opacity", 0);
+                        }, 3000);
+
+                        // STAGE 3: After 6 seconds total, UNLEASH THE CHAOS
+                        setTimeout(() => {
+                            allNodes.forEach(n => {
+                                if (!n.data && n.zone !== "ghost") { // skip council nodes and ghosts
+                                    // Generate HUGE random velocities in all directions
+                                    const angle = Math.random() * Math.PI * 2;
+                                    const power = 80 + Math.random() * 120; // velocity between 80-200
+
+                                    n.vx = Math.cos(angle) * power;
+                                    n.vy = Math.sin(angle) * power;
+                                }
+                            });
+
+                            // Stop forces temporarily and let chaos reign
+                            simulation
+                                .force("link", null)
+                                .force("charge", null)
+                                .force("center", null)
+                                .alpha(1)
+                                .alphaDecay(0.001)
+                                .restart();
+                        }, 6000);
+
+                        // STAGE 4: After 7.5 seconds of total chaos, start the EXTREMELY SLOW return
+                        setTimeout(() => {
+                            showNarrative("<strong>Rhizomatic reconstruction:</strong> relationships rebuilding, knowledge diffusing...", 15000);
+                            returnToPositions();
+                        }, 7500);
+                    }
+
+                    // --------------------------------------------------
+                    // Painfully slow, comedic return to original positions
+                    // --------------------------------------------------
+                    function returnToPositions() {
+                        // Stop the simulation to control positions manually
+                        simulation.stop();
+
+                        // For each market node, slowly transition back over 15 seconds
+                        allNodes.forEach(n => {
+                            if (!n.data && n.zone !== "ghost" && savedPositions[n.id]) {
+                                const saved = savedPositions[n.id];
+
+                                // Create a custom tween for super smooth, slow return
+                                const startX = n.x;
+                                const startY = n.y;
+
+                                d3.select(node.nodes()[allNodes.indexOf(n)])
+                                    .transition()
+                                    .duration(15000) // 15 SECONDS
+                                    .ease(d3.easeCubicInOut) // smooth easing
+                                    .tween("position", function () {
+                                        return function (t) {
+                                            n.x = startX + (saved.x - startX) * t;
+                                            n.y = startY + (saved.y - startY) * t;
+
+                                            // Update visuals during transition
+                                            d3.select(this)
+                                                .attr("cx", n.x)
+                                                .attr("cy", n.y);
+
+                                            // Update corresponding label
+                                            d3.select(label.nodes()[allNodes.indexOf(n)])
+                                                .attr("x", n.x + 10)
+                                                .attr("y", n.y);
+                                        };
+                                    })
+                                    .on("end", function () {
+                                        // When last node done, restore forces and ghosts
+                                        const index = marketNodes.indexOf(n);
+                                        if (index === marketNodes.length - 1) {
+                                            restoreSimulation();
+                                            restoreGhosts();
+                                        }
+                                    });
+                            }
+                        });
+
+                        // Also animate the links during return
+                        const linkUpdateInterval = setInterval(() => {
+                            link
+                                .attr("x1", d => d.source.x)
+                                .attr("y1", d => d.source.y)
+                                .attr("x2", d => d.target.x)
+                                .attr("y2", d => d.target.y);
+                        }, 16); // ~60fps
+
+                        setTimeout(() => {
+                            clearInterval(linkUpdateInterval);
+                        }, 15100);
+                    }
+
+                    function restoreSimulation() {
+                        // Restore normal forces
+                        simulation
+                            .force("link", d3.forceLink(allLinks).id(d => d.id).distance(100))
+                            .force("charge", d3.forceManyBody().strength(-200))
+                            .force("center", d3.forceCenter(width / 2, height / 2))
+                            .alpha(0.3)
+                            .alphaDecay(0.05)
+                            .restart();
+
+                        isExploding = false;
+                    }
+
+                    function restoreGhosts() {
+                        // Ghosts slowly fade back in after network rebuilds
+                        node.filter(d => d.zone === "ghost")
+                            .transition()
+                            .delay(1000)
+                            .duration(3000)
+                            .attr("opacity", 0.3)
+                            .attr("r", 8);
+
+                        label.filter(d => d.zone === "ghost")
+                            .transition()
+                            .delay(1000)
+                            .duration(3000)
+                            .attr("opacity", 0.4);
+
+                        // FINAL RESULT after ghosts return
+                        setTimeout(() => {
+                            showNarrative(
+                                "<strong>RESULT:</strong><br>" +
+                                "Loss of <strong>407 new construction starts/month</strong><br>" +
+                                "Loss of <strong>6 old planned projects</strong><br>" +
+                                "<em style='color: #666;'>Network capacity slowly rebuilding...</em>",
+                                6000
+                            );
+                        }, 4000);
+                    }
+
+                    // --------------------------------------------------
+                    // Titles
+                    // --------------------------------------------------
+                    svg.append("text").attr("x", 100).attr("y", 40).attr("font-size", 16).attr("font-weight", "bold")
+                        .text("Arborescent Logic: City Councils");
+                    svg.append("text").attr("x", 800).attr("y", 40).attr("font-size", 16).attr("font-weight", "bold")
+                        .text("Rhizomatic Logic: Construction Markets");
+                    svg.append("text").attr("x", 350).attr("y", height - 20).attr("font-size", 14)
+                        .text("Click Zoning (red→orange→green) for disruption | Click Developers for ampliation paths");
+
+                    // --------------------------------------------------
+                    // Drag fixed: preserves node position, no snap to top-left
+                    // --------------------------------------------------
+                    function drag(simulation) {
+                        function dragstarted(event, d) {
+                            if (!event.active) simulation.alphaTarget(0.3).restart();
+                            if (!d.data && d.zone !== "ghost") { // only market nodes moveable
+                                d.fx = d.x;
+                                d.fy = d.y;
+                            }
+                        }
+                        function dragged(event, d) {
+                            if (!d.data && d.zone !== "ghost") {
+                                d.fx = event.x;
+                                d.fy = event.y;
+                            }
+                        }
+                        function dragended(event, d) {
+                            if (!event.active) simulation.alphaTarget(0);
+                            if (!d.data && d.zone !== "ghost") {
+                                d.fx = null;
+                                d.fy = null;
+                            }
+                        }
+                        return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+                    }
+
+                </script>
+
+    
+<section>
+    <h2>What This Means for Policy</h2>
+    
+    <p>The lesson isn't that rezoning was wrong. Calgary's zoning code was genuinely restrictive. The lesson is that big instant changes to networked systems cause disruption proportional to their speed and scope.</p>
+    
+    <p>An alternative: phase it over three years across different neighborhoods. Early areas become laboratories—developers experiment, lenders develop products, contractors learn, knowledge spreads. Later areas benefit from what's already been figured out. Slower, but the momentum never breaks.</p>
+    
+    <p>Or keep the blanket approach but provide transition support. Bridge financing for developers mid-project. Fast-track permits for first-movers. Training programs for contractors. Not subsidies—infrastructure investments acknowledging that the city's decision imposed real costs on people who now have to rebuild their networks from scratch.</p>
+    
+    <p>The deeper point: most systems we try to govern aren't trees. Markets, ecosystems, communities—they're webs. They don't respond to commands like machines. They adapt through distributed experimentation, and that takes time. If we want big transitions, we have to design for that.</p>
+</section>
        
     </article>
 
