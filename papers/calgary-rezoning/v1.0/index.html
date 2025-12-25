@@ -40,17 +40,17 @@
         
         .chart-tooltip {
             position: absolute;
-            background: rgba(40, 40, 40, 0.95);
-            border: 1px solid #666;
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-gray-300);
             padding: 8px 12px;
             font-size: 0.85rem;
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.15s;
             z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             font-family: et-book, Palatino, Georgia, serif;
-            color: #fff;
+            color: var(--color-text);
         }
 
         .chart-tooltip.visible {
@@ -60,21 +60,21 @@
         .tooltip-date {
             font-weight: bold;
             margin-bottom: 4px;
-            border-bottom: 1px solid #666;
+            border-bottom: 1px solid var(--color-gray-300);
             padding-bottom: 4px;
-            color: #fff;
+            color: var(--color-text);
         }
 
         .tooltip-value {
             margin: 2px 0;
-            color: #fff;
+            color: var(--color-text);
         }
 
         .tooltip-diff {
             margin-top: 4px;
             padding-top: 4px;
-            border-top: 1px solid #666;
-            color: #ff8888;
+            border-top: 1px solid var(--color-gray-300);
+            color: var(--color-accent);
             font-style: italic;
         }
         
@@ -86,9 +86,9 @@
         }
         
         .control-btn {
-            background: rgba(60, 60, 60, 0.5);
-            border: 1px solid #888;
-            color: #fff;
+            background: var(--color-bg-card-alt);
+            border: 1px solid var(--color-gray-300);
+            color: var(--color-text);
             padding: 6px 12px;
             font-family: inherit;
             font-size: 0.85rem;
@@ -97,17 +97,17 @@
         }
 
         .control-btn:hover {
-            background: rgba(80, 80, 80, 0.7);
+            background: var(--color-gray-200);
         }
 
         .control-btn.active {
-            background: #ddd;
-            color: #222;
+            background: var(--color-primary);
+            color: #fffff8;
         }
-        
+
         .highlight-period {
             font-size: 0.9rem;
-            color: #cc0000;
+            color: var(--color-accent);
             margin: 0.5rem 0;
             font-style: italic;
         }
@@ -124,10 +124,10 @@
 
         .data-table th {
             font-weight: 400;
-            border-bottom: 2px solid #ddd;
+            border-bottom: 2px solid var(--color-gray-200);
             text-align: right;
             padding: 0.75em 1em;
-            color: #fff;
+            color: var(--color-text);
             font-size: 0.85em;
             letter-spacing: 0.5px;
             text-transform: uppercase;
@@ -141,47 +141,47 @@
             padding: 0.5em 1em;
             text-align: right;
             border: none;
-            color: #fff;
+            color: var(--color-text);
             font-variant-numeric: tabular-nums;
         }
 
         .data-table td:first-child {
             text-align: left;
             font-weight: 500;
-            color: #fff;
+            color: var(--color-text);
         }
 
         .data-table tbody tr {
-            border-bottom: 1px solid #666;
+            border-bottom: 1px solid var(--color-gray-300);
         }
 
         .data-table tbody tr:last-child {
-            border-bottom: 2px solid #ddd;
+            border-bottom: 2px solid var(--color-gray-200);
         }
 
         .data-table tr:hover td {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background-color: var(--color-bg-card-alt);
+            color: var(--color-text);
         }
 
         .data-table tr:hover td:first-child {
-            color: #fff;
+            color: var(--color-text);
         }
 
         .data-table .intervention-mark {
             position: relative;
-            background: var(--color-bg-hover, rgba(204, 0, 0, 0.05));
+            background: var(--color-bg-card-alt);
         }
-        
+
         .data-table .intervention-mark td {
-            border-top: 2px solid #cc0000;
+            border-top: 2px solid var(--color-accent);
             padding-top: 0.75em;
             font-weight: 500;
         }
-        
+
         .data-table .intervention-mark td:first-child::before {
             content: "→ ";
-            color: #cc0000;
+            color: var(--color-accent);
             font-weight: bold;
             margin-right: 4px;
         }
@@ -199,16 +199,16 @@
             transform: translateX(-50%);
             width: 80%;
             height: 2px;
-            background: #4a5a8a;
+            background: var(--color-primary);
             opacity: 0.3;
         }
-        
+
         .data-table .crash-value {
             font-weight: 600;
-            color: #cc0000;
+            color: var(--color-accent);
             position: relative;
         }
-        
+
         .data-table .crash-value::after {
             content: "";
             position: absolute;
@@ -217,23 +217,23 @@
             transform: translateX(-50%);
             width: 80%;
             height: 2px;
-            background: #cc0000;
+            background: var(--color-accent);
             opacity: 0.3;
         }
-        
+
         /* Pre-intervention rows have subtle tint */
         .data-table tr.pre-period td {
-            background: rgba(74, 90, 138, 0.05);
+            background: color-mix(in srgb, var(--color-primary) 5%, transparent);
         }
 
         /* Post-intervention rows */
         .data-table tr.post-period td {
-            background: rgba(204, 0, 0, 0.05);
+            background: color-mix(in srgb, var(--color-accent) 5%, transparent);
         }
 
         .data-table tr.pre-period:hover td,
         .data-table tr.post-period:hover td {
-            background: var(--color-bg-hover, rgba(128, 128, 128, 0.1));
+            background: var(--color-bg-card-alt);
         }
         
         /* Statistical metrics display */
@@ -245,42 +245,42 @@
 
         .stat-metric-label {
             font-size: 0.85rem;
-            color: #ccc;
+            color: var(--color-text-muted);
             display: block;
         }
 
         .stat-metric-value {
             font-size: 1.8rem;
             font-weight: bold;
-            color: #fff;
+            color: var(--color-text);
         }
 
         .stat-metric-desc {
             font-size: 0.8rem;
-            color: #ccc;
+            color: var(--color-text-muted);
             font-style: italic;
         }
 
         .stat-metric:hover .stat-metric-value {
-            color: #ff8888;
+            color: var(--color-accent);
         }
 
         .stats-container {
             margin: 2rem 0;
             padding: 1.5rem;
             background: var(--color-bg-card);
-            border-left: 2px solid #ddd;
+            border-left: 2px solid var(--color-gray-200);
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .stats-container h3 {
-            color: #fff !important;
+            color: var(--color-text) !important;
         }
 
         .stats-container p {
-            color: #ccc !important;
+            color: var(--color-text-muted) !important;
         }
-        
+
         /* Sparkline table */
         .sparkline-table {
             width: 100%;
@@ -291,21 +291,21 @@
 
         .sparkline-table th {
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--color-gray-200);
             padding: 0.5rem;
             font-weight: normal;
             font-size: 0.9rem;
-            color: #fff;
+            color: var(--color-text);
         }
 
         .sparkline-table td {
             padding: 0.75rem 0.5rem;
-            border-bottom: 1px solid #666;
-            color: #fff;
+            border-bottom: 1px solid var(--color-gray-300);
+            color: var(--color-text);
         }
 
         .sparkline-table tr:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--color-bg-card-alt);
         }
         
         .sparkline-cell {
@@ -324,21 +324,21 @@
         }
         
         .change-positive {
-            color: #2d5016;
-            background: rgba(45, 80, 22, 0.08);
+            color: var(--color-success);
+            background: color-mix(in srgb, var(--color-success) 8%, transparent);
             padding: 2px 6px;
             border-radius: 3px;
         }
-        
+
         .change-negative {
-            color: #cc0000;
-            background: rgba(204, 0, 0, 0.08);
+            color: var(--color-accent);
+            background: color-mix(in srgb, var(--color-accent) 8%, transparent);
             padding: 2px 6px;
             border-radius: 3px;
         }
-        
+
         .change-neutral {
-            color: #666;
+            color: var(--color-text-muted);
         }
     </style>
 </head>
@@ -401,7 +401,7 @@
             <h2 id="What Changed">What Changed?</h2>
             
             <table class="data-table">
-                <caption style="caption-side: top; text-align: left; font-style: italic; margin-bottom: 0.5em; color: #333;">Housing Construction Starts by Month (November 2023 - March 2025)</caption>
+                <caption style="caption-side: top; text-align: left; font-style: italic; margin-bottom: 0.5em; color: var(--color-text);">Housing Construction Starts by Month (November 2023 - March 2025)</caption>
                 <thead>
                     <tr>
                         <th>Year/Month</th>
@@ -585,10 +585,10 @@
                     <div class="chart-tooltip" id="itsTooltip"></div>
                 </div>
                 <div id="itsHighlight" class="highlight-period"></div>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #ccc;">
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--color-text-muted);">
                     Hover over data points for exact values and differences from counterfactual projection. Click any point to lock tooltip and view detailed statistics. The intervention line marks August 2024 rezoning implementation. The dashed line represents projected housing starts had the policy not been enacted.
                 </p>
-                <p style="font-family: 'Computer Modern', 'Latin Modern Math', serif; font-size: 0.9rem; color: #fff; margin: 1rem 0; padding: 0.5rem; background: var(--color-bg-card); border-left: 2px solid #888;">
+                <p style="font-family: 'Computer Modern', 'Latin Modern Math', serif; font-size: 0.9rem; color: var(--color-text); margin: 1rem 0; padding: 0.5rem; background: var(--color-bg-card); border-left: 2px solid var(--color-gray-300);">
                     Y = β₀ + β₁(time) + β₂(policy) + β₃(time_after_policy) + ε<br>
                     Where: β₀ = 1,524 (baseline) | β₁ = 72.0 (pre-policy trend) | β₂ = -568 (immediate crash) | β₃ = -54.2 (trend change after policy)
                 </p>
@@ -607,7 +607,7 @@
                     <div class="chart-tooltip" id="compositionTooltip"></div>
                 </div>
                 <div id="compositionHighlight" class="highlight-period"></div>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #ccc;">
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--color-text-muted);">
                     Single-family construction increased modestly at +2.3% while multi-family increased significantly at +15.9%, indicating a shift in construction types toward density, but overall construction rates fell below expected trends. Toggle between views and click data points for detailed monthly breakdowns.
                 </p>
             </div>
@@ -624,7 +624,7 @@
                     <div class="chart-tooltip" id="densityTooltip"></div>
                 </div>
                 <div id="densityHighlight" class="highlight-period"></div>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #ccc;">
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--color-text-muted);">
                     The ratio of multi-family to single-family housing starts. Values above 2.0 indicate multi-family construction exceeds double that of single-family. Pre-intervention average: 2.32; post-intervention: 2.66, representing a 14.7% increase in density preference.
                 </p>
             </div>
@@ -654,10 +654,10 @@
                         <span class="stat-metric-desc">not significant</span>
                     </div>
                 </div>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #ccc;">
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--color-text-muted);">
                     <b>Did uncertainty increase?</b> Volatility before was 271, volatility after was 415 with an F-statistic of 2.34 (critical value: 3.29). The volatility increased but not significantly. Cohen's d = -1.18 indicates a large negative effect. Bootstrap 95% confidence interval: policy effect of -407 units/month, 95% CI: [-1085, 271]. The effect is statistically robust.
                 </p>
-                <p style="font-size: 0.9rem; color: #ccc;">
+                <p style="font-size: 0.9rem; color: var(--color-text-muted);">
                     <i>Calculation: d = (M_actual - M_expected) / SD_pooled = (2,124 - 2,531) / 345 = -1.18</i>
                 </p>
             </div>
@@ -665,7 +665,7 @@
             <!-- Sparkline Table -->
             <div class="chart-container">
                 <h3 style="font-weight: normal; font-style: italic; margin-bottom: 0.5rem;">Figure 4. Housing Type Trends at a Glance</h3>
-                <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 1rem;">
+                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 1rem;">
                     Sparklines show 17 months of data in miniature. Each line reveals the pattern of construction starts over time.
                 </p>
                 <table class="sparkline-table">
@@ -683,7 +683,7 @@
                     <tbody id="sparklineTableBody">
                     </tbody>
                 </table>
-                <p style="font-size: 0.85rem; color: #ccc; font-style: italic;">
+                <p style="font-size: 0.85rem; color: var(--color-text-muted); font-style: italic;">
                     Gray vertical line marks the intervention (August 2024). <strong>Expected</strong> shows what would have happened if the pre-trend continued. <strong>Actual</strong> is the post-rezoning average. The comparison reveals the policy's true impact.
                 </p>
             </div>
@@ -1440,12 +1440,12 @@
         function getTufteStyle() {
             return {
                 backgroundColor: getCSSVariable('--color-bg-card', '#fffff8'),
-                textColor: '#ffffff',       // Hardcoded white for dark mode
-                lineColor: '#ffffff',       // Hardcoded white for dark mode
-                gridColor: '#666666',       // Mid-gray for grid lines
-                accentColor: '#cc6666',     // Light red for accents
-                mutedBlue: '#6b9bc3',       // Light blue
-                mutedGreen: '#8fbc8f'       // Light green
+                textColor: getCSSVariable('--color-text', '#111'),
+                lineColor: getCSSVariable('--color-text', '#111'),
+                gridColor: getCSSVariable('--color-gray-300', '#d4d4d4'),
+                accentColor: getCSSVariable('--color-accent', '#8b3a3a'),
+                mutedBlue: getCSSVariable('--color-primary', '#2c4f6b'),
+                mutedGreen: getCSSVariable('--color-success', '#5a6d5a')
             };
         }
 
@@ -2143,7 +2143,7 @@
                     <td><strong>${cat.name}</strong></td>
                     <td class="sparkline-cell"></td>
                     <td class="metric-cell">${preAvg.toLocaleString()}</td>
-                    <td class="metric-cell" style="color: #666; font-style: italic;">${expectedAvg.toLocaleString()}</td>
+                    <td class="metric-cell" style="color: var(--color-text-muted); font-style: italic;">${expectedAvg.toLocaleString()}</td>
                     <td class="metric-cell"><strong>${postAvg.toLocaleString()}</strong></td>
                     <td class="metric-cell ${vsExpected >= 0 ? 'change-positive' : 'change-negative'}">${vsExpected > 0 ? '+' : ''}${vsExpected.toLocaleString()}</td>
                     <td class="metric-cell ${vsExpected >= 0 ? 'change-positive' : 'change-negative'}">${vsExpected > 0 ? '+' : ''}${pctVsExpected}%</td>
