@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camille Elot · Portfolio Redesign — Three Variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; height: 100%; background: #efeae0; font-family: "EB Garamond", Georgia, serif; color: #2a2620; }
+  #root { height: 100%; }
+
+  /* ── Tweaks panel (appears only when Tweaks on) ── */
+  #tweaks-panel {
+    position: fixed; bottom: 20px; right: 20px;
+    width: 300px; z-index: 1000;
+    background: #fffcf4; color: #1a1814;
+    border: 1px solid #c8bea8;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.08);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12px;
+    display: none;
+  }
+  #tweaks-panel.on { display: block; }
+  #tweaks-panel .t-head { display: flex; justify-content: space-between; padding: 14px 18px 10px; border-bottom: 1px solid #e0d6bc; }
+  #tweaks-panel .t-head .title { font-family: "EB Garamond", serif; font-style: italic; font-size: 18px; font-weight: 500; letter-spacing: -0.01em; }
+  #tweaks-panel .t-head .hint { font-size: 10px; color: #8a8275; letter-spacing: 0.1em; text-transform: uppercase; align-self: center; }
+  #tweaks-panel .t-body { padding: 14px 18px 18px; }
+  #tweaks-panel .row { margin-bottom: 14px; }
+  #tweaks-panel .row:last-child { margin-bottom: 0; }
+  #tweaks-panel .lbl { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7a7265; margin-bottom: 6px; display: block; }
+  #tweaks-panel .opts { display: flex; gap: 6px; flex-wrap: wrap; }
+  #tweaks-panel .opt {
+    cursor: pointer; padding: 6px 10px; font-size: 11px; letter-spacing: 0.04em;
+    border: 1px solid #d4ca b0; background: transparent; color: #4a4437;
+    font-family: inherit;
+  }
+  #tweaks-panel .opt.on { background: #2a2620; color: #fffcf4; border-color: #2a2620; }
+  #tweaks-panel .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 50%; vertical-align: -3px; margin-right: 6px; border: 1px solid rgba(0,0,0,0.15); }
+
+  /* ── Canvas minor overrides ── */
+  .top-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    background: rgba(239,234,224,0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px;
+    pointer-events: none;
+  }
+  .top-bar > * { pointer-events: auto; }
+  .top-bar .brand { font-family: "EB Garamond", serif; font-style: italic; font-size: 18px; letter-spacing: -0.01em; }
+  .top-bar .brand b { font-style: normal; font-weight: 500; }
+  .top-bar .brand small { font-family: "JetBrains Mono", monospace; font-style: normal; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #8a7f6b; margin-left: 10px; }
+  .top-bar .hint { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8a7f6b; }
+
+  iframe { border: 0; background: #fff; display: block; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<div class="top-bar">
+  <div class="brand"><b>Camille Elot</b> <em>— Portfolio Redesign</em> <small>3 variations · A B C · Light & Dark</small></div>
+  <div class="hint">Drag to pan · Pinch or scroll to zoom · Toggle Tweaks in the toolbar</div>
+</div>
+
+<div id="tweaks-panel">
+  <div class="t-head">
+    <span class="title">Tweaks</span>
+    <span class="hint">Live preview</span>
+  </div>
+  <div class="t-body">
+    <div class="row">
+      <span class="lbl">Accent color</span>
+      <div class="opts" id="opt-accent"></div>
+    </div>
+    <div class="row">
+      <span class="lbl">Serif family</span>
+      <div class="opts" id="opt-serif"></div>
+    </div>
+    <div class="row">
+      <span class="lbl">Body size</span>
+      <div class="opts" id="opt-size"></div>
+    </div>
+    <div class="row">
+      <span class="lbl">Theme emphasis</span>
+      <div class="opts" id="opt-theme"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="canvas-app.jsx"></script>
+<script type="text/babel" src="tweaks.jsx"></script>
+</body>
+</html>
