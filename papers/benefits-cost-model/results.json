@@ -1,0 +1,35 @@
+{
+  "assumptions": {
+    "prevalence": 0.006,
+    "annual_utilization": 0.3,
+    "avg_annual_claim": 12000
+  },
+  "baseline_pepy": 21.6,
+  "share_of_typical_benefits_pepy_pct": 0.27,
+  "by_workforce_size": [
+    {
+      "employees": 500,
+      "expected_annual_users": 0.9,
+      "total_annual_cost": 10800,
+      "pepy": 21.6
+    },
+    {
+      "employees": 2000,
+      "expected_annual_users": 3.6,
+      "total_annual_cost": 43200,
+      "pepy": 21.6
+    },
+    {
+      "employees": 10000,
+      "expected_annual_users": 18.0,
+      "total_annual_cost": 216000,
+      "pepy": 21.6
+    },
+    {
+      "employees": 25000,
+      "expected_annual_users": 45.0,
+      "total_annual_cost": 540000,
+      "pepy": 21.6
+    }
+  ]
+}

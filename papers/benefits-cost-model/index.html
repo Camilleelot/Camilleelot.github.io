@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Gender-Affirming Benefits Cost Model</title>
+    <link rel="stylesheet" href="../../tufte.css" />
+    <link rel="stylesheet" href="../../latex.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .key-figure { color: #cc0000; font-weight: bold; }
+        figure img { max-width: 100%; border: 1px solid #e5e5e5; }
+        code, pre { font-size: 0.85rem; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 4px; overflow-x: auto; }
+        .backlink { font-family: "Courier New", monospace; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        table.stat { border-collapse: collapse; margin: 1rem 0; }
+        table.stat td, table.stat th { border-bottom: 1px solid #ddd; padding: 0.4rem 1.2rem 0.4rem 0; text-align: left; }
+    </style>
+</head>
+<body>
+    <article>
+        <p class="backlink"><a href="../../index.html">&larr; Camille's Lot</a> &nbsp;/&nbsp; Benefits Cost Model</p>
+
+        <h1 id="benefits-cost-model">Gender-Affirming Benefits Cost Model</h1>
+        <p class="subtitle">What does it actually cost an employer to add comprehensive gender-affirming coverage?</p>
+
+        <section>
+            <h2>The total-rewards question</h2>
+            <p>Before an employer adds any benefit, someone in total rewards has to answer a deceptively simple question: <em>what will this cost us?</em> For gender-affirming care the public debate is loud, but the budgeting question is small and tractable. This model does what a benefits team does during benchmarking &mdash; turn a values question into a defensible number.<label for="sn-context" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-context" class="margin-toggle"/><span class="sidenote">Real-world reference points: Toyota Motor Manufacturing Canada added a $10,000 lifetime gender-affirmation benefit after a benchmarking analysis; the HRC's Corporate Equality Index notes that most employers adding transgender-inclusive coverage see "insignificant or no premium increases."</span></p>
+        </section>
+
+        <section>
+            <h2>The model</h2>
+            <p>The headline metric is <strong>PEPY</strong> &mdash; cost <em>Per Employee Per Year</em> &mdash; because that is the unit benefits teams and insurers actually negotiate on. Expected annual cost is:</p>
+            <pre>annual cost = headcount x prevalence x annual_utilization x avg_annual_claim
+PEPY        = prevalence x annual_utilization x avg_annual_claim</pre>
+            <p>A useful property falls straight out of the algebra: <strong>PEPY does not depend on headcount.</strong> A 500-person nonprofit and a 25,000-person enterprise face the same per-employee cost; only the total scales. That is precisely why employers of very different sizes all report negligible premium impact.</p>
+
+            <h3>Baseline assumptions (all adjustable)</h3>
+            <table class="stat">
+                <tr><th>Input</th><th>Baseline</th><th>Rationale</th></tr>
+                <tr><td>Trans / gender-diverse prevalence</td><td>0.6%</td><td>Share of workforce</td></tr>
+                <tr><td>Annual utilization</td><td>30%</td><td>Of eligible members, share actively claiming in a given year</td></tr>
+                <tr><td>Avg. annual claim per active member</td><td>$12,000</td><td>Blends mental health, hormone therapy, and amortized episodic surgical care</td></tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>Results</h2>
+            <p>At baseline, comprehensive gender-affirming coverage costs <span class="key-figure">$21.60 per employee per year</span> &mdash; about <span class="key-figure">0.27%</span> of a typical ~$8,000 PEPY benefits spend. In total-rewards terms, that is rounding error.</p>
+
+            <table class="stat">
+                <tr><th>Workforce</th><th>Expected annual users</th><th>Total annual cost</th><th>PEPY</th></tr>
+                <tr><td>500</td><td>~0.9</td><td>$10,800</td><td>$21.60</td></tr>
+                <tr><td>2,000</td><td>~3.6</td><td>$43,200</td><td>$21.60</td></tr>
+                <tr><td>10,000</td><td>~18</td><td>$216,000</td><td>$21.60</td></tr>
+                <tr><td>25,000</td><td>~45</td><td>$540,000</td><td>$21.60</td></tr>
+            </table>
+
+            <figure>
+                <label for="mn-size" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-size" class="margin-toggle"/><span class="marginnote">Total cost scales with headcount, but the per-employee cost stays flat.</span>
+                <img src="img/total_by_size.png" alt="Total annual cost by workforce size at baseline" />
+            </figure>
+
+            <h3>Sensitivity</h3>
+            <p>Assumptions are uncertain, so the honest move is to show the whole surface rather than a single point estimate. Even at the pessimistic corner &mdash; high prevalence <em>and</em> high utilization &mdash; PEPY stays modest.</p>
+            <figure>
+                <label for="mn-sens" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-sens" class="margin-toggle"/><span class="marginnote">Each cell is the per-employee-per-year cost under that combination of prevalence and utilization.</span>
+                <img src="img/pepy_sensitivity.png" alt="PEPY sensitivity heatmap over prevalence and utilization" />
+            </figure>
+        </section>
+
+        <section>
+            <h2>So what? (the recommendation a benefits analyst would write)</h2>
+            <ul>
+                <li><strong>The cost is negligible and predictable.</strong> Baseline ~$22 PEPY, and even tripling both prevalence and utilization keeps it a small fraction of total benefits spend.</li>
+                <li><strong>Frame it against alternatives.</strong> $21.60 PEPY is far less than the cost of a single avoidable regrettable departure &mdash; and a recognized lever for recruitment, retention, and CEI scoring.</li>
+                <li><strong>Show the surface, not a point.</strong> Leading with a sensitivity grid pre-empts the "but what if uptake is higher?" objection that sinks benefit proposals.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Reproduce it</h2>
+            <pre>cd papers/benefits-cost-model
+pip install numpy matplotlib
+python3 analysis.py   # regenerates results.json and both charts</pre>
+            <p><a href="analysis.py">View the source &rarr;</a> &nbsp;|&nbsp; <a href="../../cv.html">Back to CV</a></p>
+            <p class="subtitle"><i>Illustrative model built on transparent assumptions, not real claims data. Adjust the inputs at the top of <code>analysis.py</code> to fit a specific employer.</i></p>
+        </section>
+    </article>
+</body>
+</html>
