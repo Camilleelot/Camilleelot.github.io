@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camille Moreau — CV</title>
+
+    <link rel="stylesheet" href="tufte.css"/>
+    <link rel="stylesheet" href="latex.css"/>
+
+    <style>
+        body {
+            max-width: 960px;
+            padding-left: 6%;
+            padding-right: 6%;
+            background-color: #fffff8;
+            color: #111;
+            font-family: "et-book", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+        }
+
+        .clean-link, .clean-link:visited, .clean-link:active {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: none;
+            background: none !important;
+            text-shadow: none !important;
+            transition: color 0.2s;
+        }
+        .clean-link:hover { color: #cc0000; background: none !important; text-shadow: none !important; }
+        .text-accent { color: #cc0000; }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 3rem 0 1.5rem 0;
+            border-bottom: 2px solid #111;
+            margin-bottom: 2rem;
+        }
+        h1.name { font-size: 3rem; font-style: italic; font-weight: normal; margin: 0; line-height: 1; }
+        .role-title { font-size: 1.3rem; color: #444; font-style: italic; margin-top: 0.4rem; }
+        nav a {
+            margin-left: 1.5rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .contact-line {
+            font-family: "Courier New", monospace;
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 2.5rem;
+        }
+        .contact-line a { color: #555; }
+
+        h2.section {
+            font-size: 1.5rem;
+            font-style: italic;
+            font-weight: normal;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.3rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .entry { margin-bottom: 1.6rem; }
+        .entry-head { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: baseline; }
+        .entry-title { font-weight: bold; font-size: 1.1rem; }
+        .entry-meta { font-family: "Courier New", monospace; font-size: 0.8rem; color: #666; }
+        .entry-org { font-style: italic; color: #555; margin: 0.1rem 0 0.5rem 0; }
+        .entry ul { margin-top: 0.4rem; }
+        .entry li { margin-bottom: 0.35rem; line-height: 1.4; }
+        .tag { color: #cc0000; font-weight: bold; }
+
+        .skills-block p { margin: 0.4rem 0; line-height: 1.5; }
+        .skills-block b { font-style: normal; }
+
+        .print-note { text-align: center; margin: 2.5rem 0; }
+        .print-btn {
+            display: inline-block;
+            border: 1px solid #111;
+            padding: 0.5rem 1.2rem;
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+            background: #fff;
+            color: #111;
+        }
+        .print-btn:hover { background: #111; color: #fffff8; }
+
+        @media print {
+            nav, .print-note { display: none; }
+            body { padding: 0 0.5cm; max-width: 100%; font-size: 11pt; }
+            h2.section { margin-top: 1.2rem; }
+            a { color: #111 !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1 class="name">Camille Moreau</h1>
+            <div class="role-title">People Analytics &amp; HR Data Analyst</div>
+        </div>
+        <nav>
+            <a href="index.html" class="clean-link">Portfolio</a>
+            <a href="cv.md" class="clean-link">Markdown</a>
+            <a href="https://github.com/Camilleelot" class="clean-link">GitHub</a>
+        </nav>
+    </header>
+
+    <p class="contact-line">
+        <a href="mailto:camillemoreau2002@gmail.com" class="clean-link">camillemoreau2002@gmail.com</a>
+        &nbsp;|&nbsp; 403-714-2079
+        &nbsp;|&nbsp; <a href="https://camilleelot.github.io" class="clean-link">camilleelot.github.io</a>
+        &nbsp;|&nbsp; Calgary, AB &middot; remote-ready (EST&ndash;PST)
+    </p>
+
+    <section>
+        <h2 class="section">Summary</h2>
+        <p>People Analytics / HR Data Analyst who turns workforce data into retention, pay-equity, and benefits decisions. I pair production HR data experience (HRIS administration, SQL querying, dashboarding) with quasi-experimental and causal-inference methods most analysts never touch, and I have built analytics end-to-end &mdash; from messy multi-source data to board-level recommendations that leadership actually used. Bilingual (English/Russian). BA in Political Science (Psychology minor), Athabasca University, 2026.</p>
+    </section>
+
+    <section class="skills-block">
+        <h2 class="section">Core Skills</h2>
+        <p><b>People &amp; HR Analytics:</b> retention/attrition analysis, turnover cost modeling, headcount &amp; tenure cohorts, at-risk (predictive) flagging, pay-equity &amp; pay-transparency analysis, workforce reporting</p>
+        <p><b>Data &amp; Statistics:</b> SQL (querying, joins, aggregations), Python (pandas, NumPy, statsmodels, scikit-learn), regression &amp; statistical inference, interrupted time series, change-point detection, quasi-experimental design, counterfactual analysis, bootstrap confidence intervals</p>
+        <p><b>Tools &amp; Platforms:</b> Rippling (HRIS) + RQL, Advanced Excel (pivot tables, modeling), Power BI, D3.js, dashboard development, workflow automation, Google Workspace, Git/GitHub</p>
+        <p><b>Communication:</b> technical writing, white papers, stakeholder &amp; board presentations, translating complex findings for non-technical audiences</p>
+        <p><b>Domains:</b> total rewards / benefits, retention, AI governance &amp; responsible-AI literacy, public policy</p>
+        <p><b>Languages:</b> Bilingual English / Russian (heritage speaker)</p>
+    </section>
+
+    <section>
+        <h2 class="section">Selected Analytics Projects</h2>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-title">Staff Retention Signal Detection &mdash; People Analytics</span>
+                <span class="entry-meta">Dec 2025</span>
+            </div>
+            <p class="entry-org">Closer to Home Community Services &middot; white paper available on request</p>
+            <ul>
+                <li>Analyzed 70 months of organizational HR data using change-point (structural-break) detection to identify when retention trends structurally shifted &mdash; a technique adapted from time-series methods in the geophysics literature.</li>
+                <li>Designed a quasi-experimental comparison using voluntary vs. involuntary turnover as treatment and control groups to strengthen causal inference and rule out confounders.</li>
+                <li>Identified three statistically significant turning points and isolated the <span class="tag">Wellness Days policy (June 2023)</span> as the largest positive shift in voluntary retention across the observation period &mdash; roughly 3&times; larger than any preceding change.</li>
+                <li>Delivered as a white paper to senior leadership with a full Python implementation and methodological documentation.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-title">Pay Equity &amp; Pay Transparency Analysis &mdash; Compensation Analytics</span>
+                <span class="entry-meta">2026 &middot; self-directed</span>
+            </div>
+            <p class="entry-org"><a href="papers/pay-equity/index.html" class="clean-link text-accent">camilleelot.github.io</a></p>
+            <ul>
+                <li>Built a regression-based pay-equity audit (on synthetic compensation data) that isolates an unexplained gender pay gap after controlling for role, level, and tenure &mdash; the "explained vs. unexplained" decomposition employers must now run under Canada's 2026 pay-transparency laws (Ontario, BC).</li>
+                <li>Quantified remediation cost and modeled the budget impact of closing the residual gap, framing findings for compensation and total-rewards decision-makers.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-title">Gender-Affirming Benefits Cost Model &mdash; Total Rewards / Benefits</span>
+                <span class="entry-meta">2026 &middot; self-directed</span>
+            </div>
+            <p class="entry-org"><a href="papers/benefits-cost-model/index.html" class="clean-link text-accent">camilleelot.github.io</a></p>
+            <ul>
+                <li>Modeled the employer cost of adding comprehensive gender-affirming health coverage under varying workforce-size and utilization assumptions, mirroring the benefits-benchmarking analyses employers run before adopting new coverage.</li>
+                <li>Produced sensitivity analysis (per-employee cost vs. utilization rate) to support data-driven benefits-design decisions.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-title">Housing Market Policy Evaluation &mdash; Causal Inference</span>
+                <span class="entry-meta">2024 &ndash; Present</span>
+            </div>
+            <p class="entry-org"><a href="papers/calgary-rezoning/v1.0/index.html" class="clean-link text-accent">camilleelot.github.io</a></p>
+            <ul>
+                <li>Ran an interrupted time series analysis on Calgary's 2024 blanket rezoning policy across 17 months of CMHC construction data and four housing types, isolating causal policy effects from market trends.</li>
+                <li>Applied counterfactual projection, bootstrap confidence intervals (95% CI), and variance-ratio testing; built interactive D3.js visualizations and a public research platform.</li>
+                <li>Key finding: construction starts fell 16% below the pre-existing trend post-rezoning; research engaged University of Calgary faculty.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-title">Transit Infrastructure &amp; Voting Behaviour &mdash; Geospatial / Quasi-Experiment</span>
+                <span class="entry-meta">Feb 2026</span>
+            </div>
+            <p class="entry-org">Calgary Green Line Analysis</p>
+            <ul>
+                <li>Used Calgary's cancelled Green Line LRT as a natural experiment, collecting Elections Canada results (2015&ndash;2025) across treatment and control ridings.</li>
+                <li>Key finding: Green Line ridings swung +5.8% more Conservative than comparison ridings; built an interactive geospatial visualization overlaying alignment data with riding-level electoral swings.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section">Experience</h2>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-title">Operations Administrator</span>
+                <span class="entry-meta">May &ndash; Dec 2025</span>
+            </div>
+            <p class="entry-org">Closer to Home Community Services, Calgary</p>
+            <ul>
+                <li>Built operational dashboards synthesizing multi-source data to support executive and board-level decision-making.</li>
+                <li>Wrote daily queries in <b>RQL</b> (Rippling's SQL-based query language) to extract, filter, and report on HR and operations data within the HRIS.</li>
+                <li>Designed automated workflows that reduced manual data processing by <span class="tag">40%</span>, freeing capacity for higher-value analysis.</li>
+                <li>Led a cross-departmental compliance initiative (Imagine Canada accreditation, 103 standards), coordinating stakeholders and tracking deliverables to deadline.</li>
+                <li>Used AI tools to summarize large insurance-related documents for the fleet-management program; initiated an AI-assisted redesign of internal policy documentation for accessibility and standardization.</li>
+                <li>Prepared reports and presentations translating operational data into strategic recommendations for senior leadership.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-title">Content Evaluation Specialist (AI / Responsible AI)</span>
+                <span class="entry-meta">2024 &ndash; 2025</span>
+            </div>
+            <p class="entry-org">Outlier (Remote)</p>
+            <ul>
+                <li>Evaluated AI-generated content for accuracy and logical consistency, maintaining a top-tier quality rating.</li>
+                <li>Provided structured analytical feedback identifying error patterns and areas for model improvement.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section">Education</h2>
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-title">Bachelor of Arts, Political Science (Psychology Minor)</span>
+                <span class="entry-meta">2026</span>
+            </div>
+            <p class="entry-org">Athabasca University</p>
+        </div>
+    </section>
+
+    <div class="print-note">
+        <a class="print-btn" href="javascript:window.print()">Print / Save as PDF</a>
+    </div>
+
+</body>
+</html>
