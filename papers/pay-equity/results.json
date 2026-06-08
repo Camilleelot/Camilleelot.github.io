@@ -1,0 +1,17 @@
+{
+  "n": 1500,
+  "n_women": 677,
+  "mean_salary_men": 142523,
+  "mean_salary_women": 125559,
+  "raw_gap_pct": 11.9,
+  "adjusted_gap_pct": 5.1,
+  "adjusted_gap_ci": [
+    4.5,
+    5.7
+  ],
+  "female_pvalue": 5.68e-55,
+  "explained_gap_pct": 6.8,
+  "remediation_total": 4561097,
+  "remediation_pct_of_payroll": 2.25,
+  "r_squared": 0.958
+}

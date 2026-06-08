@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Pay Equity & Pay Transparency Analysis</title>
+    <link rel="stylesheet" href="../../tufte.css" />
+    <link rel="stylesheet" href="../../latex.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .key-figure { color: #cc0000; font-weight: bold; }
+        figure img { max-width: 100%; border: 1px solid #e5e5e5; }
+        code, pre { font-size: 0.85rem; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 4px; overflow-x: auto; }
+        .backlink { font-family: "Courier New", monospace; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        table.stat { border-collapse: collapse; margin: 1rem 0; }
+        table.stat td, table.stat th { border-bottom: 1px solid #ddd; padding: 0.4rem 1.2rem 0.4rem 0; text-align: left; }
+    </style>
+</head>
+<body>
+    <article>
+        <p class="backlink"><a href="../../index.html">&larr; Camille's Lot</a> &nbsp;/&nbsp; Pay Equity Analysis</p>
+
+        <h1 id="pay-equity">Pay Equity &amp; Pay Transparency Analysis</h1>
+        <p class="subtitle">Separating the <em>explained</em> from the <em>unexplained</em> gender pay gap &mdash; the audit behind a pay-transparency report</p>
+
+        <section>
+            <h2>Why this matters now</h2>
+            <p>As of 2026, pay transparency is law in Canada. Ontario's Pay Transparency Act (in force January 1, 2026) requires salary ranges in job postings and, for larger employers, annual pay-transparency reporting; British Columbia requires employers to publish their <strong>gender pay gap</strong> on a staged schedule, reaching employers with 50+ staff by November 1, 2026.<label for="sn-law" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-law" class="margin-toggle"/><span class="sidenote">A reported headline pay gap is not, by itself, evidence of discrimination &mdash; it blends together <em>who holds which jobs</em> with <em>how people are paid within the same job</em>. The analyst's job is to separate the two.</span></p>
+            <p>The number that gets published is the easy part. The hard part &mdash; and where a compensation analyst earns their keep &mdash; is explaining it: how much of the gap is driven by legitimate factors (role, level, tenure), and how much is an <em>unexplained residual</em> that survives those controls and warrants remediation?</p>
+        </section>
+
+        <section>
+            <h2>The data</h2>
+            <p>This analysis uses a <strong>synthetic</strong> dataset of 1,500 employees &mdash; no real personnel data &mdash; generated with a fixed random seed so the results are fully reproducible. The generator deliberately bakes in two patterns every real workforce shows:</p>
+            <ol>
+                <li><strong>Occupational segregation</strong> (an <em>explained</em> source of gap): women are slightly over-represented in lower-paying job families and under-represented at senior levels.</li>
+                <li><strong>An unexplained penalty</strong>: holding role, level, and tenure constant, women are paid about 5% less. This is the inequity the audit should detect &mdash; if the method works, it should recover roughly that 5%.</li>
+            </ol>
+            <p>Each record has <code>salary</code>, <code>female</code>, <code>role</code> (5 job families), <code>level</code> (1&ndash;5), and <code>tenure</code> (years).</p>
+        </section>
+
+        <section>
+            <h2>Method</h2>
+            <p>The headline (raw) gap compares mean pay directly. The adjusted gap comes from an ordinary-least-squares regression on log salary, controlling for role, level, and tenure. The coefficient on <code>female</code> is the unexplained gap; exponentiating converts it from log points to a percentage.</p>
+            <pre>model = smf.ols("np.log(salary) ~ female + C(role) + level + tenure", data=df).fit()
+adjusted_gap_pct = (1 - np.exp(model.params["female"])) * 100</pre>
+            <p>Remediation cost is then the total payroll increase required to lift each underpaid woman's salary by that unexplained percentage.</p>
+        </section>
+
+        <section>
+            <h2>Results</h2>
+            <p>The headline gender pay gap is <span class="key-figure">11.9%</span>. Decomposing it shows most of that is explained by where people sit in the organization &mdash; but a statistically significant residual remains.</p>
+
+            <figure>
+                <label for="mn-decomp" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-decomp" class="margin-toggle"/><span class="marginnote">The raw gap splits into an <em>explained</em> component (role, level, tenure) and an <em>unexplained</em> residual. Only the residual signals potential inequity.</span>
+                <img src="img/pay_gap_decomposition.png" alt="Decomposition of the gender pay gap into explained and unexplained components" />
+            </figure>
+
+            <table class="stat">
+                <tr><th>Metric</th><th>Value</th></tr>
+                <tr><td>Raw (unadjusted) gap</td><td>11.9%</td></tr>
+                <tr><td>Explained by role / level / tenure</td><td>6.8%</td></tr>
+                <tr><td><strong>Unexplained (adjusted) gap</strong></td><td><span class="key-figure">5.1%</span> (95% CI 4.5&ndash;5.7%)</td></tr>
+                <tr><td>Significance of <code>female</code> coefficient</td><td>p &lt; 0.0001</td></tr>
+                <tr><td>Model R&sup2;</td><td>0.958</td></tr>
+                <tr><td>Estimated remediation cost</td><td><span class="key-figure">~$4.56M</span> (2.25% of payroll)</td></tr>
+            </table>
+
+            <p>The audit recovers a <strong>5.1%</strong> unexplained gap &mdash; almost exactly the ~5% penalty that was injected into the synthetic data, and overwhelmingly significant (p &lt; 0.0001). In other words, the method correctly distinguishes the part of the gap that is structural (6.8%, explained by job mix) from the part that is not (5.1%).</p>
+
+            <figure>
+                <label for="mn-level" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-level" class="margin-toggle"/><span class="marginnote">Within-level gaps show where to focus remediation first.</span>
+                <img src="img/residual_by_level.png" alt="Gender pay gap within each level" />
+            </figure>
+        </section>
+
+        <section>
+            <h2>So what? (the total-rewards translation)</h2>
+            <p>For a compensation team, this turns a politically fraught headline into an actionable plan:</p>
+            <ul>
+                <li><strong>Report honestly:</strong> publish the 11.9% headline, but contextualize that 6.8 points reflect job mix and 5.1 points are an unexplained residual under active remediation.</li>
+                <li><strong>Budget the fix:</strong> closing the residual costs ~$4.56M, or 2.25% of payroll &mdash; a number leadership can actually plan around, phased over one or more comp cycles.</li>
+                <li><strong>Target it:</strong> the within-level breakdown shows where the residual concentrates, so adjustments go where they matter instead of across the board.</li>
+                <li><strong>Track it:</strong> re-run the model each cycle; the residual should shrink as remediation lands.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Reproduce it</h2>
+            <p>The full analysis is a single, dependency-light Python script:</p>
+            <pre>cd papers/pay-equity
+pip install pandas numpy statsmodels matplotlib
+python3 analysis.py   # regenerates results.json and both charts</pre>
+            <p><a href="analysis.py">View the source &rarr;</a> &nbsp;|&nbsp; <a href="../../cv.html">Back to CV</a></p>
+            <p class="subtitle"><i>Synthetic data only. No real compensation or personnel records are used anywhere in this project.</i></p>
+        </section>
+    </article>
+</body>
+</html>
