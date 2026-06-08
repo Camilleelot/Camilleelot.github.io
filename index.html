@@ -351,10 +351,11 @@
     <header>
         <div>
             <h1 class="name">Camille</h1>
-            <div class="role-title">Policy Research & Data</div>
+            <div class="role-title">People Analytics &amp; Data</div>
         </div>
         <nav>
             <a href="#products" class="clean-link">Portfolio</a>
+            <a href="cv.html" class="clean-link">CV</a>
             <a href="#correspondence" class="clean-link">Contact</a>
             <a href="https://github.com/Camilleelot" class="clean-link">GitHub</a>
         </nav>
@@ -363,13 +364,13 @@
     <!-- INTRO HERO -->
     <section class="hero">
         <p>
-            Policy researcher finishing my Political Science degree at Athabasca University. I transform complex public civic data into clear narratives; currently working on my analysis of zoning changes in Calgary, and documenting how zoning changes reshape communities through quantitative analysis.
+            People analytics and HR data analyst who turns workforce data into <span class="text-accent">retention, pay-equity, and benefits decisions</span>. I pair production HR data experience &mdash; HRIS administration, SQL querying, dashboards &mdash; with the quasi-experimental and causal-inference methods most analysts never touch.
         </p>
         <p>
-            My work looks at questions that occupy space in everyone's mind: <span class="text-accent">How do regulatory changes ripple through markets?</span> <span class="text-accent">What stories do city documents tell?</span> When the rubber meets the road and policy changes are enacted, what actually changes?
+            The questions I work on: <span class="text-accent">Why are people really leaving, and which policy actually moved the needle?</span> <span class="text-accent">Where is pay inequitable once you control for role and tenure?</span> <span class="text-accent">What does a new benefit actually cost?</span> When a policy is enacted, what <em>actually</em> changes &mdash; and can you prove it?
         </p>
         <p>
-            This site serves as a portfolio host, but also as a playground... a chance to use data science skills, with real data and real-world implications.
+            This site is part portfolio, part playground: a place to use data-science skills on real data with real-world stakes &mdash; from staff retention to housing policy. Finishing my BA in Political Science at Athabasca University (2026).
         </p>
         <p style="font-family: 'Courier New', monospace;"></p>
     </section>
@@ -379,11 +380,13 @@
         <!-- About -->
         <div>
             <h2 class="section-title" style="margin-bottom: 2rem;">About</h2>
-            <p style="margin-bottom: 1.5rem;">I frame the inquiry, do the engineering, and interpret what the results actually mean for people.</p>
+            <p style="margin-bottom: 1.5rem;">I frame the inquiry, do the engineering, and interpret what the results actually mean for people. I have built analytics end-to-end &mdash; from messy multi-source HR data to board-level recommendations leadership actually used.</p>
             
-            <p style="margin-bottom: 1.5rem;"><b>Tools:</b> Python (Pandas/NumPy), SQL, Streamlit, Interrupted Time Series Analysis</p>
+            <p style="margin-bottom: 1.5rem;"><b>Tools:</b> SQL (incl. Rippling/RQL on a live HRIS), Python (Pandas/NumPy/statsmodels), Power BI, Advanced Excel, Streamlit, D3.js</p>
             
-            <p style="margin-bottom: 1.5rem;"><b>Domains:</b> AI governance, urban planning, housing economics, nonprofit operations</p>
+            <p style="margin-bottom: 1.5rem;"><b>Methods:</b> retention/attrition analysis, turnover cost modeling, pay-equity regression, quasi-experimental design, interrupted time series, change-point detection</p>
+            
+            <p style="margin-bottom: 1.5rem;"><b>Domains:</b> people analytics &amp; retention, total rewards / benefits, pay equity, AI governance, public policy</p>
             
             <p style="margin-bottom: 1.5rem;"><b>Languages:</b> English, Russian (heritage speaker)</p>
             
@@ -411,24 +414,32 @@ model.pvalues[<span class="code-string">'intervention'</span>] < <span class="co
     <!-- PROJECTS -->
    <section id="products">
         <h2 class="section-title" style="margin-bottom: 2rem;">Projects</h2>
-       <h3><a href="./papers/calgary-rezoning/v1.0/index.html" class="clean-link text-accent">Calgary Rezoning Analysis</a></h3>
+
+        <h3><a href="./turnover-analysis.html" class="clean-link text-accent">HR Turnover &amp; Retention Analytics</a></h3>
+       <span class="marginnote" style="margin-right: -18%;"><img src="img/main index hr retention tool.jpg" alt="HR turnover dashboard"/></span>
+
+        <p>Direct-support roles have brutal turnover &mdash; 40-45% at the organization I worked for. Everyone treats it as inevitable; I was given the chance to analyze it. I wanted to know: what does it actually cost, and can you see it coming?</p>
+        <p>Built a Streamlit dashboard that surfaces turnover costs, breaks attrition into tenure cohorts, and flags at-risk employees. The model estimated ~$250K in annual turnover costs, which made retention investments easier to justify. Most turnover clustered in months 3-6 (the onboarding-failure window), pointing leadership to where intervention pays off. A modified version is in use by senior leadership.</p>
+        <p>I went further with a separate <b>retention signal-detection</b> study: 70 months of HR data, change-point detection, and a voluntary-vs-involuntary quasi-experiment that isolated the Wellness Days policy (June 2023) as the single largest positive shift in voluntary retention. Delivered as a white paper to senior leadership.</p>
+
+        <h3 style="margin-top: 3rem;"><a href="./papers/pay-equity/index.html" class="clean-link text-accent">Pay Equity &amp; Pay Transparency Analysis</a></h3>
+        <p>Canada's 2026 pay-transparency laws (Ontario, BC) require employers to surface and explain their gender pay gap. I built a regression-based pay-equity audit on synthetic compensation data that separates the <em>explained</em> gap (role, level, tenure) from the <em>unexplained</em> residual &mdash; the exact analysis a compensation team runs before publishing a pay-transparency report &mdash; and modeled the budget cost of remediation.</p>
+
+        <h3 style="margin-top: 3rem;"><a href="./papers/benefits-cost-model/index.html" class="clean-link text-accent">Gender-Affirming Benefits Cost Model</a></h3>
+        <p>Before an employer adds a new benefit, someone has to model what it costs. I built a total-rewards cost model estimating the annual employer cost of adding comprehensive gender-affirming health coverage across different workforce sizes and utilization rates, with sensitivity analysis &mdash; the kind of benchmarking that turns "should we offer this?" into a defensible number.</p>
+
+       <h3 style="margin-top: 3rem;"><a href="./papers/calgary-rezoning/v1.0/index.html" class="clean-link text-accent">Calgary Rezoning Analysis</a></h3>
        <span class="marginnote" style="margin-right: -18%;"><img src="img/main index calgary construction.jpg" alt="Calgary construction"/></span>
 
-        <p>In 2023 I wrote <a href="https://drive.google.com/file/d/1BYoq5fnjimBCvPTSMJ3Lrm8D0ASmasLW/view" class="clean-link text-accent">"A Manufactured Crisis"</a>a community research report on how financialization transforms housing into investment assets. I recommended aggressive rezoning as one of five policy solutions.</p>
-        <p>When Calgary actually implemented blanket rezoning in 2024, I came back to measure what happened. The answer surprised me: construction starts dropped 16% after deregulation. The opposite of what the policy was supposed to do. I used Interrupted Time Series analysis on CMHC data to test whether the policy caused the change, or whether I was just seeing noise.</p>
+        <p>In 2023 I wrote <a href="https://drive.google.com/file/d/1BYoq5fnjimBCvPTSMJ3Lrm8D0ASmasLW/view" class="clean-link text-accent">"A Manufactured Crisis"</a> a community research report on how financialization transforms housing into investment assets. I recommended aggressive rezoning as one of five policy solutions.</p>
+        <p>When Calgary actually implemented blanket rezoning in 2024, I came back to measure what happened. The answer surprised me: construction starts dropped 16% after deregulation &mdash; the opposite of what the policy was supposed to do. I used Interrupted Time Series analysis on CMHC data to test whether the policy caused the change, or whether I was just seeing noise.</p>
         <p>The research caught attention from University of Calgary faculty and started conversations about how we actually evaluate whether policies work.</p>
-       
-        <h3 style="margin-top: 3rem;"><a href="./turnover-analysis.html" class="clean-link text-accent">HR Turnover Tool</a></h3>
-       <span class="marginnote" style="margin-right: -18%;"><img src="img/main index hr retention tool.jpg" alt="HR turnover dashboard"/></span>
- 
-        <p>Direct support professions have brutal turnover, 40-45% at the organization I worked for. Everyone treats it as inevitable and I was given the chance to analyze it. I wanted to know: what does that actually cost? And can you see it coming?</p>
-        <p>Built a Streamlit dashboard that surfaces turnover costs and flags at-risk employees. The model estimated ~$250K in annual turnover costs, which made retention investments easier to justify. Most turnover occurred in months 3-6 (the onboarding failure window), which indicates where to focus. A modified version is currently in use by senior leadership; this app has a Sankey diagram, however.</p>
- 
+
         <h3 style="margin-top: 3rem;"><a href="./fleet-management/index.html" class="clean-link text-accent">FleetTracker</a></h3>
        <span class="marginnote" style="margin-right: -18%;"><img src="img/main index fleet email.jpg" alt="Fleet email"/></span>
     
-        <p>Nonprofits manage vehicle fleets with email chains and scattered spreadsheets. I had to scan manually, vehicle incident forms, leases, and service files, and I wanted a better way. Incident reports also get lost, coverage gaps go unnoticed, and insurance claims take forever because nobody can find the documentation.</p>
-        <p>I built a system that runs entirely on Google Workspace, zero servers, zero hosting costs. Form submission triggers automated folder creation, email notifications, and coverage lookups. Claims processing went from 3-5 days to same-day. I designed it so someone non-technical could maintain it after I leave.</p>
+        <p>Nonprofits manage vehicle fleets with email chains and scattered spreadsheets. I had to scan vehicle incident forms, leases, and service files manually, and I wanted a better way. Incident reports got lost, coverage gaps went unnoticed, and insurance claims took forever because nobody could find the documentation.</p>
+        <p>I built a system that runs entirely on Google Workspace &mdash; zero servers, zero hosting costs. Form submission triggers automated folder creation, email notifications, and coverage lookups. Claims processing went from 3-5 days to same-day. I designed it so someone non-technical could maintain it after I leave.</p>
     </section>
 
     <!-- HISTORY -->
@@ -444,7 +455,7 @@ model.pvalues[<span class="code-string">'intervention'</span>] < <span class="co
 
     <!-- FOOTER -->
     <footer id="correspondence">
-        <p><a href="mailto:camillefromraytheon2023@gmail.com" class="clean-link text-accent">Email me</a> for a resume or to chat about cities, data, or both.</p>
+        <p><a href="mailto:camillemoreau2002@gmail.com" class="clean-link text-accent">Email me</a> or grab my <a href="cv.html" class="clean-link text-accent">CV</a> &mdash; happy to chat about people analytics, total rewards, or data either way.</p>
         <p style="margin-top: 1rem;"><a href="https://github.com/Camilleelot" class="clean-link text-accent">github.com/Camilleelot</a></p>
 
         <div style="margin-top: 3rem; font-size: 0.9rem; color: #666;">

@@ -120,7 +120,7 @@ Simple but effective > complex but unusable.
 
 **For Users:**
 - Reduced board report prep from 8 hours → 30 minutes
-- Identified $150K+ in annual turnover costs (previously unknown)
+- Identified ~$250K in annual turnover costs (previously unknown)
 - Flagged 12 at-risk employees for retention interventions
 - Enabled data-driven decisions on training investments
 
