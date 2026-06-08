@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camille Moreau, Policy research, writing, quantitative work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="tweak-loader.js" defer></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="d-tweaks.jsx" data-presets="react"></script>
+<style>
+  :root {
+    --bg: var(--tw-bg, #17140f);
+    --paper: var(--tw-paper, #1f1b14);
+    --ink: var(--tw-ink, #f2ece0);
+    --ink-2: var(--tw-ink2, #bfb5a3);
+    --ink-3: var(--tw-ink3, #7a7265);
+    --rule: var(--tw-rule, #3a342a);
+    --rule-soft: var(--tw-rule-soft, #2a2620);
+    --accent: var(--tw-accent, #e48a6a);
+    --accent-soft: var(--tw-accent-soft, #b4564b);
+    --serif: var(--tw-serif, "EB Garamond", "Iowan Old Style", Palatino, Georgia, serif);
+    --display: var(--tw-display, "Fraunces", "EB Garamond", Georgia, serif);
+    --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  html, body { background: var(--bg); color: var(--ink); }
+  body {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.55;
+    margin: 0; padding: 0;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga", "kern", "onum";
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 64px 88px 120px; }
+
+  /* links, underline-as-trace, like the notes */
+  a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 1px; transition: border-color .15s, color .15s; }
+  a:hover { color: var(--accent); border-color: var(--accent); }
+  a.plain { border: none; }
+  .mono { font-family: var(--mono); }
+
+  /* ── tiny caps label ── */
+  .tick { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+  .tick-accent { color: var(--accent); }
+
+  /* ── header ── */
+  header.top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 56px;
+  }
+  .mark { font-family: var(--display); font-size: 22px; font-weight: 500; letter-spacing: -0.012em; }
+  .mark em { font-style: italic; font-weight: 400; }
+  .mark small {
+    font-family: var(--mono); font-style: normal; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3);
+    margin-left: 14px; vertical-align: 2px;
+  }
+  nav.top a { border: none; margin-left: 28px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2); }
+  nav.top a:hover { color: var(--accent); }
+
+  /* ── MASTHEAD ── */
+  .masthead { margin-bottom: 72px; display: grid; grid-template-columns: 1fr 300px; gap: 56px; align-items: end; }
+  .kicker {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  h1.title {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(60px, 7.2vw, 96px);
+    line-height: 0.98;
+    letter-spacing: -0.018em;
+    margin: 0 0 22px;
+    text-wrap: balance;
+    font-variation-settings: "opsz" 144;
+  }
+  h1.title em { font-style: italic; color: var(--accent); }
+  .deck {
+    font-family: var(--serif);
+    font-size: 22px; line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 52ch;
+    text-wrap: pretty;
+    margin: 0;
+  }
+  .deck em { color: var(--ink); font-style: italic; }
+  .deck u { text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+
+  .byline-card {
+    border-left: 1px solid var(--rule);
+    padding: 4px 0 4px 26px;
+    color: var(--ink-2);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .byline-card .name { font-style: italic; color: var(--ink); font-family: var(--display); font-size: 20px; }
+  .byline-card .status {
+    display: inline-flex; align-items: center; gap: 9px;
+    margin-top: 16px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #2a7d4f; box-shadow: 0 0 0 4px rgba(42,125,79,0.18); }
+  .byline-card .ct { margin-top: 10px; font-size: 14px; }
+  .byline-card .ct a { border-color: var(--rule); }
+
+  /* ── section headings ── */
+  h2.section {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 34px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  h2.section .num { color: var(--accent); font-family: var(--mono); letter-spacing: 0.1em; }
+
+  /* ── FLAGSHIP (transit voting) ── */
+  .flagship {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    margin-bottom: 88px;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    overflow: hidden;
+  }
+  .flagship .left { padding: 44px 48px; }
+  .flagship .right {
+    background: #fff;
+    border-left: 1px solid var(--rule);
+    padding: 32px 36px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  [data-theme="dark"] .flagship .right { background: #1a1814; border-left-color: #3a342a; }
+
+  .flagship .tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 18px;
+  }
+  .flagship h3 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 46px; line-height: 1.02; letter-spacing: -0.015em;
+    margin: 0 0 8px; text-wrap: balance;
+    font-variation-settings: "opsz" 72;
+  }
+  .flagship h3 em { font-style: italic; }
+  .flagship .sub {
+    font-family: var(--serif); font-style: italic;
+    font-size: 21px; color: var(--ink-2);
+    margin: 0 0 28px; line-height: 1.45;
+    text-wrap: pretty;
+  }
+  .flagship p.body { font-size: 17px; line-height: 1.6; margin: 0 0 14px; color: var(--ink-2); text-wrap: pretty; }
+  .flagship .i-statement { color: var(--ink); }
+  .flagship .i-statement u {
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+  }
+
+  .flagship .meta-row {
+    display: flex; gap: 32px; margin-top: 28px; padding-top: 22px;
+    border-top: 1px solid var(--rule-soft);
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .flagship .meta-row b { display: block; color: var(--ink); font-family: var(--serif); font-style: italic; font-size: 15px; letter-spacing: 0; text-transform: none; margin-top: 4px; }
+
+  .flagship .cta-row { margin-top: 28px; display: flex; gap: 22px; align-items: center; }
+  .flagship .cta-primary {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink);
+    border: none; background: var(--accent); color: #fff;
+    padding: 11px 18px; display: inline-block;
+  }
+  .flagship .cta-primary:hover { background: var(--ink); color: #fff; border: none; }
+  .flagship .cta-ghost { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-2); border-bottom: 1px solid var(--rule); }
+
+  /*, flagship viz, */
+  .viz-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .viz-title { font-family: var(--display); font-style: italic; font-size: 18px; }
+  .viz-source { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  [data-theme="dark"] .flagship .right .viz-title,
+  [data-theme="dark"] .flagship .right .viz-finding b { color: #f2ece0; }
+  [data-theme="dark"] .flagship .right .viz-finding,
+  [data-theme="dark"] .flagship .right .viz-source { color: #a09685; }
+
+  .viz-finding { font-family: var(--serif); font-size: 15px; color: var(--ink-2); margin-bottom: 18px; line-height: 1.45; }
+  .viz-finding b { color: var(--accent); font-weight: 500; font-style: italic; }
+  .viz-chart { flex: 1; min-height: 300px; position: relative; margin: 10px 0 14px; }
+  .viz-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--ink-3); line-height: 1.6; margin-top: auto; padding-top: 14px; border-top: 1px dashed var(--rule-soft); }
+  [data-theme="dark"] .flagship .right .viz-note { border-top-color: #3a342a; color: #a09685; }
+
+  /* ── ALSO ON FILE (smaller projects) ── */
+  .also-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 56px; margin-bottom: 88px; }
+  .also-item {
+    padding: 24px 0;
+    border-top: 1px solid var(--rule);
+    display: grid; grid-template-columns: 1fr 140px; gap: 24px; align-items: start;
+  }
+  .also-item:first-child, .also-item:nth-child(2) { border-top: none; padding-top: 0; }
+  .also-item .num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+  .also-item h4 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 26px; line-height: 1.08; margin: 0 0 8px;
+    letter-spacing: -0.008em; text-wrap: balance;
+  }
+  .also-item h4 em { font-style: italic; color: var(--accent); }
+  .also-item p.s {
+    font-family: var(--serif); font-style: italic; font-size: 17px;
+    color: var(--ink-2); margin: 0 0 10px; line-height: 1.4;
+  }
+  .also-item p.d {
+    font-family: var(--serif); font-size: 15px; color: var(--ink-2);
+    margin: 0 0 12px; line-height: 1.5; text-wrap: pretty;
+  }
+  .also-item .i-line { color: var(--ink); }
+  .also-item .i-line u { text-decoration-color: var(--accent); text-decoration-thickness: 1.4px; text-underline-offset: 3px; }
+  .also-item .links { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--ink-2); }
+  .also-item .links a { margin-right: 14px; border-color: var(--rule); }
+  .also-item .links a:hover { border-color: var(--accent); }
+
+  /* sparkline column */
+  .spark-box { min-width: 140px; }
+  .spark-box .stat-n {
+    font-family: var(--display); font-style: italic; font-weight: 500;
+    font-size: 30px; color: var(--accent); line-height: 1;
+    font-feature-settings: "lnum", "tnum"; letter-spacing: -0.01em;
+  }
+  .spark-box .stat-l {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-3); margin-top: 6px; line-height: 1.4;
+  }
+  .spark-box svg { display: block; margin-top: 10px; }
+
+  /* ── IN-THE-WORKS (full-width callout) ── */
+  .itw {
+    border: 1px solid var(--rule);
+    padding: 28px 36px;
+    margin-bottom: 88px;
+    display: grid; grid-template-columns: auto 1fr auto; gap: 40px; align-items: center;
+  }
+  .itw .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+  .itw .tag .blink { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: 1px; animation: blink 1.8s ease-in-out infinite; }
+  @keyframes blink { 0%,100% { opacity: 1 } 50% { opacity: 0.3 } }
+  .itw h4 { font-family: var(--display); font-weight: 400; font-size: 26px; letter-spacing: -0.01em; margin: 4px 0 0; }
+  .itw h4 em { font-style: italic; }
+  .itw p { margin: 4px 0 0; font-size: 15px; color: var(--ink-2); font-style: italic; }
+  .itw a.go { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); border-color: var(--ink); }
+  .itw a.go:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── CREDENTIALS (tools / domains / langs / edu) ── */
+  .creds { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 88px; }
+  .creds .col h5 {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ink-3); margin: 0 0 18px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--rule-soft);
+  }
+  .creds .col ul { list-style: none; padding: 0; margin: 0; }
+  .creds .col li {
+    font-family: var(--serif); font-size: 16px; line-height: 1.7;
+    color: var(--ink-2);
+  }
+  .creds .col li em { font-style: italic; color: var(--ink-3); font-size: 14px; }
+  .creds .col li .pri { color: var(--ink); }
+  .creds .col.edu li { margin-bottom: 12px; }
+  .creds .col.edu .yr { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--ink-3); text-transform: uppercase; display: block; }
+
+  /* ── CONTACT / LEAD / FOOTER ── */
+  .contact {
+    display: grid; grid-template-columns: 1fr 380px; gap: 56px;
+    padding: 48px 0 0;
+    border-top: 1px solid var(--rule);
+    margin-bottom: 40px;
+  }
+  .contact .pitch h3 {
+    font-family: var(--display); font-weight: 400; font-style: italic;
+    font-size: 42px; line-height: 1.05; letter-spacing: -0.01em;
+    margin: 0 0 18px; text-wrap: balance;
+  }
+  .contact .pitch h3 u { text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .contact .pitch p { font-size: 17px; color: var(--ink-2); max-width: 52ch; margin: 0 0 14px; text-wrap: pretty; }
+  .contact .pitch p.signed { font-style: italic; color: var(--ink); font-size: 18px; margin-top: 22px; }
+
+  .lead-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 26px 28px;
+  }
+  .lead-card .t { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .lead-card h4 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 0 0 10px; line-height: 1.1; letter-spacing: -0.008em; }
+  .lead-card h4 em { font-style: italic; }
+  .lead-card p { font-size: 15px; color: var(--ink-2); margin: 0 0 16px; line-height: 1.5; }
+  .lead-card a.email {
+    display: block; font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em;
+    color: var(--ink); border: 1px solid var(--rule); padding: 12px 16px;
+    text-align: center; background: transparent; transition: all .15s;
+  }
+  .lead-card a.email:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .lead-card .hint { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 12px; text-align: center; }
+
+  footer.end {
+    padding-top: 28px; border-top: 1px solid var(--rule-soft);
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+  }
+
+  /* responsive */
+  @media (max-width: 1080px) {
+    .wrap { padding: 48px 40px; }
+    .masthead, .flagship, .also-grid, .contact { grid-template-columns: 1fr; gap: 32px; }
+    .flagship .right { border-left: none; border-top: 1px solid var(--rule); }
+    .creds { grid-template-columns: repeat(2, 1fr); }
+    .itw { grid-template-columns: 1fr; gap: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ─── HEADER ─── -->
+  <header class="top">
+    <div class="mark">Camille <em>Moreau</em> <small>notes &amp; analysis</small></div>
+    <nav class="top">
+      <a href="#work">Work</a>
+      <a href="#in-the-works">In the works</a>
+      <a href="#about">About</a>
+      <a href="/cdn-cgi/l/email-protection#0764666a6e6b6b626a68756266723537373547606a666e6b2964686a">Email</a>
+      <a href="https://github.com/Camilleelot">GitHub</a>
+    </nav>
+  </header>
+
+  <!-- ─── MASTHEAD ─── -->
+  <section class="masthead">
+    <div>
+      <div class="kicker">Policy &middot; Cities &middot; Workforce data &middot; Writing &middot; Calgary</div>
+      <h1 class="title">I borrow methods from <em>geology, epidemiology, and political theory</em> to study how things actually get built, and who gets blamed.</h1>
+      <p class="deck">
+        <em>I'm Camille.</em> I run econometrics on Canadian housing and transit policy, adapt time-series methods from other disciplines to nonprofit HR data, and write essays about what the numbers do <u>and don't</u> say. I'm finishing a B.A. in Political Science (Psychology minor) at Athabasca while working full-time.
+      </p>
+    </div>
+    <aside class="byline-card">
+      <div class="name">Camille Moreau</div>
+      <div>Calgary, AB &middot; Bilingual EN&thinsp;/&thinsp;RU.<br/>Open to research, analysis, and writing roles.</div>
+      <div class="status"><span class="dot"></span>Open to roles &middot; Spring 2026</div>
+      <div class="ct"><a href="/cdn-cgi/l/email-protection#bcdfddd1d5d0d0d9d1d3ced9ddc98e8c8c8efcdbd1ddd5d092dfd3d1"><span class="__cf_email__" data-cfemail="442725292d282821292b3621253176747476042329252d286a272b29">[email&#160;protected]</span></a></div>
+      <div class="ct" style="margin-top:6px"><a href="tel:+14037142079">403&middot;714&middot;2079</a></div>
+    </aside>
+  </section>
+
+  <!-- ─── FEATURED WORK ─── -->
+  <section id="work">
+    <h2 class="section"><span>Featured, one big one, a handful of smaller</span><span class="num">§ 01</span></h2>
+
+    <!-- ── FLAGSHIP: Transit & Voting ── -->
+    <article class="flagship">
+      <div class="left">
+        <div class="tag">Flagship · Long-form · April 2026</div>
+        <h3>The train was <em>cut and restored.</em> The vote didn't notice.</h3>
+        <p class="sub">$1.5 billion in Green Line LRT funding, withdrawn and re-committed inside one electoral cycle. I went looking for the political signal. There wasn't one.</p>
+        <p class="body i-statement">
+          <u>In 2025 I matched 225 federal ridings to Statistics Canada journey-to-work data</u> across four elections. At the national level, the correlation is <b>r = −0.11, p = 0.33</b>. Nothing. I tested Calgary's 2018 BRT and Montreal's 2023 REM as natural experiments. Also nothing. I almost stopped.
+        </p>
+        <p class="body i-statement">
+          <u>Then I remembered the Green Line.</u> A $6.2B LRT promised, cut, resurrected, and re-funded, all in one electoral cycle. One month after the Liberals re-committed $1.5B to Shepard Station, <b>Shepard swung Conservative by +7.6 points</b>, more than double the non-Green-Line ridings. The train being given back didn't reward anyone. The train being taken away didn't punish anyone. Transit was electorally invisible in both directions.
+        </p>
+        <p class="body">
+          The piece lays out three readings, boring federalism, the neoliberal subject, a missing constituency, and doesn't pick one. Tocqueville, Olson, Schumpeter, and Gramsci all get their turn. There's also a section called "<em>What went wrong and how I fixed it</em>" that's honest about the redistribution mess, the spatial joins, and the afternoon I said <i>fine, area-weighted is good enough.</i>
+        </p>
+
+        <div class="meta-row">
+          <div>Method<b>Interrupted time series &middot; spatial joins &middot; CHES ideology scores</b></div>
+          <div>Data<b>225 ridings &times; 4 elections &middot; StatCan JTW &middot; Elections Canada 2015,2025</b></div>
+          <div>Built<b>Python &middot; D3.js &middot; geospatial overlays from City of Calgary Open Data</b></div>
+        </div>
+
+        <div class="cta-row">
+          <a class="cta-primary" href="transit-voting.html">Read the full essay →</a>
+          <a class="cta-ghost" href="https://github.com/Camilleelot/Camilleelot.github.io">Data & code on GitHub</a>
+        </div>
+      </div>
+
+      <!-- right: the finding, as an annotated decade-long timeline -->
+      <div class="right">
+        <div class="viz-head">
+          <div class="viz-title">A decade of Calgary's federal vote, <em>and the cut that didn't register</em></div>
+          <div class="viz-source">Conservative vote share · 2015 → 2025 · Green Line ridings vs. all of Calgary</div>
+        </div>
+        <div class="viz-finding">
+          Two lines. One is the average across all of Calgary. The other is just the five Green Line ridings. They move together for ten years, through the cancellation, through the resurrection, through the election. <b>You can barely tell them apart.</b>
+        </div>
+
+        <div class="viz-chart">
+          <svg viewBox="0 0 580 360" width="100%" height="100%" style="overflow: visible;" aria-label="Timeline of Conservative vote share in Calgary, 2015 to 2025, with Green Line funding events annotated">
+
+            <!--
+              Non-linear x-axis to give the event zone room:
+              2015 = 60,  2019 = 200,  2021 = 300,  2025 = 540
+              y for pct p: 290 - (p - 40) * 7   (40%→290, 50%→220, 60%→150, 70%→80)
+            -->
+
+            <!-- y-axis tick labels -->
+            <g font-family="JetBrains Mono, monospace" font-size="9" fill="var(--ink-3)" letter-spacing="0.08em">
+              <text x="52" y="84"  text-anchor="end">70%</text>
+              <text x="52" y="154" text-anchor="end">60%</text>
+              <text x="52" y="224" text-anchor="end">50%</text>
+              <text x="52" y="294" text-anchor="end">40%</text>
+            </g>
+
+            <!-- horizontal gridlines -->
+            <g stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="1 4" opacity="0.6">
+              <line x1="60" y1="80"  x2="540" y2="80"/>
+              <line x1="60" y1="150" x2="540" y2="150"/>
+              <line x1="60" y1="220" x2="540" y2="220"/>
+              <line x1="60" y1="290" x2="540" y2="290"/>
+            </g>
+
+            <!-- ── EVENT ZONE: between 2021 (x=300) and 2025 (x=540) ──
+                 Jul 2024 cut:    x = 300 + (3.5/4)*240 = 300 + 210 = 510  (wait, let me be more precise)
+                 Linear within 2021→2025 (4 years = 240px):
+                   mid-2024 = 300 + (3.0/4)*240 = 480
+                   Jul 2024 = 300 + (3.5/4)*240 = 510  → use 420 for visual clarity
+                   Oct 2024 = 300 + (3.75/4)*240 = 525 → use 460
+                   Apr 2025 = 300 + (4.3/4)*240 = clamp → use 540
+
+                 Actually, let me place them for LEGIBILITY not precision:
+                   $1.5B withdrawn  = x 410
+                   restored         = x 460
+                   election         = x 540 (2025 dot)
+            -->
+
+            <!-- "the cut" shaded band -->
+            <rect x="410" y="68" width="50" height="232" fill="var(--accent)" opacity="0.08" rx="1"/>
+
+            <!-- event hairlines -->
+            <g stroke="var(--ink-3)" stroke-width="0.7" stroke-dasharray="2 3" opacity="0.6">
+              <line x1="410" y1="68" x2="410" y2="300"/>
+              <line x1="460" y1="68" x2="460" y2="300"/>
+            </g>
+            <line x1="540" y1="68" x2="540" y2="300" stroke="var(--ink-3)" stroke-width="0.7" stroke-dasharray="2 3" opacity="0.4"/>
+
+            <!-- event captions, cleanly stacked ABOVE the chart -->
+            <g font-family="EB Garamond, serif" font-style="italic" font-size="11" fill="var(--ink-2)">
+              <!-- withdrawn -->
+              <text x="410" y="52" text-anchor="middle">$1.5B withdrawn</text>
+              <text x="410" y="64" text-anchor="middle" font-family="JetBrains Mono, monospace" font-style="normal" font-size="8.5" fill="var(--ink-3)" letter-spacing="0.1em">JUL 2024</text>
+              <!-- restored -->
+              <text x="460" y="36" text-anchor="middle" fill="var(--accent)">restored</text>
+              <text x="460" y="48" text-anchor="middle" font-family="JetBrains Mono, monospace" font-style="normal" font-size="8.5" fill="var(--ink-3)" letter-spacing="0.1em">OCT 2024</text>
+              <!-- election -->
+              <text x="540" y="52" text-anchor="middle">election</text>
+              <text x="540" y="64" text-anchor="middle" font-family="JetBrains Mono, monospace" font-style="normal" font-size="8.5" fill="var(--ink-3)" letter-spacing="0.1em">APR 2025</text>
+            </g>
+
+            <!-- "the cut" band label below axis -->
+            <text x="435" y="318" font-family="JetBrains Mono, monospace" font-size="8" fill="var(--accent)" text-anchor="middle" letter-spacing="0.16em">THE CUT</text>
+
+            <!-- x-axis: election year ticks -->
+            <g stroke="var(--ink-3)" stroke-width="0.8" opacity="0.5">
+              <line x1="60"  y1="290" x2="60"  y2="296"/>
+              <line x1="200" y1="290" x2="200" y2="296"/>
+              <line x1="300" y1="290" x2="300" y2="296"/>
+              <line x1="540" y1="290" x2="540" y2="296"/>
+            </g>
+            <g font-family="JetBrains Mono, monospace" font-size="10" fill="var(--ink-3)" letter-spacing="0.14em" text-anchor="middle">
+              <text x="60"  y="312">2015</text>
+              <text x="200" y="312">2019</text>
+              <text x="300" y="312">2021</text>
+              <text x="540" y="312">2025</text>
+            </g>
+
+            <!--
+              Data lines (y = 290 - (pct - 40) * 7):
+              Calgary avg:     2015: 53.6→194.8  2019: 67.2→99.6  2021: 56.8→172.4  2025: 60.4→147.2
+              Green Line avg:  2015: 47.1→240.3  2019: 60.8→144.4 2021: 44.9→255.7  2025: 50.84→214.1
+            -->
+
+            <!-- Calgary average: gray -->
+            <polyline points="60,194.8 200,99.6 300,172.4 540,147.2"
+              fill="none" stroke="var(--ink-3)" stroke-width="1.6" opacity="0.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+            <g fill="var(--ink-3)" opacity="0.55">
+              <circle cx="60"  cy="194.8" r="2.4"/>
+              <circle cx="200" cy="99.6"  r="2.4"/>
+              <circle cx="300" cy="172.4" r="2.4"/>
+              <circle cx="540" cy="147.2" r="2.4"/>
+            </g>
+
+            <!-- Green Line ridings: accent -->
+            <polyline points="60,240.3 200,144.4 300,255.7 540,214.1"
+              fill="none" stroke="var(--accent)" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+            <g fill="var(--accent)">
+              <circle cx="60"  cy="240.3" r="2.8"/>
+              <circle cx="200" cy="144.4" r="2.8"/>
+              <circle cx="300" cy="255.7" r="2.8"/>
+              <circle cx="540" cy="214.1" r="2.8"/>
+            </g>
+
+            <!-- Series labels, at left near 2015 dots -->
+            <g font-family="EB Garamond, serif" font-size="11.5">
+              <text x="72" y="190" fill="var(--ink-2)" font-style="italic">Calgary, all ridings</text>
+              <text x="72" y="254" fill="var(--accent)" font-style="italic">Green Line ridings</text>
+              <text x="72" y="266" font-family="JetBrains Mono, monospace" font-size="8.5" fill="var(--accent-soft)" letter-spacing="0.1em" font-style="normal">N = 5</text>
+            </g>
+
+            <!-- $1.53B committed annotation at 2015 -->
+            <text x="64" y="74" font-family="EB Garamond, serif" font-style="italic" font-size="10" fill="var(--ink-3)">$1.53B federally committed</text>
+
+          </svg>
+        </div>
+
+        <div class="viz-note">
+          The train was promised, killed, and resurrected on schedule. <b style="color:var(--accent);">The two lines never separate.</b> That's the finding.
+        </div>
+      </div>
+    </article>
+
+    <!-- ── ALSO ON FILE ── -->
+    <div class="also-grid">
+
+      <!-- Rezoning paradox -->
+      <article class="also-item">
+        <div>
+          <div class="num">§ 02 · Policy analysis · Nov 2025</div>
+          <h4>The <em>Rezoning Paradox</em>.</h4>
+          <p class="s">Why did everyone around me keep saying housing sucked, after Calgary removed the rules?</p>
+          <p class="d i-line">
+            In August 2024 Calgary went blanket-rezoning. <u>I ran an interrupted time series on 17 months of CMHC data</u> to test the YIMBY prediction. Starts fell <b>−16%</b> below the pre-existing trend. Composition did shift toward multi-family, but not enough to make up the gap. The paper walks through why deregulation alone, on a market mid-cycle, produces the counterintuitive result.
+          </p>
+          <p class="links">
+            <a href="papers/calgary-rezoning/v1.0/">Read paper (v1.0) →</a>
+            <a href="papers/calgary-rezoning/v1.0/metadata.json">JSON</a>
+          </p>
+        </div>
+        <div class="spark-box">
+          <div class="stat-n">−16%</div>
+          <div class="stat-l">Starts vs. trend<br/>(17-mo window)</div>
+          <svg viewBox="0 0 140 54" width="140" height="54" aria-label="Housing starts sparkline">
+            <!-- trend line (dashed) extrapolated -->
+            <line x1="0" y1="30" x2="140" y2="14" stroke="var(--ink-3)" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.7"/>
+            <!-- actual line -->
+            <polyline points="0,32 10,28 20,30 30,26 40,28 50,24 60,26 72,22 84,30 96,34 108,40 120,38 132,42 140,44"
+              fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+            <!-- policy change marker -->
+            <line x1="72" y1="8" x2="72" y2="50" stroke="var(--ink)" stroke-width="0.7" stroke-dasharray="2 2" opacity="0.6"/>
+            <text x="74" y="12" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--ink-2)" letter-spacing="0.08em">REZONE</text>
+            <!-- dot -->
+            <circle cx="72" cy="22" r="2.2" fill="var(--accent)"/>
+          </svg>
+        </div>
+      </article>
+
+      <!-- Closer to Home: STPD turning point -->
+      <article class="also-item">
+        <div>
+          <div class="num">§ 03 · Applied research · Dec 2025 · Closer to Home</div>
+          <h4>Borrowing a method <em>from geology</em> to find when retention changed.</h4>
+          <p class="s">Sequential Turning Point Detection, lifted from InSAR time-series analysis, applied to 70 months of nonprofit HR data.</p>
+          <p class="d i-line">
+            <u>I adapted STPD (Ghaderpour et al., 2024) to organizational data</u> and used voluntary vs. involuntary turnover as treatment and control to rule out confounders. Three statistically significant turning points fell out. The Wellness Days policy (June 2023) corresponded with the largest positive shift in voluntary retention across the entire window, <b>3&times; larger</b> than any preceding change. White paper to senior leadership, full Python implementation.
+          </p>
+          <p class="links">
+            <a href="papers/retention-stpd/">White paper (on request) &rarr;</a>
+            <a href="https://github.com/Camilleelot">Code</a>
+          </p>
+        </div>
+        <div class="spark-box">
+          <div class="stat-n">3&times;</div>
+          <div class="stat-l">Wellness Days effect<br/>vs. prior changes</div>
+          <svg viewBox="0 0 140 54" width="140" height="54" aria-label="Turning points sparkline">
+            <polyline points="0,38 10,40 20,36 30,38 40,34 50,36 60,32 70,30 75,18 90,16 105,14 120,12 135,10" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+            <line x1="72" y1="6" x2="72" y2="50" stroke="var(--ink)" stroke-width="0.7" stroke-dasharray="2 2" opacity="0.6"/>
+            <circle cx="72" cy="19" r="2.4" fill="var(--accent)"/>
+            <circle cx="30" cy="38" r="1.6" fill="var(--ink-3)"/>
+            <circle cx="108" cy="13" r="1.6" fill="var(--ink-3)"/>
+            <text x="0" y="8" font-family="JetBrains Mono, monospace" font-size="6.5" fill="var(--ink-3)" letter-spacing="0.1em">70 MO. · STPD</text>
+          </svg>
+        </div>
+      </article>
+
+      <!-- NGO Turnover tool -->
+      <article class="also-item">
+        <div>
+          <div class="num">§ 04 · Tool · Python / Streamlit · Shipped</div>
+          <h4>NGO Turnover <em>Analysis Tool</em>.</h4>
+          <p class="s">For HR managers who have never written code. Upload Excel, receive analysis.</p>
+          <p class="d i-line">
+            I wrote it after watching an NGO's quarterly board report. "35% turnover" is a number. "48% of counselor turnover happens in months 3,12, costing $180K annually" is an argument. <u>The tool categorizes every termination into six tenure windows</u>, draws Sankey flows of department &rarr; role &rarr; outcome, and costs it out at C &asymp; 0.8 &times; salary.
+          </p>
+          <p class="links">
+            <a href="https://hrturnoveranalysis.streamlit.app/">Launch tool &rarr;</a>
+            <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis">Source</a>
+            <a href="turnover-analysis.html">Write-up</a>
+          </p>
+        </div>
+        <div class="spark-box">
+          <div class="stat-n">0.8&thinsp;S</div>
+          <div class="stat-l">Cost per termination<br/>(SHRM methodology)</div>
+          <svg viewBox="0 0 140 54" width="140" height="54" aria-label="Case distribution sparkline">
+            <g>
+              <rect x="4"   y="36" width="18" height="14" fill="var(--ink-3)" opacity="0.5"/>
+              <rect x="26"  y="12" width="18" height="38" fill="var(--accent)"/>
+              <rect x="48"  y="20" width="18" height="30" fill="var(--accent)" opacity="0.75"/>
+              <rect x="70"  y="30" width="18" height="20" fill="var(--ink-3)" opacity="0.5"/>
+              <rect x="92"  y="34" width="18" height="16" fill="var(--ink-3)" opacity="0.5"/>
+              <rect x="114" y="40" width="18" height="10" fill="var(--ink-3)" opacity="0.5"/>
+            </g>
+            <text x="4" y="8" font-family="JetBrains Mono, monospace" font-size="6.5" fill="var(--ink-3)" letter-spacing="0.1em">CASES 0–5</text>
+          </svg>
+        </div>
+      </article>
+
+      <!-- Commute piece (essay companion) -->
+      <article class="also-item">
+        <div>
+          <div class="num">§ 05 · Essay · 2025</div>
+          <h4>35 minutes. <em>55 minutes.</em> Same city.</h4>
+          <p class="s">A companion essay to the transit-voting piece, the one that seeded the question.</p>
+          <p class="d i-line">
+            My walk is 15 minutes through a park. My friend's commute is five minutes in her car, eight minutes waiting, a bus, a train, a transfer, a second train. <u>I wanted that asymmetry to mean something politically.</u> It turned out to not, and the reasons it doesn't became the bigger paper.
+          </p>
+          <p class="links">
+            <a href="transit-voting.html#commute">Read opening →</a>
+          </p>
+        </div>
+        <div class="spark-box">
+          <div class="stat-n">35 · 55</div>
+          <div class="stat-l">Minutes door-to-door<br/>SW vs. NE Calgary</div>
+          <svg viewBox="0 0 140 54" width="140" height="54" aria-label="Commute comparison">
+            <!-- Two stacked bars -->
+            <rect x="0"   y="8"  width="48"  height="14" fill="var(--accent)"/>
+            <text x="54"  y="19" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--ink-2)">35 min</text>
+            <text x="0"   y="5"  font-family="JetBrains Mono, monospace" font-size="7" fill="var(--ink-3)" letter-spacing="0.1em">MINE</text>
+
+            <rect x="0"   y="36" width="78" height="14" fill="var(--ink)" opacity="0.8"/>
+            <rect x="78"  y="36" width="8"  height="14" fill="var(--ink-3)" opacity="0.5"/>
+            <rect x="86"  y="36" width="5"  height="14" fill="var(--ink-3)" opacity="0.5"/>
+            <text x="96"  y="47" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--ink-2)">55 min</text>
+            <text x="0"   y="33" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--ink-3)" letter-spacing="0.1em">HERS</text>
+          </svg>
+        </div>
+      </article>
+
+      <!-- Notes -->
+      <article class="also-item">
+        <div>
+          <div class="num">§ 06 · Notes · Ongoing</div>
+          <h4><em>Notes.</em></h4>
+          <p class="s">Shorter pieces. Methodology, dead ends, things that aren't ready to be papers.</p>
+          <p class="d i-line">
+            The spatial-join nightmare. What "area-weighted" secretly means. The afternoon I rewrote the name-normalizer for the fourteenth time. <u>The stuff I wish someone had told me before I started.</u> Published as I write them.
+          </p>
+          <p class="links">
+            <a href="notes/">All notes &rarr;</a>
+            <a href="https://github.com/Camilleelot">GitHub</a>
+          </p>
+        </div>
+        <div class="spark-box">
+          <div class="stat-n">14×</div>
+          <div class="stat-l">Times I rewrote<br/>the name-normalizer</div>
+          <svg viewBox="0 0 140 54" width="140" height="54" aria-label="Count sparkline">
+            <!-- 14 dots climbing -->
+            <g fill="var(--accent)">
+              <circle cx="6"   cy="46" r="1.8"/><circle cx="16" cy="44" r="1.8"/>
+              <circle cx="26"  cy="42" r="1.8"/><circle cx="36" cy="40" r="1.8"/>
+              <circle cx="46"  cy="36" r="1.8"/><circle cx="56" cy="34" r="1.8"/>
+              <circle cx="66"  cy="30" r="1.8"/><circle cx="76" cy="28" r="1.8"/>
+              <circle cx="86"  cy="24" r="1.8"/><circle cx="96" cy="22" r="1.8"/>
+              <circle cx="106" cy="18" r="1.8"/><circle cx="116" cy="14" r="1.8"/>
+              <circle cx="126" cy="10" r="1.8"/><circle cx="136" cy="8"  r="2.4"/>
+            </g>
+            <text x="0" y="5" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--ink-3)" letter-spacing="0.1em">V1 → V14</text>
+          </svg>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ─── IN THE WORKS ─── -->
+  <section id="in-the-works">
+    <h2 class="section"><span>In the works</span><span class="num">§ 07</span></h2>
+    <div class="itw">
+      <div class="tag"><span class="blink"></span>Writing now</div>
+      <div>
+        <h4>The <em>Quiet Politics</em> of City-Building, coda section.</h4>
+        <p>Three readings of the Green Line finding. The piece is drafted; the ending is what I'm on now.</p>
+      </div>
+      <a class="go" href="transit-voting.html">Read the draft →</a>
+    </div>
+  </section>
+
+  <!-- ─── CREDENTIALS ─── -->
+  <section id="about">
+    <h2 class="section"><span>Tools, interests, languages, and how I got here</span><span class="num">§ 08</span></h2>
+    <div class="creds">
+      <div class="col">
+        <h5>Tools</h5>
+        <ul>
+          <li><span class="pri">Python</span> <em>(pandas, numpy, scikit-learn)</em></li>
+          <li><span class="pri">SQL</span> <em>(fluent)</em></li>
+          <li><span class="pri">D3.js</span> <em>(interactive viz)</em></li>
+          <li><span class="pri">Power BI</span> <em>(dashboards)</em></li>
+          <li><span class="pri">Excel (advanced)</span></li>
+          <li><span class="pri">HTML / CSS</span> <em>(this site, hand-written)</em></li>
+          <li><span class="pri">Workflow automation</span></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h5>Interests</h5>
+        <ul>
+          <li><span class="pri">Urban &amp; housing policy</span></li>
+          <li><span class="pri">Electoral &amp; political behaviour</span></li>
+          <li><span class="pri">Workforce / HR analytics</span></li>
+          <li><span class="pri">Causal inference &amp; time series</span></li>
+          <li><span class="pri">Methods borrowed across fields</span></li>
+          <li><span class="pri">Political theory</span> <em>(Tocqueville to Brown)</em></li>
+          <li><span class="pri">Psychology of decision-making</span></li>
+          <li><span class="pri">Long-form essay writing</span></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h5>Languages</h5>
+        <ul>
+          <li><span class="pri">English</span> <em>(fluent)</em></li>
+          <li><span class="pri">Russian</span> <em>(fluent, bilingual)</em></li>
+          <li><span class="pri">French</span> <em>(working on it, casually)</em></li>
+          <li><span class="pri">SQL</span> <em>(fluent)</em></li>
+          <li><span class="pri">Python</span> <em>(daily)</em></li>
+          <li><span class="pri">Markdown / LaTeX</span></li>
+        </ul>
+      </div>
+      <div class="col edu">
+        <h5>How I got here</h5>
+        <ul>
+          <li>
+            <span class="yr">2026</span>
+            <span class="pri">B.A. Political Science (Psychology minor)</span><br/>
+            <em>Athabasca University. Finished while working full-time.</em>
+          </li>
+          <li>
+            <span class="yr">May 2025 — Dec 2025</span>
+            <span class="pri">Operations Administrator</span><br/>
+            <em>Closer to Home Community Services. Built dashboards; cut manual processing 40%; led 103-standard Imagine Canada accreditation.</em>
+          </li>
+          <li>
+            <span class="yr">2024 — 2025</span>
+            <span class="pri">Content Evaluation Specialist</span><br/>
+            <em>Outlier (remote). AI output review, top-quality rating.</em>
+          </li>
+          <li>
+            <span class="yr">Ongoing</span>
+            <span class="pri">Independent research</span><br/>
+            <em>Published on camilleelot.github.io. Engaged University of Calgary faculty on the rezoning analysis.</em>
+          </li>
+          <li>
+            <span class="yr">Pre-2023</span>
+            <span class="pri">A lot of debate. A lot of 5-man flex queue.</span><br/>
+            <em>Semi-reading my way through political theory. Arguing about all of it. The pre-requisites nobody lists.</em>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ─── -->
+  <section class="contact">
+    <div class="pitch">
+      <h3>Want to <u>chat?</u></h3>
+      <p>
+        Email me. About the work, about something you're reading, about a project you're stuck on, about whether some piece of this resonates. I genuinely like hearing from people.
+      </p>
+      <p class="signed">,&nbsp;Camille</p>
+    </div>
+    <aside class="lead-card">
+      <div class="t">Hi&thinsp;:)</div>
+      <h4>Email me <em>for a chat.</em></h4>
+      <p>I read everything. I write back when I can.</p>
+      <a class="email" href="/cdn-cgi/l/email-protection#80e3e1ede9ecece5edeff2e5e1f5b2b0b0b2c0e7ede1e9ecaee3efed">
+        <span class="__cf_email__" data-cfemail="4122202c282d2d242c2e332420347371717301262c20282d6f222e2c">[email&#160;protected]</span>
+      </a>
+    </aside>
+  </section>
+
+  <footer class="end">
+    <div>&copy; 2026 Camille Moreau · Calgary, AB</div>
+    <div>v4 · last updated April 2026</div>
+  </footer>
+
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
