@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,21 +7,27 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="tweak-loader.js" defer></script>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" src="d-tweaks.jsx" data-presets="react"></script>
+<script>
+  // Honour a saved theme preference: this is the dark index, so bounce to the
+  // light index when the visitor previously chose light. Runs before paint.
+  (function () {
+    try {
+      if (localStorage.getItem('theme') === 'light') {
+        location.replace('index.html');
+      }
+    } catch (e) {}
+  })();
+</script>
 <style>
   :root {
-    --bg: var(--tw-bg, #f6f2ea);
-    --paper: var(--tw-paper, #fcf8ee);
-    --ink: var(--tw-ink, #1a1814);
-    --ink-2: var(--tw-ink2, #3a342a);
-    --ink-3: var(--tw-ink3, #7a7368);
-    --rule: var(--tw-rule, #d4c9b0);
-    --rule-soft: var(--tw-rule-soft, #e4dbc5);
-    --accent: var(--tw-accent, #8a1f11);
+    --bg: var(--tw-bg, #17140f);
+    --paper: var(--tw-paper, #1f1b14);
+    --ink: var(--tw-ink, #f2ece0);
+    --ink-2: var(--tw-ink2, #bfb5a3);
+    --ink-3: var(--tw-ink3, #7a7265);
+    --rule: var(--tw-rule, #3a342a);
+    --rule-soft: var(--tw-rule-soft, #2a2620);
+    --accent: var(--tw-accent, #e48a6a);
     --accent-soft: var(--tw-accent-soft, #b4564b);
     --serif: var(--tw-serif, "EB Garamond", "Iowan Old Style", Palatino, Georgia, serif);
     --display: var(--tw-display, "Fraunces", "EB Garamond", Georgia, serif);
@@ -65,6 +71,9 @@
   }
   nav.top a { border: none; margin-left: 28px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2); }
   nav.top a:hover { color: var(--accent); }
+  nav.top a.theme-toggle { border: 1px solid var(--rule); padding: 4px 10px; color: var(--ink); }
+  nav.top a.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  nav.top a.theme-toggle .ico { margin-right: 6px; }
 
   /* ── MASTHEAD ── */
   .masthead { margin-bottom: 72px; display: grid; grid-template-columns: 1fr 300px; gap: 56px; align-items: end; }
@@ -311,7 +320,7 @@
   .lead-card p { font-size: 15px; color: var(--ink-2); margin: 0 0 16px; line-height: 1.5; }
   .lead-card a.email {
     display: block; font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em;
-    color: var(--ink); border: 1px solid var(--ink); padding: 12px 16px;
+    color: var(--ink); border: 1px solid var(--rule); padding: 12px 16px;
     text-align: center; background: transparent; transition: all .15s;
   }
   .lead-card a.email:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
@@ -344,8 +353,9 @@
       <a href="#work">Work</a>
       <a href="#in-the-works">In the works</a>
       <a href="#about">About</a>
-      <a href="/cdn-cgi/l/email-protection#accfcdc1c5c0c0c9c1c3dec9cdd99e9c9c9eeccbc1cdc5c082cfc3c1">Email</a>
+      <a href="/cdn-cgi/l/email-protection#0764666a6e6b6b626a68756266723537373547606a666e6b2964686a">Email</a>
       <a href="https://github.com/Camilleelot">GitHub</a>
+      <a href="index.html" id="theme-toggle" class="theme-toggle" aria-label="Switch to light theme"><span class="ico" aria-hidden="true">&#9788;</span>Light</a>
     </nav>
   </header>
 
@@ -362,7 +372,7 @@
       <div class="name">Camille Moreau</div>
       <div>Calgary, AB &middot; Bilingual EN&thinsp;/&thinsp;RU.<br/>Open to research, analysis, and writing roles.</div>
       <div class="status"><span class="dot"></span>Open to roles &middot; Spring 2026</div>
-      <div class="ct"><a href="/cdn-cgi/l/email-protection#3053515d595c5c555d5f425551450200000270575d51595c1e535f5d"><span class="__cf_email__" data-cfemail="d5b6b4b8bcb9b9b0b8baa7b0b4a0e7e5e5e795b2b8b4bcb9fbb6bab8">[email&#160;protected]</span></a></div>
+      <div class="ct"><a href="/cdn-cgi/l/email-protection#bcdfddd1d5d0d0d9d1d3ced9ddc98e8c8c8efcdbd1ddd5d092dfd3d1"><span class="__cf_email__" data-cfemail="442725292d282821292b3621253176747476042329252d286a272b29">[email&#160;protected]</span></a></div>
       <div class="ct" style="margin-top:6px"><a href="tel:+14037142079">403&middot;714&middot;2079</a></div>
     </aside>
   </section>
@@ -796,8 +806,8 @@
       <div class="t">Hi&thinsp;:)</div>
       <h4>Email me <em>for a chat.</em></h4>
       <p>I read everything. I write back when I can.</p>
-      <a class="email" href="/cdn-cgi/l/email-protection#c4a7a5a9ada8a8a1a9abb6a1a5b1f6f4f4f684a3a9a5ada8eaa7aba9">
-        <span class="__cf_email__" data-cfemail="3c5f5d515550505951534e595d490e0c0c0e7c5b515d5550125f5351">[email&#160;protected]</span>
+      <a class="email" href="/cdn-cgi/l/email-protection#80e3e1ede9ecece5edeff2e5e1f5b2b0b0b2c0e7ede1e9ecaee3efed">
+        <span class="__cf_email__" data-cfemail="4122202c282d2d242c2e332420347371717301262c20282d6f222e2c">[email&#160;protected]</span>
       </a>
     </aside>
   </section>
@@ -808,5 +818,16 @@
   </footer>
 
 </div>
+<script>
+  // Remember the visitor's choice so the theme sticks across pages and visits.
+  (function () {
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        try { localStorage.setItem('theme', 'light'); } catch (e) {}
+      });
+    }
+  })();
+</script>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
 </html>
