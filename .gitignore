@@ -1,14 +1,16 @@
-.vs/Camilleelot.github.io/FileContentIndex/72165cc1-22cf-4e8e-8456-7cfb6dfe3a4c.vsidx
-.vs/Camilleelot.github.io/FileContentIndex/74d7c72f-0b3f-4efd-8a2a-4b369b1ad8f7.vsidx
-.vs/Camilleelot.github.io/FileContentIndex/8d100f20-eddb-436c-b8f7-46ae8ce2171c.vsidx
-.vs/Camilleelot.github.io/v17/.wsuo
-.vs/Camilleelot.github.io/v17/DocumentLayout.json
-.vs/slnx.sqlite
-.vs/Camilleelot.github.io/FileContentIndex/72165cc1-22cf-4e8e-8456-7cfb6dfe3a4c.vsidx
-.vs/Camilleelot.github.io/v17/.wsuo
-.vs/Camilleelot.github.io/v17/DocumentLayout.json
-.vs/slnx.sqlite
-.vs/slnx.sqlite
-.vs/Camilleelot.github.io/v17/DocumentLayout.json
-.vs/Camilleelot.github.io/v17/.wsuo
-/.vs/Camilleelot.github.io
+# Dependencies (regenerate with `npm install`)
+node_modules/
+
+# Editor / IDE state
+.vs/
+.vscode/
+.idea/
+
+# Python / Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# OS cruft
+.DS_Store
+Thumbs.db

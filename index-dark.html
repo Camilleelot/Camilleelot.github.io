@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,69 +7,30 @@
 <meta name="description" content="Camille Moreau — independent policy and data researcher in Calgary. Econometric and time-series analysis of Canadian housing, rezoning, transit, and workforce data.">
 <meta name="author" content="Camille Moreau">
 <link rel="canonical" href="https://camilleelot.github.io/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Camille's Lot">
-<meta property="og:title" content="Camille Moreau — Policy &amp; Data Research">
-<meta property="og:description" content="Independent policy and data researcher in Calgary. Econometric and time-series analysis of Canadian housing, rezoning, transit, and workforce data.">
-<meta property="og:url" content="https://camilleelot.github.io/">
-<meta name="twitter:card" content="summary">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Person",
-      "@id": "https://camilleelot.github.io/#camille",
-      "name": "Camille Moreau",
-      "url": "https://camilleelot.github.io/",
-      "jobTitle": "Policy & Data Researcher",
-      "email": "mailto:camillemoreau2002@gmail.com",
-      "address": { "@type": "PostalAddress", "addressLocality": "Calgary", "addressRegion": "AB", "addressCountry": "CA" },
-      "knowsAbout": [
-        "Housing policy",
-        "Urban planning",
-        "Calgary blanket rezoning",
-        "Interrupted time series analysis",
-        "Electoral and political behaviour",
-        "Workforce and HR analytics",
-        "Causal inference"
-      ],
-      "sameAs": [ "https://github.com/Camilleelot" ]
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://camilleelot.github.io/#website",
-      "name": "Camille's Lot",
-      "url": "https://camilleelot.github.io/",
-      "author": { "@id": "https://camilleelot.github.io/#camille" }
-    }
-  ]
-}
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>
-  // Honour a saved theme preference: this is the light index, so bounce to the
-  // dark index when the visitor previously chose dark. Runs before paint.
+  // Honour a saved theme preference: this is the dark index, so bounce to the
+  // light index when the visitor previously chose light. Runs before paint.
   (function () {
     try {
-      if (localStorage.getItem('theme') === 'dark') {
-        location.replace('index-dark.html');
+      if (localStorage.getItem('theme') === 'light') {
+        location.replace('index.html');
       }
     } catch (e) {}
   })();
 </script>
 <style>
   :root {
-    --bg: var(--tw-bg, #f6f2ea);
-    --paper: var(--tw-paper, #fcf8ee);
-    --ink: var(--tw-ink, #1a1814);
-    --ink-2: var(--tw-ink2, #3a342a);
-    --ink-3: var(--tw-ink3, #7a7368);
-    --rule: var(--tw-rule, #d4c9b0);
-    --rule-soft: var(--tw-rule-soft, #e4dbc5);
-    --accent: var(--tw-accent, #8a1f11);
+    --bg: var(--tw-bg, #17140f);
+    --paper: var(--tw-paper, #1f1b14);
+    --ink: var(--tw-ink, #f2ece0);
+    --ink-2: var(--tw-ink2, #bfb5a3);
+    --ink-3: var(--tw-ink3, #7a7265);
+    --rule: var(--tw-rule, #3a342a);
+    --rule-soft: var(--tw-rule-soft, #2a2620);
+    --accent: var(--tw-accent, #e48a6a);
     --accent-soft: var(--tw-accent-soft, #b4564b);
     --serif: var(--tw-serif, "EB Garamond", "Iowan Old Style", Palatino, Georgia, serif);
     --display: var(--tw-display, "Fraunces", "EB Garamond", Georgia, serif);
@@ -362,7 +323,7 @@
   .lead-card p { font-size: 15px; color: var(--ink-2); margin: 0 0 16px; line-height: 1.5; }
   .lead-card a.email {
     display: block; font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em;
-    color: var(--ink); border: 1px solid var(--ink); padding: 12px 16px;
+    color: var(--ink); border: 1px solid var(--rule); padding: 12px 16px;
     text-align: center; background: transparent; transition: all .15s;
   }
   .lead-card a.email:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
@@ -397,7 +358,7 @@
       <a href="#about">About</a>
       <a href="mailto:camillemoreau2002@gmail.com">Email</a>
       <a href="https://github.com/Camilleelot">GitHub</a>
-      <a href="index-dark.html" id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme"><span class="ico" aria-hidden="true">&#9789;</span>Dark</a>
+      <a href="index.html" id="theme-toggle" class="theme-toggle" aria-label="Switch to light theme"><span class="ico" aria-hidden="true">&#9788;</span>Light</a>
     </nav>
   </header>
 
@@ -864,7 +825,7 @@
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
       toggle.addEventListener('click', function () {
-        try { localStorage.setItem('theme', 'dark'); } catch (e) {}
+        try { localStorage.setItem('theme', 'light'); } catch (e) {}
       });
     }
   })();

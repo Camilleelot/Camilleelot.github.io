@@ -1,29 +1,14 @@
 {
-  "name": "tufte-css",
-  "version": "1.8.0",
-  "description": "Tufte CSS provides tools to style web articles using the ideas demonstrated by Edward Tufte’s books and handouts. Edward Tufte uses a distinctive style in his handouts: simple, with well-set typography, extensive sidenotes, and tight integration of graphics and charts.",
+  "name": "camilleelot.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Camille Moreau's personal site and policy/data portfolio. Typography built on vendored Tufte CSS.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/edwardtufte/tufte-css.git"
+    "url": "git+https://github.com/Camilleelot/Camilleelot.github.io.git"
   },
-  "keywords": [
-    "tufte",
-    "css",
-    "HTML",
-    "typography",
-    "sidenotes"
-  ],
-  "author": "Dave Liepmann",
+  "homepage": "https://camilleelot.github.io",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/edwardtufte/tufte-css/issues"
-  },
-  "homepage": "https://edwardtufte.github.io/tufte-css/",
-  "files": [
-    "tufte.css",
-    "tufte.min.css",
-    "et-book/"
-  ],
   "devDependencies": {
     "eslint": "^9.24.0"
   }
