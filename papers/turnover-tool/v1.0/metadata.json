@@ -1,0 +1,36 @@
+{
+  "title": "NGO Turnover Analysis Tool",
+  "subtitle": "Transforming temporal distributions into actionable governance insights",
+  "version": "1.0",
+  "author": {
+    "name": "Camille Moreau",
+    "email": "camillemoreau2002@gmail.com",
+    "affiliation": "Independent policy & data researcher"
+  },
+  "dates": {
+    "published": "2025-06-01",
+    "last_updated": "2026-07-03"
+  },
+  "abstract": "A Python/Streamlit application for nonprofit HR managers who have never written code. Upload Excel, receive tenure-window turnover analysis, Sankey flow diagrams, and cost estimates (C ≈ 0.8S per SHRM methodology). Categorizes each termination into six temporal windows and surfaces cohort retention patterns that scalar turnover rates obscure.",
+  "keywords": [
+    "workforce analytics",
+    "HR analytics",
+    "nonprofit",
+    "turnover",
+    "retention",
+    "Streamlit",
+    "Python",
+    "governance"
+  ],
+  "research_type": "Applied Tool",
+  "methodology": "Cohort retention analysis, Sankey flow visualization, predictive risk flagging",
+  "data_sources": [
+    "Organization HR export (Excel/CSV)",
+    "SHRM turnover cost methodology"
+  ],
+  "identifier": "camille-2025-turnover-tool-v1.0",
+  "deployment": {
+    "web": "https://hrturnoveranalysis.streamlit.app/",
+    "source": "https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis"
+  }
+}
