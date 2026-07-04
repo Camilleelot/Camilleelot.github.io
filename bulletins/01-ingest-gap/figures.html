@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>The Ingest Gap — figure workbench</title>
+    <meta name="robots" content="noindex, nofollow"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../tufte.css"/>
+    <style>
+        .fignum { font-variant: small-caps; letter-spacing: 0.03em; }
+        .todo { color: #8a5a00; font-size: 0.9rem; }
+        figcaption { max-width: 26rem; }
+    </style>
+</head>
+
+<body>
+    <article>
+        <h1>The Ingest Gap — figures</h1>
+        <p class="subtitle">Figure workbench · d3 · shared with <a href="index.html">the brief</a> via <code>figures.js</code></p>
+
+        <section>
+            <h2>Figure 1 · Two corpora, one question</h2>
+            <figure class="fullwidth">
+                <div id="fig-gap"></div>
+                <figcaption><span class="fignum">Figure 1.</span> The Canadian published record on small-UAS cold-weather operations (above) against the Russian- and Ukrainian-language frontline corpus (below), 2012–2026. Every Canadian item answers <em>when a small drone should not fly</em>; everything on the lower track answers <em>how a small drone flies anyway</em>. Lower-track dates from the author's source archive; stage spans approximate.</figcaption>
+            </figure>
+        </section>
+
+        <section>
+            <h2>Figure 2 · Capacity in the cold <span class="todo">(awaiting transcription)</span></h2>
+            <figure>
+                <div id="fig-discharge"></div>
+                <figcaption><span class="fignum">Figure 2.</span> Useful battery capacity by ambient temperature, redrawn by the author from an FPV training-school curriculum deck (2023; single source). Below −15&thinsp;°C the same material warns that brushless motors may fail to start, with time and charge consumed in self-heating.</figcaption>
+            </figure>
+            <p class="todo">TODO (Camille): transcribe the curve values from the slide into <code>DISCHARGE_DATA</code> in <code>figures.js</code> — one array per plotted temperature series, or one capacity-vs-temperature series if the slide reduces to that. The figure renders its frame, the −15&thinsp;°C threshold, and the −20&thinsp;°C ≈ 30% anchor now; curves appear when data exists. Nothing here is invented.</p>
+        </section>
+
+        <section>
+            <h2>Figure 3 · Non-consolidated doctrine</h2>
+            <figure>
+                <div id="fig-reserve"></div>
+                <figcaption><span class="fignum">Figure 3.</span> Minimum landing reserve in Russian operator-facing winter doctrine. The sources do not agree — the 2023 training deck demands twice the reserve of the 2026 operator guide — and the disagreement is itself a finding: the doctrine is not yet consolidated. A Canadian equivalent should specify the number, not inherit the spread.</figcaption>
+            </figure>
+        </section>
+    </article>
+
+    <script src="../../d3.v7.min.js"></script>
+    <script src="figures.js"></script>
+</body>
+</html>
