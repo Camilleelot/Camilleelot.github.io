@@ -27,12 +27,12 @@
         </section>
 
         <section>
-            <h2>Figure 2 · Capacity in the cold <span class="todo">(awaiting transcription)</span></h2>
+            <h2>Figure 2 · Capacity in the cold</h2>
             <figure>
                 <div id="fig-discharge"></div>
-                <figcaption><span class="fignum">Figure 2.</span> Useful battery capacity by ambient temperature, redrawn by the author from an FPV training-school curriculum deck (2023; single source). Below −15&thinsp;°C the same material warns that brushless motors may fail to start, with time and charge consumed in self-heating.</figcaption>
+                <figcaption><span class="fignum">Figure 2.</span> Useful battery capacity by ambient temperature: the author's reading of the discharge-curve family in an FPV training-school curriculum deck (2023; single source — the chart appears to be reproduced from a generic lithium-cell datasheet). Each point is the capacity delivered to the 3.0&thinsp;V/cell cutoff at that temperature, as a share of the +45&thinsp;°C curve. Below −15&thinsp;°C the same deck warns that brushless motors may fail to start, with time and charge consumed in self-heating.</figcaption>
             </figure>
-            <p class="todo">TODO (Camille): transcribe the curve values from the slide into <code>DISCHARGE_DATA</code> in <code>figures.js</code> — one array per plotted temperature series, or one capacity-vs-temperature series if the slide reduces to that. The figure renders its frame, the −15&thinsp;°C threshold, and the −20&thinsp;°C ≈ 30% anchor now; curves appear when data exists. Nothing here is invented.</p>
+            <p class="todo">Transcribed July 6, 2026 from the deck slide (eyeball reading, normalized to the +45&thinsp;°C curve ≈ 2000&thinsp;mAh). Before publication: verify the five values in <code>DISCHARGE_DATA</code> in <code>figures.js</code> against the slide pixels, and confirm the rated-capacity baseline.</p>
         </section>
 
         <section>

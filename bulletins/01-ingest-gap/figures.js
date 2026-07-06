@@ -116,10 +116,15 @@ const STAGES = [
    figure shows frame + verified anchors + "awaiting transcription".
 ---------------------------------------------------------------- */
 const DISCHARGE_DATA = [
-  // { name: "-20°C series", pts: [{t:.., c:..}, ...] },
+  // Author's eyeball transcription (July 6, 2026) of the deck's
+  // voltage-vs-capacity curve family, read at the 3.0 V cutoff and
+  // normalized to the +45°C curve (~2000 mAh ≈ rated).
+  // VERIFY against the slide pixels before publication.
+  { name: "deck curves, % of rated (author's reading)",
+    pts: [{t: -20, c: 54}, {t: -10, c: 82}, {t: 0, c: 95}, {t: 23, c: 97}, {t: 45, c: 100}] }
 ];
 const VERIFIED_ANCHORS = [
-  {t: -20, c: 30, label: "≈30% of rated at −20°C (deck, 2023)"}
+  {t: -20, c: 54, label: "≈54% of rated at −20°C (deck curves, 2023)"}
 ];
 
 (function fig2(){
@@ -169,8 +174,13 @@ const VERIFIED_ANCHORS = [
     DISCHARGE_DATA.forEach(s => {
       svg.append("path").attr("d", line(s.pts)).attr("fill", "none")
         .attr("stroke", COLD).attr("stroke-width", 1.6);
+      svg.selectAll(null).data(s.pts).join("circle")
+        .attr("cx", p => x(p.t)).attr("cy", p => y(p.c)).attr("r", 2.5)
+        .attr("fill", COLD);
       const last = s.pts[s.pts.length - 1];
-      svg.append("text").attr("x", x(last.t) + 6).attr("y", y(last.c) + 4)
+      // series ends at the right edge, so the label anchors end, below the curve
+      svg.append("text").attr("x", x(last.t)).attr("y", y(last.c) + 16)
+        .attr("text-anchor", "end")
         .attr("fill", "#2c536b").style("font-size", "10px").text(s.name);
     });
   }
