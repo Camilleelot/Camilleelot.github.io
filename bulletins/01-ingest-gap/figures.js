@@ -19,16 +19,24 @@ const CAN = [
   {d: 2025.2, label: "SOR/2025-70 · TP 15263E rev."}
 ];
 const RU = [ // {d, s: stage 1|2|3, label (optional, only majors get text)}
+  // dates marked "verified" are pinned by t.me embed pages (July 5, 2026);
+  // the rest remain approximate pending URL recovery
   {d: 2022.85, s: 1}, {d: 2022.95, s: 1, label: "improvisation: salo, bottles, hand-warmers"},
-  {d: 2023.05, s: 1}, {d: 2023.1, s: 1}, {d: 2023.2, s: 1},
+  {d: 2023.05, s: 1}, // verified: dva_majors/7931 trench candle, Jan 17 2023
+  {d: 2023.1, s: 1}, {d: 2023.2, s: 1},
   {d: 2023.45, s: 2, label: "FPV school winter deck · 22-item kit"},
-  {d: 2023.6, s: 2}, {d: 2023.75, s: 2}, {d: 2023.9, s: 2, label: "AERO LIGHT · АНТИЛЕД · B-7000"},
+  {d: 2023.6, s: 2},
+  {d: 2023.65, s: 2}, // verified: dronnitsa/284 battery org checklist, Aug 26 2023
+  {d: 2023.75, s: 2}, {d: 2023.9, s: 2, label: "AERO LIGHT · АНТИЛЕД · B-7000"},
   {d: 2023.95, s: 1}, {d: 2024.0, s: 1}, {d: 2024.1, s: 2}, {d: 2024.2, s: 2},
   {d: 2024.5, s: 3}, {d: 2024.8, s: 2}, {d: 2024.9, s: 2},
   {d: 2025.0, s: 2}, {d: 2025.17, s: 3, label: "Geran-2 «Зима» kit in production"},
   {d: 2025.4, s: 3}, {d: 2025.85, s: 2}, {d: 2025.95, s: 2},
   {d: 2026.0, s: 2, label: "mil_hub battery protocol · TO-1(2) framing"},
-  {d: 2026.05, s: 2}, {d: 2026.1, s: 2}, {d: 2026.15, s: 2}
+  {d: 2026.05, s: 2},
+  {d: 2026.07, s: 1}, // verified: Ratnik2nd/6222 northern-latitudes post, Jan 24 2026
+  {d: 2026.1, s: 2}, {d: 2026.15, s: 2},
+  {d: 2026.28, s: 2}  // verified: getyourdrone/468 battery behaviour, Apr 13 2026
 ];
 const STAGES = [
   {a: 2022.8, b: 2023.6, t: "1 · improvisation"},
