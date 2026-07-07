@@ -5,6 +5,38 @@ current `draft-*.md`; this file carries what changed between versions.
 
 ## v1.0-rc — July 6, 2026
 
+Second pass (editor's notes):
+
+- Em dashes purged throughout; prose de-cringed; first person adopted where
+  the author speaks ("translations are mine," "my reading of the deck's
+  curves").
+- §1/§4: explicit civil-vs-military framing added. The CARs bind civil
+  operators; the CAF flies under DND airworthiness and flying orders; the
+  objection sharpens the gap because the military layer that would supersede
+  the civil rule is exactly what the published record lacks.
+- Figure 1 now states its argument in-figure: per-track headers with bold
+  item counts and the question each track answers.
+- Figure captions moved to the right margin beside their figures (marginnote
+  markup; the old markup put the caption after the content, which floated it
+  below). Figure 1's caption rides the margin beside the following paragraph.
+- Figure 2 reframed as an approximate reproduction of the deck's slide by
+  design; pixel-verification gate dropped.
+- In-app year-check gate dropped; the two 2026 dates stand on the Telegram
+  current-year embed inference.
+- Patch-board insignia identified in the caption, read directly from the
+  patches, with the photo dated late 2023; §3c names the spread of
+  formations in prose.
+- On-page register simplified to Source and Type, links removed, statuses
+  removed; screenshot-archive rows say so. Verification detail stays in the
+  draft's working register.
+- Canadian baseline documents linked in the draft for the annotation pass
+  (CAR 901.35, TP 15263E PDF, TR 2013-142, NRC Phase 2 DOI; all verified
+  live).
+- Release gates reduced to two: the deck-school confirmation and the
+  read-aloud pass.
+
+First pass:
+
 - MINDS recommendation (§5) aligned to the named 2025–26 Defence Policy
   Challenges: "Canada Strong — in the Arctic, the North, and North America"
   and the Ukraine-lessons research question under the strategic-competition

@@ -23,19 +23,24 @@ Photographs live in the site-level `/img/` (Cropped Bench.jpg, Patches
 Board.jpg — EXIF-clean, no identifiable persons, per the brief's §3d rules).
 `d3.v7.min.js` is vendored at the site root.
 
-## Release gates (v1.0-rc → v1.0) — all Camille's
+## Release gates (v1.0-rc → v1.0) — both Camille's
 
-1. Pixel-verify the five `DISCHARGE_DATA` values in `figures.js` against the
-   deck slide (and the rated-capacity baseline), then remove the transcription
-   caveats from both pages.
-2. Confirm in the Telegram app that Ratnik2nd/6222 and getyourdrone/468 are
-   2026 posts; remove the register caveats.
-3. Resolve or accept the «Соколы Хоруса»-vs-deck-school identity flag.
-4. Read-aloud pass — substantial passages are assistant-drafted and need to
-   come out in Camille's voice.
+1. Confirm the 2023 curriculum deck belongs to «Соколы Хоруса» (the patch
+   board already carries the school's own operator patch, so the photos are
+   anchored; only the deck's attribution is open).
+2. Read-aloud pass in Camille's voice.
+
+Decisions on record (July 6, 2026): Figure 2 is an approximate reproduction
+of the deck's slide by design, no pixel verification pass; the two 2026 post
+dates stand on the Telegram current-year embed inference, no in-app check;
+no em dashes anywhere; first person allowed; the on-page register is
+simplified to Source and Type (verification detail stays in the draft);
+patch-board insignia are identified in the caption, read directly from the
+patches; §1/§4 now state explicitly that the CARs are civil rules and why
+they still set the Canadian baseline.
 
 Then: bump header/footer to v1.0, rename the draft file, update links here
-and in `index.html`. Everything else is closed — details in `changelog.md`.
+and in `index.html`. Details in `changelog.md`.
 
 Figure numbering note: figures are numbered in reading order of the brief —
 1 = two-corpora timeline (§3a), 2 = discharge scaffold (§3b), 3 = landing-reserve

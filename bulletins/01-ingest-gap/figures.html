@@ -2,44 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>The Ingest Gap — figure workbench</title>
+    <title>The Ingest Gap - figure workbench</title>
     <meta name="robots" content="noindex, nofollow"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../tufte.css"/>
     <style>
         .fignum { font-variant: small-caps; letter-spacing: 0.03em; }
-        .todo { color: #8a5a00; font-size: 0.9rem; }
-        figcaption { max-width: 26rem; }
+        .note { color: #8a5a00; font-size: 0.9rem; }
     </style>
 </head>
 
 <body>
     <article>
-        <h1>The Ingest Gap — figures</h1>
+        <h1>The Ingest Gap: figures</h1>
         <p class="subtitle">Figure workbench · d3 · shared with <a href="index.html">the brief</a> via <code>figures.js</code></p>
 
         <section>
             <h2>Figure 1 · Two corpora, one question</h2>
             <figure class="fullwidth">
                 <div id="fig-gap"></div>
-                <figcaption><span class="fignum">Figure 1.</span> The Canadian published record on small-UAS cold-weather operations (above) against the Russian- and Ukrainian-language frontline corpus (below), 2012–2026. Every Canadian item answers <em>when a small drone should not fly</em>; everything on the lower track answers <em>how a small drone flies anyway</em>. Lower-track dates from the author's source archive; stage spans approximate.</figcaption>
             </figure>
+            <p><label for="mn-fig1" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-fig1" class="margin-toggle"/><span class="marginnote"><span class="fignum">Figure 1.</span> The Canadian published record on small-UAS cold-weather operations (above) against the Russian- and Ukrainian-language frontline corpus (below), 2012–2026. Every Canadian item answers <em>when a small drone should not fly</em>; everything on the lower track answers <em>how a small drone flies anyway</em>. Lower-track dates from my source archive; stage spans approximate.</span>Theme-aware: the palette follows the viewer's light or dark scheme and re-renders on change. Hover any mark for its source.</p>
         </section>
 
         <section>
             <h2>Figure 2 · Capacity in the cold</h2>
             <figure>
+                <label for="mn-fig2" class="margin-toggle">&#8853;</label>
+                <input type="checkbox" id="mn-fig2" class="margin-toggle"/>
+                <span class="marginnote"><span class="fignum">Figure 2.</span> Useful battery capacity by ambient temperature, redrawn from the discharge-curve family in the 2023 school deck (single source; the deck's chart itself looks like a generic lithium-cell datasheet figure). Each point is the capacity delivered to the 3.0&thinsp;V/cell cutoff at that temperature, as a share of the +45&thinsp;°C curve. Values are approximate by design: this reproduces the slide, it does not re-measure it. Below −15&thinsp;°C the same deck warns that brushless motors may fail to start.</span>
                 <div id="fig-discharge"></div>
-                <figcaption><span class="fignum">Figure 2.</span> Useful battery capacity by ambient temperature: the author's reading of the discharge-curve family in an FPV training-school curriculum deck (2023; single source — the chart appears to be reproduced from a generic lithium-cell datasheet). Each point is the capacity delivered to the 3.0&thinsp;V/cell cutoff at that temperature, as a share of the +45&thinsp;°C curve. Below −15&thinsp;°C the same deck warns that brushless motors may fail to start, with time and charge consumed in self-heating.</figcaption>
             </figure>
-            <p class="todo">Transcribed July 6, 2026 from the deck slide (eyeball reading, normalized to the +45&thinsp;°C curve ≈ 2000&thinsp;mAh). Before publication: verify the five values in <code>DISCHARGE_DATA</code> in <code>figures.js</code> against the slide pixels, and confirm the rated-capacity baseline.</p>
+            <p class="note">Data lives in <code>DISCHARGE_DATA</code> in <code>figures.js</code>, read from the slide at the 3.0&thinsp;V cutoff and normalized to the +45&thinsp;°C curve (≈2000&thinsp;mAh). Approximate by design.</p>
         </section>
 
         <section>
             <h2>Figure 3 · Non-consolidated doctrine</h2>
             <figure>
+                <label for="mn-fig3" class="margin-toggle">&#8853;</label>
+                <input type="checkbox" id="mn-fig3" class="margin-toggle"/>
+                <span class="marginnote"><span class="fignum">Figure 3.</span> Minimum landing reserve in Russian operator-facing winter doctrine. The sources do not agree: the 2023 training deck demands twice the reserve of the 2026 operator guide, and the disagreement is itself a finding. The doctrine is not yet consolidated; a Canadian equivalent should specify the number, not inherit the spread.</span>
                 <div id="fig-reserve"></div>
-                <figcaption><span class="fignum">Figure 3.</span> Minimum landing reserve in Russian operator-facing winter doctrine. The sources do not agree — the 2023 training deck demands twice the reserve of the 2026 operator guide — and the disagreement is itself a finding: the doctrine is not yet consolidated. A Canadian equivalent should specify the number, not inherit the spread.</figcaption>
             </figure>
         </section>
     </article>
