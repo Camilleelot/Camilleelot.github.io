@@ -71,11 +71,10 @@ const STAGES = [
 ];
 
 const DISCHARGE_DATA = [
-  // Author's eyeball transcription (July 6, 2026) of the deck's
-  // voltage-vs-capacity curve family, read at the 3.0 V cutoff and
-  // normalized to the +45°C curve (~2000 mAh ≈ rated).
-  // VERIFY against the slide pixels before publication.
-  { name: "capacity to 3.0 V cutoff, % of rated — author's reading",
+  // Approximate by design: this reproduces the deck's chart (read at the
+  // 3.0 V cutoff, normalized to the +45°C curve ≈ 2000 mAh); it does not
+  // re-measure it. The caption says so.
+  { name: "capacity to 3.0 V cutoff, % of rated (approximate)",
     pts: [{t: -20, c: 54}, {t: -10, c: 82}, {t: 0, c: 95}, {t: 23, c: 97}, {t: 45, c: 100}] }
 ];
 const VERIFIED_ANCHORS = [
@@ -108,15 +107,24 @@ function fig1(P) {
     .attr("stroke-dasharray", "2,3");
   svg.append("text").attr("x", x(2022.12)).attr("y", m.t - 10)
     .attr("text-anchor", "middle").attr("fill", P.secondary).style("font-size", "10.5px")
-    .style("font-style", "italic").text("Feb 2022 — the FPV revolution begins");
+    .style("font-style", "italic").text("Feb 2022: the FPV revolution begins");
 
-  // track labels, with the headline counts — the argument as a number
-  svg.append("text").attr("x", m.l).attr("y", yCAN - 38).attr("fill", P.ink)
-    .style("font-size", "12px").style("font-variant", "small-caps")
-    .text(`canadian published corpus — ${CAN.length} items in 14 years`);
-  svg.append("text").attr("x", m.l).attr("y", yRU + 4).attr("fill", P.accentText)
-    .style("font-size", "12px").style("font-variant", "small-caps")
-    .text(`russian / ukrainian frontline corpus — ${RU.length} items in 4 winters`);
+  // track headers: name, a bold count, and the question each track answers.
+  // The figure states its argument instead of leaving it to the caption.
+  const trackHead = (yy, fill, name, count, question) => {
+    const t = svg.append("text").attr("x", m.l).attr("y", yy).attr("fill", fill)
+      .style("font-size", "12.5px").style("font-variant", "small-caps");
+    t.append("tspan").text(name + "   ");
+    t.append("tspan").style("font-weight", "700").text(count);
+    svg.append("text").attr("x", m.l).attr("y", yy + 15).attr("fill", P.secondary)
+      .style("font-size", "10.5px").style("font-style", "italic").text(question);
+  };
+  trackHead(yCAN - 46, P.ink,
+    "canadian published corpus", `${CAN.length} items in 14 years`,
+    "everything on this track answers: when should a small drone not fly?");
+  trackHead(yRU + 6, P.accentText,
+    "russian / ukrainian frontline corpus", `${RU.length} items in 4 winters`,
+    "everything on this track answers: how does a small drone fly anyway?");
 
   // Canadian items: open circles with hairline drops to the axis,
   // so the emptiness between them is legible as time
@@ -128,7 +136,7 @@ function fig1(P) {
     .attr("cx", d => x(d.d)).attr("cy", yCAN).attr("r", 5)
     .attr("fill", P.surface).attr("stroke", P.ink).attr("stroke-width", 1.6)
     .each(function(d){ d3.select(this).append("title")
-      .text(`${d.label} — ${Math.floor(d.d)}`); });
+      .text(`${d.label} · ${Math.floor(d.d)}`); });
   svg.selectAll(".canl").data(CAN).join("text")
     .attr("x", d => x(d.d)).attr("y", (d, i) => yCAN + (i % 2 ? 24 : -16))
     .attr("text-anchor", "middle").attr("fill", P.secondary).style("font-size", "10.5px")
