@@ -24,11 +24,11 @@ Share that link directly with the people who should read it.
    values in `DISCHARGE_DATA` (`figures.js`) are an eyeball reading of the
    slide; verify against the pixels and the rated-capacity baseline before
    send. Note the v0.4 correction: −20°C ≈ 54% of rated, not ~30%.
-2. Recover remaining t.me/ URLs for the RU-language source register
-   (done July 5, 2026: dva_majors/7931, dronnitsa/284, Ratnik2nd/6222,
-   getyourdrone/468 — verified via t.me embed pages; still missing: the 2023
-   school deck, «Соколы Хоруса» posts, mil_hub, FPV_выZOV, Техник БПЛА,
-   notes_veterans).
+2. ~~Recover remaining t.me/ URLs~~ **Closed July 6, 2026** — the four
+   embed-verified links (dva_majors/7931, dronnitsa/284, Ratnik2nd/6222,
+   getyourdrone/468) are the complete recoverable set; all other RU-language
+   items are cited from the author's screenshot archive, and the register
+   says so per row.
 3. Resolve the Seto et al. DRDC accession number (footnote 1).
 4. Image pass — two cleared images now published from `/img/` (bench crop and
    patch board; EXIF verified clean, no identifiable persons, per the brief's
