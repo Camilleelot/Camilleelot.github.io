@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calgary Diorama — Transit, Voting & the Green Line Memorial</title>
+<style>
+  @font-face {
+    font-family: 'CamilleHand';
+    src: url('./myfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #2c2a25;
+    font-family: 'DM Mono', monospace;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .frame {
+    position: relative;
+    width: 94vw;
+    height: 90vh;
+    max-width: 1500px;
+    background: #eceae2;
+    border-radius: 4px;
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.4),
+      inset 0 0 0 12px #e2ddd4,
+      inset 0 0 0 14px #b8b0a0;
+    overflow: hidden;
+  }
+
+  .frame::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(180, 165, 140, 0.02) 3px, rgba(180, 165, 140, 0.02) 6px);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .tilt-shift-top, .tilt-shift-bottom {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    z-index: 8;
+    pointer-events: none;
+  }
+
+  .tilt-shift-top {
+    top: 14px;
+    height: 12%;
+    background: linear-gradient(to bottom, rgba(244, 239, 230, 0.5) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .tilt-shift-bottom {
+    bottom: 14px;
+    height: 12%;
+    background: linear-gradient(to top, rgba(244, 239, 230, 0.5) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .vignette {
+    position: absolute;
+    inset: 14px;
+    pointer-events: none;
+    z-index: 9;
+    box-shadow: inset 0 0 100px rgba(60, 50, 35, 0.2);
+  }
+
+  .map-container {
+    position: absolute;
+    inset: 14px;
+    overflow: hidden;
+    cursor: grab;
+  }
+
+  .map-container:active { cursor: grabbing; }
+
+  .map-inner {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    transform-origin: center center;
+    transition: transform 0.1s ease-out;
+  }
+
+  #buildings-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  .riding {
+    stroke: #6a5d4d;
+    stroke-width: 0.8;
+    cursor: pointer;
+    fill-opacity: 0.3;
+    transition: fill-opacity 0.2s ease;
+    stroke-dasharray: 4 1 1 1;
+    paint-order: stroke fill;
+  }
+
+  .riding:hover {
+    stroke: #3a2e20;
+    stroke-width: 1.3;
+    fill-opacity: 0.55;
+  }
+
+  .riding-no-data {
+    stroke: #9a9080;
+    stroke-width: 0.5;
+    fill: #e8e2d8;
+    fill-opacity: 0.3;
+    stroke-dasharray: 3 2 1 2;
+  }
+
+  #annotations-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .transit-line {
+    fill: none;
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+  }
+
+  .transit-line-shadow {
+    fill: none;
+    stroke: rgba(0,0,0,0.1);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .vote-pin { cursor: pointer; }
+
+  /* Green Line ghost styles */
+  .green-line-phase1 {
+    fill: none;
+    stroke: #22aa22;
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 8 4;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+  }
+
+  .green-line-phase2 {
+    fill: none;
+    stroke: #22aa22;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 4 6;
+    opacity: 0.35;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+  }
+
+  .green-line-shadow {
+    fill: none;
+    stroke: rgba(34, 170, 34, 0.15);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .memorial-marker {
+    cursor: pointer;
+  }
+
+  .memorial-marker:hover .memorial-text {
+    opacity: 1;
+  }
+
+  .title-card {
+    position: absolute;
+    top: 28px; left: 28px;
+    z-index: 20;
+    background: rgba(244, 239, 230, 0.93);
+    backdrop-filter: blur(8px);
+    padding: 14px 20px;
+    border: 1px solid #c4b9a8;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.08);
+  }
+
+  .title-card h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    color: #2c2a25;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+  }
+
+  .title-card .subtitle {
+    font-size: 9px;
+    color: #7a6f60;
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .legend {
+    position: absolute;
+    bottom: 28px; left: 28px;
+    z-index: 20;
+    background: rgba(244, 239, 230, 0.93);
+    backdrop-filter: blur(8px);
+    padding: 12px 16px;
+    border: 1px solid #c4b9a8;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.08);
+    font-size: 9.5px;
+    color: #4a3f30;
+  }
+
+  .legend-title {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #7a6f60;
+    margin-bottom: 6px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 4px;
+  }
+
+  .legend-swatch { width: 18px; height: 3px; border-radius: 1.5px; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #4a3f30; }
+  .legend-block {
+    width: 8px; height: 10px; position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+  }
+  .legend-block::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 1px;
+    width: 8px; height: 2px;
+    background: rgba(0,0,0,0.15);
+  }
+
+  .info-panel {
+    position: absolute;
+    bottom: 28px; right: 28px;
+    z-index: 20;
+    background: rgba(244, 239, 230, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 14px 18px;
+    border: 1px solid #c4b9a8;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.08);
+    max-width: 260px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  .info-panel.visible { opacity: 1; pointer-events: auto; }
+
+  .info-panel h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 15px;
+    color: #2c2a25;
+    font-weight: 400;
+    margin-bottom: 3px;
+  }
+
+  .info-panel .corridor-tag {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #7a6f60;
+    margin-bottom: 8px;
+  }
+
+  .vote-bar-row { display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
+  .vote-bar-year { font-size: 8px; color: #7a6f60; width: 24px; flex-shrink: 0; }
+  .vote-bar-track { flex: 1; height: 7px; background: #e8e0d4; border-radius: 3px; overflow: hidden; display: flex; }
+  .vote-bar-segment { height: 100%; }
+
+  .grain {
+    position: absolute;
+    inset: 14px;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 11;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .zoom-controls {
+    position: absolute;
+    top: 28px; right: 28px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .zoom-btn {
+    width: 28px; height: 28px;
+    background: rgba(244, 239, 230, 0.93);
+    border: 1px solid #c4b9a8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: #4a3f30;
+    user-select: none;
+    transition: background 0.15s;
+  }
+
+  .zoom-btn:hover { background: #e8e0d4; }
+
+  .zoom-label {
+    font-size: 8px;
+    color: #7a6f60;
+    text-align: center;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .loading {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: #7a6f60;
+    z-index: 50; background: #f4efe6;
+    flex-direction: column; gap: 8px;
+  }
+
+  .loading.hidden { display: none; }
+  .loading-bar { width: 100px; height: 2px; background: #e8e0d4; border-radius: 1px; overflow: hidden; }
+  .loading-bar-fill { height: 100%; background: #7a6f60; width: 0%; transition: width 0.3s ease; }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <div class="loading" id="loading">
+    <span>assembling diorama...</span>
+    <div class="loading-bar"><div class="loading-bar-fill" id="loading-fill"></div></div>
+  </div>
+
+  <div class="tilt-shift-top"></div>
+  <div class="tilt-shift-bottom"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+
+  <div class="map-container" id="map-container">
+    <div class="map-inner" id="map-inner">
+      <canvas id="buildings-canvas"></canvas>
+      <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
+      <canvas id="annotations-canvas"></canvas>
+    </div>
+  </div>
+
+  <div class="title-card">
+    <h1>Calgary Transit & the Green Line</h1>
+    <div class="subtitle">A memorial to the train that almost was · 2015–2025</div>
+  </div>
+
+  <div class="zoom-controls">
+    <div class="zoom-btn" id="zoom-in">+</div>
+    <div class="zoom-btn" id="zoom-out">−</div>
+    <div class="zoom-btn" id="zoom-reset" style="font-size:9px;margin-top:4px;">⟲</div>
+    <div class="zoom-label" id="zoom-label">1.0×</div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-title">Transit</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#cc0000;"></div><span>CTrain Red</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#2244cc;"></div><span>CTrain Blue</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#e07020;"></div><span>MAX Orange</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#2a9d8f;"></div><span>MAX Teal</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#9b5de5;"></div><span>MAX Purple</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#ccaa00;"></div><span>MAX Yellow</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#22aa22;"></div><span>MAX Green</span></div>
+    <div class="legend-title" style="margin-top:8px;">Green Line LRT</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#22aa22;"></div><span>Phase 1 (delayed)</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#22aa22;opacity:0.35;border:1px dashed #22aa22;"></div><span>Phase 2 (cut) †</span></div>
+    <div class="legend-title" style="margin-top:8px;">Buildings</div>
+    <div class="legend-item"><div class="legend-block" style="background:#a0a0a0;border:1px solid #666;"></div><span>Commercial / Inst.</span></div>
+    <div class="legend-item"><div class="legend-block" style="background:#f0ebe4;border:1px solid #999;"></div><span>Residential</span></div>
+    <div class="legend-title" style="margin-top:8px;">2025 Vote</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2596be;"></div><span>Conservative</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d71920;"></div><span>Liberal</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#F58220;"></div><span>NDP</span></div>
+  </div>
+
+  <div class="info-panel" id="info-panel">
+    <h3 id="info-name">—</h3>
+    <div class="corridor-tag" id="info-corridor">—</div>
+    <div class="vote-bars" id="info-bars"></div>
+  </div>
+</div>
+
+<script>
+const voteData = {
+  "Calgary Centre": { corridor: "CTrain_Core", notes: "Downtown core", years: { 2015: { Con: 45.3, Lib: 46.5, NDP: 5.6 }, 2019: { Con: 56.6, Lib: 27.0, NDP: 9.9 }, 2021: { Con: 51.3, Lib: 29.7, NDP: 16.4 }, 2025: { Con: 50.2, Lib: 45.8, NDP: 2.6 } } },
+  "Calgary Confederation": { corridor: "No_BRT_West", notes: "West", years: { 2015: { Con: 45.9, Lib: 43.5, NDP: 7.1 }, 2019: { Con: 55.1, Lib: 22.6, NDP: 11.1 }, 2021: { Con: 46.0, Lib: 28.5, NDP: 17.1 }, 2025: { Con: 46.3, Lib: 48.1, NDP: 4.1 } } },
+  "Calgary East": { corridor: "MAX_Purple_East", notes: "East. New riding (2022 redistribution).", years: { 2025: { Con: 60.5, Lib: 31.8, NDP: 3.9 } } },
+  "Calgary Heritage": { corridor: "CTrain_South", notes: "South", years: { 2015: { Con: 63.8, Lib: 26.0, NDP: 7.3 }, 2019: { Con: 70.7, Lib: 14.0, NDP: 9.1 }, 2021: { Con: 57.7, Lib: 16.7, NDP: 17.4 }, 2025: { Con: 61.4, Lib: 34.6, NDP: 2.5 } } },
+  "Calgary Midnapore": { corridor: "CTrain_South", notes: "Far south", years: { 2015: { Con: 66.7, Lib: 22.6, NDP: 7.7 }, 2019: { Con: 74.3, Lib: 11.0, NDP: 9.5 }, 2021: { Con: 60.7, Lib: 12.3, NDP: 18.3 }, 2025: { Con: 65.5, Lib: 29.9, NDP: 3.1 } } },
+  "Calgary Nose Hill": { corridor: "MAX_Orange_NW", notes: "Northwest", years: { 2015: { Con: 60.0, Lib: 26.9, NDP: 8.9 }, 2019: { Con: 69.8, Lib: 15.7, NDP: 9.6 }, 2021: { Con: 55.6, Lib: 20.5, NDP: 16.9 }, 2025: { Con: 59.4, Lib: 36.2, NDP: 3.2 } } },
+  "Calgary Crowfoot": { corridor: "No_BRT_NW", notes: "Far northwest. New riding (2022 redistribution).", years: { 2025: { Con: 58.8, Lib: 37.4, NDP: 2.6 } } },
+  "Calgary Shepard": { corridor: "MAX_Teal_SE", notes: "Southeast", years: { 2015: { Con: 65.9, Lib: 24.7, NDP: 6.8 }, 2019: { Con: 75.0, Lib: 11.1, NDP: 8.7 }, 2021: { Con: 60.4, Lib: 14.0, NDP: 16.5 }, 2025: { Con: 68.0, Lib: 28.2, NDP: 2.7 } } },
+  "Calgary Signal Hill": { corridor: "No_BRT_West", notes: "West", years: { 2015: { Con: 60.6, Lib: 30.6, NDP: 5.0 }, 2019: { Con: 70.0, Lib: 15.3, NDP: 8.4 }, 2021: { Con: 59.0, Lib: 18.6, NDP: 14.8 }, 2025: { Con: 60.1, Lib: 36.4, NDP: 2.4 } } },
+  "Calgary Skyview": { corridor: "MAX_Orange_NE", notes: "Northeast. Swing riding.", years: { 2015: { Con: 39.8, Lib: 45.9, NDP: 8.0 }, 2019: { Con: 52.5, Lib: 28.3, NDP: 14.9 }, 2021: { Con: 36.1, Lib: 42.4, NDP: 16.2 }, 2025: { Con: 55.4, Lib: 37.6, NDP: 2.7 } } },
+  "Calgary McKnight": { corridor: "MAX_Orange_NE", notes: "Northeast. New riding (2022 redistribution).", years: { 2025: { Con: 49.1, Lib: 46.0, NDP: 2.8 } } }
+};
+
+const corridorColors = {
+  'CTrain_Core': '#c9b896', 'CTrain_South': '#b8c4a0',
+  'MAX_Orange_NW': '#f0d8b8', 'MAX_Orange_NE': '#f0d8b8',
+  'MAX_Purple_East': '#e0c8e0', 'MAX_Teal_SE': '#c0dcd8',
+  'No_BRT_West': '#ddd6c8', 'No_BRT_NW': '#d8d4c8'
+};
+
+const partyColors = { Con: '#2596be', Lib: '#d71920', NDP: '#F58220' };
+
+const buildingColors = {
+  'c': { top: '#e8e4e0', side: '#a0a0a0', front: '#c0bdb8' },  // cool grey commercial
+  'i': { top: '#d8d4cc', side: '#8a8a82', front: '#b0ada6' },  // darker grey industrial
+  'u': { top: '#ece8e2', side: '#b8b0a6', front: '#d4cec6' },  // cream unclassified
+  'a': { top: '#d4e4cc', side: '#8aaa7a', front: '#b0ccaa' },  // muted green agricultural
+  'g': { top: '#e4e0da', side: '#b0a898', front: '#ccc6bc' },  // light tan
+};
+
+// Residential houses get individually varied colors — like a real neighbourhood
+const houseColorPalettes = [
+  { top: '#f0ebe4', side: '#c8bfb4', front: '#ddd5ca' },  // warm white
+  { top: '#f2edd8', side: '#c9bf9e', front: '#e0d8be' },  // cream/pale yellow
+  { top: '#eae8df', side: '#b5b8a8', front: '#d2d4c4' },  // light sage
+  { top: '#f0e4de', side: '#c8aba0', front: '#dcc4ba' },  // dusty rose
+  { top: '#e8e6e2', side: '#aaa8a4', front: '#cccac6' },  // warm grey
+  { top: '#eee8d8', side: '#c4b898', front: '#dcd2b8' },  // pale sand
+  { top: '#e6e8e4', side: '#a8b0a4', front: '#c8d0c4' },  // muted mint
+  { top: '#f0ece6', side: '#c4bcb0', front: '#dcd4c8' },  // linen
+  { top: '#ece4da', side: '#bfad98', front: '#d8cab8' },  // light tan
+  { top: '#e8e4e8', side: '#b0a8b2', front: '#ccc4d0' },  // lavender grey
+];
+
+function getResidentialColor(seed) {
+  const idx = Math.floor(seed * houseColorPalettes.length) % houseColorPalettes.length;
+  return houseColorPalettes[idx];
+}
+
+// --- Zoom/Pan state ---
+let zoomLevel = 1;
+let panX = 0, panY = 0;
+let isPanning = false;
+let panStart = { x: 0, y: 0 };
+
+function updateTransform() {
+  const inner = document.getElementById('map-inner');
+  inner.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+  document.getElementById('zoom-label').textContent = zoomLevel.toFixed(1) + '×';
+}
+
+function createProjection(features, width, height) {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  features.forEach(f => {
+    const coords = f.geometry.type === 'Polygon' ? f.geometry.coordinates[0] :
+                   f.geometry.type === 'MultiPolygon' ? f.geometry.coordinates.flat(2) :
+                   f.geometry.coordinates;
+    coords.forEach(c => {
+      const pt = Array.isArray(c[0]) ? c : [c];
+      pt.forEach(p => {
+        if (p[0] < minX) minX = p[0];
+        if (p[0] > maxX) maxX = p[0];
+        if (p[1] < minY) minY = p[1];
+        if (p[1] > maxY) maxY = p[1];
+      });
+    });
+  });
+
+  const padding = 50;
+  const scaleX = (width - padding * 2) / (maxX - minX);
+  const scaleY = (height - padding * 2) / (maxY - minY);
+  const scale = Math.min(scaleX, scaleY);
+  const centerX = (minX + maxX) / 2;
+  const centerY = (minY + maxY) / 2;
+
+  return function project(lon, lat) {
+    let x = (lon - centerX) * scale + width / 2;
+    let y = -(lat - centerY) * scale + height / 2;
+    // Subtle perspective
+    const skew = 0.06;
+    const ny = (y - height / 2) / (height / 2);
+    x += ny * skew * (x - width / 2);
+    y *= (1 - skew * 0.15 + ny * skew * 0.08);
+    return [x, y];
+  };
+}
+
+function coordsToPath(coords, project) {
+  return coords.map((c, i) => {
+    const [x, y] = project(c[0], c[1]);
+    return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ') + ' Z';
+}
+
+function lineToPath(coords, project) {
+  return coords.map((c, i) => {
+    const [x, y] = project(c[0], c[1]);
+    return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+}
+
+// Wobble a path to feel hand-drawn / yarn-pinned
+function wobblePath(coords, project, amplitude) {
+  const amp = amplitude || 1.2;
+  return coords.map((c, i) => {
+    const [x, y] = project(c[0], c[1]);
+    if (i === 0) return `M${x.toFixed(1)},${y.toFixed(1)}`;
+    // Deterministic wobble from position
+    const wobX = Math.sin(x * 0.8 + y * 1.3 + i * 2.1) * amp;
+    const wobY = Math.cos(y * 0.6 + x * 1.7 + i * 3.7) * amp * 0.7;
+    return `L${(x + wobX).toFixed(1)},${(y + wobY).toFixed(1)}`;
+  }).join(' ');
+}
+
+function getPolygonCentroid(coords) {
+  let sx = 0, sy = 0, n = coords.length;
+  coords.forEach(c => { sx += c[0]; sy += c[1]; });
+  return [sx / n, sy / n];
+}
+
+function getRidingColor(name) {
+  const data = voteData[name];
+  if (!data) return null;
+  return corridorColors[data.corridor] || '#d8d0c4';
+}
+
+function getWinnerColor2025(name) {
+  const data = voteData[name];
+  if (!data) return partyColors.Con;
+  const y = data.years[2025];
+  if (y.Lib >= y.Con && y.Lib >= y.NDP) return partyColors.Lib;
+  if (y.NDP >= y.Con && y.NDP >= y.Lib) return partyColors.NDP;
+  return partyColors.Con;
+}
+
+function showInfo(name) {
+  const panel = document.getElementById('info-panel');
+  const data = voteData[name];
+  if (!data) { panel.classList.remove('visible'); return; }
+
+  document.getElementById('info-name').textContent = name;
+  document.getElementById('info-corridor').textContent = data.notes;
+
+  const barsEl = document.getElementById('info-bars');
+  barsEl.innerHTML = '';
+
+  [2015, 2019, 2021, 2025].forEach(year => {
+    const y = data.years[year];
+    if (!y) return; // Skip years without data (redistricted ridings)
+    const total = y.Con + y.Lib + y.NDP;
+    const row = document.createElement('div');
+    row.className = 'vote-bar-row';
+    row.innerHTML = `
+      <span class="vote-bar-year">'${String(year).slice(2)}</span>
+      <div class="vote-bar-track">
+        <div class="vote-bar-segment" style="width:${(y.Con/total*100).toFixed(1)}%;background:${partyColors.Con}"></div>
+        <div class="vote-bar-segment" style="width:${(y.Lib/total*100).toFixed(1)}%;background:${partyColors.Lib}"></div>
+        <div class="vote-bar-segment" style="width:${(y.NDP/total*100).toFixed(1)}%;background:${partyColors.NDP}"></div>
+      </div>
+    `;
+    barsEl.appendChild(row);
+  });
+
+  panel.classList.add('visible');
+}
+
+function drawGrid(ctx, project, width, height, features) {
+  // Draw a subtle graph-paper grid across the city extent
+  // Find bounding box of all riding features
+  let minLon = Infinity, maxLon = -Infinity, minLat = Infinity, maxLat = -Infinity;
+  features.forEach(f => {
+    const coords = f.geometry.type === 'MultiPolygon'
+      ? f.geometry.coordinates.flat(2)
+      : f.geometry.coordinates[0];
+    coords.forEach(c => {
+      if (c[0] < minLon) minLon = c[0];
+      if (c[0] > maxLon) maxLon = c[0];
+      if (c[1] < minLat) minLat = c[1];
+      if (c[1] > maxLat) maxLat = c[1];
+    });
+  });
+
+  // Grid spacing in degrees (~500m)
+  const step = 0.005;
+
+  // Major grid every 5 lines
+  const majorEvery = 5;
+  let lineIdx = 0;
+
+  ctx.save();
+
+  // Vertical lines
+  lineIdx = 0;
+  for (let lon = Math.floor(minLon / step) * step; lon <= maxLon; lon += step) {
+    const isMajor = (lineIdx % majorEvery === 0);
+    ctx.strokeStyle = isMajor ? 'rgba(130, 150, 170, 0.25)' : 'rgba(140, 155, 170, 0.12)';
+    ctx.lineWidth = isMajor ? 0.6 : 0.3;
+    ctx.beginPath();
+    const [x1, y1] = project(lon, minLat);
+    const [x2, y2] = project(lon, maxLat);
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    lineIdx++;
+  }
+
+  // Horizontal lines
+  lineIdx = 0;
+  for (let lat = Math.floor(minLat / step) * step; lat <= maxLat; lat += step) {
+    const isMajor = (lineIdx % majorEvery === 0);
+    ctx.strokeStyle = isMajor ? 'rgba(130, 150, 170, 0.25)' : 'rgba(140, 155, 170, 0.12)';
+    ctx.lineWidth = isMajor ? 0.6 : 0.3;
+    ctx.beginPath();
+    const [x1, y1] = project(minLon, lat);
+    const [x2, y2] = project(maxLon, lat);
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    lineIdx++;
+  }
+
+  ctx.restore();
+}
+
+function drawRivers(ctx, hydrology, project) {
+  ctx.save();
+  for (const river of hydrology) {
+    const coords = river.coords;
+    if (coords.length < 2) continue;
+
+    // Line width based on river length
+    const lw = river.len > 50000 ? 2.5 : river.len > 20000 ? 1.8 : river.len > 5000 ? 1.2 : 0.7;
+
+    ctx.strokeStyle = 'rgba(120, 160, 190, 0.45)';
+    ctx.lineWidth = lw;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    const [sx, sy] = project(coords[0][0], coords[0][1]);
+    ctx.moveTo(sx, sy);
+    for (let i = 1; i < coords.length; i++) {
+      const [x, y] = project(coords[i][0], coords[i][1]);
+      ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawParks(ctx, parks, project, width, height) {
+  ctx.save();
+
+  // Sort parks by area so big ones draw first (underneath)
+  const sorted = [...parks].sort((a, b) => (b.a || 0) - (a.a || 0));
+
+  // Area thresholds for behaviour
+  const BIG_PARK = 0.0004;    // Nose Hill, Fish Creek, Bowmont — prairie/grassland
+  const MED_PARK = 0.00005;   // Neighbourhood parks
+  // below MED_PARK = pocket parks, playgrounds
+
+  for (const park of sorted) {
+    const [cx, cy] = project(park.x, park.y);
+    if (cx < -40 || cx > width + 40 || cy < -40 || cy > height + 40) continue;
+
+    // Real pixel extent from geo dimensions
+    const [ex] = project(park.x + park.w / 2, park.y);
+    const [, ey] = project(park.x, park.y + park.h / 2);
+    const radiusX = Math.abs(ex - cx);
+    const radiusY = Math.abs(ey - cy);
+    const radius = Math.max(4, (radiusX + radiusY) / 2);
+    const area = park.a || 0;
+
+    // Seeded RNG from position
+    let rng = Math.abs(Math.sin(park.x * 9999 + park.y * 7777));
+    function nextRng() { rng = Math.abs(Math.sin(rng * 12345.6789 + 0.1)); return rng; }
+
+    if (area >= BIG_PARK) {
+      // === BIG PARKS: prairie grassland wash + scattered copses ===
+      // Soft grass wash underneath
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 1.1);
+      grad.addColorStop(0, 'rgba(140, 170, 100, 0.18)');
+      grad.addColorStop(0.6, 'rgba(160, 180, 120, 0.12)');
+      grad.addColorStop(1, 'rgba(170, 185, 130, 0.0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, radiusX * 1.05, radiusY * 1.05, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Grass texture — tiny scattered dots across the field
+      const grassCount = Math.min(120, Math.floor(radius * 2));
+      for (let g = 0; g < grassCount; g++) {
+        const angle = nextRng() * Math.PI * 2;
+        const dist = nextRng() * radius * 0.9;
+        const gx = cx + Math.cos(angle) * dist * (radiusX / radius);
+        const gy = cy + Math.sin(angle) * dist * (radiusY / radius);
+        const tone = Math.floor(150 + nextRng() * 50);
+        ctx.fillStyle = `rgba(${100 + Math.floor(nextRng()*30)}, ${tone}, ${70 + Math.floor(nextRng()*30)}, ${0.15 + nextRng() * 0.12})`;
+        ctx.beginPath();
+        ctx.arc(gx, gy, 0.6 + nextRng() * 0.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Scattered tree copses (not dense — these are prairies)
+      const copseCount = Math.min(18, Math.floor(radius * 0.25));
+      for (let c = 0; c < copseCount; c++) {
+        const angle = nextRng() * Math.PI * 2;
+        const dist = nextRng() * radius * 0.75;
+        const tx = cx + Math.cos(angle) * dist * (radiusX / radius);
+        const ty = cy + Math.sin(angle) * dist * (radiusY / radius);
+
+        // Each copse is 2-4 trees clumped
+        const clump = 2 + Math.floor(nextRng() * 3);
+        for (let t = 0; t < clump; t++) {
+          const ox = tx + (nextRng() - 0.5) * 8;
+          const oy = ty + (nextRng() - 0.5) * 6;
+          const treeR = 2.0 + nextRng() * 2.5;
+          const green = Math.floor(120 + nextRng() * 60);
+
+          // Shadow
+          ctx.fillStyle = 'rgba(30, 50, 20, 0.06)';
+          ctx.beginPath();
+          ctx.arc(ox + 0.8, oy + 0.8, treeR, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Tree — slightly irregular blob
+          ctx.fillStyle = `rgba(${55 + Math.floor(nextRng()*30)}, ${green}, ${50 + Math.floor(nextRng()*25)}, ${0.4 + nextRng() * 0.2})`;
+          ctx.beginPath();
+          ctx.arc(ox, oy, treeR, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+    } else if (area >= MED_PARK) {
+      // === MEDIUM PARKS: proper cluster of model trees ===
+      const numTrees = Math.max(5, Math.min(35, Math.floor(radius * 0.9)));
+
+      for (let t = 0; t < numTrees; t++) {
+        const angle = nextRng() * Math.PI * 2;
+        const dist = nextRng() * radius * 0.85;
+        const tx = cx + Math.cos(angle) * dist * (radiusX / radius);
+        const ty = cy + Math.sin(angle) * dist * (radiusY / radius);
+        const treeR = 1.8 + nextRng() * 2.2;
+        const green = Math.floor(130 + nextRng() * 65);
+
+        // Shadow
+        ctx.fillStyle = 'rgba(30, 50, 20, 0.07)';
+        ctx.beginPath();
+        ctx.arc(tx + 0.6, ty + 0.6, treeR, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tree
+        ctx.fillStyle = `rgba(${60 + Math.floor(nextRng()*25)}, ${green}, ${50 + Math.floor(nextRng()*20)}, ${0.4 + nextRng() * 0.25})`;
+        ctx.beginPath();
+        ctx.arc(tx, ty, treeR, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+    } else {
+      // === SMALL PARKS: 2-5 little foam blobs, pocket parks ===
+      const numTrees = Math.max(2, Math.min(5, Math.floor(radius * 0.6)));
+
+      for (let t = 0; t < numTrees; t++) {
+        const angle = nextRng() * Math.PI * 2;
+        const dist = nextRng() * radius * 0.7;
+        const tx = cx + Math.cos(angle) * dist;
+        const ty = cy + Math.sin(angle) * dist;
+        const treeR = 1.5 + nextRng() * 1.5;
+        const green = Math.floor(140 + nextRng() * 55);
+
+        ctx.fillStyle = `rgba(70, ${green}, 60, ${0.35 + nextRng() * 0.2})`;
+        ctx.beginPath();
+        ctx.arc(tx, ty, treeR, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+  ctx.restore();
+}
+
+function drawAnnotations(ctx, project, width, height) {
+  // Old annotations on buildings canvas — now just compass + scale bar
+  ctx.save();
+
+  // --- Compass Rose (top-right area, sketchy style) ---
+  const cx = width - 60;
+  const cy = 80;
+  const size = 22;
+
+  ctx.strokeStyle = 'rgba(80, 65, 50, 0.55)';
+  ctx.fillStyle = 'rgba(80, 65, 50, 0.55)';
+  ctx.lineWidth = 1.2;
+
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - size);
+  ctx.lineTo(cx, cy + size);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(cx - size, cy);
+  ctx.lineTo(cx + size, cy);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - size);
+  ctx.lineTo(cx - 4, cy - size + 8);
+  ctx.lineTo(cx + 4, cy - size + 8);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.font = '500 10px DM Mono, monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('N', cx, cy - size - 4);
+
+  ctx.font = '300 8px DM Mono, monospace';
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+  ctx.fillText('E', cx + size + 3, cy);
+  ctx.textAlign = 'right';
+  ctx.fillText('W', cx - size - 3, cy);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('S', cx, cy + size + 3);
+
+  // --- Scale Bar ---
+  const centerLat = 51.04;
+  const [sx1] = project(-114.1, centerLat);
+  const [sx2] = project(-114.1 + 0.062, centerLat);
+  const fiveKmPx = Math.abs(sx2 - sx1);
+
+  const barX = width - 50 - fiveKmPx;
+  const barY = height - 40;
+
+  ctx.strokeStyle = 'rgba(80, 65, 50, 0.5)';
+  ctx.fillStyle = 'rgba(80, 65, 50, 0.55)';
+  ctx.lineWidth = 1;
+
+  ctx.beginPath();
+  ctx.moveTo(barX, barY);
+  ctx.lineTo(barX + fiveKmPx, barY);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(barX, barY - 4);
+  ctx.lineTo(barX, barY + 4);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(barX + fiveKmPx, barY - 4);
+  ctx.lineTo(barX + fiveKmPx, barY + 4);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(barX + fiveKmPx / 2, barY - 2.5);
+  ctx.lineTo(barX + fiveKmPx / 2, barY + 2.5);
+  ctx.stroke();
+
+  // Scale bar labels in handwriting too
+  ctx.font = '16px CamilleHand, cursive';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('0', barX, barY + 5);
+  ctx.fillText('2.5', barX + fiveKmPx / 2, barY + 5);
+  ctx.fillText('5 km', barX + fiveKmPx, barY + 5);
+
+  ctx.restore();
+}
+
+// === TOP-LAYER HANDWRITTEN ANNOTATIONS ===
+// Drawn on a separate canvas ABOVE everything — like you picked up a pen
+// and wrote on the finished map with arrows pointing to things
+function drawHandwrittenAnnotations(ctx, project, width, height, parks) {
+  ctx.save();
+
+  const penColor = 'rgba(45, 35, 25, 0.78)';
+
+  // --- Helper: draw a hand-drawn arrow from (x1,y1) to (x2,y2) ---
+  function drawArrow(x1, y1, x2, y2) {
+    ctx.strokeStyle = penColor;
+    ctx.lineWidth = 1.3;
+    ctx.lineCap = 'round';
+
+    // Slightly curved line (not perfectly straight — hand-drawn)
+    const midX = (x1 + x2) / 2 + (y2 - y1) * 0.08;
+    const midY = (y1 + y2) / 2 - (x2 - x1) * 0.08;
+
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.quadraticCurveTo(midX, midY, x2, y2);
+    ctx.stroke();
+
+    // Arrowhead
+    const angle = Math.atan2(y2 - midY, x2 - midX);
+    const headLen = 8;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - headLen * Math.cos(angle - 0.4), y2 - headLen * Math.sin(angle - 0.4));
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - headLen * Math.cos(angle + 0.4), y2 - headLen * Math.sin(angle + 0.4));
+    ctx.stroke();
+  }
+
+  // --- Smart label placement ---
+  // For each label, figure out which side has the most "empty" space
+  // (i.e. closest to a map edge = more whitespace on that side)
+  // This makes it feel like someone naturally wrote in the margins
+  function smartOffset(px, py, textWidth) {
+    const margin = 55;  // how far the text sits from the point
+    const spaceLeft = px;
+    const spaceRight = width - px;
+    const spaceUp = py;
+    const spaceDown = height - py;
+
+    // Find the direction with the most room
+    const options = [
+      { offX: margin, offY: -margin * 0.8, space: spaceRight, side: 'right' },
+      { offX: -(margin + textWidth), offY: -margin * 0.8, space: spaceLeft, side: 'left' },
+      { offX: margin * 0.6, offY: -margin * 1.2, space: spaceUp > 100 ? spaceUp : 0, side: 'up-right' },
+      { offX: -(margin + textWidth * 0.5), offY: margin * 0.6, space: spaceDown > 100 ? spaceDown : 0, side: 'down-left' },
+      { offX: margin, offY: margin * 0.5, space: Math.min(spaceRight, spaceDown), side: 'down-right' },
+      { offX: -(margin + textWidth), offY: margin * 0.5, space: Math.min(spaceLeft, spaceDown), side: 'down-left2' },
+    ];
+
+    // Pick the option with the most available space
+    options.sort((a, b) => b.space - a.space);
+    return options[0];
+  }
+
+  // --- Landmark annotations (your handwriting, pointing at things) ---
+  // Only the ones you liked: major landmarks, not small parks
+  const labels = [
+    { text: 'Nose Hill Park', lon: -114.125, lat: 51.115 },
+    { text: 'Downtown', lon: -114.065, lat: 51.048 },
+    { text: 'U of C', lon: -114.135, lat: 51.075 },
+    { text: 'Chinook', lon: -114.073, lat: 50.998 },
+    { text: 'Fish Creek', lon: -114.02, lat: 50.91 },
+    { text: 'Bow River', lon: -114.16, lat: 51.058 },
+    { text: 'YYC Airport', lon: -113.98, lat: 51.12 },
+    { text: 'Stoney Trail', lon: -114.22, lat: 51.095 },
+    { text: 'Deerfoot Trail', lon: -113.98, lat: 50.96 },
+  ];
+
+  ctx.font = '22px CamilleHand, cursive';
+  ctx.fillStyle = penColor;
+
+  // Track placed labels to avoid overlaps
+  const placedBoxes = [];
+
+  for (const lbl of labels) {
+    const [px, py] = project(lbl.lon, lbl.lat);
+    if (px < 30 || px > width - 30 || py < 30 || py > height - 30) continue;
+
+    const textWidth = ctx.measureText(lbl.text).width;
+    const placement = smartOffset(px, py, textWidth);
+
+    let tx = px + placement.offX;
+    let ty = py + placement.offY;
+
+    // Nudge if overlapping a previously placed label
+    const boxH = 26;
+    for (const box of placedBoxes) {
+      if (tx < box.x + box.w + 8 && tx + textWidth + 6 > box.x - 8 &&
+          ty < box.y + box.h + 8 && ty + boxH > box.y - 8) {
+        ty -= 28; // shift up to avoid
+      }
+    }
+
+    // Clamp to stay on-screen
+    tx = Math.max(10, Math.min(width - textWidth - 10, tx));
+    ty = Math.max(25, Math.min(height - 30, ty));
+
+    // Arrow from text edge to the location
+    const arrowStartX = placement.offX < 0 ? tx + textWidth + 4 : tx - 4;
+    const arrowStartY = ty + 6;
+    drawArrow(arrowStartX, arrowStartY, px, py);
+
+    // Semi-transparent backing so text is legible
+    ctx.fillStyle = 'rgba(236, 234, 226, 0.75)';
+    ctx.fillRect(tx - 3, ty - 16, textWidth + 6, 22);
+
+    // The text itself — your handwriting
+    ctx.fillStyle = penColor;
+    ctx.textBaseline = 'bottom';
+    ctx.textAlign = 'left';
+    ctx.fillText(lbl.text, tx, ty + 3);
+
+    placedBoxes.push({ x: tx, y: ty - 16, w: textWidth + 6, h: 22 });
+  }
+
+  // --- SHEPARD MEMORIAL — a small, silent marker for the station that was cut ---
+  const shepardLon = -113.9526;
+  const shepardLat = 50.8689;
+  const [sx, sy] = project(shepardLon, shepardLat);
+
+  // Only draw if on screen
+  if (sx > 50 && sx < width - 50 && sy > 50 && sy < height - 50) {
+    ctx.save();
+
+    // Small gravestone - just a simple marker
+    const stoneWidth = 14;
+    const stoneHeight = 20;
+    const stoneX = sx - stoneWidth / 2;
+    const stoneY = sy - stoneHeight;
+
+    // Tiny shadow
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+    ctx.beginPath();
+    ctx.ellipse(sx + 1, sy + 2, stoneWidth / 2 + 2, 2, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Simple rounded-top gravestone shape
+    ctx.fillStyle = '#8a8580';
+    ctx.beginPath();
+    ctx.moveTo(stoneX, sy);
+    ctx.lineTo(stoneX, stoneY + 6);
+    ctx.quadraticCurveTo(stoneX, stoneY, sx, stoneY);
+    ctx.quadraticCurveTo(stoneX + stoneWidth, stoneY, stoneX + stoneWidth, stoneY + 6);
+    ctx.lineTo(stoneX + stoneWidth, sy);
+    ctx.closePath();
+    ctx.fill();
+
+    // Subtle edge
+    ctx.strokeStyle = '#605a55';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  ctx.restore();
+}
+
+function drawRoads(ctx, roads, project) {
+  ctx.save();
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  // Draw in priority order: arterials first (bottom), then skeletal (top)
+  roads.sort((a, b) => a.p - b.p);
+
+  for (const road of roads) {
+    const coords = road.coords;
+    if (coords.length < 2) continue;
+
+    // Style based on priority
+    if (road.p === 3) {
+      // Skeletal roads (highways) - bold warm grey
+      ctx.strokeStyle = 'rgba(160, 145, 130, 0.4)';
+      ctx.lineWidth = 2.0;
+    } else if (road.p === 2) {
+      // Parkway/boulevard - medium
+      ctx.strokeStyle = 'rgba(160, 145, 130, 0.3)';
+      ctx.lineWidth = 1.3;
+    } else {
+      // Arterial - thin
+      ctx.strokeStyle = 'rgba(160, 150, 135, 0.2)';
+      ctx.lineWidth = 0.8;
+    }
+
+    ctx.beginPath();
+    const [sx, sy] = project(coords[0][0], coords[0][1]);
+    ctx.moveTo(sx, sy);
+    for (let i = 1; i < coords.length; i++) {
+      const [x, y] = project(coords[i][0], coords[i][1]);
+      ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawBuildings(ctx, buildings, project, width, height, areaP90) {
+  // Sort by latitude for painter's algorithm (far first = draw first)
+  buildings.sort((a, b) => b.y - a.y);
+
+  // Isometric projection angles
+  const isoAngle = 0.4;
+  const isoY = -0.25;
+
+  // Apartment threshold — residential buildings above this area are multi-unit
+  const APARTMENT_AREA = 5000;
+
+  for (let i = 0; i < buildings.length; i++) {
+    const b = buildings[i];
+    const [px, py] = project(b.x, b.y);
+
+    if (px < -50 || px > width + 50 || py < -60 || py > height + 50) continue;
+
+    // --- Footprint sizing ---
+    const areaFactor = Math.sqrt(b.a) / Math.sqrt(areaP90);
+    const baseSize = Math.max(6, Math.min(26, areaFactor * 16));
+
+    const aspect = (b.w && b.h && b.h > 0.000001)
+      ? Math.max(0.4, Math.min(2.5, b.w / b.h))
+      : 1;
+    let drawW = baseSize * Math.sqrt(aspect);
+    let drawH = baseSize / Math.sqrt(aspect);
+    drawW = Math.max(5, Math.min(28, drawW));
+    drawH = Math.max(5, Math.min(22, drawH));
+
+    // Seeded pseudo-random
+    const seed = Math.abs(Math.sin(b.x * 12345.6 + b.y * 54321.1));
+    const seed2 = Math.abs(Math.sin(seed * 67890.1 + 0.3));
+    const seed3 = Math.abs(Math.sin(seed2 * 11111.1 + 0.7));
+
+    // --- Height ---
+    let extrudeH;
+    const isApartment = b.t === 'r' && b.a > APARTMENT_AREA;
+
+    if (b.t === 'c' || b.t === 'i') {
+      extrudeH = Math.max(10, Math.min(45, baseSize * 1.8));
+      extrudeH *= (0.6 + seed * 0.8);
+    } else if (isApartment) {
+      // Apartments: mid-rise, taller than houses
+      extrudeH = Math.max(12, Math.min(30, baseSize * 1.2));
+      extrudeH *= (0.7 + seed * 0.5);
+    } else if (b.t === 'r') {
+      // Houses: low
+      extrudeH = Math.max(4, Math.min(14, baseSize * 0.5));
+      extrudeH *= (0.7 + seed * 0.5);
+    } else {
+      extrudeH = Math.max(5, Math.min(20, baseSize * 0.6));
+      extrudeH *= (0.7 + seed * 0.5);
+    }
+
+    // --- Colors by type ---
+    let colors;
+    if (b.t === 'r') {
+      // Each residential building gets its own colour from the palette
+      colors = getResidentialColor(seed);
+    } else {
+      colors = buildingColors[b.t] || buildingColors['u'];
+    }
+
+    const depthX = drawH * isoAngle;
+    const depthY = drawH * isoY;
+
+    // --- Drop shadow ---
+    ctx.fillStyle = 'rgba(40, 35, 30, 0.15)';
+    ctx.beginPath();
+    ctx.moveTo(px - drawW/2 + 4, py + 4);
+    ctx.lineTo(px + drawW/2 + 4, py + 4);
+    ctx.lineTo(px + drawW/2 + 4 + depthX * 0.5, py + 4 + depthY * 0.5);
+    ctx.lineTo(px - drawW/2 + 4 + depthX * 0.5, py + 4 + depthY * 0.5);
+    ctx.closePath();
+    ctx.fill();
+
+    // --- Front face ---
+    ctx.fillStyle = colors.front;
+    ctx.beginPath();
+    ctx.moveTo(px - drawW/2, py);
+    ctx.lineTo(px + drawW/2, py);
+    ctx.lineTo(px + drawW/2, py - extrudeH);
+    ctx.lineTo(px - drawW/2, py - extrudeH);
+    ctx.closePath();
+    ctx.fill();
+
+    // --- Right side face ---
+    ctx.fillStyle = colors.side;
+    ctx.beginPath();
+    ctx.moveTo(px + drawW/2, py);
+    ctx.lineTo(px + drawW/2 + depthX, py + depthY);
+    ctx.lineTo(px + drawW/2 + depthX, py + depthY - extrudeH);
+    ctx.lineTo(px + drawW/2, py - extrudeH);
+    ctx.closePath();
+    ctx.fill();
+
+    // --- Top face (roof) ---
+    ctx.fillStyle = colors.top;
+    ctx.beginPath();
+    ctx.moveTo(px - drawW/2, py - extrudeH);
+    ctx.lineTo(px + drawW/2, py - extrudeH);
+    ctx.lineTo(px + drawW/2 + depthX, py + depthY - extrudeH);
+    ctx.lineTo(px - drawW/2 + depthX, py + depthY - extrudeH);
+    ctx.closePath();
+    ctx.fill();
+
+    // --- Outline ---
+    ctx.strokeStyle = 'rgba(50, 45, 40, 0.45)';
+    ctx.lineWidth = 0.7;
+    // Front
+    ctx.beginPath();
+    ctx.moveTo(px - drawW/2, py);
+    ctx.lineTo(px + drawW/2, py);
+    ctx.lineTo(px + drawW/2, py - extrudeH);
+    ctx.lineTo(px - drawW/2, py - extrudeH);
+    ctx.closePath();
+    ctx.stroke();
+    // Side
+    ctx.beginPath();
+    ctx.moveTo(px + drawW/2, py);
+    ctx.lineTo(px + drawW/2 + depthX, py + depthY);
+    ctx.lineTo(px + drawW/2 + depthX, py + depthY - extrudeH);
+    ctx.lineTo(px + drawW/2, py - extrudeH);
+    ctx.closePath();
+    ctx.stroke();
+    // Top
+    ctx.beginPath();
+    ctx.moveTo(px - drawW/2, py - extrudeH);
+    ctx.lineTo(px + drawW/2, py - extrudeH);
+    ctx.lineTo(px + drawW/2 + depthX, py + depthY - extrudeH);
+    ctx.lineTo(px - drawW/2 + depthX, py + depthY - extrudeH);
+    ctx.closePath();
+    ctx.stroke();
+
+    // === WINDOW & LIFE DETAILS ===
+
+    if (b.t === 'c' || b.t === 'i') {
+      // --- Commercial/Office: clean uniform window grid, cool tones ---
+      if (extrudeH > 14 && drawW > 7) {
+        const floors = Math.floor(extrudeH / 5.5);
+        const winW = Math.max(1.8, drawW * 0.14);
+        const winH = 2.2;
+        const cols = Math.min(4, Math.floor(drawW / (winW + 2.5)));
+        const startX = px - (cols * (winW + 1.8)) / 2 + 0.9;
+        for (let fl = 0; fl < floors; fl++) {
+          for (let col = 0; col < cols; col++) {
+            // Uniform blue-grey glass
+            ctx.fillStyle = 'rgba(50, 65, 85, 0.18)';
+            ctx.fillRect(
+              startX + col * (winW + 1.8),
+              py - extrudeH + 3.5 + fl * 5.5,
+              winW, winH
+            );
+          }
+        }
+      }
+
+    } else if (isApartment) {
+      // --- Apartments: warm varied windows, balcony hints, life ---
+      if (extrudeH > 12 && drawW > 7) {
+        const floors = Math.floor(extrudeH / 5);
+        const winW = Math.max(2, drawW * 0.16);
+        const winH = 2.5;
+        const cols = Math.min(3, Math.floor(drawW / (winW + 3)));
+        const startX = px - (cols * (winW + 2.2)) / 2 + 1;
+
+        for (let fl = 0; fl < floors; fl++) {
+          for (let col = 0; col < cols; col++) {
+            // Each window has its own character
+            const winSeed = Math.abs(Math.sin(seed * (fl * 7 + col * 13) + 0.5));
+            const wy = py - extrudeH + 3 + fl * 5;
+            const wx = startX + col * (winW + 2.2);
+
+            if (winSeed > 0.7) {
+              // Warm lit window (evening glow)
+              ctx.fillStyle = `rgba(240, 210, 140, ${0.25 + winSeed * 0.15})`;
+              ctx.fillRect(wx, wy, winW, winH);
+            } else if (winSeed > 0.4) {
+              // Curtained / dim
+              ctx.fillStyle = `rgba(180, 160, 130, 0.18)`;
+              ctx.fillRect(wx, wy, winW, winH);
+              // Half-curtain
+              ctx.fillStyle = 'rgba(220, 200, 170, 0.12)';
+              ctx.fillRect(wx, wy, winW * 0.5, winH);
+            } else {
+              // Dark / unlit
+              ctx.fillStyle = 'rgba(50, 55, 65, 0.15)';
+              ctx.fillRect(wx, wy, winW, winH);
+            }
+
+            // Occasional balcony railing (tiny line below window)
+            if (winSeed > 0.55 && fl > 0) {
+              ctx.strokeStyle = 'rgba(80, 70, 60, 0.25)';
+              ctx.lineWidth = 0.5;
+              ctx.beginPath();
+              ctx.moveTo(wx - 0.5, wy + winH + 0.8);
+              ctx.lineTo(wx + winW + 0.5, wy + winH + 0.8);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Occasional rooftop detail (HVAC unit, antenna)
+        if (seed2 > 0.6) {
+          ctx.fillStyle = 'rgba(100, 95, 88, 0.35)';
+          const boxW = 2 + seed3 * 3;
+          const boxH = 1.5 + seed3 * 2;
+          ctx.fillRect(px - boxW/2 + depthX*0.3, py - extrudeH - boxH + depthY*0.3, boxW, boxH);
+        }
+      }
+
+    } else if (b.t === 'r') {
+      // --- Small residential houses: varied, tiny life details ---
+      // Occasional warm window (someone's home)
+      if (extrudeH > 5 && drawW > 5 && seed > 0.3) {
+        const winW = Math.max(1.5, drawW * 0.2);
+        const winH = 1.8;
+        const numWins = seed > 0.7 ? 2 : 1;
+        const startX = px - (numWins * (winW + 1.5)) / 2 + 0.5;
+
+        for (let w = 0; w < numWins; w++) {
+          const wx = startX + w * (winW + 1.5);
+          const wy = py - extrudeH * 0.6;
+
+          if (seed2 > 0.5) {
+            // Warm glow
+            ctx.fillStyle = `rgba(235, 205, 130, ${0.2 + seed3 * 0.15})`;
+          } else {
+            // Cool/dark
+            ctx.fillStyle = 'rgba(60, 65, 75, 0.12)';
+          }
+          ctx.fillRect(wx, wy, winW, winH);
+        }
+      }
+
+      // Occasional chimney on small houses
+      if (seed3 > 0.75 && extrudeH > 5) {
+        ctx.fillStyle = colors.side;
+        const chimW = 1.5;
+        const chimH = 3 + seed * 2;
+        ctx.fillRect(px + drawW * 0.2, py - extrudeH - chimH, chimW, chimH);
+        ctx.strokeStyle = 'rgba(50, 45, 40, 0.3)';
+        ctx.lineWidth = 0.4;
+        ctx.strokeRect(px + drawW * 0.2, py - extrudeH - chimH, chimW, chimH);
+      }
+    }
+  }
+}
+
+function setLoadProgress(pct) {
+  document.getElementById('loading-fill').style.width = pct + '%';
+}
+
+async function init() {
+  const svg = document.getElementById('map');
+  const canvas = document.getElementById('buildings-canvas');
+  const annoCanvas = document.getElementById('annotations-canvas');
+  const container = document.getElementById('map-container');
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  const dpr = window.devicePixelRatio || 1;
+
+  // Buildings canvas
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  // Annotations canvas (top layer, above SVG)
+  annoCanvas.width = width * dpr;
+  annoCanvas.height = height * dpr;
+  annoCanvas.style.width = width + 'px';
+  annoCanvas.style.height = height + 'px';
+  const annoCtx = annoCanvas.getContext('2d');
+  annoCtx.scale(dpr, dpr);
+
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+  try {
+    setLoadProgress(10);
+
+    const [ridingsResp, transitResp, buildingsResp, natureResp, greenLineResp] = await Promise.all([
+      fetch('./calgary_ridings_2025.geojson'),
+      fetch('./calgary_transit_lines.geojson'),
+      fetch('./buildings_diorama.json'),
+      fetch('./nature_diorama.json'),
+      fetch('./green_line_simplified.geojson')
+    ]);
+
+    setLoadProgress(40);
+    const ridingsData = await ridingsResp.json();
+    setLoadProgress(50);
+    const transitData = await transitResp.json();
+    setLoadProgress(55);
+    const buildingsData = await buildingsResp.json();
+    setLoadProgress(65);
+    const natureData = await natureResp.json();
+    setLoadProgress(70);
+    const greenLineData = await greenLineResp.json();
+    setLoadProgress(75);
+
+    const project = createProjection(
+      [...ridingsData.features, ...transitData.features],
+      width, height
+    );
+
+    // --- 0. Graph paper grid (only where city is) ---
+    drawGrid(ctx, project, width, height, ridingsData.features);
+
+    // --- 0b. Rivers (canvas, before buildings) ---
+    drawRivers(ctx, natureData.hydrology, project);
+
+    // --- 0c. Parks as tree clusters ---
+    drawParks(ctx, natureData.parks, project, width, height);
+
+    // --- 0d. Roads (canvas, under buildings) ---
+    drawRoads(ctx, natureData.roads, project);
+
+    // --- 1. Buildings (canvas) ---
+    drawBuildings(ctx, buildingsData.buildings, project, width, height, buildingsData.area_p90);
+
+    // --- 1b. Compass + scale bar (on buildings canvas) ---
+    drawAnnotations(ctx, project, width, height);
+    setLoadProgress(85);
+
+    // --- 2. Riding polygons (SVG) ---
+    const ridingGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    ridingsData.features.forEach(f => {
+      const name = f.properties.Name || f.properties.name || '';
+      const coords = f.geometry.type === 'MultiPolygon'
+        ? f.geometry.coordinates[0][0]
+        : f.geometry.coordinates[0];
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', coordsToPath(coords, project));
+
+      const color = getRidingColor(name);
+      if (color) {
+        path.setAttribute('fill', color);
+        path.setAttribute('class', 'riding');
+        path.addEventListener('mouseenter', () => showInfo(name));
+        path.addEventListener('mouseleave', () => {
+          document.getElementById('info-panel').classList.remove('visible');
+        });
+      } else {
+        path.setAttribute('class', 'riding-no-data');
+      }
+      ridingGroup.appendChild(path);
+    });
+    svg.appendChild(ridingGroup);
+
+    // --- 3. Transit shadows (wobbled) ---
+    const tShadow = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    transitData.features.forEach(f => {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const offsetCoords = f.geometry.coordinates.map(c => [c[0] + 0.0008, c[1] - 0.0006]);
+      path.setAttribute('d', wobblePath(offsetCoords, project, 1.0));
+      path.setAttribute('class', 'transit-line-shadow');
+      tShadow.appendChild(path);
+    });
+    svg.appendChild(tShadow);
+
+    // --- 4. Transit lines (wobbled — yarn pinned to a board) ---
+    const colorMap = {
+      '#800080': '#9b5de5',
+      '#FF8C00': '#e07020',
+      '#008080': '#2a9d8f',
+      '#FFD700': '#ccaa00',
+      '#00AA00': '#22aa22',
+      '#FF0000': '#cc0000',
+      '#0000FF': '#2244cc'
+    };
+    const tGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    transitData.features.forEach(f => {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', wobblePath(f.geometry.coordinates, project, 1.2));
+      path.setAttribute('class', 'transit-line');
+      path.setAttribute('stroke', colorMap[f.properties.color] || f.properties.color || '#888');
+      path.setAttribute('stroke-dasharray', '6 3');
+      tGroup.appendChild(path);
+    });
+    svg.appendChild(tGroup);
+
+    // --- 4b. GREEN LINE — the ghost of what could have been ---
+    const greenLineGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    greenLineGroup.setAttribute('id', 'green-line-memorial');
+
+    // Draw shadows first
+    greenLineData.features.forEach(f => {
+      const coords = f.geometry.coordinates;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', wobblePath(coords, project, 1.5));
+      path.setAttribute('class', 'green-line-shadow');
+      greenLineGroup.appendChild(path);
+    });
+
+    // Draw the lines
+    greenLineData.features.forEach(f => {
+      const coords = f.geometry.coordinates;
+      const phase = f.properties.phase;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', wobblePath(coords, project, 1.5));
+      path.setAttribute('class', phase === 1 ? 'green-line-phase1' : 'green-line-phase2');
+      greenLineGroup.appendChild(path);
+    });
+
+    // Shepard terminus - gravestone is drawn on canvas layer, no SVG marker needed
+    svg.appendChild(greenLineGroup);
+
+    setLoadProgress(92);
+
+    // --- 5. Vote pins ---
+    const pinGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    ridingsData.features.forEach(f => {
+      const name = f.properties.Name || f.properties.name || '';
+      if (!voteData[name]) return;
+
+      const coords = f.geometry.type === 'MultiPolygon'
+        ? f.geometry.coordinates[0][0]
+        : f.geometry.coordinates[0];
+      const [cx, cy] = project(...getPolygonCentroid(coords));
+      const color = getWinnerColor2025(name);
+
+      // Shadow
+      const sh = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+      sh.setAttribute('cx', cx + 1); sh.setAttribute('cy', cy + 14);
+      sh.setAttribute('rx', 4.5); sh.setAttribute('ry', 1.5);
+      sh.setAttribute('fill', 'rgba(0,0,0,0.12)');
+      pinGroup.appendChild(sh);
+
+      // Stick
+      const st = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      st.setAttribute('x1', cx); st.setAttribute('y1', cy + 12);
+      st.setAttribute('x2', cx); st.setAttribute('y2', cy);
+      st.setAttribute('stroke', '#5a4a38'); st.setAttribute('stroke-width', '1.2');
+      pinGroup.appendChild(st);
+
+      // Head
+      const pin = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      pin.setAttribute('cx', cx); pin.setAttribute('cy', cy - 2);
+      pin.setAttribute('r', 6);
+      pin.setAttribute('fill', color);
+      pin.setAttribute('stroke', '#f4efe6'); pin.setAttribute('stroke-width', '1.5');
+      pin.setAttribute('class', 'vote-pin');
+      pin.addEventListener('mouseenter', () => showInfo(name));
+      pin.addEventListener('mouseleave', () => {
+        document.getElementById('info-panel').classList.remove('visible');
+      });
+      pinGroup.appendChild(pin);
+    });
+    svg.appendChild(pinGroup);
+
+    // --- 6. Handwritten annotations (TOP LAYER — your pen on the finished map) ---
+    // Wait for handwriting font to load before drawing annotations
+    try {
+      await document.fonts.load('22px CamilleHand');
+    } catch(e) { /* font may already be loaded or unavailable, proceed anyway */ }
+    drawHandwrittenAnnotations(annoCtx, project, width, height, natureData.parks);
+
+    setLoadProgress(100);
+    setTimeout(() => document.getElementById('loading').classList.add('hidden'), 250);
+
+  } catch (err) {
+    document.getElementById('loading').innerHTML =
+      `<span style="color:#8a4040">error: ${err.message}</span>`;
+    console.error(err);
+  }
+}
+
+// --- Zoom/Pan controls ---
+document.getElementById('zoom-in').addEventListener('click', () => {
+  zoomLevel = Math.min(4, zoomLevel + 0.3);
+  updateTransform();
+});
+
+document.getElementById('zoom-out').addEventListener('click', () => {
+  zoomLevel = Math.max(0.5, zoomLevel - 0.3);
+  updateTransform();
+});
+
+document.getElementById('zoom-reset').addEventListener('click', () => {
+  zoomLevel = 1; panX = 0; panY = 0;
+  updateTransform();
+});
+
+// Mouse wheel zoom
+document.getElementById('map-container').addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const delta = e.deltaY > 0 ? -0.15 : 0.15;
+  zoomLevel = Math.max(0.5, Math.min(4, zoomLevel + delta));
+  updateTransform();
+}, { passive: false });
+
+// Pan with mouse drag
+document.getElementById('map-container').addEventListener('mousedown', (e) => {
+  if (e.button !== 0) return;
+  isPanning = true;
+  panStart = { x: e.clientX - panX, y: e.clientY - panY };
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!isPanning) return;
+  panX = e.clientX - panStart.x;
+  panY = e.clientY - panStart.y;
+  const inner = document.getElementById('map-inner');
+  inner.style.transition = 'none';
+  inner.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+});
+
+window.addEventListener('mouseup', () => {
+  if (isPanning) {
+    isPanning = false;
+    const inner = document.getElementById('map-inner');
+    inner.style.transition = 'transform 0.1s ease-out';
+  }
+});
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
