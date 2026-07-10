@@ -1,78 +1,1074 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transit &amp; voting — coming soon · Camille Moreau</title>
-<meta name="description" content="Essay in progress: transit investment and federal voting in Calgary. Coming soon.">
-<meta name="robots" content="noindex">
-<link rel="canonical" href="https://camilleelot.github.io/transit-voting.html">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #f6f2ea;
-    --ink: #1a1814;
-    --ink-3: #7a7368;
-    --rule: #d4c9b0;
-    --accent: #8a1f11;
-    --serif: "EB Garamond", Georgia, serif;
-    --display: "Fraunces", "EB Garamond", Georgia, serif;
-    --mono: "JetBrains Mono", ui-monospace, monospace;
-  }
-  html, body { background: var(--bg); color: var(--ink); margin: 0; }
-  body {
-    font-family: var(--serif);
-    font-size: 19px;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap { max-width: 560px; margin: 0 auto; padding: 96px 32px 120px; }
-  .tick {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 20px;
-  }
-  h1 {
-    font-family: var(--display);
-    font-size: 2.1rem;
-    font-weight: 500;
-    line-height: 1.2;
-    margin: 0 0 20px;
-  }
-  h1 em { font-style: italic; }
-  p { margin: 0 0 16px; color: var(--ink); }
-  .sub { color: var(--ink-3); font-size: 1.05rem; }
-  .blink {
-    display: inline-block;
-    width: 7px; height: 7px;
-    background: var(--accent);
-    border-radius: 50%;
-    margin-right: 8px;
-    animation: pulse 1.4s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .status { font-family: var(--mono); font-size: 12px; color: var(--ink-3); margin: 32px 0; }
-  a {
-    color: inherit;
-    text-decoration: none;
-    border-bottom: 1px solid var(--rule);
-    padding-bottom: 1px;
-  }
-  a:hover { color: var(--accent); border-color: var(--accent); }
-</style>
+    <meta charset="utf-8" />
+    <title>The Quiet Politics of City-Building &middot; Camille Moreau</title>
+    <meta name="description" content="Does transit infrastructure affect how Canadians vote? 225 ridings, four elections, two natural experiments, and Calgary's Green Line — promised, killed, and resurrected inside one electoral cycle. Essay by Camille Moreau.">
+    <meta name="author" content="Camille Moreau">
+    <link rel="canonical" href="https://camilleelot.github.io/transit-voting.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="The Quiet Politics of City-Building">
+    <meta property="og:description" content="The train was cut and restored. The vote didn't notice. Transit and electoral behaviour in Canada, 2015&ndash;2025.">
+    <meta property="og:url" content="https://camilleelot.github.io/transit-voting.html">
+    <meta property="og:image" content="https://camilleelot.github.io/img/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="tufte.css" />
+    <link rel="stylesheet" href="latex.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        /* Journey Comparison Visualization */
+        .journey-viz {
+            margin: 3rem 0;
+            width: 100%;
+        }
+
+        .journey-container {
+            display: flex;
+            gap: 0;
+            width: 100%;
+            font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+        }
+
+        .journey-column {
+            flex: 1;
+            position: relative;
+            min-height: 520px;
+        }
+
+        .journey-column:first-child {
+            border-right: 1px solid #e0ddd5;
+        }
+
+        .journey-header {
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 0;
+        }
+
+        .journey-header h3 {
+            font-size: 1rem;
+            font-weight: normal;
+            font-style: italic;
+            margin: 0;
+            color: #555;
+        }
+
+        .journey-header .journey-total {
+            font-size: 2.4rem;
+            font-weight: bold;
+            color: #111;
+            line-height: 1.1;
+            margin-top: 0.2rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .journey-header .journey-total-label {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .journey-track {
+            position: relative;
+            padding: 1rem 1.2rem 1rem 3.2rem;
+        }
+
+        .journey-line {
+            position: absolute;
+            left: 1.8rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #ddd;
+        }
+
+        .journey-step {
+            position: relative;
+            padding: 0.6rem 0;
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        .journey-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .journey-node {
+            position: absolute;
+            left: -1.95rem;
+            top: 0.75rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #111;
+            z-index: 2;
+        }
+
+        .journey-node.transfer {
+            background: transparent;
+            border: 2px solid #111;
+        }
+
+        .journey-node.destination {
+            width: 12px;
+            height: 12px;
+            left: -2.0rem;
+            background: #111;
+        }
+
+        .journey-node.wait {
+            background: #ccc;
+            width: 8px;
+            height: 8px;
+            left: -1.85rem;
+            top: 0.85rem;
+        }
+
+        .journey-step-mode {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.1rem;
+        }
+
+        .journey-step-label {
+            font-size: 0.95rem;
+            color: #111;
+        }
+
+        .journey-step-duration {
+            font-size: 0.85rem;
+            color: #555;
+            font-style: italic;
+        }
+
+        .journey-step-bar {
+            margin-top: 0.4rem;
+            height: 3px;
+            background: #e8e5dd;
+            border-radius: 1px;
+            overflow: hidden;
+            max-width: 200px;
+        }
+
+        .journey-step-bar-fill {
+            height: 100%;
+            background: #111;
+            border-radius: 1px;
+            width: 0%;
+            transition: width 0.8s ease;
+        }
+
+        .journey-step-bar-fill.walking { background: #6b8f6b; }
+        .journey-step-bar-fill.transit { background: #c43b31; }
+        .journey-step-bar-fill.driving { background: #555; }
+        .journey-step-bar-fill.waiting { background: #ccc; }
+        .journey-step-bar-fill.bus { background: #e89b3e; }
+
+        /* Elapsed time markers */
+        .journey-elapsed {
+            position: absolute;
+            right: 1rem;
+            font-size: 0.75rem;
+            color: #666;
+            font-variant-numeric: tabular-nums;
+            top: 0.8rem;
+        }
+
+        /* The gap feeling */
+        .journey-gap {
+            position: relative;
+            padding: 1.2rem 0;
+        }
+
+        .journey-gap-line {
+            border-top: 1px dashed #ddd;
+            margin: 0 1.2rem 0 3.2rem;
+        }
+
+        .journey-gap-label {
+            font-size: 0.75rem;
+            color: #bbb;
+            font-style: italic;
+            text-align: center;
+            margin-top: 0.4rem;
+        }
+
+        /* Arrive state */
+        .journey-arrive {
+            padding: 0.8rem 1.2rem;
+            border-top: 2px solid #111;
+            margin: 0 0 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .journey-arrive-label {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .journey-arrive-time {
+            font-size: 0.85rem;
+            color: #999;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* The silence of already being there */
+        .journey-empty {
+            position: relative;
+            padding: 2rem 1.2rem 1rem 3.2rem;
+        }
+
+        .journey-empty-label {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Responsive */
+        @media (max-width: 760px) {
+            .journey-container {
+                flex-direction: column;
+            }
+            .journey-column:first-child {
+                border-right: none;
+                border-bottom: 1px solid #e0ddd5;
+            }
+            .journey-column {
+                min-height: auto;
+            }
+        }
+
+        /* Section-specific */
+        .section-label {
+            font-size: 0.8rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Dark mode — must come after the base rules it overrides */
+        @media (prefers-color-scheme: dark) {
+            .journey-header { border-bottom-color: #444; }
+            .journey-header .journey-total { color: #fffff8; }
+            .journey-header h3 { color: #ccc; }
+            .journey-step-label { color: #ddd; }
+            .journey-step-mode { color: #999; }
+            .journey-step-duration { color: #aaa; }
+            .journey-elapsed { color: #888; }
+            .journey-line { background: #444; }
+            .journey-step-bar { background: #333; }
+            .journey-step-bar-fill { background: #ddd; }
+            .journey-step-bar-fill.driving { background: #888; }
+            .journey-column:first-child { border-right-color: #333; }
+            .journey-gap-line { border-top-color: #444; }
+            .journey-empty-label { color: #999; }
+            .journey-node { background: #ddd; }
+            .journey-node.transfer { background: transparent; border-color: #ddd; }
+            .journey-node.destination { background: #ddd; }
+            .journey-node.wait { background: #666; }
+            .journey-arrive { border-top-color: #ddd; }
+            .journey-arrive-label { color: #fffff8; }
+        }
+
+    </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <p class="tick"><span class="blink" aria-hidden="true"></span>Coming soon · gimme a sec</p>
-    <h1>The train was cut and restored.<br><em>The vote didn't notice.</em></h1>
-    <p class="sub">225 federal ridings, four elections, journey-to-work data, and a Green Line natural experiment. The essay is drafted; I'm polishing the coda.</p>
-    <p class="status">§ Essay · Transit &amp; electoral behaviour · 2025</p>
-    <p><a href="index.html">← Back home</a> · <a href="mailto:camillemoreau2002@gmail.com?subject=Ping%20me%20when%20the%20transit%20essay%20is%20live">Email me when it's up</a></p>
-  </div>
+    <article>
+        <p style="font-size: 0.85rem; margin-bottom: 2.5rem;"><a href="index.html" style="color: inherit;">&larr; camilleelot.github.io</a></p>
+        <h1>The Quiet Politics of City-Building</h1>
+        <p class="subtitle">Does transit infrastructure affect how Canadians vote?</p>
+        <p style="font-size: 0.85rem; color: #888; font-style: italic; margin-top: -0.5rem;">Camille Moreau &middot; draft v0.9 &middot; the coda is still being written &middot; July 2026</p>
+
+        <section>
+            <p><span class="newthought">I live in Calgary's southwest,</span> about a fifteen-minute walk from the Chinook CTrain station. The walk itself is pleasant — a wide path through a park, the downtown skyline barely visible through the trees, a bus stop I walk past because I don't need it. One train, no transfers, twenty minutes to the university. Door to door, thirty-five minutes.</p>
+
+            <p>My friend lives in the northeast. Her commute: a five-minute drive to the bus stop because there's nothing walkable. A bus that comes every thirty minutes — so you don't miss it, you just arrive early and wait. Ten minutes on the bus to the LRT station. One train. A transfer. Another train. Fifty-five minutes on a good day, and that's if the bus was on time.<label for="mn-commute" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-commute" class="margin-toggle" /><span class="marginnote">Another friend took three buses to school. The first one left every thirty minutes.</span></p>
+
+            <p>I drove to her neighbourhood once. It was — empty isn't the right word. There were houses, people, land. But no buses visible, no routes obvious, no density of movement. Just wide roads and driveways and the particular silence of a place designed around cars.</p>
+
+            <p>These differences feel like they should mean something politically. They change the substrate of your entire life — not just how you get to work, but how you encounter your city, your neighbours, your time. Like the difference between vegan and non-vegan — it restructures everything downstream. And she <i>would</i> prefer transit — it's not a preference problem, it's an availability problem.</p>
+
+            <p><b>It feels, intuitively, like it should describe a type of political life. So I decided to test it.</b></p>
+        </section>
+
+        <figure class="fullwidth journey-viz" id="commute">
+            <div class="journey-container" id="journey-viz">
+                <!-- Left column: Me -->
+                <div class="journey-column">
+                    <div class="journey-header">
+                        <h3>My commute</h3>
+                        <div class="journey-total" id="total-me">—</div>
+                        <div class="journey-total-label">minutes, door to door</div>
+                    </div>
+                    <div class="journey-track">
+                        <div class="journey-line"></div>
+
+                        <div class="journey-step" data-delay="200" data-duration="15">
+                            <div class="journey-node"></div>
+                            <div class="journey-step-mode">Walk</div>
+                            <div class="journey-step-label">Home → Chinook Station</div>
+                            <div class="journey-step-duration">15 min through the park</div>
+                            <div class="journey-step-bar"><div class="journey-step-bar-fill walking" data-width="50"></div></div>
+                            <span class="journey-elapsed">0:00</span>
+                        </div>
+
+                        <div class="journey-step" data-delay="400" data-duration="20">
+                            <div class="journey-node" style="background: #c43b31;"></div>
+                            <div class="journey-step-mode">CTrain — Red Line</div>
+                            <div class="journey-step-label">Chinook → University</div>
+                            <div class="journey-step-duration">20 min, one train, no transfer</div>
+                            <div class="journey-step-bar"><div class="journey-step-bar-fill transit" data-width="67"></div></div>
+                            <span class="journey-elapsed">0:15</span>
+                        </div>
+
+                        <div class="journey-step" data-delay="600" data-duration="0">
+                            <div class="journey-node destination"></div>
+                            <div class="journey-step-mode">Arrive</div>
+                            <div class="journey-step-label">University of Calgary</div>
+                            <span class="journey-elapsed">0:35</span>
+                        </div>
+                    </div>
+                    <div class="journey-empty" id="already-there">
+                        <div class="journey-empty-label"></div>
+                    </div>
+                </div>
+
+                <!-- Right column: Her -->
+                <div class="journey-column">
+                    <div class="journey-header">
+                        <h3>Her commute</h3>
+                        <div class="journey-total" id="total-her">—</div>
+                        <div class="journey-total-label">minutes, door to door</div>
+                    </div>
+                    <div class="journey-track">
+                        <div class="journey-line"></div>
+
+                        <div class="journey-step" data-delay="300" data-duration="5">
+                            <div class="journey-node"></div>
+                            <div class="journey-step-mode">Drive</div>
+                            <div class="journey-step-label">Home → Bus stop</div>
+                            <div class="journey-step-duration">5 min — nothing walkable</div>
+                            <div class="journey-step-bar"><div class="journey-step-bar-fill driving" data-width="17"></div></div>
+                            <span class="journey-elapsed">0:00</span>
+                        </div>
+
+                        <div class="journey-step" data-delay="500" data-duration="8">
+                            <div class="journey-node wait"></div>
+                            <div class="journey-step-mode">Wait</div>
+                            <div class="journey-step-label">Bus comes every 30 min</div>
+                            <div class="journey-step-duration">~8 min average wait</div>
+                            <div class="journey-step-bar"><div class="journey-step-bar-fill waiting" data-width="27"></div></div>
+                            <span class="journey-elapsed">0:05</span>
+                        </div>
+
+                        <div class="journey-step" data-delay="700" data-duration="10">
+                            <div class="journey-node" style="background: #e89b3e;"></div>
+                            <div class="journey-step-mode">Bus</div>
+                            <div class="journey-step-label">Bus stop → LRT Station</div>
+                            <div class="journey-step-duration">10 min</div>
+                            <div class="journey-step-bar"><div class="journey-step-bar-fill bus" data-width="33"></div></div>
+                            <span class="journey-elapsed">0:13</span>
+                        </div>
+
+                        <div class="journey-step" data-delay="900" data-duration="12">
+                            <div class="journey-node" style="background: #c43b31;"></div>
+                            <div class="journey-step-mode">CTrain</div>
+                            <div class="journey-step-label">First train</div>
+                            <div class="journey-step-duration">12 min</div>
+                            <div class="journey-step-bar"><div class="journey-step-bar-fill transit" data-width="40"></div></div>
+                            <span class="journey-elapsed">0:23</span>
+                        </div>
+
+                        <div class="journey-step" data-delay="1100" data-duration="5">
+                            <div class="journey-node transfer"></div>
+                            <div class="journey-step-mode">Transfer</div>
+                            <div class="journey-step-label">Switch lines</div>
+                            <div class="journey-step-duration">~5 min between platforms</div>
+                            <div class="journey-step-bar"><div class="journey-step-bar-fill waiting" data-width="17"></div></div>
+                            <span class="journey-elapsed">0:35</span>
+                        </div>
+
+                        <div class="journey-step" data-delay="1300" data-duration="15">
+                            <div class="journey-node" style="background: #c43b31;"></div>
+                            <div class="journey-step-mode">CTrain</div>
+                            <div class="journey-step-label">Second train</div>
+                            <div class="journey-step-duration">15 min</div>
+                            <div class="journey-step-bar"><div class="journey-step-bar-fill transit" data-width="50"></div></div>
+                            <span class="journey-elapsed">0:40</span>
+                        </div>
+
+                        <div class="journey-step" data-delay="1500" data-duration="0">
+                            <div class="journey-node destination"></div>
+                            <div class="journey-step-mode">Arrive</div>
+                            <div class="journey-step-label">University of Calgary</div>
+                            <span class="journey-elapsed">0:55</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </figure>
+
+        <section>
+            <p>Same city. Same destination. Same morning. Thirty-five minutes versus fifty-five — and that's the <i>optimistic</i> version, the one where the bus is on time and the transfer connects. The pessimistic version, the one where you miss the bus that runs every thirty minutes, is an hour and a half.</p>
+
+            <p>This asymmetry feels political. It feels like it should map onto how people vote, what they believe, what kind of city they want. If your daily life is structured by transit — by its presence or its absence — surely that shapes your political commitments?</p>
+        </section>
+
+        <section>
+            <h2>The Maximal Approach</h2>
+
+            <p><span class="newthought">To test this intuition,</span> I went national. Statistics Canada publishes journey-to-work data — the percentage of people in each area who commute by transit, car, bike, or foot. Elections Canada publishes results for every federal riding going back decades. I matched them: 225 ridings, four elections (2015 through 2025), and a left-right ideology score computed from vote shares weighted by party position.<label for="sn-lr" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-lr" class="margin-toggle" /><span class="sidenote">The left-right score uses the Chapel Hill Expert Survey (CHES) Canada 2023, which places each party on a 0–10 ideological scale. A riding's score = &Sigma;(party vote share &times; party position). This captures continuous political movement rather than binary seat flips.</span></p>
+
+            <p>If transit shapes politics, ridings with more transit commuters should lean left, and changes in transit access should predict changes in voting. The correlation should be there. The map should light up.</p>
+        </section>
+
+        <figure class="fullwidth" style="margin: 2rem 0;">
+            <canvas id="scatter-canvas" width="960" height="500" style="max-width: 100%; display: block;" role="img" aria-label="Scatterplot of 225 federal ridings: percentage of commuters using transit versus rightward political swing 2015 to 2025. The points form a shapeless cloud; r equals minus 0.11, p equals 0.33."></canvas>
+            <div id="scatter-tooltip" style="position: absolute; background: #fffff8; border: 1px solid #ccc; padding: 6px 10px; font-family: et-book, Palatino, Georgia, serif; font-size: 0.85rem; pointer-events: none; opacity: 0; transition: opacity 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); z-index: 100;"></div>
+        </figure>
+
+        <section>
+            <p>The correlation between transit ridership and political swing is <b>r&nbsp;=&nbsp;&minus;0.11</b>. The p-value is 0.33 — not even close to significant.<label for="sn-corr" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-corr" class="margin-toggle" /><span class="sidenote">For context: a correlation of &minus;0.11 means transit usage explains about 1% of the variation in political swing. The remaining 99% is everything else.</span> Look at the chart. It's a cloud. Every transit category — rural, low, medium, high, very high — has ridings that swung left and ridings that swung right. There is no pattern.</p>
+
+            <p>Transit ridership is probably just a proxy for density, which is a proxy for something else entirely. The "transit voter" doesn't exist as a distinct political identity — at least not in Canada, and not at the federal level.</p>
+
+            <p>At this point, I almost stopped.</p>
+        </section>
+
+        <section>
+            <h2>Natural Experiments</h2>
+
+            <p><span class="newthought">But maybe national data is just too noisy.</span> Maybe the signal gets lost in 225 ridings spread across six time zones. So I looked for natural experiments — places where a city actually built new transit, where you could compare the ridings that got service to the ones that didn't.</p>
+
+            <p>Two cases stood out.</p>
+
+            <h3>Calgary MAX BRT (2018)</h3>
+            <p>Calgary opened three Bus Rapid Transit lines in 2018 — the Orange, Teal, and Purple — serving the northwest, southeast, and east corridors. Over $200 million in infrastructure, new dedicated lanes, new stations. If transit shapes voting, the ridings that received BRT should have diverged from those that didn't.<label for="sn-brt" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-brt" class="margin-toggle" /><span class="sidenote">The MAX Orange runs from Brentwood to Saddletowne. The MAX Teal runs to Douglas Glen. The MAX Purple runs along 17 Ave SE. Together they doubled Calgary's rapid transit network coverage.</span></p>
+        </section>
+
+        <figure class="fullwidth" style="margin: 1.5rem 0 0.5rem;">
+            <div style="display: flex; gap: 0; width: 100%;">
+                <canvas id="slope-calgary" style="flex: 1; max-width: 50%;" role="img" aria-label="Slope chart of Conservative vote share in Calgary ridings across four elections. MAX BRT ridings and non-BRT ridings move in parallel; no divergence after the 2018 opening."></canvas>
+                <canvas id="slope-montreal" style="flex: 1; max-width: 50%;" role="img" aria-label="Slope chart of Conservative vote share in Montreal-area ridings. REM corridor ridings track identically with ridings that received no new transit."></canvas>
+            </div>
+        </figure>
+
+        <section>
+            <p>They didn't diverge. Every riding — BRT or not — moved in lockstep. Up in 2019, down in 2021, back up in 2025. The same wave, the same amplitude. New transit infrastructure made zero electoral difference.</p>
+
+            <h3>Montreal REM (2023)</h3>
+            <p>Same story, bigger project. The R&eacute;seau express m&eacute;tropolitain — a $6 billion automated light metro connecting the South Shore to downtown — opened its first segment in 2023. Ridings along the REM corridor tracked identically with Montreal-area ridings that received nothing.<label for="sn-rem" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-rem" class="margin-toggle" /><span class="sidenote">The REM South Shore line connects Brossard to Gare Centrale via a new dedicated bridge. It was the largest transit project in Quebec in fifty years.</span></p>
+
+            <p>Two cities. Two major infrastructure investments. Two null results. New transit did not shift partisan alignment — not even temporarily.</p>
+
+            <p><i>At this point, I really did almost stop.</i></p>
+        </section>
+
+        <section>
+            <h2>Then I Remembered the Green Line</h2>
+
+            <p><span class="newthought">In 2015, the federal government committed $1.53 billion</span> to Calgary's Green Line LRT — the largest infrastructure investment in Alberta history. The province matched it. The city matched it. $4.6 billion total. A train from the deep north to the deep southeast, running through downtown, connecting communities that had never had rail access.</p>
+
+            <p>Then it was taken away. Then it was given back.</p>
+
+            <p>The provincial UCP government cut 86% of the provincial contribution. Added a "terminate without cause" clause. The project slowly died — the tunnel became a bridge, underground became surface, the scope shrank year after year. In July 2024, five southeast stations were cut, including Shepard. By September, the province had withdrawn all funding. City council voted to wind the whole thing down.<label for="sn-green" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-green" class="margin-toggle" /><span class="sidenote">Timeline: 2015 — federal Liberals commit $1.53B. 2019 — NDP province matches, then UCP cuts 86% and adds a kill clause. July 2024 — Shepard cut. September 2024 — province withdraws all funding; city votes to wind down. October 2024 — province reverses, new agreement reached, Shepard back in scope. March 2025 — feds approve revised plan, $6.248B total committed. June 2025 — groundbreaking at Shepard.</span></p>
+
+            <p>Then, in October 2024, the province reversed course. A new agreement was reached. Shepard was back. In March 2025 — one month before the federal election — the federal government approved the revised business case. All three levels committed $6.248 billion. The train was alive again.</p>
+
+            <p>If transit ever had a chance to matter electorally, this was it. The project was promised, killed, and resurrected — all within the span of a single electoral cycle. The Liberal federal government saved it. Twice.</p>
+
+            <p><b>So how did Shepard vote on April 28th, 2025?</b></p>
+        </section>
+
+        <figure class="fullwidth" style="margin: 2rem 0;">
+            <table style="width: 100%; font-family: et-book, Palatino, Georgia, serif; font-size: 0.9em; border-collapse: collapse;">
+                <caption style="caption-side: top; text-align: left; font-style: italic; margin-bottom: 0.5em;">Conservative vote swing in Green Line vs. non-Green Line ridings</caption>
+                <thead>
+                    <tr style="border-bottom: 2px solid #ccc;">
+                        <th style="text-align: left; padding: 0.5em; font-weight: normal; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px;">Riding</th>
+                        <th style="text-align: center; padding: 0.5em; font-weight: normal; font-size: 0.85em;">Green Line?</th>
+                        <th style="text-align: right; padding: 0.5em; font-weight: normal; font-size: 0.85em;">2021&rarr;2025 Con swing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #eee; background: rgba(196, 59, 49, 0.05);"><td style="padding: 0.4em 0.5em; font-weight: 500;">Calgary Shepard</td><td style="text-align: center; color: #22aa22;">SE terminus (cut, then restored)</td><td style="text-align: right; font-variant-numeric: tabular-nums; font-weight: bold; color: #c43b31;">+7.6%</td></tr>
+                    <tr style="border-bottom: 1px solid #eee; background: rgba(196, 59, 49, 0.03);"><td style="padding: 0.4em 0.5em;">Calgary Skyview</td><td style="text-align: center; color: #22aa22;">Phase 2</td><td style="text-align: right; font-variant-numeric: tabular-nums;">+19.3%</td></tr>
+                    <tr style="border-bottom: 1px solid #eee; background: rgba(196, 59, 49, 0.03);"><td style="padding: 0.4em 0.5em;">Calgary Nose Hill</td><td style="text-align: center; color: #22aa22;">Phase 2</td><td style="text-align: right; font-variant-numeric: tabular-nums;">+3.8%</td></tr>
+                    <tr style="border-bottom: 1px solid #eee; background: rgba(196, 59, 49, 0.03);"><td style="padding: 0.4em 0.5em;">Calgary Centre</td><td style="text-align: center; color: #22aa22;">Phase 1</td><td style="text-align: right; font-variant-numeric: tabular-nums;">&minus;1.1%</td></tr>
+                    <tr style="border-bottom: 1px solid #eee; background: rgba(196, 59, 49, 0.03);"><td style="padding: 0.4em 0.5em;">Calgary Confederation</td><td style="text-align: center; color: #22aa22;">Phase 1+2</td><td style="text-align: right; font-variant-numeric: tabular-nums;">+0.3%</td></tr>
+                    <tr style="border-bottom: 1px solid #eee;"><td style="padding: 0.4em 0.5em; color: #888;">Calgary Heritage</td><td style="text-align: center; color: #999;">No</td><td style="text-align: right; font-variant-numeric: tabular-nums; color: #888;">+3.7%</td></tr>
+                    <tr style="border-bottom: 1px solid #eee;"><td style="padding: 0.4em 0.5em; color: #888;">Calgary Midnapore</td><td style="text-align: center; color: #999;">No</td><td style="text-align: right; font-variant-numeric: tabular-nums; color: #888;">+4.8%</td></tr>
+                    <tr style="border-bottom: 2px solid #ccc;"><td style="padding: 0.4em 0.5em; color: #888;">Calgary Signal Hill</td><td style="text-align: center; color: #999;">No</td><td style="text-align: right; font-variant-numeric: tabular-nums; color: #888;">+1.1%</td></tr>
+                    <tr style="border-top: 2px solid #ccc;"><td style="padding: 0.5em; font-style: italic;">Green Line ridings avg</td><td></td><td style="text-align: right; font-weight: bold;">+6.0%</td></tr>
+                    <tr><td style="padding: 0.5em; font-style: italic; color: #888;">Non-Green Line avg</td><td></td><td style="text-align: right; color: #888;">+3.2%</td></tr>
+                    <tr style="border-top: 1px solid #ccc;"><td style="padding: 0.5em; font-weight: bold;">Difference</td><td></td><td style="text-align: right; font-weight: bold; color: #c43b31;">+2.8%</td></tr>
+                </tbody>
+            </table>
+        </figure>
+
+        <section>
+            <p>Shepard swung Conservative by 7.6 points — more than double the control group.<label for="sn-skyview" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-skyview" class="margin-toggle" /><span class="sidenote">A caveat I owe you: the Green Line average of +6.0 leans hard on Skyview, which swung +19.3 — the largest shift in Calgary, with well-documented explanations that have nothing to do with trains. Drop Skyview and the Green Line average falls to +2.7, statistically indistinguishable from the +3.2 control group. Either way the conclusion is the same: no transit signal, in either direction. That <i>is</i> the finding.</span> One month after the Liberal federal government re-committed $1.5 billion to build their train station — the station that had been cut and then restored — Shepard voted more Conservative than ever.</p>
+
+            <p>The train being taken away didn't punish the Conservatives. The train being given back didn't reward the Liberals. Transit was electorally invisible in both directions.</p>
+        </section>
+
+        <figure class="fullwidth" style="margin: 2rem 0; position: relative;" id="diorama-figure">
+            <iframe src="viz/calgary_diorama.html" title="Interactive diorama of Calgary: thinned building footprints, the Green Line alignment, and the gravestone at Shepard Station" style="width: 100%; height: 80vh; border: none; border-radius: 4px;" loading="lazy"></iframe>
+        </figure>
+        <script>
+        // Graceful fallback while the diorama file migrates over from my desktop.
+        (function () {
+            fetch('viz/calgary_diorama.html', { method: 'HEAD' }).then(function (r) {
+                if (r.ok) return;
+                throw new Error('missing');
+            }).catch(function () {
+                document.getElementById('diorama-figure').innerHTML =
+                    '<p style="font-style: italic; color: #888; text-align: center; padding: 3rem 1rem; border: 1px dashed #ccc;">' +
+                    'The interactive diorama &mdash; one building per 400-metre grid cell, the Green Line alignment, and the gravestone at Shepard Station &mdash; is on its way here. Gimme a sec.</p>';
+            });
+        })();
+        </script>
+
+        <section>
+            <p>This is the finding that stopped me. Not a null result — something worse. The complete electoral irrelevance of a $6.2 billion infrastructure project to the people it directly serves. The Liberals funded it, lost it, re-funded it. The Conservatives cut it, un-cut it. And the voters in Shepard treated the federal election as though the Green Line didn't exist.<label for="sn-brown" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-brown" class="margin-toggle" /><span class="sidenote">The train broke ground at Shepard in June 2025 — two months after the election. The voters went to the polls knowing their station was approved, funded, and coming. It didn't register.</span></p>
+
+            <p>The project was promised, killed, resurrected, and at no point — at no point — did it show up in the vote.</p>
+        </section>
+
+        <section>
+            <h2>What This Means</h2>
+
+            <p><span class="newthought">The diorama has a small, silent gravestone</span> at Shepard Station. I made it when the station was cancelled. By the time you're reading this, there's a construction site there instead. The train is being built.</p>
+
+            <p>The gravestone isn't for the train. The train survived.</p>
+
+            <p>It's a memorial to the idea that any of this mattered to the vote.</p>
+
+            <p>The data doesn't tell you what to conclude. It sits there and lets you read it three ways. I think all three are partially true, and the tension between them is where the real finding lives.</p>
+
+            <h3>H<sub>1</sub>: The Boring Federalism Hypothesis</h3>
+
+            <p>Transit is municipal. Elections are federal. The provincial government is a third actor with its own logic. What happened to the Green Line is a boring, structural story about three tiers of government that aren't as coupled as we'd like to think. The Liberal federal government committed funding. The NDP provincial government matched it. The UCP provincial government killed it. The federal election in 2025 was about something else entirely — and Shepard voters voted on whatever <i>that</i> was, not on the train they lost.<label for="sn-fed" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-fed" class="margin-toggle" /><span class="sidenote">Calgary's 2024 rezoning fight supports this reading. It was fought on planning grounds, not federal partisan identity. Provincial UCP voters split on the issue. Municipal politics operated independently of the federal axis.</span></p>
+
+            <p>Under this reading, the null result is <i>healthy</i>. Canadian democracy maintains separation between levels. You can build infrastructure without culture war proxy battles. Cities are changing — densifying, building transit — and the federal election doesn't care. Calgary built BRT under a Conservative province. Montreal built the REM under a Liberal one. The train got cancelled and nobody federally noticed. That's boring. Maybe that's fine.</p>
+
+            <h3>H<sub>2</sub>: The Neoliberal Subject Hypothesis</h3>
+
+            <p>The conservative provincial voter and the Conservative federal voter are the same person. Same province, same city, same riding. The UCP cut the Green Line as "fiscal responsibility." The federal Conservatives ran on fiscal responsibility. And the voters in Shepard — who lost a train station — rewarded both.<label for="sn-brown2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-brown2" class="margin-toggle" /><span class="sidenote">Wendy Brown, <i>Undoing the Demos</i> (2015): neoliberalism doesn't just change policy preferences — it restructures the political subject. Citizens become market actors who evaluate fiscal efficiency rather than making claims on the state. The Shepard voter isn't a citizen who got robbed. The Shepard voter is a taxpayer who approves of discipline.</span></p>
+
+            <p>Under this reading, the result is perverse but coherent. Voters have internalized the logic that public goods are suspect, that infrastructure spending is wasteful unless it serves the existing car-based order, that the only legitimate political act is to evaluate efficiency. The money was already given — $1.53 billion, committed, honored — and they approved of it being taken away. It isn't that they don't want a train; wanting a train isn't how they understand their role as political subjects.</p>
+
+            <h3>H<sub>3</sub>: The Missing Constituency Hypothesis</h3>
+
+            <p>The voters in Shepard aren't stupid. They aren't misaligned. They understand what provincial debt looks like. They can see the dangers of a large infrastructure project — the overruns, the delays, the decades of disruption for a train that may or may not change their lives. They weighed it for themselves and said: <i>no, this is not worth it.</i> And they might be right. That's what makes this hypothesis the devastating one.</p>
+
+            <p>Four thinkers saw this coming, each with increasing severity.</p>
+
+            <p>Tocqueville slaps you across the face — open-handed, the way a family member does when they're trying to wake you up, not hurt you. In <i>Democracy in America</i> he saw that democratic citizens retreat into small circles of private concern. Not because they're selfish. Because they lose the <i>capacity</i> to see the common good. "Each man is forever thrown back on himself alone, and there is danger that he may be shut up in the solitude of his own heart." The Shepard voter sees the tax bill. The train is an abstraction. Tocqueville still believes in you — he's warning you. He thinks you can still wake up.<label for="sn-tocq" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-tocq" class="margin-toggle" /><span class="sidenote">Alexis de Tocqueville, <i>Democracy in America</i> (1835/1840). His concept of "democratic individualism" — distinct from selfishness — describes a structural withdrawal from public life into private satisfaction. He predicted that democratic peoples would willingly surrender collective capacity for personal comfort.</span></p>
+
+            <p>Olson shoves you. He looks at you like an ant beneath his presence — like we're all ants. In <i>The Logic of Collective Action</i>, the mechanism is clear: concentrated costs, diffuse future benefits. The developers who lose money from disruption are organized. The future transit riders are not — they literally cannot be, because they don't know who they are yet. The hive we've maintained can be maintained. But it cannot build something new, because every ant has started thinking of itself. When the constituency is imaginary and the opposition is real, the project was always going to die.<label for="sn-olson" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-olson" class="margin-toggle" /><span class="sidenote">Mancur Olson, <i>The Logic of Collective Action</i> (1965). Large groups with diffuse interests cannot organize effectively because each individual's rational choice is to free-ride. Small groups with concentrated interests — incumbents, landowners, existing commuters — will always out-organize them.</span></p>
+
+            <p>Schumpeter punches you in the gut. Because he says: you are a human being with agency, with education, with free and open access to information — and you are <i>structurally irrational</i>. In <i>Capitalism, Socialism and Democracy</i>, he argues that citizens invest less thought in political decisions than in buying a car. Not for lack of ability — the marginal impact of a single vote approaches zero, so it <i>rationally</i> shouldn't matter what they know. The Shepard voter isn't evaluating transit policy. They're evaluating a brand. "Conservative" means fiscal discipline. That's enough. People put more thought into which <i>model</i> of car than into which party — because the car purchase actually has consequences for them, and the vote doesn't.<label for="sn-schump" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-schump" class="margin-toggle" /><span class="sidenote">Joseph Schumpeter, <i>Capitalism, Socialism and Democracy</i> (1942). His critique of "classical democratic theory" argues that Mill's educated populace hypothesis fails not because people lack education but because democratic participation offers no individual incentive for rational engagement. Democracy functions as elite competition for votes, not as collective deliberation.</span></p>
+
+            <p>Gramsci writes you out of the will. He looks at you — the person who went to debate club in high school, who played piano, who read theory in early university — and says: you have stopped being that person. In the <i>Prison Notebooks</i>, hegemony isn't force and it isn't lies. It's <i>common sense</i>. "Fiscal responsibility" isn't an argument in Calgary. It's the water. The approval of the cuts wasn't chosen — it was already the natural position of a subject constituted by decades of cultural production. You didn't decide the train wasn't worth it. You were already the kind of person for whom that conclusion was inevitable. The subject of what <i>should be approved</i> was moved, and you never noticed you fell into that crowd.<label for="sn-gram" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-gram" class="margin-toggle" /><span class="sidenote">Antonio Gramsci, <i>Selections from the Prison Notebooks</i> (1929&ndash;1935). Hegemony operates through the production of "common sense" — the ideas that feel natural, obvious, beyond question. The dominant class doesn't need coercion when its worldview has become the default framework through which all political questions are evaluated.</span></p>
+
+            <p>Under this reading, projects like the Green Line are structurally doomed whenever they disturb the city-building logic of the last fifty years. Car-based infrastructure is locked in — not just physically but <i>politically</i>. The people in those ridings drive. The train is speculative, distant, maybe smelly. Taking money away from a train they'll never ride and calling it "savings" is not just electorally safe — it's rewarded. And effective transit, like effective rezoning, becomes another top-down process — one that has to be fought for on the ground by people who already exist. And municipal, provincial, and federal elections are three different elections — with different logics, different electorates, different things at stake. The Green Line lives in all three. It dies in the gaps between them. The political reality underneath — no constituency, car lock-in, hegemonic common sense — is the water table. You can build on top of it. You can pour your foundation and frame your walls and hang your drywall and pretend the water isn't there. But if you don't get down there and physically pump it out — do the ground-level political work of building a constituency that doesn't yet exist — it will get into your foundation. And eventually the house comes down.<label for="sn-rezoning" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-rezoning" class="margin-toggle" /><span class="sidenote">Calgary's blanket rezoning in 2024 showed the same pattern: a wholesale policy decision on a market already in motion produced a 16% drop in construction starts. The policy may work long-term, but the transition creates its own resistance. Three tiers of government, three different election cycles, three different publics — and no mechanism to connect them.</span></p>
+        </section>
+
+        <section>
+            <h2>What Went Wrong and How I Fixed It</h2>
+
+            <p><span class="newthought">This project did not arrive cleanly.</span> The finding you just read — Green Line ridings swinging more Conservative after losing their train — was the last thing I found, not the first. The path here was littered with null results, wrong assumptions, and at least one major factual error that I caught after the analysis was done.</p>
+
+            <p>I'm including the wreckage because the process is the argument. If you trust the finding, you should see what didn't work.</p>
+
+            <h3>Dead End 1: The National Scatterplot</h3>
+
+            <p>I started where you'd expect — does transit usage predict political swing? 225 ridings, census transit-commute percentages, left-right ideology scores. The answer was r&nbsp;=&nbsp;&minus;0.11, p&nbsp;=&nbsp;0.33. Nothing.<label for="sn-de1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-de1" class="margin-toggle" /><span class="sidenote">The scatterplot is still in Section 2. I kept it because the null result is the point — it's what makes the case-study approach necessary. Transit at the national level is a proxy for density, which is a proxy for something else entirely.</span></p>
+
+            <p>This was the right first test and the right result. Transit doesn't predict federal voting. But I wanted it to, and I spent too long trying to make it.</p>
+
+            <h3>Dead End 2: Calgary BRT (2018)</h3>
+
+            <p>The MAX Orange, Teal, and Purple lines. New BRT service in Calgary. I pulled the ridings that overlapped BRT corridors and compared them to non-BRT ridings across four federal elections. No distinct pattern — BRT ridings moved with regional trends. The slopes are in Section 3.<label for="sn-de2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-de2" class="margin-toggle" /><span class="sidenote">BRT is also a weaker treatment than LRT — cheaper, faster to build, less visible. If anything was going to show up, it would be in a mega-project like the Green Line, not in bus lanes.</span></p>
+
+            <h3>Dead End 3: Montreal REM (2023)</h3>
+
+            <p>$6 billion automated light metro. South Shore ridings that got new rapid transit compared to ridings that didn't. No distinct effect. New infrastructure didn't shift partisan alignment. Also in Section 3.</p>
+
+            <h3>Dead End 4: The Geospatial Nightmare</h3>
+
+            <p>Canada had a federal redistribution in 2024.<label for="sn-redistribution" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-redistribution" class="margin-toggle" /><span class="sidenote"><img src="viz/f1_1-eng.svg" alt="Statistics Canada Standard Geographical Classification hierarchy showing FED, CT, CMA on separate branches" style="width:100%;" onerror="this.style.display='none'" /><br/>Statistics Canada, Standard Geographical Classification, 2021. FED (federal electoral districts, 338) is on a completely separate branch from Census Tracts (6,247) and CMAs (41). This study needed data from all three. None of them align.</span> The ridings changed. Not a few of them — dozens. Calgary went from 8 to 9 federal seats. Boundaries moved. Some ridings were split, some merged, some renamed with completely different geographies underneath. And there is no clean crosswalk. No table that says "riding X in 2021 became riding Y in 2024 with Z% overlap." You have to build that yourself, spatially, by overlaying the old boundaries on the new ones and calculating how much of the old riding falls inside the new one.</p>
+
+            <p>And here's the problem: area-weighted overlap is not population-weighted overlap. A riding is 60% farmland and highway overpass, 40% dense suburb — the area ratio says 60/40 but the population is 95/5. To do it properly you'd need to map it neighbourhood by neighbourhood, and the neighbourhoods don't align with ridings either. You'd need dissemination areas or census tracts, which are — as established — on a completely different branch of the geographic hierarchy.<label for="sn-area" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-area" class="margin-toggle" /><span class="sidenote">The actual code: <code>overlap_pct = overlap_area / area_2025 * 100</code>. Pure geometry. Islands, highways, rivers, empty fields — all weighted equally with residential neighbourhoods. Line 113 of <code>interpolate_redistricted_ridings.py</code>.</span></p>
+
+            <p>And before any of that — before the spatial joins, before the area calculations — you have to <i>match the ridings by name</i>. This sounds trivial. It was not. Elections Canada uses em-dashes in some datasets and en-dashes in others. Accents appear in some files (Beauséjour) and not others (Beausejour). Some ridings are listed in French, some in English, some bilingual with a slash. "London Centre North" in one dataset is "London North Centre" in another. "Surrey South—White Rock" becomes "South Surrey—White Rock." "Sainte-" and "Saint-" are used interchangeably. I wrote a normalization function that strips four types of dashes, three types of apostrophes, sixteen accent characters, translates sixteen French words to English, and includes twelve hardcoded word-order corrections for ridings that Elections Canada simply named differently between elections.<label for="sn-names" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-names" class="margin-toggle" /><span class="sidenote">The word-order corrections, verbatim from the code: London Centre North → London North Centre. Winnipeg Centre South → Winnipeg South Centre. Nova Centre → Central Nova. Surrey South White Rock → South Surrey White Rock. Trail Carlton Eagle Creek → Carlton Trail Eagle Creek. Territories North West → Northwest Territories. There are twelve of these. Each one was discovered by a failed join.</span> I wrote this function fourteen times across the project. Each version slightly different. Each one finding a new edge case.</p>
+
+            <p>So I said fuck it. Canadian electoral law requires roughly equal population per riding (~100,000). The boundaries moved, but the populations stayed roughly the same. I area-divided it, accepted that maybe 20% of voters in a redistributed riding came from a different old riding than my model assumed, and subtracted the redistributed ridings from the core analysis. The 225 "stable" ridings — boundaries unchanged across all four elections — are the foundation. The interpolated ridings are a check, not the finding. It wasn't clean. But it was at least coherent.</p>
+
+            <p>This happened in the middle of the study period. The 2015, 2019, and 2021 elections used one set of boundaries. The 2025 election used another. Every riding-level comparison across that boundary requires spatial interpolation — and every interpolation introduces error that you can estimate but never eliminate.</p>
+
+            <p>Then there was the journey-to-work data. The transit commute percentages come from the census. But the census doesn't report journey-to-work at the riding level. It reports at the Census Metropolitan Area level — which is an entirely different bureaucratic geography.<label for="sn-jtw" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-jtw" class="margin-toggle" /><span class="sidenote">The CMA-level data means that for some cities, the transit commute percentage is just one number for the entire metropolitan area. Calgary: one number. Edmonton: one number. You can't distinguish between a downtown riding where 30% take transit and a suburban riding where 2% do — it's all averaged into one CMA figure.</span> So the transit variable — the entire independent variable of this study — had to be reconstructed from census-tract-level data, spatially joined to riding boundaries that were themselves in flux. We had to scrap entire cities from the analysis when the journey-to-work data was only available at the CMA level and couldn't be disaggregated.</p>
+
+            <p>And then the diorama. The City of Calgary publishes every building footprint. Every one. The raw file is 365 megabytes of GeoJSON. A browser will not render 365 megabytes of buildings. So I wrote a thinning script. Then I rewrote it. Then I rewrote it again.<label for="sn-thin" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-thin" class="margin-toggle" /><span class="sidenote">Three versions: <code>thin_buildings.py</code> targeted 30-50K buildings. Too many — the browser choked. <code>thin_buildings_v2.py</code> got it tighter. <code>thin_buildings_v3.py</code> — described in its own docstring as "aggressive thinning for true diorama aesthetic" — divides the city into 400-meter grid cells and keeps one building per cell, the largest one. Garages removed first. ~3,000 buildings survived out of the entire city.</span> The final version divides Calgary into 400-meter grid cells, keeps one building per cell — the largest — and throws away everything else. Every garage, every shed, every small residential footprint: gone. What's left is roughly 1 in 200 buildings. Enough to show urban form. Few enough that the browser doesn't catch fire.</p>
+
+            <h3>The Error I Caught</h3>
+
+            <p>The original version of this essay said the Green Line was dead. It said the gravestone was for the train. I wrote an entire conclusion around the idea that the project had been killed and the voters didn't care.<label for="sn-error" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-error" class="margin-toggle" /><span class="sidenote">The timeline: In October 2024, the province reversed its position. In March 2025, the federal government approved funding. In June 2025, construction began at Shepard. The election was April 28, 2025 — six weeks before groundbreaking.</span></p>
+
+            <p>Then I checked. The Green Line was resurrected. The province reversed. The feds re-committed. Construction started. The train is being built.</p>
+
+            <p>This made the finding <i>stronger</i>, not weaker. The voters went to the polls in April 2025 knowing their station was approved, funded, and coming — and it still didn't register. Transit was invisible in both directions: cancellation didn't punish, restoration didn't reward. But I had to catch the error first, and I almost didn't.</p>
+        </section>
+
+    </article>
+
+    <script>
+    // Intersection Observer for scroll-triggered animation
+    (function() {
+        const viz = document.getElementById('journey-viz');
+        let animated = false;
+
+        function animateJourney() {
+            if (animated) return;
+            animated = true;
+
+            const steps = viz.querySelectorAll('.journey-step');
+            steps.forEach((step, i) => {
+                const delay = parseInt(step.dataset.delay) || i * 200;
+                setTimeout(() => {
+                    step.classList.add('visible');
+                    // Animate the bar fill
+                    const bar = step.querySelector('.journey-step-bar-fill');
+                    if (bar) {
+                        setTimeout(() => {
+                            bar.style.width = bar.dataset.width + '%';
+                        }, 150);
+                    }
+                }, delay);
+            });
+
+            // Count up the totals
+            setTimeout(() => countUp('total-me', 35, 1200), 400);
+            setTimeout(() => countUp('total-her', 55, 1800), 600);
+
+            // "Already in class" appears when left side is done but right is still going
+            setTimeout(() => {
+                const empty = document.getElementById('already-there');
+                if (empty) {
+                    empty.querySelector('.journey-empty-label').textContent = 'already in class.';
+                    empty.style.opacity = '0';
+                    empty.style.transition = 'opacity 1s ease';
+                    requestAnimationFrame(() => { empty.style.opacity = '1'; });
+                }
+            }, 1600);
+        }
+
+        function countUp(id, target, duration) {
+            const el = document.getElementById(id);
+            const start = performance.now();
+            function tick(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                // ease out
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(eased * target);
+                el.textContent = current;
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+
+        // Use IntersectionObserver if available
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateJourney();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            observer.observe(viz);
+        } else {
+            // Fallback: animate on load
+            window.addEventListener('load', animateJourney);
+        }
+    })();
+
+    // Section 2: Scatterplot — transit % vs political swing
+    (function() {
+        const DATA = [[0.0,0.921,"Lib"],[0.0,0.965,"Blo"],[0.0,1.113,"Lib"],[27.6,0.599,"Lib"],[8.0,0.24,"Lib"],[11.3,0.618,"Lib"],[3.1,0.757,"Lib"],[5.8,0.366,"Con"],[3.1,0.895,"Lib"],[2.8,0.457,"Con"],[6.1,0.176,"Con"],[1.8,0.45,"Lib"],[29.2,0.578,"Lib"],[0.0,0.269,"Con"],[7.8,0.304,"Lib"],[2.2,0.905,"Lib"],[4.1,0.546,"Blo"],[0.8,0.514,"Blo"],[29.4,0.379,"Lib"],[7.8,0.086,"Con"],[12.4,0.609,"Lib"],[7.0,1.047,"Lib"],[14.8,0.562,"Lib"],[9.2,0.78,"Con"],[0.0,0.328,"Con"],[3.9,0.564,"Lib"],[14.4,0.5,"Lib"],[0.0,0.351,"Con"],[5.5,0.071,"Lib"],[15.0,0.579,"Lib"],[7.8,0.22,"Con"],[7.8,0.094,"Lib"],[7.8,0.011,"Con"],[7.8,0.062,"Con"],[7.8,0.062,"Con"],[7.8,0.161,"Con"],[7.8,0.05,"Con"],[7.8,0.611,"Con"],[4.6,0.468,"Con"],[0.0,0.873,"Lib"],[0.0,1.039,"Con"],[0.0,0.079,"Lib"],[2.9,0.607,"Con"],[7.7,0.671,"Lib"],[7.8,0.292,"Con"],[0.0,0.77,"Lib"],[0.0,0.739,"Con"],[1.9,0.957,"Con"],[1.5,0.583,"Con"],[0.0,0.689,"Lib"],[5.6,0.61,"Con"],[3.9,0.639,"Lib"],[10.1,0.662,"Lib"],[0.0,0.314,"NDP"],[0.0,0.671,"Con"],[0.0,0.662,"Lib"],[7.7,0.553,"Lib"],[30.0,0.763,"Lib"],[9.3,0.517,"Lib"],[0.0,0.225,"Lib"],[26.6,0.256,"Lib"],[21.9,-0.081,"Lib"],[21.8,0.561,"Lib"],[1.2,0.553,"Blo"],[1.3,0.604,"Con"],[6.1,0.265,"Lib"],[6.1,0.189,"Con"],[6.1,0.475,"Con"],[6.1,0.219,"Con"],[6.1,0.034,"NDP"],[6.1,0.247,"Con"],[28.6,0.234,"Lib"],[0.0,0.691,"Lib"],[8.4,0.258,"Con"],[7.7,0.786,"Lib"],[2.0,1.238,"Con"],[15.5,0.296,"Lib"],[21.7,0.352,"Lib"],[22.3,0.719,"Lib"],[11.0,0.713,"Lib"],[7.8,0.098,"Con"],[0.0,0.713,"Con"],[2.7,0.748,"Con"],[0.0,0.701,"Lib"],[4.0,0.278,"Lib"],[0.0,0.591,"Con"],[7.7,0.633,"Lib"],[7.7,0.489,"Lib"],[6.5,0.759,"Lib"],[6.5,1.186,"Con"],[6.5,0.87,"Lib"],[6.5,0.352,"Lib"],[20.2,0.484,"Lib"],[0.0,0.656,"Lib"],[27.2,0.589,"Lib"],[0.0,0.416,"Con"],[1.9,0.813,"Blo"],[8.4,0.36,"Con"],[4.8,0.639,"Con"],[7.7,0.53,"Lib"],[4.9,0.455,"Lib"],[4.6,-0.029,"Con"],[4.6,0.26,"Lib"],[4.6,0.543,"Con"],[0.0,0.977,"Lib"],[0.0,0.129,"Blo"],[8.6,0.357,"Lib"],[0.0,0.397,"Con"],[32.4,0.49,"Lib"],[0.5,0.501,"Blo"],[1.9,0.405,"Con"],[7.8,0.132,"Con"],[4.9,0.605,"Con"],[4.9,0.204,"Lib"],[0.0,1.36,"Con"],[16.9,0.528,"Lib"],[15.2,0.569,"Lib"],[7.8,0.067,"Lib"],[0.0,1.093,"Lib"],[0.0,0.799,"Lib"],[9.3,0.576,"Lib"],[5.4,0.164,"Lib"],[8.5,0.451,"Lib"],[6.5,0.107,"Con"],[0.0,0.318,"Con"],[1.7,0.781,"Blo"],[0.0,0.623,"Con"],[13.5,0.398,"Lib"],[13.8,0.418,"Lib"],[9.0,0.155,"Lib"],[9.9,0.194,"Lib"],[13.6,0.67,"Lib"],[8.1,0.255,"Lib"],[1.9,0.73,"Blo"],[2.9,0.816,"Con"],[27.2,0.149,"Lib"],[3.6,0.61,"Con"],[0.0,0.012,"Lib"],[4.0,0.348,"Con"],[1.9,0.215,"Con"],[0.0,0.653,"Lib"],[0.0,0.578,"Con"],[0.0,0.746,"Lib"],[0.0,-0.094,"NDP"],[0.0,0.017,"Lib"],[5.1,0.668,"Con"],[0.0,0.327,"Lib"],[0.0,0.186,"Lib"],[0.0,-0.037,"Lib"],[31.8,0.498,"Lib"],[2.3,0.464,"Con"],[37.9,0.359,"Lib"],[0.0,0.474,"Con"],[0.0,0.519,"Con"],[0.0,0.497,"Con"],[11.2,0.548,"Lib"],[4.7,0.886,"Con"],[12.7,0.668,"Lib"],[8.4,0.31,"Con"],[7.8,0.481,"Con"],[0.0,0.968,"Con"],[0.0,0.746,"Con"],[8.4,0.397,"Con"],[3.3,0.902,"Con"],[3.3,0.961,"Con"],[3.3,0.754,"Con"],[4.3,0.452,"Blo"],[0.0,0.474,"Con"],[4.5,0.611,"Lib"],[30.1,0.215,"NDP"],[7.7,0.426,"Gre"],[2.9,0.552,"Blo"],[24.4,0.389,"Lib"],[25.1,0.446,"Lib"],[0.0,0.542,"Lib"],[2.9,0.573,"Con"],[2.9,0.908,"Con"],[21.0,0.228,"Lib"],[18.9,0.448,"Lib"],[31.0,0.583,"Lib"],[8.4,0.357,"Con"],[0.0,0.466,"Blo"],[3.9,0.562,"Lib"],[6.1,0.118,"Con"],[0.4,0.312,"Con"],[0.0,0.277,"Con"],[0.0,0.905,"Con"],[3.3,0.613,"Con"],[7.7,0.859,"Lib"],[5.1,0.179,"Lib"],[1.9,0.284,"Lib"],[3.1,1.097,"Lib"],[0.0,0.895,"Lib"],[22.9,1.099,"Lib"],[4.8,0.549,"Lib"],[11.8,0.296,"Con"],[3.4,1.068,"Lib"],[3.4,0.957,"Lib"],[2.3,0.868,"Con"],[31.8,0.494,"Lib"],[28.1,0.722,"Lib"],[34.7,0.383,"Lib"],[2.1,0.698,"Lib"],[24.3,0.468,"Lib"],[19.4,0.574,"Lib"],[22.6,0.4,"NDP"],[20.9,0.375,"Lib"],[29.9,0.256,"NDP"],[17.1,0.262,"Lib"],[4.2,0.557,"Con"],[7.7,0.761,"Lib"],[16.4,0.61,"Lib"],[4.6,0.175,"Lib"],[8.5,0.372,"Lib"],[8.3,0.181,"Lib"],[30.6,0.302,"Lib"],[2.0,0.933,"Con"],[8.4,0.187,"NDP"],[8.4,0.731,"Lib"],[8.4,0.046,"Lib"],[8.4,0.057,"Lib"],[6.1,0.011,"Con"],[30.2,0.427,"Con"],[0.0,0.804,"Con"],[0.0,0.635,"Lib"]];
+
+        const NAMES = ["Abitibi--Baie-James--Nunavik--Eeyou","Abitibi--Temiscamingue","Acadie--Bathurst","Ahuntsic-Cartierville","Ajax","Alfred-Pellan","Argenteuil--La Petite-Nation","Aurora--Oak Ridges--Richmond Hill","Avalon","Barrie--Springwater--Oro-Medonte","Battle River--Crowfoot","Baie de Quinte","Beaches--East York","Beauce","Beauport--Limoilou","Beausejour","Beloeil--Chambly","Berthier--Maskinonge","Bourassa","Bow River","Brampton-Centre","Brampton East","Brampton South","Brampton West","Brandon--Souris","Brome--Missisquoi","Brossard--Saint-Lambert","Bruce--Grey--Owen Sound","Burlington","Burnaby North--Seymour","Calgary Centre","Calgary Confederation","Calgary Heritage","Calgary Midnapore","Calgary Nose Hill","Calgary Shepard","Calgary Signal Hill","Calgary Skyview","Cambridge","Cardigan","Cariboo--Prince George","Carleton","Carlton Trail--Eagle Creek","Nova Centre","Charlesbourg--Haute-Saint-Charles","Charlottetown","Chatham-Kent--Leamington","Chicoutimi--Le Fjord","Chilliwack--Hope","Churchill--Keewatinook Aski","Cloverdale--Langley City","Compton--Stanstead","Coquitlam--Port Coquitlam","Courtenay--Alberni","Cowichan--Malahat--Langford","Cumberland--Colchester","Dartmouth--Cole Harbour","Davenport","Delta","Desnethé--Missinippi--Churchill River","Don Valley North","Don Valley West","Dorval--Lachine--LaSalle","Drummond","Dufferin--Caledon","Edmonton Centre","Edmonton Griesbach","Edmonton Manning","Edmonton Riverbend","Edmonton Strathcona","Edmonton West","Eglinton--Lawrence","Egmont","Elmwood--Transcona","Esquimalt--Saanich--Sooke","Essex","Etobicoke Centre","Etobicoke--Lakeshore","Etobicoke North","Fleetwood--Port Kells","Foothills","Fort McMurray--Cold Lake","Fundy Royal","Gatineau","Guelph","Haldimand--Norfolk","Halifax","Halifax West","Hamilton Centre","Hamilton East--Stoney Creek","Hamilton Mountain","Hamilton West--Ancaster--Dundas","Honore-Mercier","Hull--Aylmer","Humber River--Black Creek","Huron--Bruce","Jonquiere","Kildonan--St. Paul","King--Vaughan","Kings--Hants","Kingston and the Islands","Kitchener Centre","Kitchener--Conestoga","Kitchener South--Hespeler","Labrador","Lac-Saint-Jean","Lac-Saint-Louis","Lakeland","LaSalle--Emard--Verdun","Laurentides--Labelle","Lethbridge","Levis--Lotbiniere","London--Fanshawe","London West","Long Range Mountains","Longueuil--Charles-LeMoyne","Longueuil--Saint-Hubert","Louis-Hebert","Madawaska--Restigouche","Malpeque","Marc-Aurele-Fortin","Markham--Stouffville","Markham--Thornhill","Markham--Unionville","Medicine Hat--Cardston--Warner","Mirabel","Miramichi--Grand Lake","Mississauga Centre","Mississauga East--Cooksville","Mississauga--Erin Mills","Mississauga--Lakeshore","Mississauga--Malton","Mississauga--Streetsville","Montcalm","Moose Jaw--Lake Centre--Lanigan","Mont-Royal","Nanaimo--Ladysmith","Nepean","Newmarket--Aurora","Niagara West","Nipissing--Timiskaming","North Island--Powell River","Northwest Territories","Nunavut","Orleans","Oshawa","Ottawa Centre","Ottawa South","Ottawa West--Nepean","Outremont","Oxford","Papineau","Parry Sound--Muskoka","Peace River--Westlock","Perth--Wellington","Pierrefonds--Dollard","Pitt Meadows--Maple Ridge","Port Moody--Coquitlam","Portage--Lisgar","Portneuf--Jacques-Cartier","Prince Albert","Prince George--Peace River--Northern Rockies","Provencher","Regina--Lewvan","Regina--Qu'Appelle","Regina--Wascana","Repentigny","Richmond--Arthabaska","Riviere-des-Mille-Iles","Rosemont--La Petite-Patrie","Saanich--Gulf Islands","Saint-Jean","Saint-Laurent","Saint-Leonard--Saint-Michel","Saint-Maurice--Champlain","Saskatoon--University","Saskatoon West","Scarborough--Agincourt","Scarborough North","Scarborough Southwest","Selkirk--Interlake--Eastman","Shefford","Sherbrooke","Sherwood Park--Fort Saskatchewan","Simcoe--Grey","Simcoe North","Skeena--Bulkley Valley","Souris--Moose Mountain","South Shore--St. Margarets","Surrey South--White Rock","St. Catharines","St. John's East","Sudbury","Surrey Centre","Terrebonne","Thornhill","Thunder Bay--Rainy River","Thunder Bay--Superior North","Tobique--Mactaquac","Toronto Centre","Toronto--Danforth","Toronto--St. Paul's","Trois-Rivieres","University--Rosedale","Vancouver Centre","Vancouver East","Vancouver Granville","Vancouver Kingsway","Vancouver Quadra","Vaughan--Woodbridge","Victoria","Vimy","Waterloo","West Vancouver--Sunshine Coast--Sea to Sky Country","Whitby","Willowdale","Windsor West","Winnipeg Centre","Winnipeg North","Winnipeg South","Winnipeg South Centre","Yellowhead","York Centre","Yorkton--Melville","Yukon"];
+
+        const COLORS = {
+            Lib: '#d63028',  // Liberal red
+            Con: '#1a4782',  // Conservative blue
+            NDP: '#f58220',  // NDP orange
+            Blo: '#33b2cc',  // Bloc light blue
+            Gre: '#3d9b35',  // Green
+        };
+
+        const canvas = document.getElementById('scatter-canvas');
+        const ctx = canvas.getContext('2d');
+        const tooltip = document.getElementById('scatter-tooltip');
+        const dpr = window.devicePixelRatio || 1;
+
+        // Hi-DPI
+        const cssW = canvas.offsetWidth;
+        const cssH = Math.round(cssW * 0.48);
+        canvas.width = cssW * dpr;
+        canvas.height = cssH * dpr;
+        canvas.style.height = cssH + 'px';
+        ctx.scale(dpr, dpr);
+
+        const pad = { top: 30, right: 30, bottom: 50, left: 55 };
+        const w = cssW - pad.left - pad.right;
+        const h = cssH - pad.top - pad.bottom;
+
+        const xMax = 40;
+        const yMin = -0.2;
+        const yMax = 1.5;
+
+        function xScale(v) { return pad.left + (v / xMax) * w; }
+        function yScale(v) { return pad.top + h - ((v - yMin) / (yMax - yMin)) * h; }
+
+        function isDark() {
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+
+        function draw() {
+            const dark = isDark();
+            const bg = dark ? '#151515' : '#fffff8';
+            const fg = dark ? '#999' : '#888';
+            const gridC = dark ? '#2a2a2a' : '#eee';
+            const labelC = dark ? '#777' : '#aaa';
+
+            ctx.clearRect(0, 0, cssW, cssH);
+
+            // Grid lines
+            ctx.strokeStyle = gridC;
+            ctx.lineWidth = 0.5;
+            for (let x = 0; x <= 40; x += 10) {
+                ctx.beginPath();
+                ctx.moveTo(xScale(x), pad.top);
+                ctx.lineTo(xScale(x), pad.top + h);
+                ctx.stroke();
+            }
+            for (let y = 0; y <= 1.4; y += 0.2) {
+                ctx.beginPath();
+                ctx.moveTo(pad.left, yScale(y));
+                ctx.lineTo(pad.left + w, yScale(y));
+                ctx.stroke();
+            }
+
+            // Zero line for swing
+            ctx.strokeStyle = dark ? '#444' : '#ccc';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pad.left, yScale(0));
+            ctx.lineTo(pad.left + w, yScale(0));
+            ctx.stroke();
+
+            // Average swing line
+            const avgSwing = 0.50;
+            ctx.strokeStyle = dark ? '#555' : '#bbb';
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(pad.left, yScale(avgSwing));
+            ctx.lineTo(pad.left + w, yScale(avgSwing));
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Avg label
+            ctx.font = '11px et-book, Palatino, Georgia, serif';
+            ctx.fillStyle = labelC;
+            ctx.textAlign = 'right';
+            ctx.fillText('national avg', pad.left + w - 4, yScale(avgSwing) - 5);
+
+            // Dots
+            DATA.forEach((d, i) => {
+                const x = xScale(d[0]);
+                const y = yScale(d[1]);
+                const color = COLORS[d[2]] || '#999';
+                ctx.beginPath();
+                ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 0.6;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            });
+
+            // r = -0.11 annotation
+            ctx.font = 'italic 14px et-book, Palatino, Georgia, serif';
+            ctx.fillStyle = fg;
+            ctx.textAlign = 'left';
+            ctx.fillText('r = \u22120.11, p = 0.33', pad.left + 12, pad.top + 20);
+
+            // Axes labels
+            ctx.font = '12px et-book, Palatino, Georgia, serif';
+            ctx.fillStyle = fg;
+            ctx.textAlign = 'center';
+            ctx.fillText('% commuters using transit', pad.left + w / 2, cssH - 8);
+
+            ctx.save();
+            ctx.translate(14, pad.top + h / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('rightward political swing (2015\u20132025)', 0, 0);
+            ctx.restore();
+
+            // Tick labels
+            ctx.font = '11px et-book, Palatino, Georgia, serif';
+            ctx.fillStyle = labelC;
+            ctx.textAlign = 'center';
+            for (let x = 0; x <= 40; x += 10) {
+                ctx.fillText(x + '%', xScale(x), pad.top + h + 18);
+            }
+            ctx.textAlign = 'right';
+            for (let y = 0; y <= 1.4; y += 0.2) {
+                ctx.fillText(y.toFixed(1), pad.left - 8, yScale(y) + 4);
+            }
+
+            // Legend
+            const legendX = pad.left + w - 180;
+            const legendY = pad.top + 12;
+            const parties = [['Lib','Liberal'],['Con','Conservative'],['NDP','NDP'],['Blo','Bloc'],['Gre','Green']];
+            ctx.font = '11px et-book, Palatino, Georgia, serif';
+            ctx.textAlign = 'left';
+            parties.forEach((p, i) => {
+                ctx.beginPath();
+                ctx.arc(legendX + (i > 2 ? 95 : 0), legendY + (i > 2 ? (i-3) * 16 : i * 16), 4, 0, Math.PI * 2);
+                ctx.fillStyle = COLORS[p[0]];
+                ctx.globalAlpha = 0.7;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = fg;
+                ctx.fillText(p[1], legendX + 10 + (i > 2 ? 95 : 0), legendY + 4 + (i > 2 ? (i-3) * 16 : i * 16));
+            });
+        }
+
+        draw();
+
+        // Tooltip on hover
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            let hit = -1;
+            let minDist = 12;
+            DATA.forEach((d, i) => {
+                const dx = xScale(d[0]) - mx;
+                const dy = yScale(d[1]) - my;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < minDist) { minDist = dist; hit = i; }
+            });
+            if (hit >= 0) {
+                const d = DATA[hit];
+                tooltip.innerHTML = '<b>' + NAMES[hit] + '</b><br>Transit: ' + d[0] + '%<br>Swing: ' + (d[1] > 0 ? '+' : '') + d[1].toFixed(2) + ' rightward';
+                tooltip.style.opacity = '1';
+                tooltip.style.left = (e.pageX + 12) + 'px';
+                tooltip.style.top = (e.pageY - 10) + 'px';
+                if (isDark()) {
+                    tooltip.style.background = '#222';
+                    tooltip.style.borderColor = '#444';
+                    tooltip.style.color = '#ddd';
+                }
+            } else {
+                tooltip.style.opacity = '0';
+            }
+        });
+        canvas.addEventListener('mouseleave', () => { tooltip.style.opacity = '0'; });
+
+        // Redraw on color scheme change
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+    })();
+
+    // Section 3: Slope charts — Calgary BRT + Montreal REM
+    (function() {
+        const CAL = [["Centre",0,[45.3,56.6,51.3,50.2]],["Confederation",0,[45.9,55.1,46.0,46.3]],["Heritage",0,[63.8,70.7,57.7,61.4]],["Midnapore",0,[66.7,74.3,60.7,65.5]],["Nose Hill",1,[60.0,69.8,55.6,59.4]],["Shepard",1,[65.9,75.0,60.4,68.0]],["Signal Hill",0,[60.6,70.0,59.0,60.1]],["Skyview",1,[39.8,52.5,36.1,55.4]]];
+        const MTL = [["Brossard",1,[10.8,12.0,18.9]],["LaSalle",0,[7.0,7.5,13.8]],["Laval",0,[16.3,17.7,32.2]],["Longueuil CL",1,[7.4,8.3,16.8]],["Longueuil SH",1,[6.3,6.9,14.3]],["Outremont",0,[6.5,7.8,12.5]]];
+
+        const CAL_YEARS = ['2015','2019','2021','2025'];
+        const MTL_YEARS = ['2019','2021','2025'];
+
+        function isDark() {
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+
+        function drawSlope(canvasId, data, years, title, yLabel, brtLabel, ctrlLabel) {
+            const canvas = document.getElementById(canvasId);
+            const dpr = window.devicePixelRatio || 1;
+            const parent = canvas.parentElement;
+            const cssW = Math.floor(parent.offsetWidth / 2);
+            const cssH = Math.round(cssW * 0.75);
+            canvas.width = cssW * dpr;
+            canvas.height = cssH * dpr;
+            canvas.style.width = cssW + 'px';
+            canvas.style.height = cssH + 'px';
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            const dark = isDark();
+            const fg = dark ? '#999' : '#666';
+            const gridC = dark ? '#2a2a2a' : '#eee';
+            const labelC = dark ? '#777' : '#aaa';
+            const brtColor = '#c43b31';
+            const ctrlColor = dark ? '#555' : '#bbb';
+
+            const pad = { top: 40, right: 70, bottom: 35, left: 45 };
+            const w = cssW - pad.left - pad.right;
+            const h = cssH - pad.top - pad.bottom;
+
+            // Find y range
+            let allVals = [];
+            data.forEach(d => d[2].forEach(v => { if (v !== null) allVals.push(v); }));
+            const yMin = Math.floor(Math.min(...allVals) / 5) * 5;
+            const yMax = Math.ceil(Math.max(...allVals) / 5) * 5;
+
+            function xScale(i) { return pad.left + (i / (years.length - 1)) * w; }
+            function yScale(v) { return pad.top + h - ((v - yMin) / (yMax - yMin)) * h; }
+
+            ctx.clearRect(0, 0, cssW, cssH);
+
+            // Title
+            ctx.font = 'italic 13px et-book, Palatino, Georgia, serif';
+            ctx.fillStyle = dark ? '#ccc' : '#333';
+            ctx.textAlign = 'left';
+            ctx.fillText(title, pad.left, 18);
+
+            // Grid
+            ctx.strokeStyle = gridC;
+            ctx.lineWidth = 0.5;
+            for (let y = yMin; y <= yMax; y += 10) {
+                ctx.beginPath();
+                ctx.moveTo(pad.left, yScale(y));
+                ctx.lineTo(pad.left + w, yScale(y));
+                ctx.stroke();
+            }
+
+            // Year labels
+            ctx.font = '11px et-book, Palatino, Georgia, serif';
+            ctx.fillStyle = labelC;
+            ctx.textAlign = 'center';
+            years.forEach((yr, i) => {
+                ctx.fillText(yr, xScale(i), cssH - 10);
+                // Vertical tick
+                ctx.strokeStyle = gridC;
+                ctx.beginPath();
+                ctx.moveTo(xScale(i), pad.top);
+                ctx.lineTo(xScale(i), pad.top + h);
+                ctx.stroke();
+            });
+
+            // Y labels
+            ctx.textAlign = 'right';
+            for (let y = yMin; y <= yMax; y += 10) {
+                ctx.fillText(y + '%', pad.left - 6, yScale(y) + 4);
+            }
+
+            // Draw lines — control first (behind), then BRT/REM (on top)
+            [0, 1].forEach(pass => {
+                data.forEach(d => {
+                    const isBrt = d[1] === 1;
+                    if ((pass === 0 && isBrt) || (pass === 1 && !isBrt)) return;
+
+                    ctx.strokeStyle = isBrt ? brtColor : ctrlColor;
+                    ctx.lineWidth = isBrt ? 2.5 : 1.5;
+                    ctx.globalAlpha = isBrt ? 0.85 : 0.5;
+                    ctx.beginPath();
+                    let started = false;
+                    d[2].forEach((v, i) => {
+                        if (v === null) return;
+                        if (!started) { ctx.moveTo(xScale(i), yScale(v)); started = true; }
+                        else ctx.lineTo(xScale(i), yScale(v));
+                    });
+                    ctx.stroke();
+
+                    // Endpoint dots
+                    d[2].forEach((v, i) => {
+                        if (v === null) return;
+                        ctx.beginPath();
+                        ctx.arc(xScale(i), yScale(v), isBrt ? 3 : 2, 0, Math.PI * 2);
+                        ctx.fillStyle = isBrt ? brtColor : ctrlColor;
+                        ctx.fill();
+                    });
+
+                    // Label at end
+                    const lastVal = d[2][d[2].length - 1];
+                    if (lastVal !== null) {
+                        ctx.font = (isBrt ? 'bold ' : '') + '10px et-book, Palatino, Georgia, serif';
+                        ctx.fillStyle = isBrt ? brtColor : (dark ? '#777' : '#999');
+                        ctx.textAlign = 'left';
+                        ctx.fillText(d[0], xScale(years.length - 1) + 6, yScale(lastVal) + 3);
+                    }
+
+                    ctx.globalAlpha = 1;
+                });
+            });
+
+            // Legend
+            const legY = pad.top + 6;
+            ctx.globalAlpha = 1;
+            // BRT/REM line
+            ctx.strokeStyle = brtColor;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(pad.left + 2, legY);
+            ctx.lineTo(pad.left + 22, legY);
+            ctx.stroke();
+            ctx.font = '10px et-book, Palatino, Georgia, serif';
+            ctx.fillStyle = dark ? '#ccc' : '#555';
+            ctx.textAlign = 'left';
+            ctx.fillText(brtLabel, pad.left + 26, legY + 3);
+
+            // Control line
+            ctx.strokeStyle = ctrlColor;
+            ctx.lineWidth = 1.5;
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(pad.left + 2, legY + 16);
+            ctx.lineTo(pad.left + 22, legY + 16);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = dark ? '#777' : '#999';
+            ctx.fillText(ctrlLabel, pad.left + 26, legY + 19);
+        }
+
+        function drawBoth() {
+            drawSlope('slope-calgary', CAL, CAL_YEARS, 'Calgary — Conservative vote share', 'Con %', 'MAX BRT ridings', 'No BRT');
+            drawSlope('slope-montreal', MTL, MTL_YEARS, 'Montreal — Conservative vote share', 'Con %', 'REM ridings', 'No REM');
+        }
+
+        // Intersection observer
+        const fig = document.getElementById('slope-calgary').closest('figure');
+        if ('IntersectionObserver' in window) {
+            let drawn = false;
+            const obs = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !drawn) {
+                    drawn = true;
+                    drawBoth();
+                    obs.unobserve(fig);
+                }
+            }, { threshold: 0.2 });
+            obs.observe(fig);
+        } else {
+            window.addEventListener('load', drawBoth);
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', drawBoth);
+    })();
+    </script>
 </body>
 </html>
