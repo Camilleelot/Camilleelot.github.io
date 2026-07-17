@@ -439,8 +439,10 @@
       <a href="#work">Work</a>
       <a href="#in-the-works">In the works</a>
       <a href="#about">About</a>
+      <a href="papers/">Publications</a>
       <a href="mailto:camillemoreau2002@gmail.com">Email</a>
       <a href="https://github.com/Camilleelot">GitHub</a>
+      <a href="https://www.linkedin.com/in/camille-m-b85735392/">LinkedIn</a>
       <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme"><span class="ico" aria-hidden="true">&#9789;</span><span class="theme-label">Dark</span></button>
     </nav>
   </header>
@@ -459,12 +461,13 @@
       <div>Calgary, AB &middot; Bilingual EN&thinsp;/&thinsp;RU.<br/>Open to research, analysis, and writing roles.</div>
       <div class="status"><span class="dot"></span>Open to roles &middot; Now</div>
       <div class="ct"><a href="mailto:camillemoreau2002@gmail.com">camillemoreau2002@gmail.com</a></div>
+      <div class="ct"><a href="resume.pdf">Resume (PDF)</a> &middot; <a href="https://www.linkedin.com/in/camille-m-b85735392/">LinkedIn</a></div>
     </aside>
   </section>
 
   <!-- ─── FEATURED WORK ─── -->
   <section id="work">
-    <h2 class="section"><span>Featured, one big one, a handful of smaller</span><span class="num">§ 01&ndash;06</span></h2>
+    <h2 class="section"><span>Featured, one big one, a handful of smaller</span><span class="num">§ 01&ndash;08</span></h2>
 
     <!-- ── FLAGSHIP: Transit & Voting ── -->
     <article class="flagship">
@@ -490,7 +493,6 @@
 
         <div class="cta-row">
           <a class="cta-primary" href="transit-voting.html">Read the full essay →</a>
-          <a class="cta-ghost" href="https://github.com/Camilleelot/Camilleelot.github.io">Data & code on GitHub</a>
         </div>
       </div>
 
@@ -716,10 +718,75 @@
         </div>
       </article>
 
+      <!-- FleetTracker -->
+      <article class="also-item">
+        <div>
+          <div class="num">§ 05 · Tool · Google Apps Script · In production</div>
+          <h4>FleetTracker <em>for NGOs</em>.</h4>
+          <p class="s">Fleet incident management for nonprofits that run on Google Workspace and goodwill.</p>
+          <p class="d i-line">
+            Email chains, printed PDFs, and spreadsheet chaos: how most small nonprofits track 10&ndash;30 vehicles. <u>I built a zero-cost incident pipeline on Google Apps Script</u>, form intake, automated routing, stakeholder reporting, plus LLM-assisted summarization of insurance documentation. In production since 2024 at a 250-employee behavioral health nonprofit. MIT-licensed, free for nonprofit use.
+          </p>
+          <p class="links">
+            <a href="fleet-management/">Project &amp; architecture &rarr;</a>
+            <a href="fleet-management/technical-walkthrough.html">Technical walkthrough</a>
+            <a href="https://github.com/Camilleelot/Camilleelot.github.io/tree/main/fleet-management/templates">Source</a>
+          </p>
+        </div>
+        <div class="spark-box">
+          <div class="stat-n">$0</div>
+          <div class="stat-l">Added software cost<br/>(runs on Workspace)</div>
+          <svg viewBox="0 0 140 54" width="140" height="54" aria-label="Intake pipeline diagram">
+            <g font-family="JetBrains Mono, monospace" font-size="7" fill="var(--ink-2)" letter-spacing="0.06em">
+              <rect x="2"  y="20" width="36" height="16" fill="none" stroke="var(--ink-3)" stroke-width="0.8"/>
+              <text x="7"  y="31">FORM</text>
+              <rect x="52" y="20" width="36" height="16" fill="none" stroke="var(--ink-3)" stroke-width="0.8"/>
+              <text x="55" y="31">SHEET</text>
+              <rect x="102" y="20" width="36" height="16" fill="none" stroke="var(--accent)" stroke-width="1.2"/>
+              <text x="104" y="31" fill="var(--accent)">REPORT</text>
+            </g>
+            <g stroke="var(--ink-3)" stroke-width="0.8">
+              <line x1="38" y1="28" x2="52" y2="28"/>
+              <line x1="88" y1="28" x2="102" y2="28"/>
+            </g>
+            <text x="2" y="10" font-family="JetBrains Mono, monospace" font-size="6.5" fill="var(--ink-3)" letter-spacing="0.1em">INCIDENT &rarr; EMAIL, AUTOMATED</text>
+          </svg>
+        </div>
+      </article>
+
+      <!-- Bulletin 01: The Ingest Gap -->
+      <article class="also-item">
+        <div>
+          <div class="num">§ 06 · OSINT bulletin · 2026</div>
+          <h4>The <em>Ingest Gap</em>.</h4>
+          <p class="s">What four years of sub-zero FPV combat should teach Canadian Arctic force modernization.</p>
+          <p class="d i-line">
+            <u>I read Russian-language drone-training channels in the original</u>, waterproofing rituals, battery-warming against the body, de-icing with alcohol, and set them against Canada's published position, where observed icing is a no-fly condition. One side treats winter as a maintenance step; the other treats it as a hazard. The bulletin maps that doctrine gap for Canadian defense policy readers, from primary sources.
+          </p>
+          <p class="links">
+            <a href="bulletins/01-ingest-gap/">Read Bulletin 01 &rarr;</a>
+            <a href="bulletins/01-ingest-gap/figures.html">Figures</a>
+          </p>
+        </div>
+        <div class="spark-box">
+          <div class="stat-n">RU&thinsp;&rarr;&thinsp;EN</div>
+          <div class="stat-l">Primary-source corpus<br/>read in the original</div>
+          <svg viewBox="0 0 140 54" width="140" height="54" aria-label="Bulletin marker">
+            <text x="2" y="10" font-family="JetBrains Mono, monospace" font-size="6.5" fill="var(--ink-3)" letter-spacing="0.1em">BULLETIN SERIES</text>
+            <text x="2" y="42" font-family="JetBrains Mono, monospace" font-size="26" fill="var(--accent)">01</text>
+            <g stroke="var(--rule)" stroke-width="0.8">
+              <line x1="48" y1="38" x2="138" y2="38"/>
+            </g>
+            <text x="48" y="32" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--ink-3)" letter-spacing="0.08em">COLD-WEATHER FPV</text>
+            <text x="48" y="48" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--ink-3)" letter-spacing="0.08em">DOCTRINE, OSINT</text>
+          </svg>
+        </div>
+      </article>
+
       <!-- Commute piece (essay companion) -->
       <article class="also-item">
         <div>
-          <div class="num">§ 05 · Essay · 2025</div>
+          <div class="num">§ 07 · Essay · 2025</div>
           <h4>35 minutes. <em>55 minutes.</em> Same city.</h4>
           <p class="s">A companion essay to the transit-voting piece, the one that seeded the question.</p>
           <p class="d i-line">
@@ -750,7 +817,7 @@
       <!-- Notes -->
       <article class="also-item">
         <div>
-          <div class="num">§ 06 · Notes · Ongoing</div>
+          <div class="num">§ 08 · Notes · Ongoing</div>
           <h4><em>Notes.</em></h4>
           <p class="s">Shorter pieces. Methodology, dead ends, things that aren't ready to be papers.</p>
           <p class="d i-line">
@@ -785,7 +852,7 @@
 
   <!-- ─── IN THE WORKS ─── -->
   <section id="in-the-works">
-    <h2 class="section"><span>In the works</span><span class="num">§ 07</span></h2>
+    <h2 class="section"><span>In the works</span><span class="num">§ 09</span></h2>
     <div class="itw">
       <div class="tag"><span class="blink"></span>Writing now</div>
       <div>
@@ -794,11 +861,19 @@
       </div>
       <a class="go" href="transit-voting.html">Read the draft →</a>
     </div>
+    <div class="itw">
+      <div class="tag"><span class="blink"></span>Building now</div>
+      <div>
+        <h4><em>ZERG-RUSH</em>, a multi-agent media analysis pipeline.</h4>
+        <p>Python + LLM APIs, tracking how narratives propagate across media ecosystems: ingestion, classification, reporting layers. Write-up to follow.</p>
+      </div>
+      <a class="go" href="mailto:camillemoreau2002@gmail.com?subject=Request%3A%20ZERG-RUSH%20overview">Ask about it →</a>
+    </div>
   </section>
 
   <!-- ─── CREDENTIALS ─── -->
   <section id="about">
-    <h2 class="section"><span>Tools, interests, languages, and how I got here</span><span class="num">§ 08</span></h2>
+    <h2 class="section"><span>Tools, interests, languages, and how I got here</span><span class="num">§ 10</span></h2>
     <div class="creds">
       <div class="col">
         <h5>Tools</h5>
