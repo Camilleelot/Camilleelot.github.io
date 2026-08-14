@@ -99,10 +99,8 @@ The app will automatically open at `http://localhost:8501`
 
 ## Privacy & Security
 
-- All processing happens locally on your computer
-- No data is sent to external servers
-- Your files stay on your machine
-- Safe to use with confidential HR data
+- **Local install:** All processing happens on your computer. No data is sent to external servers. Safe to use with confidential HR data.
+- **Hosted demo (hrturnoveranalysis.streamlit.app):** Runs on Streamlit Community Cloud — uploads traverse a third party's servers. Use the local install for confidential records containing employee names, salaries, or termination reasons.
 
 ## Next Steps
 
