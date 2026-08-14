@@ -10,7 +10,7 @@ A lightweight, user-friendly tool for HR managers at non-profits to analyze empl
 - **Sankey Flow Diagrams**: Visualize Department → Role → Outcome flows
 - **Cost Calculator**: Estimate true turnover costs (recruitment + training + productivity loss)
 - **Visual Dashboards**: Interactive charts showing trends over time
-- **Predictive Insights**: Flag potential at-risk employees
+- **Risk Flagging**: Rule-based scoring to flag at-risk employees with named reasons
 - **Voluntary/Involuntary Tracking**: Separate analysis of voluntary vs involuntary exits
 - **Benchmark Comparisons**: Compare against sector averages
 
@@ -61,10 +61,12 @@ A sample template is provided in `data/sample_data.csv`
 - Productivity loss: ~50% of annual salary (6-month ramp time)
 - Total: ~80% of annual salary per turnover
 
-**Predictive Flags**: Uses patterns from historical data:
-- Tenure patterns (highest risk periods)
-- Department trends
-- Seasonal variations
+**Risk Flags**: A transparent, rule-based risk score using historical patterns:
+- Tenure-window proximity (highest risk at 2–6 months)
+- Department-level turnover rates
+- Milestone proximity (6-month and 1-year anniversaries)
+
+Each flagged record carries a named reason, making the logic auditable and explainable.
 
 ## Use Cases
 
@@ -79,7 +81,6 @@ A sample template is provided in `data/sample_data.csv`
 - Pandas for data processing
 - Streamlit for interactive UI
 - Plotly for visualizations
-- Scikit-learn for predictive models
 
 ## Project Structure
 
@@ -99,7 +100,7 @@ turnover-analysis/
 
 ## Privacy Note
 
-This tool runs locally on your machine. No data is uploaded to external servers. All analysis happens in your browser.
+Run locally and your data never leaves your machine. **The hosted demo at hrturnoveranalysis.streamlit.app runs on Streamlit Community Cloud — uploads traverse a third party's servers. Use the local install for confidential records.**
 
 ## Future Enhancements
 

@@ -190,8 +190,8 @@ df = pd.read_sql("""
 
 For large datasets (>10,000 employees):
 
-1. **Enable Caching**
-Already implemented via `@st.cache_data` decorators
+1. **Add Caching**
+Consider adding `@st.cache_data` decorators to expensive computation functions.
 
 2. **Use Parquet Instead of Excel**
 ```python

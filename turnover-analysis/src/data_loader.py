@@ -5,6 +5,7 @@ Handles Excel uploads and ensures data quality
 
 import pandas as pd
 from datetime import datetime
+from pathlib import Path
 from typing import Tuple, List
 
 
@@ -135,11 +136,16 @@ def get_data_summary(df: pd.DataFrame) -> dict:
 
 def create_sample_template() -> pd.DataFrame:
     """
-    Create a sample dataset for demonstration
+    Load the sample dataset for demonstration from data/sample_data.csv
 
     Returns:
-        Sample dataframe
+        Sample dataframe (100 employees)
     """
+    sample_path = Path(__file__).parent.parent / 'data' / 'sample_data.csv'
+    if sample_path.exists():
+        return pd.read_csv(sample_path)
+
+    # Minimal fallback if the CSV is missing
     sample_data = {
         'employee_id': [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008],
         'name': ['Alice Johnson', 'Bob Smith', 'Carol Williams', 'David Brown',
@@ -156,5 +162,4 @@ def create_sample_template() -> pd.DataFrame:
                                None, None, 'Involuntary', None],
         'salary': [45000, 65000, 52000, 58000, 48000, 70000, 50000, 47000],
     }
-
     return pd.DataFrame(sample_data)

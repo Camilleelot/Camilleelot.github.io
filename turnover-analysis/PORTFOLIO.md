@@ -4,9 +4,9 @@
 
 A production-ready data analytics tool that helps nonprofit organizations understand and reduce employee turnover through interactive visualizations and predictive insights.
 
-**Live Demo**: [Link to deployed app]
-**GitHub**: [Repository link]
-**Tech Stack**: Python, Streamlit, Pandas, Plotly, Scikit-learn
+**Live Demo**: [hrturnoveranalysis.streamlit.app](https://hrturnoveranalysis.streamlit.app/)
+**GitHub**: [github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis](https://github.com/Camilleelot/Camilleelot.github.io/tree/main/turnover-analysis)
+**Tech Stack**: Python, Streamlit, Pandas, Plotly
 
 ## The Problem
 
@@ -59,7 +59,7 @@ I built a self-service analytics platform that:
 - **Cohort Analysis**: Retention heatmaps by hire cohort
 - **Survival Analysis**: Kaplan-Meier style retention curves
 - **Cost Modeling**: SHRM-based cost multipliers (recruitment, training, productivity loss)
-- **Predictive Flagging**: Risk scoring algorithm for at-risk employees
+- **Risk Flagging**: Transparent, rule-based risk scoring with named reasons for each flag
 - **Time Series**: Turnover trends with velocity calculations
 
 **3. Interactive Visualizations**
@@ -77,11 +77,10 @@ I built a self-service analytics platform that:
 
 ### Code Quality
 
-- **Modular design**: Separate modules for data, analysis, viz, prediction
+- **Modular design**: Separate modules for data, analysis, viz, risk flagging
 - **Documentation**: Docstrings for all functions, type hints
 - **Error handling**: Graceful failures with user-friendly messages
 - **Performance**: Efficient pandas operations, no unnecessary recomputation
-- **Testing**: Sample data validates core logic
 
 ## Technical Challenges Solved
 
@@ -108,27 +107,20 @@ Many NGOs don't track salary in exportable formats. I implemented:
 - Adjustable multipliers for different org contexts
 - Sensitivity analysis showing impact of assumptions
 
-### Challenge 3: Risk Prediction with Limited Features
-Without performance reviews or engagement scores, I used:
-- Tenure-based risk windows (highest turnover at 3-6 months)
-- Department-level historical patterns
+### Challenge 3: Risk Flagging with Limited Features
+Without performance reviews or engagement scores, I built a transparent rule-based scoring system:
+- Tenure-based risk windows (highest risk at 2–6 months)
+- Department-level historical turnover rates
 - Temporal proximity to milestone dates (6mo, 1yr anniversaries)
 
-Simple but effective > complex but unusable.
+Each flagged employee carries a named reason (+2 for high-risk tenure window, +1 for high-turnover department, +1 for milestone proximity). Transparent and auditable > complex but opaque.
 
-## Impact & Results
+## What I Learned Building This
 
-**For Users:**
-- Reduced board report prep from 8 hours → 30 minutes
-- Identified $150K+ in annual turnover costs (previously unknown)
-- Flagged 12 at-risk employees for retention interventions
-- Enabled data-driven decisions on training investments
-
-**For My Learning:**
 - First full-stack data product (not just analysis notebooks)
 - Learned Streamlit for rapid prototyping
 - Practiced product thinking: what do users actually need?
-- Deployed to production (used by real organization)
+- Designed for a non-technical audience from the start
 
 ## Skills Demonstrated
 
@@ -179,21 +171,19 @@ Simple but effective > complex but unusable.
 3. **Data quality matters**: 50% of dev time went to handling messy real-world data
 4. **Documentation is product**: Guides reduced support questions significantly
 
-## How This Applies to [Target Role]
+## Skills Demonstrated
 
 This project demonstrates skills directly applicable to data analyst/engineer roles:
 
 - **Data pipelines**: Built ETL for unstructured Excel → analyzed dataframes
-- **Analytics**: Cohort analysis, cost modeling, forecasting
+- **Analytics**: Cohort analysis, cost modeling, rule-based risk scoring
 - **Visualization**: Interactive dashboards with business context
 - **Stakeholder communication**: Translated HR jargon into metrics
-- **Product delivery**: Shipped working tool used in production
-- **Python proficiency**: Pandas, NumPy, Plotly, Scikit-learn
+- **Python proficiency**: Pandas, NumPy, Plotly, Streamlit
 
-More importantly, it shows I can:
+It also shows:
 - Identify real problems
-- Build solutions people actually use
-- Work independently end-to-end
+- Build solutions independently end-to-end
 - Communicate technical concepts to non-technical users
 
 ## Repository Structure
