@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>What I Built, and What Broke — Camille's Lot</title>
+    <link rel="stylesheet" href="../tufte.css"/>
+    <link rel="stylesheet" href="../latex.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        figure.fullwidth figcaption {
+            float: none;
+            clear: both;
+            max-width: none;
+            margin: 0.7rem 24% 0 0;
+        }
+    </style>
+    <meta name="description" content="Lapse Watch: a Palantir Foundry deployment on Calgary's rezoning repeal. Incremental ingestion, a four-object ontology, an operator queue with writeback, an AIP function that declines to guess, and the four bugs that were all the same bug.">
+    <meta name="author" content="Camille Moreau">
+    <link rel="canonical" href="https://camilleelot.github.io/foundry-lapse-watch/writeup.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Camille's Lot">
+    <meta property="og:title" content="What I Built, and What Broke">
+    <meta property="og:description" content="Three weeks of learning Palantir Foundry on 1,365 Calgary approvals running out on a countdown. What I built, and the four bugs that were all the same bug.">
+    <meta property="og:url" content="https://camilleelot.github.io/foundry-lapse-watch/writeup.html">
+    <meta name="twitter:card" content="summary">
+</head>
+
+<body>
+<article>
+    <h1>What I Built, and What Broke (and How to sorta fix it)</h1>
+    <p class="subtitle">Lapse Watch: a Palantir Foundry deployment on Calgary's rezoning repeal</p>
+
+    <section>
+        <p>Calgary's blanket rezoning bylaw was repealed (effective) 4 August 2026. Parcels approved before the repeal keep their density rights only until a commencement deadline passes. That is a countdown on (at time of) around, 1,371 parcels. The deadline is derivable (2+ years from commencement of permit).</p>
+        <p>I wanted to honestly take a peek at the data to get a glimpse into whether the rezoning had worked, whether permit data could find anything <code>cool</code> (short for conclusive or causitive), for data I had four City tables that only mean anything in relation to each other. You could put this data into pretty much anything and get something out of it, not wanting to brute force python and wanting to learn something new (<code>EmployableTM</code>)  So I decided to try out a company I have heard more in regards to controversies than boring production releases: Palantir! Specifically their Foundry and Ontology suite. This is what I built over about one to two weeks, and what it cost me to get wrong.</p>
+    </section>
+
+    <section>
+        <h2 id="what-i-built">What I Built</h2>
+
+        <h3 id="pipeline">The pipeline (Non Oil Variety) </h3>
+        <p>I had around, 2,312 lines of Python across 15 modules. Incremental ingestion from four City of Calgary Socrata tables into a cached raw layer, keyed on <code>:updated_at</code>, with the watermark read before the fetch and idempotent upserts on permit number. A full pull takes about 60 seconds and a delta about 14.</p>
+
+        <p>Every run, it snapshots the cache, validates, and rolls back on failure, tests itself on four modules: an error page, a truncated response, a column disappearing upstream, and a healthy pull.<label for="sn-exemption" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-exemption" class="margin-toggle"/><span class="sidenote">With one documented exemption for a table that legitimately shrinks between pulls! </span> It self runs unattended at 07:00 and writes three artifacts: stdout, one row per run, and one row per permit that entered the queue, left it, or lapsed.</p>
+
+        <h3 id="ontology">The ontology</h3>
+        <p>This is the backbone of Palantirs real sell, an operational web above the data you can play around in and LLMS play nice with. Overall, it's... good? it probably doesn't beat an in-house version of the same kind of system, but it was nice to organize things in. In total I got around, 4 object types with 12,829 objects, Development Permit (4,607), Parcel (4,139), Building Permit (3,887), Community (196), each with an explicit primary key and title property, joined by three many-to-one link types. The domain logic was in the derived fields: <code>is_grandfathered</code>, <code>is_lapsed</code>, <code>is_ground_oriented_infill</code>, <code>days_to_commence_deadline</code>, <code>km_from_core</code>. The commence deadline is decision date plus two years. (how conveinent that the City Of Calgary made this so formulaic!)</p>
+
+        <figure class="fullwidth">
+            <img src="ontology-development-permit.gif"
+                 alt="Screen recording: filtering the Foundry Ontology Manager to the Development Permit object type, opening it, and scrolling its thirty properties."
+                 loading="lazy" width="880" height="439">
+            <figcaption>Development Permits: 4,607 objects, thirty properties, and three <code>Edit-only</code> rows with no backing column.</figcaption>
+        </figure>
+
+        <p>The writeback Action is Modify-only, with no create and no delete, because an operator working this queue annotates a public record rather than authoring one, I found this opertionally quite neat, I used to work at a place with Rippling (one of it's first deployements in Canada) and gating off knowledge access and knowledge control was weirder than it had to be, being able to organizationally set certain attributes is nice!  I started with twenty-six parameters and shipped with three. Status is a five-value enum with "Other" disallowed, since a free-text status cannot be counted. The outreach properties are edit-only: they live in the ontology's edit store rather than the backing dataset, which is why the object type still reports every column mapped. Edit history is enabled with <em>store all properties</em>, without which the audit trail does not render at all.</p>
+
+        <h3 id="application">The application</h3>
+        <p>Lapse Watch is built as a queue (tool) rather than a dashboard. The object set is filtered to the actionable population and sorted descending on a derived risk score, so the screen ranks by units at risk instead of by days remaining. The four header metrics are live object-set aggregations, and they are deliberately rooted differently: three compose on the filtered variable and the fourth on the raw object type, because the queue excludes lapsed rows by design. Foundry's ontology filter and the pandas computation agree on the actionable population to the row, at 1,365.</p>
+
+        <figure class="fullwidth">
+            <img src="lapse-watch-writeback.gif"
+                 alt="Screen recording: selecting a permit in the Lapse Watch queue, opening the Log Outreach action, and submitting a writeback that Foundry confirms with 'Edits successfully applied.'"
+                 loading="lazy" width="880" height="440">
+            <figcaption>Logging a contact attempt against 1325A 35 ST SE, seventeen days from its commence deadline.</figcaption>
+        </figure>
+
+        <h3 id="upload-client">The upload client</h3>
+        <p>Endpoints were probed rather than assumed, and three assumptions were wrong. The dangerous one: the catalog endpoint accepts <code>transactionType: SNAPSHOT</code>, silently ignores it, and returns an <code>APPEND</code>. Committing that stacks a second copy of 4,607 rows under a live ontology — not an error, just a doubled queue. The client uses the v2 endpoint, re-reads the transaction type off the response, and refuses to upload if it is anything but a snapshot.</p>
+
+        <pre><code>resp = client.open_transaction(dataset, type="SNAPSHOT")
+if resp["transactionType"] != "SNAPSHOT":
+    raise TransactionTypeMismatch(resp["transactionType"])</code></pre>
+
+        <p>Datasets resolve by path rather than RID, and the token comes from a git-ignored file with no CLI flag to pass one, because a credential on a command line is a credential in shell history.</p>
+    </section>
+
+    <section>
+        <h2 id="what-broke">What Broke</h2>
+        <p>Three other things went wrong before that one.</p>
+
+        <p>The first delta key was <code>applieddate</code>, which looks correct and is not. On 12 August the City changed fourteen permit statuses without a single new application arriving, so the job fetched nothing, wrote nothing, and exited 0. A clean run and an empty run were indistinguishable.</p>
+
+        <p>The unattended fetch originally wrote whatever the API returned straight over the cache. That is fine every morning except the morning the endpoint returns an HTML error page, and that error page become the single sole source of truth apparently and the job still exits 0.</p>
+
+        <p>"Now" was hardcoded in four files, sloppy, since I was just running it by hand it was fine but as soon as I put it on a schedule, it emits an identical countdown every morning indefinitely, behind a green check.</p>
+
+        <p>And the transaction type above, which reports success and hands back the opposite of what was requested.</p>
+
+        <p> I got four bugs, one shape: in every case the system reported success while being wrong. Which in the new LLMs exist everywhere world and trust the information you give them as context is quite scary! The fix in every case was the same, which was to stop trusting the exit code and record what actually happened. That is why the pipeline writes an event log and not just counts.</p>
+    </section>
+
+    <section>
+        <h2 id="analysis">What That Changed in the Analysis</h2>
+        <p>I got an interesting and I'll say, good looking tool, Palantir definitely has a bit more aesthetics than PowerBI, and I am happier to show someone this. The permit data has the same defect. A permit system records that an application was decided and approved, and approval is its terminal state. It cannot distinguish a permit that became a building from one that expired in a drawer.</p>
+
+        <figure class="fullwidth">
+            <img src="runlog-figure.svg"
+                 alt="Of 34 approvals that left the queue between 12 and 25 August 2026, 19 had a building permit applied for and 15 lapsed unrecoverably. Lapsed rose from 3 to 18; still-saveable fell from 1,364 to 1,331."
+                 loading="lazy">
+            <figcaption>34 approvals left the queue, 19 to a building permit application and 15 to the deadline.</figcaption>
+        </figure>
+
+        <p>Over twenty-one runs across twelve days the saveable pool fell from 1,364 to 1,331 and the lapsed count rose from 3 to 18. The pool shrank by 33, a single number moving in one direction, concealing that more than half the movement was good news. It reconciles: fifteen <code>COMMENCE_WINDOW_CLOSED</code> transitions against a lapsed count that moved 3 → 18, and 34 departures less one arrival against 1,364 → 1,331, written by different parts of the code.</p>
+
+        <p>The same discipline found the refusal mechanism. A field recording which path an application takes under the Land Use Bylaw had been carried through every run and read by nothing. Applications requiring a dimensional relaxation are refused at 54.5% against a 13% base rate, and across 83 communities that share correlates with the community refusal rate at 0.795. It is a correlation and not a cause. Two of my own hypotheses died on the way: that the City's commencement date evidenced stalls already underway (3 of 4,607 had passed it), and that northeast approvals were paper legalisations of existing suites (1.0% reference one). A denominator error overstated one headline figure by sixteen points before it was caught.</p>
+    </section>
+
+    <section>
+        <h2 id="aip">The Function That Declines</h2>
+        <p>Having been fooled four times by components that reported success, the one I wrote from scratch is built to refuse. <code>summariseApprovalHistory</code> is an AIP Logic function bound to the ontology and wired into the application as a function-backed variable on the selected row, generating one factual sentence a planner could paste into a file note.</p>
+
+        <figure class="fullwidth">
+            <img src="aip-summary-per-row.gif"
+                 alt="Screen recording: the AIP-generated approval summary re-rendering as a different row is selected in the queue."
+                 loading="lazy" width="880" height="439">
+            <figcaption>The summary recomputing per row: nine properties in, thirty left out.</figcaption>
+        </figure>
+
+        <p>It takes nine named properties rather than the object, because the object carries thirty and three of them are the operator's own outreach notes; hand it everything and it summarises its own prior output back into the record. The prompt drops a clause rather than guess when a value is null, and visibly does — asked about a parcel whose land use reverted under the repeal, it reports the designation the parcel holds and stops, because there is no column for what it reverted to. The output is pasted into a public record, so the guard is load-bearing.</p>
+    </section>
+
+    <section>
+        <h2 id="limits">Limits</h2>
+        <p>Unit counts are estimates with conservative lower bounds; the hard number is 1,371 parcels.<label for="sn-applicant" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-applicant" class="margin-toggle"/><span class="sidenote">505 of the 1,365 actionable permits carry no applicant, so for 37% of the queue the Action records a file note rather than a call. An operator working top-down hits one inside the first ten rows.</span> The published figures are pinned to the state on 12 August so that every number here refers to one reproducible snapshot rather than to whatever the pipeline last wrote.<label for="sn-pin" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-pin" class="margin-toggle"/><span class="sidenote">The pin, its md5, and the procedure for lifting it are in <code>data/published/MANIFEST.md</code>. The local job keeps running regardless: as of the 25th it reports 1,331 saveable and 18 lapsed.</span></p>
+        <p>An ontology models paperwork well and relationships badly. It holds Development Permit → Parcel → Community. It does not hold which lenders will underwrite a rowhouse, which is the variable that decides whether any of this gets built.</p>
+        <p>The deployment runs on a Foundry developer-tier stack. Access is gated on organisation membership, so the link cannot be shared; the recordings above are the artefact, and I am happy to screen-share the running application. (Not being able to share, even a plain, aggregate version openly does suck) </p>
+    </section>
+
+    <section>
+        <p><a href="../index.html">Back to the index</a></p>
+    </section>
+</article>
+</body>
+</html>
