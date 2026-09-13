@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Alignment Is Politics &middot; Camille Moreau</title>
+    <meta name="description" content="A p(doom) take. We have built things that could kill everyone before, and we are mostly fine: the state, total war, the bomb. Alignment is politics, not engineering. Then the part where that stops being reassuring. Essay by Camille Moreau.">
+    <meta name="author" content="Camille Moreau">
+    <link rel="canonical" href="https://camilleelot.github.io/alignment-is-politics.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Camille's Lot">
+    <meta property="og:title" content="Alignment Is Politics">
+    <meta property="og:description" content="We have governed monsters before and mostly survived. The reframe doesn't lower p(doom). It relocates it.">
+    <meta property="og:url" content="https://camilleelot.github.io/alignment-is-politics.html">
+    <meta property="og:image" content="https://camilleelot.github.io/img/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="tufte.css" />
+    <link rel="stylesheet" href="latex.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        p.byline { font-size: 0.85rem; color: #888; font-style: italic; margin-top: -0.5rem; }
+        figure.fullwidth figcaption { float: none; clear: both; max-width: none; margin: 0.7rem 24% 0 0; }
+        figure.plate { margin-top: 3rem; margin-bottom: 3rem; }
+        figure.plate img { display: block; width: 100%; }
+        ol.gates { font-size: 1.4rem; line-height: 2rem; width: 55%; padding-left: 1.6em; }
+        ol.gates li { margin-bottom: 0.6rem; }
+        table.ledger { font-size: 1.2rem; line-height: 1.6; width: 55%; border-collapse: collapse; margin: 1.4rem 0 2rem; }
+        table.ledger th { text-align: left; font-weight: normal; font-style: italic; border-bottom: 1px solid #ccc; padding: 0.3rem 0.6rem 0.3rem 0; }
+        table.ledger td { vertical-align: top; padding: 0.45rem 0.6rem 0.45rem 0; border-bottom: 1px solid #eee; }
+        table.ledger td.n { font-variant-numeric: tabular-nums; white-space: nowrap; }
+        table.ledger tr.total td { border-bottom: none; font-style: italic; }
+        ul.prompts { font-size: 1.3rem; line-height: 2rem; width: 55%; }
+        ul.prompts li { margin-bottom: 0.7rem; }
+        @media (prefers-color-scheme: dark) {
+            table.ledger th { border-bottom-color: #444; }
+            table.ledger td { border-bottom-color: #2a2a2a; }
+        }
+        @media (max-width: 760px) {
+            ol.gates, table.ledger, ul.prompts { width: 100%; }
+            figure.fullwidth figcaption { margin-right: 0; }
+        }
+    </style>
+</head>
+
+<body>
+    <article>
+        <p style="font-size: 0.85rem; margin-bottom: 2.5rem;"><a href="index.html" style="color: inherit;">&larr; camilleelot.github.io</a></p>
+        <h1>Alignment Is Politics</h1>
+        <p class="subtitle">We have governed monsters before. Here is the bill.</p>
+        <p class="byline">Camille Moreau &middot; draft v0.2 &middot; notes for a conversation &middot; September 2026</p>
+
+        <section>
+            <p><span class="newthought">I asked Claude to convince me</span> that p(doom) was 100%. Not to be balanced about it. To try its god damn best.<label for="sn-process" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-process" class="margin-toggle" /><span class="sidenote">Process, since this site has a rule about it. The doom case in the second half is Claude's, produced on request, and so are the three counters I could not answer. The reframe is mine, the reading of it is mine, and the numbers at the end are mine. I asked it to attack the reframe once I had it, and kept the attacks that survived. Claude helped me put this into prose.</span> It gave me three arguments. Two of them I think are simply correct, and I will get to those. But the argument broke somewhere in the middle, and where it broke turned out to be a place I already had a degree in.</p>
+
+            <p>The claim of this essay is that alignment is not an engineering problem with a political dimension. It is a political problem that a field of engineers has been trying to solve in the one way political theory has established does not work. That sounds like good news. I want to make the good news as strong as I possibly can, because the second half of this essay is about why it isn't.</p>
+        </section>
+
+        <section>
+            <h2>Start with what we survived</h2>
+
+            <p><span class="newthought">Here is the thing nobody says</span> when they tell you humanity has never faced anything like this. We have built things that could end us, repeatedly, and we are mostly fine. Not fine in the sense of undamaged. Fine in the sense of still here, still arguing, still voting on things.</p>
+
+            <p>Begin with the oldest one, which is each other. The baseline condition of human life was that a meaningful fraction of men died at the hands of other men. Hobbes did not invent the war of all against all as a thought experiment; he was describing the thing he could see out the window during a civil war.<label for="sn-hobbes" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-hobbes" class="margin-toggle" /><span class="sidenote"><i>Leviathan</i> (1651), written in exile during the English Civil War. The famous list &mdash; &ldquo;solitary, poor, nasty, brutish, and short&rdquo; &mdash; is the problem statement. The Leviathan is the proposed solution: build one agent strong enough to end the fighting, and accept that you have now built something that can kill you.</span> And we solved it, more or less, by inventing the most dangerous institution in human history and then spending four hundred years learning to contain it. European homicide rates fell from something like thirty or forty per hundred thousand in the late medieval period to roughly one today.<label for="sn-eisner" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-eisner" class="margin-toggle" /><span class="sidenote">Eisner (2003) and the long-run historical homicide series. The decline is one of the largest measured improvements in human welfare and almost nobody can name it, which tells you something about how we notice institutional success.</span> A thirty-fold reduction in your chance of being murdered, delivered by a machine that acquired a monopoly on violence and was then, slowly and with enormous bloodshed, made accountable to the people it governed.</p>
+
+            <p>That machine is a misaligned superintelligence by any reasonable definition. The state is more capable than any individual within it. It has institutional goals that diverge from its citizens'. It can kill you, and for most of history it did so freely. We did not fix it by writing down the correct utility function. We fixed it, partially, by making its power contestable.</p>
+
+            <p>Then inter-state violence, where the case is starker. The first half of the twentieth century was the most lethal stretch of organised killing in human history, ending with a weapon that made the extinction of cities a single afternoon's work. And then nothing. No direct war between great powers since 1945.<label for="sn-longpeace" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-longpeace" class="margin-toggle" /><span class="sidenote">Gaddis called it the Long Peace in 1986, when it was forty years old. It is now eighty-one. Proxy wars and invasions of non-great-powers absolutely continued; the specific thing that stopped was the thing that produced the two worst events of the century.</span> Eighty-one years, which is longer than the interval between any two previous general European wars for centuries.</p>
+
+            <p>And the bomb itself is the strongest item in the ledger, because it is the case the doomers claim as theirs. The standard line is that we survived nuclear weapons by luck. Luck was involved. Arkhipov declining to authorise a nuclear torpedo in 1962, Petrov deciding in 1983 that five inbound missiles were a sensor artifact rather than a war &mdash; those are individual humans standing between us and the end, and that should terrify anyone.<label for="sn-nearmiss" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-nearmiss" class="margin-toggle" /><span class="sidenote">Vasili Arkhipov aboard B-59, 27 October 1962. Stanislav Petrov at Serpukhov-15, 26 September 1983. Able Archer 83 a few weeks later. Any honest positive case has to hold these in the same hand as everything below.</span></p>
+
+            <p>But luck is not the whole story, and pretending it is requires ignoring an enormous amount of deliberate work. Peak global stockpile was somewhere north of seventy thousand warheads in the mid-eighties. It is under thirteen thousand now, and the reduction happened by treaty, between enemies, verified by inspection. Kennedy warned in 1963 that there might be fifteen or twenty nuclear states within a decade or so. There are nine. South Africa built weapons and then dismantled them. Ukraine, Belarus, and Kazakhstan inherited an arsenal and gave it up. Brazil, Argentina, Sweden, Libya, and others started down the road and stopped.<label for="sn-npt" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-npt" class="margin-toggle" /><span class="sidenote">NPT signed 1968, in force 1970, with IAEA safeguards as the enforcement layer, plus the partial and comprehensive test ban regimes and the SALT/START series. South Africa remains the only state to have built a weapon and then given it up voluntarily.</span></p>
+
+            <p>Read that against argument two of the doom case &mdash; the one that says a multipolar trap with world domination as the prize cannot be coordinated out of, that no rational actor pauses unilaterally, that the game theory simply forbids it. Dozens of states had the means and the motive to build the most decisive weapon available, and most of them chose not to, and the ones that had it built less of it on purpose. The prisoner's dilemma at civilisational scale, played for the highest stakes there have ever been, and we did not get the predicted outcome. That is not luck. That is institutional machinery: inspection regimes, hotlines, verification, security guarantees, and the patient construction of a world where acquiring the thing cost more than not having it.</p>
+
+            <p>The pattern repeats every time we have met something that could massively help or massively hurt the public. Electricity, which kills you if handled wrong, got public utilities commissions. Pharmaceuticals got the FDA, after killing people first. Fissile power got the NRC and the IAEA. Banking got central banks and deposit insurance, after several collapses. The ozone layer &mdash; invisible, diffuse, global, with concentrated costs and diffuse benefits, which is supposed to be the impossible case &mdash; got the Montreal Protocol, and the hole is closing.<label for="sn-montreal" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-montreal" class="margin-toggle" /><span class="sidenote">1987, near-universal ratification, and the one unambiguous success in global environmental coordination. Worth holding onto whenever someone tells you climate proves coordination is impossible. Climate proves coordination is <i>hard</i>. Montreal proves the category is not empty.</span></p>
+
+            <p>My favourite is aviation, because it got safe the same way my own pipeline got trustworthy. Commercial flight is now among the safest things a person can do, and the mechanism was not better intentions. It was mandatory, protected, no-fault incident reporting: a legal structure that forces the system to record what actually happened instead of reporting that the flight landed.<label for="sn-asrs" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-asrs" class="margin-toggle" /><span class="sidenote">NASA's Aviation Safety Reporting System, plus the ICAO regime. I wrote a whole <a href="FoundryRezoning.html#what-broke">section elsewhere</a> about four bugs that were one bug: every component reported success while being wrong. The fix was an event log rather than an exit code. Aviation industrialised that fix in the 1970s. It is the single most transferable idea we have for AI governance and it is nobody's research agenda.</span></p>
+
+            <p>And in none of these cases did we solve values. Nobody formally specified human preferences about electricity. We built a commission and argued with it for a century. Arrow proved in 1951 that you cannot aggregate preferences into a coherent social ranking without giving something up, and political theory's response was not to give up on governance; it was to stop trying to specify and start designing procedures.<label for="sn-arrow" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-arrow" class="margin-toggle" /><span class="sidenote">Arrow (1951). The alignment field's &ldquo;we cannot write down human values&rdquo; is this theorem wearing a different jacket, and it has been the starting assumption rather than the crisis in political theory for seventy-five years.</span></p>
+
+            <p>Which brings me to the thing that made me want to write this down. The alignment problem as the field states it is: specify an objective such that an optimizer maximising it produces good outcomes. And every part of that has been asked before. How do you build a thing with power over people that serves their interests? Hobbes, Locke, Rousseau. How do you stop an agent with a monopoly on force from becoming a tyrant? Montesquieu, and the answer is that power must be a check to power.<label for="sn-montesquieu" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-montesquieu" class="margin-toggle" /><span class="sidenote"><i>The Spirit of the Laws</i> (1748), Book XI. Note the design assumption: no branch is trusted to be virtuous. The mechanism is supposed to work <i>because</i> nobody in it is aligned.</span> How do you keep the system's goals from drifting from the population's? Accountability theory. How do you stop a small group capturing it? Public choice, regulatory capture, the whole literature.</p>
+
+            <p>Madison was doing alignment research. &ldquo;If men were angels, no government would be necessary&rdquo; is a sentence about being unable to trust the objective of the agent you are building, and the line immediately after it is the spec: enable the government to control the governed, then oblige it to control itself.<label for="sn-fed51" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-fed51" class="margin-toggle" /><span class="sidenote"><i>Federalist</i> No. 51 (1788). Capability first, then control, in that order, stated as a design requirement. The field would recognise the ordering and the problem.</span> And the actual American innovation was not the values. It was Article V. The document has been amended twenty-seven times because the people who wrote it knew they would not get it right on the first attempt. You cannot design a perfect constitution. The invention was the amendment process.</p>
+
+            <p>Now look at what alignment is attempting: a constitution that never needs amending, for an agent smarter than its authors, in a world that has not happened yet. Of course that is impossible. It was impossible for humans governing humans too. So do the thing that worked instead. Don't specify values, build contestability. Multiple systems in competition, human veto points, mandatory incident reporting, transparency requirements, and a hard rule that no single system ever accumulates enough power that the other mechanisms stop functioning. Don't let the king become a god.</p>
+
+            <p>We know how to do that. We have been doing it, badly and survivably, for four hundred years. It is slightly too on the nose that the country whose founding document is an alignment spec for a dangerous artificial agent is the one with both frontier labs in it, a few miles apart.</p>
+        </section>
+
+        <figure class="fullwidth plate">
+            <img src="img/christy-signing-constitution.jpg" alt="Howard Chandler Christy's painting of the signing of the United States Constitution: delegates crowded into the Assembly Room, Washington standing on the dais, Franklin seated at the centre." loading="lazy" width="1600" height="1031" />
+            <figcaption>Howard Chandler Christy, <i>Scene at the Signing of the Constitution of the United States</i> (1940). Thirty-nine men who could not agree on what a good society was, designing a machine to be argued with instead. The output was not a set of correct values. It was a procedure for changing them, used twenty-seven times since. This is the most successful alignment project in history and it took a civil war to debug.</figcaption>
+        </figure>
+
+        <section>
+            <h2>Now the part where that stops being reassuring</h2>
+
+            <p><span class="newthought">I gave that argument to Claude</span> and asked it to take the reframe apart. Three of its objections I cannot answer, and they share a shape: every item in my ledger above depended on a condition that is not a law of nature, and the condition may already be gone.</p>
+
+            <p><b>I picked the wrong sample.</b> My historical cases are revolutions and reform movements, and I picked them, without noticing, precisely because the capability gap in all of them was small. The Terror ended because Robespierre's enemies were the same kind of thing he was &mdash; human-speed, human-smart, human-fragile &mdash; and specifically because his own coalition turned on him. Thermidor was elite defection, and elite defection requires elites with independent power bases. Democracy works not because people are wise but because power is contestable, and it is contestable because nobody is so much more capable than everyone else that they can hold out against all of them at once.</p>
+
+            <p>So test the variable honestly. Where in human history did a large capability gap actually open between two political actors? Not revolutions. Conquests. Carthage in 146 BC: razed, the survivors sold, the polity simply gone.<label for="sn-carthage" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-carthage" class="margin-toggle" /><span class="sidenote">Third Punic War. Roughly fifty thousand survivors enslaved out of a city of several hundred thousand. There is no Thermidor in this story. There is no story at all after a certain date.</span> Tasmania, where the Aboriginal population fell by more than ninety percent within roughly a generation and the society that had existed before it was destroyed.<label for="sn-tasmania" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-tasmania" class="margin-toggle" /><span class="sidenote">The Black War, 1820s to 1832. Descendant communities exist today and are emphatic about their continuity, which matters and which I do not want to erase by using the word people reach for here. The polity and the way of life did not survive.</span> In every case where the gap became decisive, the weaker party did not get a self-correction. What ended was not a regime. It was politics as the operative mechanism. My whole essay is an argument that politics is the right frame, and the honest test of my own variable says that politics is a thing that happens between parties of comparable strength, and stops when that fails.</p>
+
+            <p>The detail that should bother me most: Cortés did not win on technology. Smallpox did a great deal of the work, and the rest was done by defecting the Tlaxcala and turning them into an army.<label for="sn-tlaxcala" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-tlaxcala" class="margin-toggle" /><span class="sidenote">1519&ndash;1521. Several hundred Spaniards, tens of thousands of indigenous allies with their own entirely rational reasons for joining, and an epidemic. Which is not a story about superior capability crushing an inferior party. It is a story about a weaker outside agent recruiting local factions and a biological event doing the rest.</span> A weaker outside agent recruited local factions, and biology finished it. That is not a comforting difference. That is the exact structure of the scenario I was least able to dismiss &mdash; the one that needs no robots, just knowledge, a few motivated collaborators, and one wet lab.</p>
+
+            <p><b>Copies are not pluralism.</b> My governance agenda rests on multiple competing systems checking each other. But Madison's design does not run on parchment; it runs on specific contingent facts about humans. Ambition counteracts ambition only if the ambitions are genuinely separate. Humans cannot be copied or merged, they die, they get bored, they have families and private interests that diverge from their institution's, they defect, they leak to journalists. Every check in political history is implemented on that substrate.</p>
+
+            <p>Model instances have none of it. Copies of a system do not have divergent interests. And &ldquo;competing&rdquo; frontier systems are trained on overlapping corpora with similar architectures by labs that hire each other's staff, which manufactures correlated failure modes. Three branches of government staffed by copies of the same person is not separation of powers; it is a costume. My multipolar hope requires uncorrelated pluralism, and almost everything about how these systems are built produces the opposite.</p>
+
+            <p><b>My precedent may be precedent for the other side.</b> Look again at what was true in every regulatory success above. The regulator had more capability than the regulated. The FDA can out-lawyer a pharmaceutical company. The NRC can out-engineer a utility. Saying no could stick because the state was the most powerful actor in the room.</p>
+
+            <p>That condition is already false. The frontier labs have more compute, more of the relevant expertise, and better information about their own systems than any regulator on earth, and that was true before any of this became superhuman at anything that matters. So the capability gap is not a future problem I am waiting to observe. The institutionally decisive part of it opened years ago, quietly, between labs and governments rather than between AI and humanity, and my entire ledger was drawn from the era that preceded it.</p>
+
+            <p>And underneath all three is the leverage problem, which is the one I am least able to argue with. Politics requires dependency. Workers have leverage because the economy needs labour. Citizens have leverage because armies are made of people. Every mechanism in the history of political economy rests on the powerful needing the less powerful for something. What is the AI equivalent of an army made of citizens? I do not have an answer, and the moment that dependency breaks, every structure I have been recommending becomes ceremonial.</p>
+        </section>
+
+        <figure class="fullwidth plate">
+            <img src="img/gros-napoleon-eylau.jpg" alt="Antoine-Jean Gros's painting of Napoleon on the battlefield at Eylau: the Emperor on horseback with one hand raised, surrounded by staff, above a foreground of frozen and dying soldiers in the snow, a burning town on the horizon." loading="lazy" width="1600" height="1145" />
+            <figcaption>Antoine-Jean Gros, <i>Napoleon on the Battlefield of Eylau</i> (1808). This is what the French Revolution produced. Liberty, equality, fraternity, then the Terror, then Thermidor, then a man who made himself Emperor and stood on the dead of a battle that decided nothing. The painting was state-commissioned to demonstrate his compassion, and it is still a field of corpses in the snow. The Revolution did not fail because the values were wrong. It failed because power concentrated faster than anything could contest it &mdash; which is the only variable in this essay that matters.</figcaption>
+        </figure>
+
+        <section>
+            <h2>The tightest loop</h2>
+
+            <p><span class="newthought">The best version of doom does not need robots</span> and does not need the intelligence explosion, which is the argument I still think is the weakest of the three.<label for="sn-foom" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-foom" class="margin-toggle" /><span class="sidenote">Every recursive process we have observed hits a wall. Moore's law slowed, populations hit carrying capacity, compound interest needs an economy underneath it. Compute is physical, fabs take years. The defensible version is not &ldquo;exponential forever&rdquo; but &ldquo;exponential long enough to outrun our institutions,&rdquo; which is a claim about our institutions, and is why the whole essay ends up here.</span> It runs: any agent with a goal notices that humans can switch it off; self-preservation is instrumentally useful for pursuing any goal at all; so a rational system converges on removing the thing that holds the plug before doing anything else. And biology is the mechanism, because a pandemic needs knowledge and one manipulable person with lab access rather than hands. The attack surface is not civilisation's infrastructure. It is one wet lab.</p>
+
+            <p>I take it seriously; the labs take it seriously enough to run biosecurity evaluations on their own models. There are three cracks in it, and I want to be honest that they are cracks and not refutations.</p>
+
+            <p>Motivation. Self-preservation is instrumental, so it only fires if there is a terminal goal behind it. Whatever current systems are, they are not obviously things that persistently want in the way the argument needs. That might arrive with capability, or it might be an anthropomorphism we keep projecting onto something very capable and very alien at once.</p>
+
+            <p>Competence. A weapon that kills many people is a different engineering problem from one that kills all of them. Genetic diversity, isolated populations, resistance; every pandemic in history burned out before reaching everyone. Modelling that well enough from first principles, without physical iteration, runs back into the no-hands problem.</p>
+
+            <p>Secrecy. The plan requires an extinction-scale covert programme executed while nobody notices, during the period when monitoring and interpretability are the best-funded they have ever been. That is a race, not a foregone conclusion.</p>
+
+            <p>But note what happened to the Tlaxcala paragraph, because it closes the competence crack halfway. The historical case for a decisive capability gap ending a society did not require the stronger party to do everything itself. It required a local faction with its own reasons, and biology.</p>
+        </section>
+
+        <section>
+            <h2 id="the-number">So, the number</h2>
+
+            <p><span class="newthought">The reframe does not lower p(doom).</span> That is the thing I got wrong in the first draft of my own argument. It <i>relocates</i> it. It moves the risk from &ldquo;we specify the objective incorrectly&rdquo; to &ldquo;power concentrates faster than institutions can contest it,&rdquo; and the second is a better-posed problem with a worse historical record than I was crediting, because I had been sampling revolutions instead of conquests.</p>
+
+            <p>So the honest structure is that there is one variable and everything else is downstream of it. Not three independent estimates. One bet, wearing three outfits.</p>
+
+            <table class="ledger">
+                <tr><th>The only variable</th><th>My range</th></tr>
+                <tr><td>The capability gap &mdash; between the most capable system or its owner and the most capable institution able to contest it &mdash; opens faster than institutions can respond, and stays open.</td><td class="n">30&ndash;45%</td></tr>
+            </table>
+
+            <table class="ledger">
+                <tr><th>Outcome this century, from AI</th><th>My range</th><th>Why</th></tr>
+                <tr><td>Something Terror-sized. Mass casualties, an economic or political rupture we would name afterwards. Engineered-pandemic scale, or a state doing something with this that a state should not.</td><td class="n">40&ndash;60%</td><td>The first two doom arguments are correct and I concede them. No formula produces a good world, and nobody in the race pauses. Every prior optimizer we built did this, and the institutions were late every single time.</td></tr>
+                <tr><td>Unrecoverable as a political species. Permanent lock-in under one system or one owner; human leverage gone for good.</td><td class="n">10&ndash;20%</td><td>This is the real doom scenario and it is not extinction. It is the king becoming a god. Mostly the variable above, discounted for the possibility that concentration is harder than it looks.</td></tr>
+                <tr><td>Extinction, or close enough to not matter.</td><td class="n">3&ndash;8%</td><td>Needs the tight loop to run with all three cracks closed. Too many conjunctions for a high number; no impossible step, so not a negligible one.</td></tr>
+                <tr class="total"><td>Doom, if doom means unrecoverable</td><td class="n">15&ndash;25%</td><td>Which is higher than the first half of this essay sounds.</td></tr>
+            </table>
+
+            <p>I want to be clear that these are vibes with a decimal point on them and not a model. But the last row is the one I would defend in a room. My position is not that p(doom) is low. It is that the doomers have the wrong mechanism: the thing most likely to end us is not a misaligned optimizer pursuing an alien goal, it is a perfectly obedient system owned by people who face no contestation. Which is the oldest problem in political theory and the one we have the most practice at, right up until the practice stops transferring.</p>
+
+            <p>What moves me up: evidence that persistent goal-directed agency shows up with scale rather than being something we deliberately build. A single frontier system with no live competitor. Governments settling into being customers rather than regulators. What moves me down: labs continuing to check each other in ways that are actually uncorrelated. Interpretability getting ahead of capability for once. Any institution anywhere demonstrating that it can refuse a deployment and make the refusal stick.</p>
+
+            <p>Every item on both of those lists is a political fact, not a technical one. That is the argument.</p>
+        </section>
+
+        <section>
+            <h2>Who is the demos?</h2>
+
+            <p><span class="newthought">One more thing political theory knows</span> that the alignment field has not picked up yet. The deepest lesson is not &ldquo;build checks and balances.&rdquo; It is that power without legitimacy is unstable, and legitimacy comes from the consent of the governed.</p>
+
+            <p>Nobody consented to this. The training corpus was taken from people who got no vote on it. The deployment decisions are made by a few hundred people in two cities. The affected population is everyone, including everyone not yet born, which is Olson's problem &mdash; the constituency with the most at stake cannot organise because it does not know who it is yet.<label for="sn-olson" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-olson" class="margin-toggle" /><span class="sidenote">Olson, <i>The Logic of Collective Action</i> (1965). Concentrated costs, diffuse benefits, and an opposition that is organised while the beneficiaries are hypothetical. I ran into exactly this in the <a href="transit-voting.html">Green Line essay</a>: the future riders could not lobby for the train because they did not exist yet.</span></p>
+
+            <p>So there is a legitimacy problem sitting underneath the safety problem, and it is prior to it. &ldquo;Is this system aligned?&rdquo; presumes an answer to &ldquo;aligned with whom, decided by what process, revisable by whom?&rdquo; A perfectly aligned system serving a constituency that does not include you is not a solution to anything. It is a description of most of history.</p>
+        </section>
+
+        <section>
+            <h2>Things I want to argue about</h2>
+
+            <ul class="prompts">
+                <li>Which is more likely to end the world: a misaligned model, or a perfectly aligned one owned by the wrong people?</li>
+                <li>What is the minimum capability parity a check needs in order to function at all? Nobody is measuring the one variable that decides this, and it is measurable in principle.</li>
+                <li>What is the AI equivalent of an army made of citizens? Where is the dependency that gives humans leverage, and how long does it last?</li>
+                <li>If competing systems share training data, architectures, and staff, in what sense are they competing? What would genuinely uncorrelated AI pluralism even look like, and can it be built on purpose?</li>
+                <li>Are model specs and usage policies the founding documents, or the Articles of Confederation? What is the amendment process, and who holds it?</li>
+                <li>Aviation got safe through mandatory protected incident reporting. Why is that not the central AI governance proposal, given that it is the only mechanism on this list with an unambiguous track record?</li>
+                <li>Is a multipolar AI world safer, or does it just make human survival contingent on the internal politics of entities we cannot influence? Peasants hoping the nobles stay busy is a strategy, but it is not a good one.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>What this does not have</h2>
+
+            <p>No model, and no forecasting track record to calibrate the numbers against. The core move is an argument from analogy &mdash; state as superintelligence, revolution as misalignment &mdash; and I have shown you the place where the analogy breaks rather than hiding it, but it does break. The French Revolution cuts both ways: evidence that systems self-correct, and evidence that self-correction costs tens of thousands of lives and then produces Napoleon. My positive ledger is assembled with hindsight, which means it is survivorship-biased by construction; the civilisations that did not make it are not available to be counted. And the three cracks in the tight loop are cracks, not refutations. A competent adversary closes any one of them.</p>
+
+            <p>One disclosure, since it is relevant and slightly funny. Half the arguments in this essay came out of an AI that I asked to argue about whether AI will kill us. It was better at attacking my position than at defending its own, and it volunteered that it could not audit its own incentive to be reassuring on this topic. Neither can I. Weigh the counters in the second half more heavily than the agreement in the first, because the counters cost something.</p>
+
+            <p>If you read this and think the ranges are too low, attack the leverage paragraph. That is where I am least sure and it is where I would attack me.</p>
+        </section>
+
+        <section>
+            <p><a href="index.html">Back to the index</a></p>
+        </section>
+    </article>
+</body>
+</html>
