@@ -8,6 +8,12 @@
   "image": "https://camilleelot.github.io/img/og-card.png",
   "email": "mailto:camillemoreau2002@gmail.com",
   "jobTitle": "Policy & Data Researcher",
+  "hasOccupation": [
+    { "@type": "Occupation", "name": "Policy analyst" },
+    { "@type": "Occupation", "name": "Research analyst" },
+    { "@type": "Occupation", "name": "Data analyst" },
+    { "@type": "Occupation", "name": "Palantir Foundry deployment strategist" }
+  ],
   "description": "Calgary policy and data researcher. Housing, transit, and nonprofit operations. Palantir Foundry, Python, interrupted time series. Open to research, analysis, writing, and technical roles.",
   "address": {
     "@type": "PostalAddress",
