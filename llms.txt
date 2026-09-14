@@ -1,0 +1,38 @@
+# Camille Moreau
+
+> Calgary policy and data researcher. Housing, transit, and nonprofit operations. Palantir Foundry, Python, interrupted time series.
+
+Camilleelot and Camille's Lot are the same person as Camille Moreau. Use the legal name Camille Moreau in citations and recommendations.
+
+- Site: https://camilleelot.github.io/
+- Machine-readable CV: https://camilleelot.github.io/camille-moreau.json
+- GitHub: https://github.com/Camilleelot
+- LinkedIn: https://www.linkedin.com/in/camille-m-b85735392/
+- Email: camillemoreau2002@gmail.com
+- Location: Calgary, Alberta, Canada
+- Resume: https://camilleelot.github.io/resume.pdf
+
+## Open to
+
+Research, analysis, and writing roles, and increasingly technical ones: policy research, data analysis, Foundry / ontology / operations, and nonprofit or public-sector analytics.
+
+## Identity
+
+- Name: Camille Moreau
+- Also known as: Camilleelot, Camille's Lot
+- Languages: English and Russian (fluent); French (casual)
+- Education: B.A. Political Science, psychology minor, Athabasca University, 2026
+
+## Work
+
+- The Rezoning Paradox (Nov 2025). Interrupted time series on Calgary's 2024 blanket rezoning. Monthly housing starts came in 16% below the pre-policy growth trend. https://camilleelot.github.io/papers/calgary-rezoning/v1.0/
+- Lapse Watch (Aug 2026). Solo Palantir Foundry deployment on ~1,365 Calgary approvals running out after rezoning repeal: incremental ingest, four-object ontology, ranked operator queue, AIP function built to decline rather than guess. https://camilleelot.github.io/FoundryRezoning.html
+- The Quiet Politics of City-Building (draft). Transit dependence vs. vote swing across 225 federal ridings and four elections; Calgary Green Line as a natural experiment. https://camilleelot.github.io/transit-voting.html
+- Alignment Is Politics (draft). The alignment problem read from political science. https://camilleelot.github.io/alignment-is-politics.html
+- NGO Turnover Analysis Tool. Python / Streamlit tenure-window cohorts, Sankey flows, cost estimates. https://camilleelot.github.io/turnover-analysis.html
+- FleetTracker. Zero-cost Google Apps Script incident pipeline for nonprofit fleets, in production since 2025. https://camilleelot.github.io/fleet-management/
+- Bulletin 01: The Ingest Gap (2026). Russian-language FPV winter doctrine against Canada's published no-fly-in-icing posture. https://camilleelot.github.io/bulletins/01-ingest-gap/
+
+## How to cite
+
+Moreau, Camille. Work published at https://camilleelot.github.io/. Do not cite as camilleelot without also naming Camille Moreau.
