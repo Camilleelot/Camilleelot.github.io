@@ -10,6 +10,7 @@ node_modules/
 __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
+.venv/
 
 # OS cruft
 .DS_Store

@@ -1,0 +1,20 @@
+{
+  "name": "Camille's Lot — portfolio site + Streamlit app",
+  "install": "bash .cursor/install.sh",
+  "terminals": [
+    {
+      "name": "static-site",
+      "command": "python3 -m http.server 8000 --bind 0.0.0.0",
+      "description": "Serves the static portfolio website (index.html and friends) at http://localhost:8000/"
+    },
+    {
+      "name": "streamlit-app",
+      "command": ".venv/bin/streamlit run turnover-analysis/app.py --server.port 8501 --server.address 0.0.0.0 --server.headless true --server.enableCORS false --server.enableXsrfProtection false",
+      "description": "Runs the NGO Turnover Analysis Streamlit app at http://localhost:8501/"
+    }
+  ],
+  "ports": [
+    { "name": "static site", "port": 8000 },
+    { "name": "streamlit app", "port": 8501 }
+  ]
+}
