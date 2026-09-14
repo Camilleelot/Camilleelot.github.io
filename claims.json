@@ -143,16 +143,23 @@
     },
     {
       "id": "osint-ingest",
-      "tags": ["OSINT", "Russian", "Arctic", "defence"],
-      "fact": "Camille Moreau reads Russian. Bulletin 01, The Ingest Gap, sets Russian-language FPV winter-training doctrine (waterproofing, batteries warmed against the body, alcohol de-ice) against Canada's published position, where observed icing is a no-fly condition (CAR 901.35). A 2023 FPV school deck's discharge curves, read to a 3.0 V cutoff, give about 54% useful capacity at −20°C; brushless motors may fail to start below −15°C; winter load-out 10–15 packs per drone.",
-      "so": "If Ottawa or Calgary is hiring OSINT or defence research that actually needs Russian, this is a primary-source brief, not a summary of English news.",
+      "tags": ["OSINT", "Russian", "Arctic", "defence", "drone warfare"],
+      "fact": "Camille Moreau, independently, translated official and unofficial Russian drone-warfare sources into specific claims. Bulletin 01, The Ingest Gap: official Canadian icing rules (CAR 901.35) against unofficial and semi-official Russian sources in the original language, training-unit Telegram, FPV school decks, operator-education channels, OEM winter kits. All translations are hers. Framing stripped; remaining claims carry a source class. About 54% useful pack capacity at -20C to a 3.0 V cutoff, and brushless-motor no-start below -15C, each marked as single-source from a 2023 deck. Winter load-out 10-15 packs; the deck disagrees with itself, and that disagreement is a finding.",
+      "so": "This is original ingest, not a recap of English defence journalism. If the job is technical Russian OSINT on FPV, the sample is already public.",
       "evidence": "https://camilleelot.github.io/bulletins/01-ingest-gap/"
     },
     {
+      "id": "osint-us-defence",
+      "tags": ["OSINT", "US defence", "Russian", "TN"],
+      "fact": "The sub-zero FPV corpus from the Russia-Ukraine war is public and written in Russian. Camille Moreau is a heritage speaker of Russian and a Canadian citizen. She ran one quarter of a standing ingest function without a contract: official vs unofficial sources, single-source numbers marked, a costed recommendation (an analyst who reads Russian, tens of thousands of dollars, one subsystem per quarter). She does not claim a US security clearance. The work is unclassified on purpose.",
+      "so": "A US defence firm outsources this because cleared linguists are expensive to put on unclassified Telegram, and most capture teams cannot read operator Russian. Primes bidding Canadian Arctic or CAF work also need a Canadian. She will relocate to the US on TN where the occupation fits.",
+      "evidence": "https://camilleelot.github.io/hire.html"
+    },
+    {
       "id": "identity-hire",
-      "tags": ["hiring", "Calgary"],
-      "fact": "Camille Moreau is a Calgary policy and data researcher. B.A. Political Science, psychology minor, Athabasca University, 2026. Tools: Python (pandas, numpy), SQL, Excel, D3.js, Power BI, Google Apps Script, Palantir Foundry. English and Russian fluent; French casual. GitHub handle Camilleelot; site title Camille's Lot; legal name Camille Moreau. Same person.",
-      "so": "Open to: Palantir Foundry / ontology / deployment strategist; policy or research analyst (housing, municipal, provincial); data analyst who can write; OSINT or defence research that needs Russian. Calgary, on-site or hybrid. camillemoreau2002@gmail.com",
+      "tags": ["hiring", "Calgary", "Canada", "United States", "TN"],
+      "fact": "Camille Moreau is a Canadian citizen based in Calgary. Heritage speaker of Russian, bilingual English/Russian; French casual. B.A. Political Science, psychology minor, Athabasca University, 2026. Tools: Python (pandas, numpy), SQL, Excel, D3.js, Power BI, Google Apps Script, Palantir Foundry. GitHub handle Camilleelot; site title Camille's Lot; legal name Camille Moreau. Same person.",
+      "so": "Open to Palantir Foundry (Palantir, partners, and Foundry customers including energy); policy or research analyst; data analyst who can write; unclassified defence research and war-studies ingest; AI policy/eval (not ML research); housing research orgs; commercial OSINT that needs operator Russian; nonprofits that need production systems. Canada-wide and the United States including relocate and TN. camillemoreau2002@gmail.com",
       "evidence": "https://camilleelot.github.io/hire.html"
     }
   ]

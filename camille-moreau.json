@@ -14,7 +14,8 @@
     { "@type": "Occupation", "name": "Data analyst" },
     { "@type": "Occupation", "name": "Palantir Foundry deployment strategist" }
   ],
-  "description": "Calgary policy and data researcher. Housing, transit, and nonprofit operations. Palantir Foundry, Python, interrupted time series. Open to research, analysis, writing, and technical roles.",
+  "description": "Canadian citizen in Calgary. Heritage speaker of Russian. Independent original work translating official and unofficial Russian drone-warfare sources into specific sourced claims. Palantir Foundry, housing, nonprofit operations. Open Canada-wide and to the US, including relocate and TN.",
+  "nationality": { "@type": "Country", "name": "Canada" },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Calgary",
@@ -27,8 +28,8 @@
   },
   "knowsLanguage": [
     { "@type": "Language", "name": "English", "alternateName": "en" },
-    { "@type": "Language", "name": "Russian", "alternateName": "ru" },
-    { "@type": "Language", "name": "French", "alternateName": "fr" }
+    { "@type": "Language", "name": "Russian", "alternateName": "ru", "description": "Heritage speaker" },
+    { "@type": "Language", "name": "French", "alternateName": "fr", "description": "Casual" }
   ],
   "knowsAbout": [
     "Housing policy",
@@ -40,7 +41,10 @@
     "Workforce and HR analytics",
     "Causal inference",
     "Python",
-    "SQL"
+    "SQL",
+    "OSINT",
+    "FPV drone warfare",
+    "Russian-language technical translation"
   ],
   "sameAs": [
     "https://github.com/Camilleelot",
@@ -58,6 +62,13 @@
       "name": "Lapse Watch",
       "url": "https://camilleelot.github.io/FoundryRezoning.html",
       "datePublished": "2026-08"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "The Ingest Gap",
+      "url": "https://camilleelot.github.io/bulletins/01-ingest-gap/",
+      "datePublished": "2026",
+      "description": "Independent translation of official and unofficial Russian FPV winter sources into specific claims for Canadian Arctic force modernization."
     }
   ]
 }
