@@ -1,13 +1,9 @@
-# Bulletin 01 — The Ingest Gap (unlisted) · v1.0-rc
+# Bulletin 01 — The Ingest Gap · v1.0-rc
 
-Working project for the Arctic doctrine brief. This directory is deliberately
-**not linked from the site index or `sitemap.xml`**, and both HTML pages carry
-`<meta name="robots" content="noindex, nofollow">`. It is reachable only by
-direct URL:
+Arctic doctrine brief. Linked from the homepage and listed in `sitemap.xml`.
+`index.html` is indexed. `figures.html` stays `noindex` (it is a figure workbench).
 
     https://camilleelot.github.io/bulletins/01-ingest-gap/
-
-Share that link directly with the people who should read it.
 
 ## Files
 

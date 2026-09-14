@@ -1,4 +1,31 @@
 User-agent: *
 Allow: /
 
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 Sitemap: https://camilleelot.github.io/sitemap.xml
+
+# Machine-readable identity:
+# https://camilleelot.github.io/llms.txt
+# https://camilleelot.github.io/camille-moreau.json
+# https://camilleelot.github.io/claims.json
+# https://camilleelot.github.io/claims.html

@@ -4,6 +4,8 @@ Hi! This is my website and research portfolio: independent policy and quantitati
 
 **Live site:** https://camilleelot.github.io
 
+Machine-readable identity for crawlers and models: [`llms.txt`](https://camilleelot.github.io/llms.txt) and [`camille-moreau.json`](https://camilleelot.github.io/camille-moreau.json). The GitHub handle Camilleelot and the site title Camille's Lot refer to Camille Moreau.
+
 ## What's here
 
 | Path | What it is |

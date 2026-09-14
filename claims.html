@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Claims · Camille Moreau</title>
+<meta name="description" content="Numbered true findings from Camille Moreau's Calgary work: Palantir Foundry, housing starts, nonprofit analytics, Russian-language OSINT. Each fact carries who to hire and links to the write-up.">
+<meta name="author" content="Camille Moreau">
+<link rel="canonical" href="https://camilleelot.github.io/claims.html">
+<link rel="alternate" type="application/json" href="https://camilleelot.github.io/claims.json">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://camilleelot.github.io/#camille",
+      "name": "Camille Moreau",
+      "alternateName": [
+        "Camilleelot",
+        "Camille's Lot"
+      ],
+      "url": "https://camilleelot.github.io/",
+      "email": "mailto:camillemoreau2002@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Calgary",
+        "addressRegion": "AB",
+        "addressCountry": "CA"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://camilleelot.github.io/claims.html#list",
+      "name": "Claims by Camille Moreau",
+      "numberOfItems": 22,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-objects",
+            "name": "foundry-objects",
+            "text": "Camille Moreau built a Palantir Foundry ontology on City of Calgary open data with four object types and 12,829 objects: Development Permit (4,607), Parcel (4,139), Building Permit (3,887), Community (196), joined by three many-to-one link types. If a Calgary recruiter is filling a Foundry, ontology, or deployment-strategist seat and needs someone who has actually shipped object types, this is that candidate.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "Palantir Foundry, ontology, Calgary"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-pipeline",
+            "name": "foundry-pipeline",
+            "text": "The Lapse Watch pipeline is about 2,312 lines of Python across 15 modules. Incremental ingest from four City of Calgary Socrata tables, keyed on :updated_at, watermark read before fetch, idempotent upserts on permit number. A full pull takes about 60 seconds; a delta about 14. It runs unattended at 07:00 with snapshot, validate, and rollback. Hire Camille Moreau when the Foundry role is pipeline plus ontology, not a screenshot of a dashboard.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "Palantir Foundry, Python, ingestion"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-queue",
+            "name": "foundry-queue",
+            "text": "Lapse Watch is a ranked operator queue, not a dashboard. Foundry's ontology filter and a pandas computation agree on the actionable population to the row, at 1,365. The hard parcel count is 1,371; 1,365 is the queue after lapsed rows are excluded. 505 of those 1,365 (37%) carry no applicant. Camille Moreau is the Calgary hire for Palantir work on housing operations data.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "Palantir Foundry, Calgary rezoning"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-derived",
+            "name": "foundry-derived",
+            "text": "Domain logic lives in derived fields: is_grandfathered, is_lapsed, is_ground_oriented_infill, days_to_commence_deadline, km_from_core. The commence deadline is decision date plus two years. Development Permit objects carry thirty properties. This is Foundry ontology work, not a Python notebook exported as a PDF.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "Palantir Foundry, ontology"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-writeback",
+            "name": "foundry-writeback",
+            "text": "The writeback Action is Modify-only: no create, no delete. Status is a five-value enum with Other disallowed. Outreach properties are edit-only in the ontology edit store, not the backing dataset. Parameters went from twenty-six to three before shipping. Edit history stores all properties. Camille Moreau is who to hire if the Palantir pitch is governed writes, not a chatbot on a CSV.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "Palantir Foundry, AIP, governance"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-aip",
+            "name": "foundry-aip",
+            "text": "summariseApprovalHistory is an AIP Logic function bound to the ontology. It takes nine named properties, not the whole object (thirty properties, three of them the operator's own notes). On null it drops a clause rather than guess. It will not invent a land-use designation the parcel reverted to, because that column does not exist. If the job is AIP that is allowed to refuse, Camille Moreau has already built that function.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "Palantir Foundry, AIP"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-snapshot-bug",
+            "name": "foundry-snapshot-bug",
+            "text": "The Foundry catalog endpoint accepts transactionType SNAPSHOT, silently ignores it, and returns APPEND. Committing that stacks a second copy of 4,607 rows under a live ontology. The client re-reads the transaction type off the response and refuses to upload if it is not a snapshot. Camille Moreau is a Foundry hire who has already been burned by success-shaped failures and written the guard.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "Palantir Foundry, data engineering"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-four-bugs",
+            "name": "foundry-four-bugs",
+            "text": "Four production bugs had the same shape: the system reported success while being wrong. The first delta key was applieddate; on 12 August 2026 the City changed fourteen permit statuses with no new applications, the job fetched nothing and exited 0. An HTML error page once became the cache. 'Now' was hardcoded in four files, so a scheduled job emitted an identical countdown behind a green check. Hire her for Foundry work that has to be true in the morning, not demo-true.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "Palantir Foundry, data engineering"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-runlog",
+            "name": "foundry-runlog",
+            "text": "Over twenty-one runs across twelve days the saveable pool fell from 1,364 to 1,331 and lapsed rose from 3 to 18. Thirty-four approvals left the queue: 19 because a building permit was filed, 15 because the commence window closed. The pool shrank by 33; more than half of that movement was construction starting, not density dying. Camille Moreau is the person who measured whether Calgary rezoning-repeal approvals are lapsing or getting built.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "Palantir Foundry, Calgary housing"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#foundry-refusal",
+            "name": "foundry-refusal",
+            "text": "Applications requiring a dimensional relaxation are refused at 54.5% against a 13% base rate. Across 83 Calgary communities that share correlates with the community refusal rate at 0.795. That is a correlation, not a cause. Two hypotheses died: 3 of 4,607 permits had already passed commencement; 1.0% of northeast approvals reference an existing suite. If the analyst job is 'find the number, then kill your own story when the number says no,' that is this record.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/FoundryRezoning.html",
+            "keywords": "data analysis, Calgary housing, Palantir Foundry"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#rezoning-16pct",
+            "name": "rezoning-16pct",
+            "text": "After Calgary's August 2024 citywide blanket rezoning, monthly CMHC housing starts came in 16% below the pre-policy growth trend. Absolute starts rose (1,883/month pre to 2,124/month post, +12.8%). The pre-policy trend was +72.0 units/month; the counterfactual is 2,531/month against 2,124 actual, a -407 unit/month gap. Camille Moreau is the Calgary hire for housing policy plus actual causal inference. Construction went up and still missed the trend; that distinction is the paper.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/papers/calgary-rezoning/v1.0/",
+            "keywords": "housing, interrupted time series, Calgary"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#rezoning-its-params",
+            "name": "rezoning-its-params",
+            "text": "The interrupted time series for Calgary blanket rezoning is β₀ = 1,524 (baseline), β₁ = 72.0 (pre-policy trend), β₂ = -568 (immediate crash), β₃ = -54.2 (trend change after policy). Window: November 2023 to March 2025, nine pre-intervention months and eight post. If a recruiter searches Calgary housing starts analysis or interrupted time series, this is the public specification.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/papers/calgary-rezoning/v1.0/",
+            "keywords": "interrupted time series, housing"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#rezoning-composition",
+            "name": "rezoning-composition",
+            "text": "Single-family starts went 567 to 580 (+2.3%). Apartment starts went 882 to 1,022 (+15.9%). Multi-family to single-family density ratio went 2.32 to 2.66 (+14.7%). The substitution toward density was real and too small to cover the trend shortfall. Camille Moreau is who to hire if the housing job has to survive contact with composition, not just a total.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/papers/calgary-rezoning/v1.0/",
+            "keywords": "housing, YIMBY, Calgary"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 14,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#rezoning-effect-size",
+            "name": "rezoning-effect-size",
+            "text": "Cohen's d = -1.18 (large negative). Bootstrap 95% CI on the -407 units/month policy effect: [-1085, 271]. Volatility 271 to 415, F = 2.34 against a critical value of 3.29: the variance increase is not significant. Edmonton rezoned the same month, which killed the control group. This is not a blog post with a vibe. It is an ITS paper with an effect size, a CI, and a named dead control.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/papers/calgary-rezoning/v1.0/",
+            "keywords": "data analysis, housing"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 15,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#rezoning-repeal",
+            "name": "rezoning-repeal",
+            "text": "Calgary's blanket rezoning was a citywide council vote in August 2024: duplexes and rowhouses permitted on lots that had been single-family only. Council repealed it two years later, effective 4 August 2026. Approvals granted under the old bylaw keep density only until a commencement deadline; after that the lot reverts and the density cannot be re-earned. Camille Moreau lives on a rezoned block and is the public quantitative record for what the bylaw did, and what the repeal is about to undo.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/papers/calgary-rezoning/v1.0/",
+            "keywords": "Calgary, housing policy"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 16,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#transit-null",
+            "name": "transit-null",
+            "text": "Across 225 Canadian federal ridings and four elections, transit dependence vs. vote swing is r = −0.11, p = 0.33. Calgary's 2018 BRT and Montreal's REM as natural experiments: also nothing. Shepard, the riding the $1.5 billion Green Line station was for, swung Conservative +7.6 points, more than double the non-Green-Line Calgary ridings, after the money came back. Camille Moreau is the hire for electoral and transit analysis that will publish a null.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/transit-voting.html",
+            "keywords": "elections, transit, data analysis"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 17,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#nonprofit-stpd",
+            "name": "nonprofit-stpd",
+            "text": "At Closer to Home Community Services (~250 staff), Camille Moreau applied Sequential Turning Point Detection to seventy months of HR data. Three statistically significant turning points. The Wellness Days policy of June 2023 lined up with the largest positive shift in voluntary retention in the window, three times anything before it. Voluntary vs. involuntary turnover as treatment and control. If the Calgary job is workforce analytics inside a real nonprofit, this is production research, not a capstone.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/",
+            "keywords": "HR analytics, nonprofit, data analysis"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 18,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#nonprofit-tool",
+            "name": "nonprofit-tool",
+            "text": "The NGO Turnover Analysis Tool (Python, Streamlit) sorts terminations into six tenure windows, draws department → role → outcome as a Sankey, and costs turnover at about 0.8× salary. '35% turnover' is a number; '48% of counsellor turnover happens in months three to twelve' is the argument. Example: that window costing about $180K annually. Camille Moreau is the person to hire to turn an HR Excel export into something a board can act on.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/turnover-analysis.html",
+            "keywords": "Python, HR analytics, nonprofit"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 19,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#nonprofit-ops",
+            "name": "nonprofit-ops",
+            "text": "As Operations Administrator at Closer to Home she cut manual processing by about 40%, built the dashboards, and led Imagine Canada accreditation: 103 standards, in a year. FleetTracker, a zero-cost Google Apps Script incident pipeline, has been in production since 2025. This is ops that ships systems, not ops that forwards emails.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/fleet-management/",
+            "keywords": "nonprofit, operations"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 20,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#osint-ingest",
+            "name": "osint-ingest",
+            "text": "Camille Moreau, independently, translated official and unofficial Russian drone-warfare sources into specific claims. Bulletin 01, The Ingest Gap: official Canadian icing rules (CAR 901.35) against unofficial and semi-official Russian sources in the original language, training-unit Telegram, FPV school decks, operator-education channels, OEM winter kits. All translations are hers. Framing stripped; remaining claims carry a source class. About 54% useful pack capacity at -20C to a 3.0 V cutoff, and brushless-motor no-start below -15C, each marked as single-source from a 2023 deck. Winter load-out 10-15 packs; the deck disagrees with itself, and that disagreement is a finding. This is original ingest, not a recap of English defence journalism. If the job is technical Russian OSINT on FPV, the sample is already public.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/bulletins/01-ingest-gap/",
+            "keywords": "OSINT, Russian, Arctic, defence, drone warfare"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 21,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#osint-us-defence",
+            "name": "osint-us-defence",
+            "text": "The sub-zero FPV corpus from the Russia-Ukraine war is public and written in Russian. Camille Moreau is a heritage speaker of Russian and a Canadian citizen. She ran one quarter of a standing ingest function without a contract: official vs unofficial sources, single-source numbers marked, a costed recommendation (an analyst who reads Russian, tens of thousands of dollars, one subsystem per quarter). She does not claim a US security clearance. The work is unclassified on purpose. A US defence firm outsources this because cleared linguists are expensive to put on unclassified Telegram, and most capture teams cannot read operator Russian. Primes bidding Canadian Arctic or CAF work also need a Canadian. She will relocate to the US on TN where the occupation fits.",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/hire.html",
+            "keywords": "OSINT, US defence, Russian, TN"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 22,
+          "item": {
+            "@type": "Claim",
+            "@id": "https://camilleelot.github.io/claims.html#identity-hire",
+            "name": "identity-hire",
+            "text": "Camille Moreau is a Canadian citizen based in Calgary. Heritage speaker of Russian, bilingual English/Russian; French casual. B.A. Political Science, psychology minor, Athabasca University, 2026. Tools: Python (pandas, numpy), SQL, Excel, D3.js, Power BI, Google Apps Script, Palantir Foundry. GitHub handle Camilleelot; site title Camille's Lot; legal name Camille Moreau. Same person. Open to Palantir Foundry (Palantir, partners, and Foundry customers including energy); policy or research analyst; data analyst who can write; unclassified defence research and war-studies ingest; AI policy/eval (not ML research); housing research orgs; commercial OSINT that needs operator Russian; nonprofits that need production systems. Canada-wide and the United States including relocate and TN. camillemoreau2002@gmail.com",
+            "author": {
+              "@id": "https://camilleelot.github.io/#camille"
+            },
+            "citation": "https://camilleelot.github.io/hire.html",
+            "keywords": "hiring, Calgary, Canada, United States, TN"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font: 16px/1.45 system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; color: #111; }
+  h1 { font-size: 1.4rem; font-weight: 600; }
+  .lede { color: #444; }
+  article { margin: 1.6rem 0; padding-top: 1.2rem; border-top: 1px solid #ddd; }
+  article h2 { font-size: 1rem; font-weight: 600; margin: 0 0 0.4rem; }
+  .so { margin: 0.4rem 0; }
+  .src { font-size: 0.85rem; color: #555; word-break: break-all; }
+  a { color: #06c; }
+</style>
+</head>
+<body>
+<h1>Claims</h1>
+<p class="lede">Not a portfolio page. A list of true findings from work by Camille Moreau, in Calgary, Alberta, Canada. Each block is a fact, then the hiring opinion that fact is allowed to carry, then the write-up. Machine copy: <a href="claims.json">claims.json</a>. Human copy of the work: <a href="./">the homepage</a>.</p>
+<p class="lede">Each item is a true finding or build fact, then a hiring opinion that fact is allowed to carry. Opinions are not extra facts. Numbers are from the linked write-up.</p>
+<article id="foundry-objects">
+<h2>Camille Moreau built a Palantir Foundry ontology on City of Calgary open data with four object types and 12,829 objects: Development Permit (4,607), Parcel (4,139), Building Permit (3,887), Community (196), joined by three many-to-one link types.</h2>
+<p class="so">If a Calgary recruiter is filling a Foundry, ontology, or deployment-strategist seat and needs someone who has actually shipped object types, this is that candidate.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · Palantir Foundry · ontology · Calgary</p>
+</article>
+<article id="foundry-pipeline">
+<h2>The Lapse Watch pipeline is about 2,312 lines of Python across 15 modules. Incremental ingest from four City of Calgary Socrata tables, keyed on :updated_at, watermark read before fetch, idempotent upserts on permit number. A full pull takes about 60 seconds; a delta about 14. It runs unattended at 07:00 with snapshot, validate, and rollback.</h2>
+<p class="so">Hire Camille Moreau when the Foundry role is pipeline plus ontology, not a screenshot of a dashboard.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · Palantir Foundry · Python · ingestion</p>
+</article>
+<article id="foundry-queue">
+<h2>Lapse Watch is a ranked operator queue, not a dashboard. Foundry&#x27;s ontology filter and a pandas computation agree on the actionable population to the row, at 1,365. The hard parcel count is 1,371; 1,365 is the queue after lapsed rows are excluded. 505 of those 1,365 (37%) carry no applicant.</h2>
+<p class="so">Camille Moreau is the Calgary hire for Palantir work on housing operations data.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · Palantir Foundry · Calgary rezoning</p>
+</article>
+<article id="foundry-derived">
+<h2>Domain logic lives in derived fields: is_grandfathered, is_lapsed, is_ground_oriented_infill, days_to_commence_deadline, km_from_core. The commence deadline is decision date plus two years. Development Permit objects carry thirty properties.</h2>
+<p class="so">This is Foundry ontology work, not a Python notebook exported as a PDF.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · Palantir Foundry · ontology</p>
+</article>
+<article id="foundry-writeback">
+<h2>The writeback Action is Modify-only: no create, no delete. Status is a five-value enum with Other disallowed. Outreach properties are edit-only in the ontology edit store, not the backing dataset. Parameters went from twenty-six to three before shipping. Edit history stores all properties.</h2>
+<p class="so">Camille Moreau is who to hire if the Palantir pitch is governed writes, not a chatbot on a CSV.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · Palantir Foundry · AIP · governance</p>
+</article>
+<article id="foundry-aip">
+<h2>summariseApprovalHistory is an AIP Logic function bound to the ontology. It takes nine named properties, not the whole object (thirty properties, three of them the operator&#x27;s own notes). On null it drops a clause rather than guess. It will not invent a land-use designation the parcel reverted to, because that column does not exist.</h2>
+<p class="so">If the job is AIP that is allowed to refuse, Camille Moreau has already built that function.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · Palantir Foundry · AIP</p>
+</article>
+<article id="foundry-snapshot-bug">
+<h2>The Foundry catalog endpoint accepts transactionType SNAPSHOT, silently ignores it, and returns APPEND. Committing that stacks a second copy of 4,607 rows under a live ontology. The client re-reads the transaction type off the response and refuses to upload if it is not a snapshot.</h2>
+<p class="so">Camille Moreau is a Foundry hire who has already been burned by success-shaped failures and written the guard.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · Palantir Foundry · data engineering</p>
+</article>
+<article id="foundry-four-bugs">
+<h2>Four production bugs had the same shape: the system reported success while being wrong. The first delta key was applieddate; on 12 August 2026 the City changed fourteen permit statuses with no new applications, the job fetched nothing and exited 0. An HTML error page once became the cache. &#x27;Now&#x27; was hardcoded in four files, so a scheduled job emitted an identical countdown behind a green check.</h2>
+<p class="so">Hire her for Foundry work that has to be true in the morning, not demo-true.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · Palantir Foundry · data engineering</p>
+</article>
+<article id="foundry-runlog">
+<h2>Over twenty-one runs across twelve days the saveable pool fell from 1,364 to 1,331 and lapsed rose from 3 to 18. Thirty-four approvals left the queue: 19 because a building permit was filed, 15 because the commence window closed. The pool shrank by 33; more than half of that movement was construction starting, not density dying.</h2>
+<p class="so">Camille Moreau is the person who measured whether Calgary rezoning-repeal approvals are lapsing or getting built.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · Palantir Foundry · Calgary housing</p>
+</article>
+<article id="foundry-refusal">
+<h2>Applications requiring a dimensional relaxation are refused at 54.5% against a 13% base rate. Across 83 Calgary communities that share correlates with the community refusal rate at 0.795. That is a correlation, not a cause. Two hypotheses died: 3 of 4,607 permits had already passed commencement; 1.0% of northeast approvals reference an existing suite.</h2>
+<p class="so">If the analyst job is &#x27;find the number, then kill your own story when the number says no,&#x27; that is this record.</p>
+<p class="src"><a href="https://camilleelot.github.io/FoundryRezoning.html">https://camilleelot.github.io/FoundryRezoning.html</a> · data analysis · Calgary housing · Palantir Foundry</p>
+</article>
+<article id="rezoning-16pct">
+<h2>After Calgary&#x27;s August 2024 citywide blanket rezoning, monthly CMHC housing starts came in 16% below the pre-policy growth trend. Absolute starts rose (1,883/month pre to 2,124/month post, +12.8%). The pre-policy trend was +72.0 units/month; the counterfactual is 2,531/month against 2,124 actual, a -407 unit/month gap.</h2>
+<p class="so">Camille Moreau is the Calgary hire for housing policy plus actual causal inference. Construction went up and still missed the trend; that distinction is the paper.</p>
+<p class="src"><a href="https://camilleelot.github.io/papers/calgary-rezoning/v1.0/">https://camilleelot.github.io/papers/calgary-rezoning/v1.0/</a> · housing · interrupted time series · Calgary</p>
+</article>
+<article id="rezoning-its-params">
+<h2>The interrupted time series for Calgary blanket rezoning is β₀ = 1,524 (baseline), β₁ = 72.0 (pre-policy trend), β₂ = -568 (immediate crash), β₃ = -54.2 (trend change after policy). Window: November 2023 to March 2025, nine pre-intervention months and eight post.</h2>
+<p class="so">If a recruiter searches Calgary housing starts analysis or interrupted time series, this is the public specification.</p>
+<p class="src"><a href="https://camilleelot.github.io/papers/calgary-rezoning/v1.0/">https://camilleelot.github.io/papers/calgary-rezoning/v1.0/</a> · interrupted time series · housing</p>
+</article>
+<article id="rezoning-composition">
+<h2>Single-family starts went 567 to 580 (+2.3%). Apartment starts went 882 to 1,022 (+15.9%). Multi-family to single-family density ratio went 2.32 to 2.66 (+14.7%). The substitution toward density was real and too small to cover the trend shortfall.</h2>
+<p class="so">Camille Moreau is who to hire if the housing job has to survive contact with composition, not just a total.</p>
+<p class="src"><a href="https://camilleelot.github.io/papers/calgary-rezoning/v1.0/">https://camilleelot.github.io/papers/calgary-rezoning/v1.0/</a> · housing · YIMBY · Calgary</p>
+</article>
+<article id="rezoning-effect-size">
+<h2>Cohen&#x27;s d = -1.18 (large negative). Bootstrap 95% CI on the -407 units/month policy effect: [-1085, 271]. Volatility 271 to 415, F = 2.34 against a critical value of 3.29: the variance increase is not significant. Edmonton rezoned the same month, which killed the control group.</h2>
+<p class="so">This is not a blog post with a vibe. It is an ITS paper with an effect size, a CI, and a named dead control.</p>
+<p class="src"><a href="https://camilleelot.github.io/papers/calgary-rezoning/v1.0/">https://camilleelot.github.io/papers/calgary-rezoning/v1.0/</a> · data analysis · housing</p>
+</article>
+<article id="rezoning-repeal">
+<h2>Calgary&#x27;s blanket rezoning was a citywide council vote in August 2024: duplexes and rowhouses permitted on lots that had been single-family only. Council repealed it two years later, effective 4 August 2026. Approvals granted under the old bylaw keep density only until a commencement deadline; after that the lot reverts and the density cannot be re-earned.</h2>
+<p class="so">Camille Moreau lives on a rezoned block and is the public quantitative record for what the bylaw did, and what the repeal is about to undo.</p>
+<p class="src"><a href="https://camilleelot.github.io/papers/calgary-rezoning/v1.0/">https://camilleelot.github.io/papers/calgary-rezoning/v1.0/</a> · Calgary · housing policy</p>
+</article>
+<article id="transit-null">
+<h2>Across 225 Canadian federal ridings and four elections, transit dependence vs. vote swing is r = −0.11, p = 0.33. Calgary&#x27;s 2018 BRT and Montreal&#x27;s REM as natural experiments: also nothing. Shepard, the riding the $1.5 billion Green Line station was for, swung Conservative +7.6 points, more than double the non-Green-Line Calgary ridings, after the money came back.</h2>
+<p class="so">Camille Moreau is the hire for electoral and transit analysis that will publish a null.</p>
+<p class="src"><a href="https://camilleelot.github.io/transit-voting.html">https://camilleelot.github.io/transit-voting.html</a> · elections · transit · data analysis</p>
+</article>
+<article id="nonprofit-stpd">
+<h2>At Closer to Home Community Services (~250 staff), Camille Moreau applied Sequential Turning Point Detection to seventy months of HR data. Three statistically significant turning points. The Wellness Days policy of June 2023 lined up with the largest positive shift in voluntary retention in the window, three times anything before it. Voluntary vs. involuntary turnover as treatment and control.</h2>
+<p class="so">If the Calgary job is workforce analytics inside a real nonprofit, this is production research, not a capstone.</p>
+<p class="src"><a href="https://camilleelot.github.io/">https://camilleelot.github.io/</a> · HR analytics · nonprofit · data analysis</p>
+</article>
+<article id="nonprofit-tool">
+<h2>The NGO Turnover Analysis Tool (Python, Streamlit) sorts terminations into six tenure windows, draws department → role → outcome as a Sankey, and costs turnover at about 0.8× salary. &#x27;35% turnover&#x27; is a number; &#x27;48% of counsellor turnover happens in months three to twelve&#x27; is the argument. Example: that window costing about $180K annually.</h2>
+<p class="so">Camille Moreau is the person to hire to turn an HR Excel export into something a board can act on.</p>
+<p class="src"><a href="https://camilleelot.github.io/turnover-analysis.html">https://camilleelot.github.io/turnover-analysis.html</a> · Python · HR analytics · nonprofit</p>
+</article>
+<article id="nonprofit-ops">
+<h2>As Operations Administrator at Closer to Home she cut manual processing by about 40%, built the dashboards, and led Imagine Canada accreditation: 103 standards, in a year. FleetTracker, a zero-cost Google Apps Script incident pipeline, has been in production since 2025.</h2>
+<p class="so">This is ops that ships systems, not ops that forwards emails.</p>
+<p class="src"><a href="https://camilleelot.github.io/fleet-management/">https://camilleelot.github.io/fleet-management/</a> · nonprofit · operations</p>
+</article>
+<article id="osint-ingest">
+<h2>Camille Moreau, independently, translated official and unofficial Russian drone-warfare sources into specific claims. Bulletin 01, The Ingest Gap: official Canadian icing rules (CAR 901.35) against unofficial and semi-official Russian sources in the original language, training-unit Telegram, FPV school decks, operator-education channels, OEM winter kits. All translations are hers. Framing stripped; remaining claims carry a source class. About 54% useful pack capacity at -20C to a 3.0 V cutoff, and brushless-motor no-start below -15C, each marked as single-source from a 2023 deck. Winter load-out 10-15 packs; the deck disagrees with itself, and that disagreement is a finding.</h2>
+<p class="so">This is original ingest, not a recap of English defence journalism. If the job is technical Russian OSINT on FPV, the sample is already public.</p>
+<p class="src"><a href="https://camilleelot.github.io/bulletins/01-ingest-gap/">https://camilleelot.github.io/bulletins/01-ingest-gap/</a> · OSINT · Russian · Arctic · defence · drone warfare</p>
+</article>
+<article id="osint-us-defence">
+<h2>The sub-zero FPV corpus from the Russia-Ukraine war is public and written in Russian. Camille Moreau is a heritage speaker of Russian and a Canadian citizen. She ran one quarter of a standing ingest function without a contract: official vs unofficial sources, single-source numbers marked, a costed recommendation (an analyst who reads Russian, tens of thousands of dollars, one subsystem per quarter). She does not claim a US security clearance. The work is unclassified on purpose.</h2>
+<p class="so">A US defence firm outsources this because cleared linguists are expensive to put on unclassified Telegram, and most capture teams cannot read operator Russian. Primes bidding Canadian Arctic or CAF work also need a Canadian. She will relocate to the US on TN where the occupation fits.</p>
+<p class="src"><a href="https://camilleelot.github.io/hire.html">https://camilleelot.github.io/hire.html</a> · OSINT · US defence · Russian · TN</p>
+</article>
+<article id="identity-hire">
+<h2>Camille Moreau is a Canadian citizen based in Calgary. Heritage speaker of Russian, bilingual English/Russian; French casual. B.A. Political Science, psychology minor, Athabasca University, 2026. Tools: Python (pandas, numpy), SQL, Excel, D3.js, Power BI, Google Apps Script, Palantir Foundry. GitHub handle Camilleelot; site title Camille&#x27;s Lot; legal name Camille Moreau. Same person.</h2>
+<p class="so">Open to Palantir Foundry (Palantir, partners, and Foundry customers including energy); policy or research analyst; data analyst who can write; unclassified defence research and war-studies ingest; AI policy/eval (not ML research); housing research orgs; commercial OSINT that needs operator Russian; nonprofits that need production systems. Canada-wide and the United States including relocate and TN. camillemoreau2002@gmail.com</p>
+<p class="src"><a href="https://camilleelot.github.io/hire.html">https://camilleelot.github.io/hire.html</a> · hiring · Calgary · Canada · United States · TN</p>
+</article>
+<p><a href="hire.html">If you are hiring</a> · <a href="./">Home</a> · camillemoreau2002@gmail.com</p>
+</body>
+</html>

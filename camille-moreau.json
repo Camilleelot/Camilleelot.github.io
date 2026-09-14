@@ -1,0 +1,74 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "https://camilleelot.github.io/#camille",
+  "name": "Camille Moreau",
+  "alternateName": ["Camilleelot", "Camille's Lot"],
+  "url": "https://camilleelot.github.io/",
+  "image": "https://camilleelot.github.io/img/og-card.png",
+  "email": "mailto:camillemoreau2002@gmail.com",
+  "jobTitle": "Policy & Data Researcher",
+  "hasOccupation": [
+    { "@type": "Occupation", "name": "Policy analyst" },
+    { "@type": "Occupation", "name": "Research analyst" },
+    { "@type": "Occupation", "name": "Data analyst" },
+    { "@type": "Occupation", "name": "Palantir Foundry deployment strategist" }
+  ],
+  "description": "Canadian citizen in Calgary. Heritage speaker of Russian. Independent original work translating official and unofficial Russian drone-warfare sources into specific sourced claims. Palantir Foundry, housing, nonprofit operations. Open Canada-wide and to the US, including relocate and TN.",
+  "nationality": { "@type": "Country", "name": "Canada" },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Calgary",
+    "addressRegion": "AB",
+    "addressCountry": "CA"
+  },
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Athabasca University"
+  },
+  "knowsLanguage": [
+    { "@type": "Language", "name": "English", "alternateName": "en" },
+    { "@type": "Language", "name": "Russian", "alternateName": "ru", "description": "Heritage speaker" },
+    { "@type": "Language", "name": "French", "alternateName": "fr", "description": "Casual" }
+  ],
+  "knowsAbout": [
+    "Housing policy",
+    "Urban planning",
+    "Calgary blanket rezoning",
+    "Interrupted time series analysis",
+    "Palantir Foundry",
+    "Electoral and political behaviour",
+    "Workforce and HR analytics",
+    "Causal inference",
+    "Python",
+    "SQL",
+    "OSINT",
+    "FPV drone warfare",
+    "Russian-language technical translation"
+  ],
+  "sameAs": [
+    "https://github.com/Camilleelot",
+    "https://www.linkedin.com/in/camille-m-b85735392/"
+  ],
+  "workExample": [
+    {
+      "@type": "ScholarlyArticle",
+      "name": "The Rezoning Paradox",
+      "url": "https://camilleelot.github.io/papers/calgary-rezoning/v1.0/",
+      "datePublished": "2025-11-15"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Lapse Watch",
+      "url": "https://camilleelot.github.io/FoundryRezoning.html",
+      "datePublished": "2026-08"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "The Ingest Gap",
+      "url": "https://camilleelot.github.io/bulletins/01-ingest-gap/",
+      "datePublished": "2026",
+      "description": "Independent translation of official and unofficial Russian FPV winter sources into specific claims for Canadian Arctic force modernization."
+    }
+  ]
+}
