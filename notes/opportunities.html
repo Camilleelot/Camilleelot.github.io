@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opportunity map · Camille Moreau</title>
+<meta name="description" content="Working map of live roles matched to the public portfolio. Not linked from the homepage.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="author" content="Camille Moreau">
+<link rel="preload" href="../fonts/EBGaramond-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/Fraunces-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f2ea;
+    --paper: #fcf8ee;
+    --ink: #1a1814;
+    --ink-2: #3a342a;
+    --ink-3: #6d665a;
+    --rule: #d4c9b0;
+    --rule-soft: #e4dbc5;
+    --accent: #8a1f11;
+    --accent-soft: #b4564b;
+    --ok: #2a7d4f;
+    --serif: "EB Garamond", "Iowan Old Style", Palatino, Georgia, serif;
+    --display: "Fraunces", "EB Garamond", Georgia, serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #17140f;
+    --paper: #1f1b14;
+    --ink: #f2ece0;
+    --ink-2: #bfb5a3;
+    --ink-3: #8a8272;
+    --rule: #3a342a;
+    --rule-soft: #2a2620;
+    --accent: #e48a6a;
+    --ok: #7dba93;
+  }
+  html, body { background: var(--bg); color: var(--ink); }
+  body {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.55;
+    margin: 0; padding: 0;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 48px 48px 120px; }
+  a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+  a:hover { color: var(--accent); border-color: var(--accent); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  a.plain { border: none; }
+  header.top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; row-gap: 14px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 44px;
+  }
+  .mark { font-family: var(--display); font-size: 22px; font-weight: 500; letter-spacing: -0.012em; }
+  .mark em { font-style: italic; font-weight: 400; }
+  nav.top a { border: none; margin-left: 28px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2); }
+  nav.top a:hover { color: var(--accent); }
+  nav.top .theme-toggle {
+    margin-left: 28px; border: 1px solid var(--rule); padding: 4px 10px;
+    background: none; cursor: pointer; color: var(--ink);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .kicker {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1.02; letter-spacing: -0.018em;
+    margin: 0 0 18px;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .deck { font-size: 21px; line-height: 1.5; color: var(--ink-2); max-width: 58ch; margin: 0 0 36px; }
+  .draft {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 12px 16px;
+    margin: 0 0 48px;
+  }
+  h2.section {
+    font-family: var(--display); font-weight: 400; font-size: 14px;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    display: flex; justify-content: space-between; gap: 16px;
+    border-top: 1px solid var(--rule); padding-top: 18px;
+    margin: 56px 0 28px;
+  }
+  h2.section .num { font-family: var(--mono); letter-spacing: 0.16em; color: var(--ink-3); }
+  h3 { font-family: var(--display); font-weight: 400; font-size: 28px; margin: 0 0 10px; }
+  h3 em { font-style: italic; }
+  h4 { font-family: var(--display); font-weight: 400; font-size: 22px; margin: 28px 0 8px; }
+  p { margin: 0 0 14px; }
+  .muted { color: var(--ink-2); }
+  ul.plain { margin: 0 0 18px; padding: 0 0 0 1.1em; }
+  ul.plain li { margin-bottom: 6px; }
+  .tracks { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .track {
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 22px 22px 18px;
+  }
+  .track .tag {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+  }
+  .track p { font-size: 16.5px; color: var(--ink-2); margin: 0; }
+  .track .lead { margin-top: 12px; font-size: 14px; color: var(--ink); }
+  .job {
+    border-top: 1px solid var(--rule);
+    padding: 26px 0 8px;
+  }
+  .job:first-of-type { border-top: none; padding-top: 0; }
+  .meta {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px;
+  }
+  .fit {
+    display: inline-block;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid var(--rule); padding: 2px 8px; margin-left: 8px;
+    vertical-align: 2px;
+  }
+  .fit.apply { color: var(--ok); border-color: var(--ok); }
+  .fit.stretch { color: var(--accent); border-color: var(--accent-soft); }
+  .fit.watch { color: var(--ink-3); }
+  .job .why { color: var(--ink-2); }
+  .job .do { font-size: 16.5px; }
+  table.jobs {
+    width: 100%; border-collapse: collapse; font-size: 16px; margin: 8px 0 20px;
+  }
+  table.jobs th, table.jobs td {
+    text-align: left; vertical-align: top;
+    padding: 10px 12px 10px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  table.jobs th {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; font-weight: 400; color: var(--ink-3);
+    border-bottom: 1px solid var(--rule);
+  }
+  .art {
+    display: grid; grid-template-columns: 160px 1fr; gap: 18px;
+    border-top: 1px solid var(--rule-soft); padding: 18px 0;
+  }
+  .art .id {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  footer.end {
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  @media (max-width: 760px) {
+    .wrap { padding: 28px 22px 72px; }
+    nav.top { display: flex; flex-wrap: wrap; gap: 10px 20px; }
+    nav.top a, nav.top .theme-toggle { margin-left: 0; }
+    .tracks { grid-template-columns: 1fr; }
+    .art { grid-template-columns: 1fr; gap: 6px; }
+    table.jobs { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="mark">Camille <em>Moreau</em></div>
+    <nav class="top">
+      <a href="../">Home</a>
+      <a href="../papers/">Publications</a>
+      <a href="mailto:camillemoreau2002@gmail.com">Email</a>
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme"><span class="ico" aria-hidden="true">&#9789;</span><span class="theme-label">Dark</span></button>
+    </nav>
+  </header>
+
+  <div class="kicker">Working document · 31 August 2026 · Unlisted</div>
+  <h1>The portfolio as a <em>job map</em>, not a resume rewrite.</h1>
+  <p class="deck">Live openings matched to the work already on this site. Lead with a paper or a tool, not a job title. Seniority is the constraint; the artifacts are the argument.</p>
+  <p class="draft">Snapshot of postings visible on 31 Aug 2026. Deadlines move. This page is not linked from the homepage and is marked noindex. Treat it as a briefing, not a public job hunt.</p>
+
+  <section>
+    <h2 class="section"><span>What the GitHub actually argues</span><span class="num">§ 01</span></h2>
+    <p>The public site is stronger than a typical 2026 BA resume, and weaker than a five-year specialist posting. That gap is the whole strategy: apply where the work is the credential, skip where years and French and a master’s are the credential.</p>
+    <ul class="plain">
+      <li><b>Subject matter:</b> Calgary housing supply after blanket rezoning; transit cuts versus voting; nonprofit retention; fleet ops for a 250-person NGO; Russian-language FPV doctrine for Canadian Arctic policy.</li>
+      <li><b>Methods:</b> interrupted time series, spatial joins, STPD borrowed from geology, cohort/cost modeling, BM25-vs-dense eval for compliance retrieval, primary-source OSINT.</li>
+      <li><b>Shipped products:</b> Streamlit turnover tool, Google Apps Script FleetTracker in production, this site (hand-written HTML/D3), Imagine Canada 103-standard accreditation support.</li>
+      <li><b>Languages:</b> English and Russian fluent. French is “working on it,” which is not CMHC CBC bilingual.</li>
+      <li><b>Calendar:</b> B.A. Political Science (Psychology minor), Athabasca, 2026, finished while working. Operations Administrator, Closer to Home, May–Dec 2025. Independent research ongoing.</li>
+    </ul>
+    <p class="muted">Do not lead applications with “open to research, analysis, and writing roles.” Lead with the one artifact that would make that hiring manager’s week easier.</p>
+  </section>
+
+  <section>
+    <h2 class="section"><span>Four tracks that actually fit</span><span class="num">§ 02</span></h2>
+    <div class="tracks">
+      <article class="track">
+        <div class="tag">Track A · Cities</div>
+        <h3>Housing, transit, municipal research</h3>
+        <p>The Rezoning Paradox and the Green Line essay are already the kind of work City of Calgary Planning, CMHC research, and Calgary Housing need. Junior/analyst seats, not Specialist seats.</p>
+        <p class="lead">Lead with: <a href="../papers/calgary-rezoning/v1.0/">Rezoning Paradox v1.0</a> · <a href="../transit-voting.html">Quiet Politics</a></p>
+      </article>
+      <article class="track">
+        <div class="tag">Track B · APS</div>
+        <h3>Alberta policy analyst</h3>
+        <p>PS2/PS3 competitions still take a political-science degree plus writing samples. Equivalency rules let independent research stand in for missing years. Edmonton is the tax; Calgary is not always on offer.</p>
+        <p class="lead">Lead with: briefing-note voice from the rezoning paper · Closer to Home ops</p>
+      </article>
+      <article class="track">
+        <div class="tag">Track C · NGO data</div>
+        <h3>Workforce / ops analytics</h3>
+        <p>This is the closest experience match in Calgary. STPD retention work, the turnover tool, FleetTracker, and Imagine Canada accreditation are a single story: you made messy nonprofit data usable.</p>
+        <p class="lead">Lead with: <a href="https://hrturnoveranalysis.streamlit.app/">turnover tool</a> · STPD white paper on request</p>
+      </article>
+      <article class="track">
+        <div class="tag">Track D · RU / OSINT</div>
+        <h3>Language intelligence</h3>
+        <p>Fluent Russian plus Bulletin 01 is a rare pair. CSE/CSIS will not care about housing ITS. They will care that you read Russian training channels in the original and turned them into a policy brief.</p>
+        <p class="lead">Lead with: <a href="../bulletins/01-ingest-gap/">The Ingest Gap</a> · apply Calgary HUMINT and CSE language stream</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section"><span>Apply this week</span><span class="num">§ 03</span></h2>
+    <p class="muted">Ordered by deadline. “Apply” means the posting’s education bar is reachable and the portfolio maps. “Stretch” means years or seniority are the obstacle; still send if the artifact is unusually on-point.</p>
+
+    <article class="job">
+      <div class="meta">Closes today · 31 Aug 2026 · Edmonton · $66,884–$87,736<span class="fit apply">Apply</span></div>
+      <h3>Policy Analyst, Public Agency Secretariat</h3>
+      <p class="why">Government of Alberta, Program Services 2. University degree in political science or related field is the bar; extra years are preference, not a gate. The work is briefing notes, data hygiene, governance process, and turning messy information into decision-ready products. That is Closer to Home plus the writing habit on this site.</p>
+      <p class="do"><b>Do:</b> apply <em>today</em> if you can sit in Edmonton for 18 months. Cover letter should name Imagine Canada accreditation (103 standards, evidence assembled by hand) and one published paper as a writing sample. Job ID 84721.</p>
+      <p><a href="https://jobpostings.alberta.ca/job/Edmonton-Policy-Analyst/605264317/">Posting →</a></p>
+    </article>
+
+    <article class="job">
+      <div class="meta">Closes 2 Sep 2026 · Edmonton · $76,613–$100,492<span class="fit stretch">Stretch</span></div>
+      <h3>Policy and Research Analyst, Alberta Justice</h3>
+      <p class="why">PS3. Degree plus two years, or equivalency (one year of education for one year of experience). Independent research plus eight months of ops admin is a stretch they might accept if the cover letter is a 300–400 word writing test, which it is: they score grammar. Nonprofit/public-sector research is listed as an asset.</p>
+      <p class="do"><b>Do:</b> treat the cover letter as the sample. Quote the equivalency rule. Attach or link the rezoning paper. Skip if you will not move to Edmonton.</p>
+      <p><a href="https://jobpostings.alberta.ca/job/Edmonton-Policy-and-Research-Analyst/605581117/">Posting →</a></p>
+    </article>
+
+    <article class="job">
+      <div class="meta">Closes 3 Sep 2026 · Edmonton · ~$79,613–$100,492 · term to Mar 2027<span class="fit stretch">Stretch</span></div>
+      <h3>Policy Analyst, Forestry and Parks</h3>
+      <p class="why">PS3, same equivalency math. Intergovernmental briefing and FPT coordination. Forestry subject matter is thin in the portfolio; the transferable piece is “research a policy file you did not grow up in, write for senior leadership.” Lower priority than Justice unless you want a term foot-in-the-door.</p>
+      <p><a href="https://jobpostings.alberta.ca/job/Edmonton-Policy-Analyst/605451517/">Posting →</a></p>
+    </article>
+
+    <article class="job">
+      <div class="meta">Closes 4 Sep 2026 · Calgary<span class="fit stretch">Stretch</span></div>
+      <h3>Issue Strategist, City of Calgary</h3>
+      <p class="why">On the City careers board now. Historical Issue Strategist postings want a degree plus roughly 3–5 years in issues, policy, or strategic planning. The Green Line essay is the work sample: you already wrote the political reading of a City-shaping file. Seniority is the risk, not the subject.</p>
+      <p class="do"><b>Do:</b> open the posting on <a href="https://www.calgary.ca/careers.html">calgary.ca/careers</a> (the job list was in maintenance 28–31 Aug; it should be back 31 Aug morning local). If the current posting is closer to Planner/Analyst than to a five-year issues shop, apply. If it is Pay Grade 12 with five years required, still send the essay and the rezoning paper; do not rewrite yourself as a comms person.</p>
+    </article>
+
+    <article class="job">
+      <div class="meta">Closes 8 Sep 2026 · Calgary<span class="fit apply">Apply</span></div>
+      <h3>Planning &amp; Development Analyst, City of Calgary</h3>
+      <p class="why">Highest subject-matter match on the municipal board. You have already run ITS on CMHC starts around Calgary’s August 2024 blanket rezoning and published it. City building careers pages list Planning Analyst as a distinct stream from Planner 1. Read the posting the morning the site is back; if it is an analyst/data seat rather than an accredited-planner seat, this is a first-choice application.</p>
+      <p class="do"><b>Do:</b> cover letter in this order: (1) you tested the YIMBY prediction on 17 months of CMHC data, starts −16% vs trend; (2) you can do the spatial join; (3) you are in Calgary. Link the paper, not the homepage.</p>
+      <p><a href="https://www.calgary.ca/careers.html">City careers →</a></p>
+    </article>
+
+    <article class="job">
+      <div class="meta">Closes 8 Sep 2026 · Calgary<span class="fit watch">Read first</span></div>
+      <h3>Business Strategist, City of Calgary</h3>
+      <p class="why">On the same board. Title is broad. Open it only after Planning &amp; Development Analyst. Apply if the file is policy/research; skip if it is internal consulting with five years of PMP language.</p>
+    </article>
+
+    <article class="job">
+      <div class="meta">Closes 11 Sep 2026 · Calgary<span class="fit stretch">Stretch</span></div>
+      <h3>Intergovernmental Affairs Consultant, City of Calgary</h3>
+      <p class="why">This is the team that writes the City’s federal and provincial budget submissions (housing, transit, growth). Political science plus the Green Line piece is the argument. Similar City public-affairs seats have asked for ~5 years. Worth opening; not worth bending the resume.</p>
+      <p><a href="https://www.calgary.ca/careers.html">City careers →</a></p>
+    </article>
+
+    <article class="job">
+      <div class="meta">Posted 20 Aug 2026 · Calgary · on-site · permanent<span class="fit apply">Apply</span></div>
+      <h3>Workforce Analyst, Distress Centre Calgary</h3>
+      <p class="why">Reports to Director, People &amp; Culture. Workforce data, budgets, forecasting, tools for decision-makers, in a crisis NGO. This is the turnover tool plus Closer to Home, in the same city, same sector. Aggregators sometimes paste “5–8 years”; the Distress Centre careers page says apply via their ADP board and write <a href="mailto:hr@distresscentre.com">hr@distresscentre.com</a> if the listing is fussy. Do not self-reject on years before you see the official posting.</p>
+      <p class="do"><b>Do:</b> send the Streamlit demo link, the STPD one-pager on request, and a two-paragraph story about 35% turnover versus “48% of counselor turnover in months 3–12.” Apply through <a href="https://distresscentre.com/careers/">distresscentre.com/careers</a> (ADP).</p>
+    </article>
+
+    <article class="job">
+      <div class="meta">Closes 30 Sep 2026 · Calgary office available · $87,459–$120,917<span class="fit apply">Apply</span></div>
+      <h3>Human-Intelligence Officer, CSIS</h3>
+      <p class="why">Calgary is an explicit regional office. Canadian citizens only. Bar is an undergraduate degree plus experience conducting complex assessments, handling difficult situations, and working in a team. Assets include a language other than English/French, and client-service / social-work-adjacent work. That is Russian plus Closer to Home. This is not an analyst desk job; it is source work, 20 weeks of Ottawa training, a driver’s licence, and a physical test. Discretion: do not discuss the application on social media.</p>
+      <p class="do"><b>Do:</b> apply to the <b>Calgary</b> region. Two-page cover letter, concrete examples for each experience criterion. Bulletin 01 is the language/analysis exhibit; do not paste the whole bulletin into the letter. Ref. 26-968-08-080.</p>
+      <p><a href="https://www.canada.ca/en/security-intelligence-service/corporate/csis-jobs/available-jobs/human-intelligence-officer.html">Posting →</a> · <a href="https://www.canada.ca/en/security-intelligence-service/corporate/csis-jobs/how-to-submit-a-powerful-application.html">How CSIS wants the letter written →</a></p>
+    </article>
+
+    <article class="job">
+      <div class="meta">Standing intake · Ottawa (relocate) · language stream ~$93k–$110k<span class="fit apply">Apply</span></div>
+      <h3>CSE — Foreign Language Intelligence Analyst / Mission Analyst</h3>
+      <p class="why">No separate Russian posting is up today; the general application still lists this job type. Students graduating within 12 months have been eligible on prior Russian-language tabloids. Bulletin 01 is the work sample: you already ingested Russian primary sources and wrote for a Canadian defence-policy reader. Relocation to Ottawa is the cost.</p>
+      <p class="do"><b>Do:</b> submit the <a href="https://jobs-emplois.cse-cst.gc.ca/en/node/3727">CSE general application</a>, job type “Foreign Language Intelligence Analyst / Mission Analyst,” language Russian. Keep a copy of Bulletin 01 ready if they ask for writing.</p>
+    </article>
+  </section>
+
+  <section>
+    <h2 class="section"><span>Do not apply to these, yet</span><span class="num">§ 04</span></h2>
+    <p>Same subject, wrong seniority. Set alerts. The portfolio is the reason they will want you in two years, not why a 2026 Specialist competition will shortlist you.</p>
+    <table class="jobs">
+      <thead>
+        <tr><th>Role</th><th>Why it looks perfect</th><th>Why not now</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://careers.cmhc-schl.gc.ca/job/Calgary-Bilingual-Specialist%2C-Empirical-Research/604758017/">CMHC Bilingual Specialist, Empirical Research</a> · Calgary listed · $86,817–$108,521</td>
+          <td>Housing economics, urban planning, Python, CMHC data. You already used their starts series as the object of an ITS paper.</td>
+          <td>Postgraduate or equivalent, five years of housing research, official-languages CBC French. Join the <a href="https://careers.cmhc-schl.gc.ca/talentcommunity/subscribe/?locale=en_US">talent community</a> and watch Co-op / Analyst, not Specialist.</td>
+        </tr>
+        <tr>
+          <td>CMHC Specialist, Strategic Research</td>
+          <td>Same file, mixed methods, government audience.</td>
+          <td>Same five-year bar. French may be lighter than the bilingual empirical seat; years are not.</td>
+        </tr>
+        <tr>
+          <td>Canada West Foundation, Policy Analyst</td>
+          <td>Calgary think tank, evidence-not-ideology, western policy. Best long-run fit after municipal/APS.</td>
+          <td>Posted early July 2026; careers page now says no openings. Follow <a href="https://cwf.ca/about/employment/">cwf.ca/about/employment</a> and LinkedIn.</td>
+        </tr>
+        <tr>
+          <td>UCalgary School of Public Policy, Research Associate (New North America)</td>
+          <td>Calgary, research associate, writing.</td>
+          <td>Closed 30 Aug 2026. Watch <a href="https://careers.ucalgary.ca/search/jobs">careers.ucalgary.ca</a>.</td>
+        </tr>
+        <tr>
+          <td>IRPP Research Director, Economic Policy</td>
+          <td>You can write.</td>
+          <td>Director, five years, Montreal hybrid. Not this cycle.</td>
+        </tr>
+        <tr>
+          <td>City of Calgary — Manager, Engagement &amp; Research; Senior Data Management Strategist; CPS Workforce Planning Analyst</td>
+          <td>Research / workforce / data in the same building as Track A and C.</td>
+          <td>Manager and senior titles. CPS workforce analyst closed 30 Aug and historically wanted a graduate degree plus five years.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="section"><span>Which artifact to put in the letter</span><span class="num">§ 05</span></h2>
+    <div class="art">
+      <div class="id">§ 01 Transit / vote</div>
+      <div>City Intergovernmental, Issue Strategist, any “you will write for elected officials” seat. One sentence: you matched 225 ridings to journey-to-work data, then used the Green Line cut-and-restore as the test the national correlation could not run.</div>
+    </div>
+    <div class="art">
+      <div class="id">§ 02 Rezoning</div>
+      <div>City Planning &amp; Development Analyst, future CMHC analyst, anyone who lives in CMHC starts. One sentence: after blanket rezoning, starts ran 16% below trend; composition shifted toward multi-family and still did not close the gap.</div>
+    </div>
+    <div class="art">
+      <div class="id">§ 03 STPD</div>
+      <div>Distress Centre, any NGO people-analytics seat, APS competitions that want “complex assessments.” One sentence: you lifted a geology turning-point method, used involuntary turnover as a control, and the Wellness Days break was 3× prior changes.</div>
+    </div>
+    <div class="art">
+      <div class="id">§ 04 Turnover tool</div>
+      <div>Distress Centre and similar. Demo link in the first paragraph. Do not lead with Streamlit; lead with the board-report sentence.</div>
+    </div>
+    <div class="art">
+      <div class="id">§ 05 FleetTracker</div>
+      <div>Ops / analyst hybrids, Imagine Canada-adjacent nonprofits. Proof you ship on Workspace constraints, not that you want a fleet job.</div>
+    </div>
+    <div class="art">
+      <div class="id">§ 06 Ingest Gap</div>
+      <div>CSE language analyst, CSIS HUMINT (as the language/analysis asset, not as a claim that you have already been an intelligence officer). One sentence: you read Russian FPV training channels in the original and mapped a doctrine gap against Canada’s published no-fly-in-icing posture.</div>
+    </div>
+    <div class="art">
+      <div class="id">attest · flexrecap</div>
+      <div>Secondary. Attest is the accreditation-retrieval story if a nonprofit mentions standards. Flexrecap is a methods footnote (claims checked against match data), not a League-of-Legends anecdote, unless the interviewer already laughed.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section"><span>Alerts to set, then stop refreshing</span><span class="num">§ 06</span></h2>
+    <ul class="plain">
+      <li><a href="https://www.calgary.ca/careers.html">City of Calgary</a> — saved search: Planning Analyst, Planner 1, Research, Policy, Housing. The job list was down 28–31 Aug 2026; check it the morning of 31 Aug.</li>
+      <li><a href="https://jobpostings.alberta.ca/">jobpostings.alberta.ca</a> — Policy Analyst, Research Analyst, Program Services 2. Filter Calgary when it exists; PS2 is the realistic classification.</li>
+      <li><a href="https://careers.cmhc-schl.gc.ca/">CMHC</a> — talent community + Co-op/Internship/Students + “Analyst,” never only Specialist.</li>
+      <li><a href="https://cwf.ca/about/employment/">Canada West Foundation</a> and LinkedIn — next Policy Analyst is the Calgary think-tank seat that matches the writing.</li>
+      <li><a href="https://careers.ucalgary.ca/search/jobs">UCalgary staff careers</a> — School of Public Policy research assistant/associate.</li>
+      <li><a href="https://www.charityvillage.com/jobs/calgary">CharityVillage · Calgary</a> — data, evaluation, policy, people-and-culture.</li>
+      <li><a href="https://www.cse-cst.gc.ca/en/careers">CSE careers</a> and <a href="https://www.canada.ca/en/security-intelligence-service/corporate/csis-jobs.html">CSIS jobs</a> — language analyst / intelligence analyst tabloids; Russian is named as an asset often enough to keep a packet ready.</li>
+    </ul>
+    <p class="muted">If you only do three things after reading this: apply to the City Planning &amp; Development Analyst posting, send Distress Centre the turnover-tool packet, and file the CSIS Calgary HUMINT application before 30 Sep. The APS PS2 closing today is the fourth, if Edmonton is livable.</p>
+  </section>
+
+  <footer class="end">
+    <div>Working note · not in the sitemap</div>
+    <div>Sources pulled 31 Aug 2026</div>
+  </footer>
+</div>
+<script>
+  (function () {
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    var root = document.documentElement;
+    var icon = btn.querySelector('.ico');
+    var label = btn.querySelector('.theme-label');
+    function paint() {
+      var dark = root.getAttribute('data-theme') === 'dark';
+      icon.innerHTML = dark ? '☀' : '☽';
+      label.textContent = dark ? 'Light' : 'Dark';
+      btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    }
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      if (next === 'dark') root.setAttribute('data-theme', 'dark');
+      else root.removeAttribute('data-theme');
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      paint();
+    });
+    paint();
+  })();
+</script>
+</body>
+</html>
