@@ -1,6 +1,6 @@
 # Camille's Lot camilleelot.github.io
 
-Hi! This is my website and research portfolio: independent policy and quantitative work on Canadian housing, transit, elections, and nonprofit workforce data. Hand-written HTML/CSS, D3.js visualizations, no build step.
+Hi! This is my website and research portfolio: independent policy and quantitative work on Canadian housing, transit, elections, and nonprofit workforce data. Plain HTML/CSS, D3.js visualizations, no build step.
 
 **Live site:** https://camilleelot.github.io
 
@@ -20,7 +20,7 @@ Machine-readable identity for crawlers and models: [`llms.txt`](https://camillee
 
 ## A note on process
 
-Claude helps with spelling/formatting and lives on my phone where instagram used to be. Claude assisted where it makes sense: debugging, syntax, spell check. The questions and connections are mine.
+Claude and Cursor write code and draft prose with me. The questions, the sources, and the translations are mine.
 
 ## Contact
 
