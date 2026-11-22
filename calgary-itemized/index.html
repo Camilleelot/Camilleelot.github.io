@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calgary, Itemized</title>
+<meta name="description" content="Calgary's proposed 2027 budget, read like a household budget: what the 15% property tax increase costs your home, line by line.">
+<link rel="stylesheet" href="tufte.css">
+<link rel="stylesheet" href="latex.css">
+<style>
+/* VOICE work, in plain words: one civic decision, read like a household budget
+   IDEA a home budget sheet: your household's share of the City, by the month, line by line
+   PICTURE the ledger itself, live with your assessed value; then a slopegraph of the typical home's three bills
+   COLOUR Tufte's own: cream #fffff8 and ink #111, grey rules, one muted red for the proposal only; night #151515
+   TYPE ET Book through the site's tufte.css; italic heads, lining figures in tables
+   LAYOUT the Tufte column with sidenotes; the two "every $100" tables full width; on a phone one column, notes behind toggles */
+:root{--ink:#111;--grey:#6c6a64;--rule:#bdbab0;--faint:#e6e3d6;--red:#a3271c;--paper:#fffff8}
+@media (prefers-color-scheme:dark){:root{--ink:#ddd;--grey:#a3a19b;--rule:#4a4946;--faint:#2b2b2a;--red:#ec7a68;--paper:#151515}}
+:root[data-theme=light]{--ink:#111;--grey:#6c6a64;--rule:#bdbab0;--faint:#e6e3d6;--red:#a3271c;--paper:#fffff8}
+:root[data-theme=dark]{--ink:#ddd;--grey:#a3a19b;--rule:#4a4946;--faint:#2b2b2a;--red:#ec7a68;--paper:#151515}
+:root[data-theme=light] body{background-color:#fffff8;color:#111}
+:root[data-theme=dark] body{background-color:#151515;color:#ddd}
+:root[data-theme=light] a:link{text-shadow:.03em 0 #fffff8,-.03em 0 #fffff8,0 .03em #fffff8,0 -.03em #fffff8,.06em 0 #fffff8,-.06em 0 #fffff8,.09em 0 #fffff8,-.09em 0 #fffff8,.12em 0 #fffff8,-.12em 0 #fffff8,.15em 0 #fffff8,-.15em 0 #fffff8}
+:root[data-theme=dark] a:link{text-shadow:.03em 0 #151515,-.03em 0 #151515,0 .03em #151515,0 -.03em #151515,.06em 0 #151515,-.06em 0 #151515,.09em 0 #151515,-.09em 0 #151515,.12em 0 #151515,-.12em 0 #151515,.15em 0 #151515,-.15em 0 #151515}
+body{overflow-x:clip}
+.red{color:var(--red)}
+p.byline{width:55%;font-size:1.1rem;line-height:1.6;color:var(--grey);margin-top:0}
+.calc input[type=text]{font:inherit;color:inherit;background:transparent;border:0;border-bottom:1px solid currentColor;border-radius:0;width:5.6em;padding:0 .15em;text-align:right}
+.calc input[type=range]{width:9em;height:2rem;vertical-align:middle;accent-color:var(--red);margin:0 .3em}
+.calc input:focus-visible,button.txt:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.calc output{font-style:italic;white-space:nowrap}
+button.txt{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.15em}
+button.txt[aria-pressed=true]{text-decoration:none;font-style:italic}
+p.answer{font-size:1.8rem;line-height:1.3;font-style:italic}
+p.answer b{font-weight:400;font-style:normal;white-space:nowrap}
+.tw{width:55%;overflow-x:auto}
+table.ledger{width:100%;border-collapse:collapse;font-size:1.2rem;line-height:1.35;border-top:2px solid currentColor;border-bottom:2px solid currentColor;margin:.2rem 0 .6rem}
+.ledger th,.ledger td{padding:.3rem .6rem .3rem 0;text-align:left;font-weight:400;vertical-align:baseline}
+.ledger thead th{border-bottom:1px solid currentColor;font-style:italic;color:var(--grey);font-size:1.05rem}
+.ledger .n{text-align:right;white-space:nowrap}
+.ledger tr.g>*{font-style:italic;padding-top:.75rem}
+.ledger tr.i td:first-child{padding-left:1.1em}
+.ledger td.sb{width:20%;padding-right:0}
+.ledger .bar{display:block;height:.4rem;background:var(--grey);border-radius:0 2px 2px 0}
+.ledger .bar.hl{background:var(--red)}
+.ledger tfoot td{border-top:1px solid var(--rule)}
+.ledger tfoot tr.t1 td{border-top:1px solid currentColor}
+.ledger tfoot tr.p td{color:var(--red)}
+.ledger tfoot tr.c td{font-style:italic}
+.ledger tfoot tr.v td{color:var(--grey);font-size:1.05rem}
+.ledger tr.sum td{border-top:1px solid currentColor;font-style:italic}
+.fig{width:55%;height:290px;position:relative;margin:.6rem 0 1rem}
+.fig svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fig text{font-family:et-book,Palatino,"Book Antiqua",Georgia,serif;font-size:15px;fill:currentColor}
+.fig text.hd{font-style:italic;fill:var(--grey)}
+.fig text.red{fill:var(--red)}
+.fig line{stroke:currentColor;stroke-width:1.3}
+.fig line.red{stroke:var(--red);stroke-width:2}
+.fig circle{fill:currentColor}
+.fig circle.red{fill:var(--red)}
+.pair{width:90%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3rem;margin:.4rem 0 1rem}
+.pair p{width:auto;margin:.4rem 0}
+svg.spark{display:inline-block;width:4.2em;height:1em;vertical-align:-.12em;overflow:visible}
+svg.spark polyline{fill:none;stroke:currentColor;stroke-width:1.1}
+svg.spark circle{fill:var(--red)}
+ul.steps li{margin-bottom:.5rem}
+.tag{font-style:italic;color:var(--red);margin-left:.3em}
+ol.method li{margin-bottom:.5rem}
+.nw{white-space:nowrap}
+button.btn{font:inherit;font-size:1.15rem;line-height:1;padding:.45rem .9rem;border:1px solid currentColor;border-radius:3px;background:none;color:inherit;cursor:pointer;min-height:2.4rem}
+button.btn[aria-expanded=true]{background:currentColor}
+button.btn[aria-expanded=true] span{color:var(--paper)}
+button.btn:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+#sankey{position:relative;width:55%;margin:.4rem 0 .2rem}
+#sankey svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#sankey text{font-family:et-book,Palatino,"Book Antiqua",Georgia,serif;font-size:13px;fill:currentColor;paint-order:stroke;stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
+#sankey text.sm{font-size:12px}
+#sankey text.b{font-weight:700}
+#sankey text.xr{fill:var(--red)}
+#sankey .lk{fill:var(--grey);opacity:.2}
+#sankey .lk:hover{opacity:.42}
+#sankey .lk.x{fill:var(--red);opacity:.38}
+#sankey .nd{fill:currentColor}
+#sankey .nd.x{fill:var(--red)}
+@media (max-width:760px){#sankey{width:100%}button.btn{min-height:44px}}
+.subs{width:90%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.4rem;margin:.4rem 0 1.4rem}
+.subs p{width:auto;font-size:1.15rem;line-height:1.5;margin:.5rem 0}
+.subs p.sh{font-style:italic;font-size:1.45rem;line-height:1.2;margin:0 0 .3rem}
+.subs table.ledger{font-size:1.1rem}
+.subsrc{width:90%;font-size:1.05rem;line-height:1.5;color:var(--grey);margin-top:-.6rem}
+@media (max-width:760px){.subsrc{width:100%}#fund .sb{display:none}#crazy .pts{display:none}#crazy thead th,#fund thead th{white-space:normal}}
+@media (max-width:1100px){.subs{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media (max-width:760px){.subs{width:100%;grid-template-columns:minmax(0,1fr);gap:1rem}}
+@media (max-width:760px){p.byline,.tw,.fig{width:100%}.pair{width:100%;grid-template-columns:minmax(0,1fr);gap:1rem}.calc input[type=range]{display:block;width:100%;height:44px;margin:.3em 0}.ledger{font-size:1.02rem}.ledger th,.ledger td{padding-right:.4rem}.ledger td.sb{width:16%}.yrs .spk{display:none}}
+</style>
+</head>
+<body>
+<article>
+<h1>Calgary, Itemized</h1>
+<p class="subtitle">The proposed 2027 budget, read like a household budget</p>
+<p class="byline">Made by <a href="https://camilleelot.github.io/">Camille</a> from the City of Calgary’s published numbers, as of November 22, 2026. Not an official City page.</p>
+
+<section>
+<p><span class="newthought">On November 10</span> the City of Calgary proposed its budget for 2027 to 2030. It would raise property tax revenue 15% in 2027, then 10%, 7.7% and 6%.<label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"><span class="sidenote">City of Calgary, <a href="https://www.calgary.ca/our-finances/2027-budget.html">proposed 2027–2030 Budget</a>, and the Ward 8 <a href="https://www.calgary.ca/council/ward-8/articles/2027-2030-budget.html">budget toolkit</a>. The 15% is revenue from properties that already exist.</span> For the typical house, the City’s part of the property tax bill goes from $229 a month to $266, and on to about $334 by 2030 <svg class="spark" data-v="228.90,266,292.60,315.13,334.04" data-l="Typical house, City tax a month: $229, $266, $293, $315, $334"></svg>.<label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle"><span class="sidenote">The typical house is the City’s median single-residential assessment: $706,000 in 2026 and $688,000 in 2027. The years after 2027 are this page’s projection.</span> Council hears from the public starting November 23 and votes in December.</p>
+<p>A city budget is too big to picture. A household budget isn’t. So this page shows your share of the City: by the month, line by line, for your own home.</p>
+</section>
+
+<section id="bill">
+<h2>Your household’s City bill</h2>
+<p class="calc"><label for="a26">In 2026 my home was assessed at</label> <span class="nw">$<input type="text" id="a26" inputmode="numeric" autocomplete="off" value="706,000">,</span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle"><span class="sidenote">It’s on your 2026 assessment notice and tax bill. Try <button type="button" class="txt" data-p="house" aria-pressed="true">the typical house</button> ($706,000) or <button type="button" class="txt" data-p="condo" aria-pressed="false">the typical condo</button> ($347,000).</span> <label for="a27">and in 2027 at</label> <span class="nw">$<input type="text" id="a27" inputmode="numeric" autocomplete="off" value="688,000">.</span><label for="sn-4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-4" class="margin-toggle"><span class="sidenote" id="h27">Estimated by moving your 2026 value like the typical house’s, down 2.5%. Your 2027 assessment notice will have the real number.</span> <label for="r">If Council approves an increase of</label> <input type="range" id="r" min="0" max="30" step="0.1" value="15"> <output id="rv" for="r">15%, as proposed</output>,<label for="sn-r" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-r" class="margin-toggle"><span class="sidenote">The proposal is 15%. City documents from July, reported by <a href="https://globalnews.ca/news/12044564/calgary-2027-budget-requests-property-tax-estimate/">Global News</a>, said 5.4% would just maintain services, and that funding the departments’ and partners’ budget requests would take 20.2%.</span></p>
+<p class="answer" aria-live="polite">your City property tax goes from <b id="m26">$229</b> to <b id="m27" class="red">$266</b> a month: <span id="dl">$37 more</span>.</p>
+<p><span id="dy">That’s $445 more a year.</span> If the later increases hold and your value stays flat, it reaches <span id="m30">$334</span> a month in 2030 <svg class="spark" id="sp"></svg>. <button type="button" class="txt" id="reset">Reset to the typical house</button>.</p>
+<p><span id="rcap">The proposal.</span> Try <button type="button" class="txt" data-r="0">no increase</button>, <button type="button" class="txt" data-r="15">15%</button>, <button type="button" class="txt" data-r="20.2">20.2%</button> or <button type="button" class="txt" data-r="30">30%</button>. What each requested item is for is in the City’s <a href="https://www.calgary.ca/content/dam/www/ca/city-manager/documents/2027-2030-budget/2027-2030-operating-capital-budget-requests.pdf">budget request business cases</a>, one page each.</p>
+<div class="tw" id="fund" hidden><p style="margin:.2rem 0"><em id="fundh">What the extra could fund, in theory</em></p><table class="ledger"><thead><tr><th scope="col">Idea</th><th scope="col" class="n">Cost</th><th scope="col" class="n">Covered</th><th scope="col"></th></tr></thead><tbody id="fundt"></tbody></table><p class="subsrc" style="width:auto">Any one of these, not all of them, and only in theory: one year of extra tax isn’t a four-year building program, and the City can’t move money between operating and capital this freely. Costs come from the City’s 2026 budget (transit brings in $159 million, fares included), its 2027–2030 budget table (fire, parks, civic partners), its budget page (repaving, fire stations) and the police plan.</p></div>
+
+<p><span class="newthought">Where it goes.</span> Your 2026 City tax of <span id="t26">$2,747</span>, split the way the City splits everyone’s:<label for="sn-5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-5" class="margin-toggle"><span class="sidenote">From the City’s <a href="https://www.calgary.ca/property-owners/taxes/calculator.html">2026 tax breakdown</a>, which splits the whole bill. The Province’s 41.5% is set aside here and the rest scaled to 100%. The groups are this page’s; the line names are the City’s. The City hasn’t published a 2027 split, because it depends on what Council approves.</span></p>
+<p><button type="button" class="btn" id="sk" aria-expanded="false" aria-controls="sankey"><span>Sankey</span></button></p>
+<div id="sankey" hidden></div>
+<p class="subsrc" id="skcap" hidden></p>
+<div class="tw"><table class="ledger" id="ledger">
+<thead><tr><th scope="col">Line</th><th scope="col" class="n">A month</th><th scope="col" class="n">A year</th><th scope="col"><span class="visually-hidden"></span></th></tr></thead>
+<tbody id="lb"></tbody>
+<tfoot id="lf"></tfoot>
+</table></div>
+
+<p><span class="newthought">Inside the subscriptions.</span> Three of the biggest lines, opened up in plain words.</p>
+<div class="subs">
+<div>
+<p class="sh">Police: <span id="s-pol">$42.68</span> of your <span class="s-tot">$229</span> a month</p>
+<table class="ledger"><tbody id="sb-pol"></tbody></table>
+<p>Policing is mostly people: 2,304 officers and about 950 civilian staff. The other 15 cents of each dollar keeps 1,219 vehicles, their equipment and 41 buildings running.</p>
+<p>New in 2027, the police plan adds $56.6 million: $20.0 million of it pay, $14.3 million upkeep of equipment and buildings, on the way to 309 more officers by 2030.</p>
+</div>
+<div>
+<p class="sh">Transit: <span id="s-tra">$27.80</span> of your <span class="s-tot">$229</span> a month</p>
+<table class="ledger"><tbody>
+<tr><td>Riders: fares and other transit revenue</td><td class="n">27¢</td></tr>
+<tr><td>Property tax</td><td class="n">72¢</td></tr>
+<tr><td>Other recoveries</td><td class="n">1¢</td></tr>
+<tr class="sum"><td>Each dollar transit costs to run</td><td class="n">$1</td></tr>
+</tbody></table>
+<p>Your transit line is the part fares don’t cover. Transit costs $583 million a year to run; riders and ads bring in $159 million, and property tax pays $419 million.</p>
+<p>Each trip costs about $6.06 to run, the City’s 2026 target. An adult fare is $4.00.</p>
+</div>
+<div>
+<p class="sh">Running the City: <span id="s-cor">$32.44</span> of your <span class="s-tot">$229</span> a month</p>
+<table class="ledger"><tbody id="sb-cor"></tbody></table>
+<p>The City’s back office: the computers, payroll, money and records every other line depends on. The City’s housing office sits here too.</p>
+</div>
+</div>
+<p class="subsrc">Sources. Police: the 85% figure is how the service describes its own budget (<a href="https://livewirecalgary.com/2025/02/07/28-million-budget-shortfall-for-cps-means-more-pressure-put-on-police-members/">LiveWire Calgary</a>, February 2025); staff, vehicles, buildings and the 2027 increase come from the service’s <a href="https://www.calgarypolice.ca/content/dam/police/documents/budget/26-09-16%20-%202027-2030%20Budget%20Plan.pdf">2027–2030 Budget Plan</a>. Transit: the City’s <a href="https://www.calgary.ca/content/dam/www/cfod/finance/documents/plans-budgets-and-financial-reports/2023-2026-service-plans-budgets/2026-budget-as-approved-dec-3-2025.pdf">2026 budget</a>. Running the City: the City’s 2026 tax breakdown.</p>
+<p><span class="newthought">The whole bill.</span> Property tax isn’t the only City charge, and not all of the property tax bill goes to the City. For your home, three monthly bills move in 2027:<label for="sn-6" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-6" class="margin-toggle"><span class="sidenote">Water, waste and recycling is the City’s estimate for a typical metered home, at 19 cubic metres a month; it doesn’t depend on your assessment. The school tax uses the Province’s 2026 rate. For 2027 the City expects it to fall about $10 a month on the typical house, and yours is scaled the same way.</span></p>
+<div class="fig" id="slope" role="img" aria-label="Typical home, monthly: City property tax $229 to $266; provincial school tax $162 to about $152; water, waste and recycling $140 to $156."></div>
+<p>Together they go from about <span id="b26">$531</span> a month to <span id="b27">$574</span>: <span id="b27d">$43 more</span>. The school tax is set by the Province, not by Council, though it comes on the same bill.</p>
+</section>
+
+<section id="budget">
+<h2>Where the City’s money comes from and goes</h2>
+<p>Property tax pays for about half of the City’s operating budget, $6.43 billion in 2027 as proposed.<label for="sn-7" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-7" class="margin-toggle"><span class="sidenote">Revenue shares from the City’s <a href="https://www.calgary.ca/our-finances/2027-budget.html">budget page</a>. Spending is operating expenditure net of recoveries, from the City’s <a href="https://data.calgary.ca/Government/2027-2030-Budget-breakdown/m5bi-n8x4">Open Data budget table</a>; the City rounds the total to $6 billion.</span> Water and most of waste and recycling are paid through utility bills, not property tax. Here it is in real dollars, with your share beside each line:</p>
+<div class="pair">
+<div><p><em>Where the money comes from, 2027</em></p><table class="ledger" id="rev"></table></div>
+<div><p><em>Where it goes: the 2027 operating budget, and your share</em></p><table class="ledger" id="ops"></table></div>
+</div>
+<p class="subsrc">*Paid mostly through utility bills, not property tax. Corporate Programs is where the City books City-wide costs and revenues, like franchise fees and investment income, so little of it falls on your tax. Your share is your City tax split the City’s way; the rest of each line is paid by fees, utility bills and other income.</p>
+</section>
+
+<section id="years">
+<h2>Four years, not one</h2>
+<p>The 15% is the first of four increases. Council revisits each year every fall, so the later years can still change.</p>
+<div class="tw"><table class="ledger yrs">
+<thead><tr><th scope="col"></th><th scope="col" class="n">2027</th><th scope="col" class="n">2028</th><th scope="col" class="n">2029</th><th scope="col" class="n">2030</th><th scope="col" class="spk"></th></tr></thead>
+<tbody>
+<tr><td>Property tax increase</td><td class="n" id="yr27">15%</td><td class="n">10%</td><td class="n">7.7%</td><td class="n">6%</td><td class="spk"><svg class="spark" id="sp3"></svg></td></tr>
+<tr><td>Your home, City tax a month</td><td class="n" id="y27">$266</td><td class="n" id="y28">$293</td><td class="n" id="y29">$315</td><td class="n" id="y30">$334</td><td class="spk"><svg class="spark" id="sp4"></svg></td></tr>
+<tr><td>Operating budget</td><td class="n">$6.43B</td><td class="n">$7.01B</td><td class="n">$7.51B</td><td class="n">$8.16B</td><td class="spk"><svg class="spark" data-v="6433.6,7009.9,7509.1,8156.6" data-l="Operating: $6.43B, $7.01B, $7.51B, $8.16B"></svg></td></tr>
+<tr><td>Capital budget</td><td class="n">$4.42B</td><td class="n">$5.59B</td><td class="n">$5.02B</td><td class="n">$4.95B</td><td class="spk"><svg class="spark" data-v="4422.3,5587.3,5018.6,4950.6" data-l="Capital: $4.42B, $5.59B, $5.02B, $4.95B"></svg></td></tr>
+</tbody></table></div>
+<p>Your home after 2027 is this page’s projection, with its value held flat. Capital adds $0.63 billion planned for 2031 and 2032, about $20.6 billion in all, for things like $1.7 billion of wastewater plant upgrades and $300 million of new buses.<label for="sn-8" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-8" class="margin-toggle"><span class="sidenote">Capital and operating totals from the City’s Open Data budget table (nnnm-9sfh); project examples from the City’s budget page.</span></p>
+</section>
+
+<section id="median">
+<h2>The median household</h2>
+<p class="calc"><label for="inc">Against a household income of</label> <span class="nw">$<input type="text" id="inc" inputmode="numeric" autocomplete="off" value="98,000">,</span> Calgary’s median in 2020 and the newest census figure,<label for="sn-9" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-9" class="margin-toggle"><span class="sidenote">City of Calgary <a href="https://www.calgary.ca/research/population-profile.html">population profile</a>, from Statistics Canada’s 2021 Census. Incomes have risen since 2020, so the default shares are likely a little high. Put in your own income to see yours.</span> your City property tax takes <span id="sh26">2.8%</span> of it in 2026 and <span id="sh27">3.3%</span> in 2027, and about <span id="sh30">4.1%</span> by 2030 <svg class="spark" id="sp2"></svg>.</p>
+<p>Each point of increase costs your home about <span id="pp">$2.31</span> a month and raises about $28 million citywide.<label for="sn-10" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-10" class="margin-toggle"><span class="sidenote">“Each roughly $28 million in added budget cost represents a one per cent property tax increase.” <a href="https://livewirecalgary.com/2026/09/04/mayor-farkas-needs-over-wants-calgary-budget/">LiveWire Calgary</a>, September 4, 2026.</span> <span id="vs">Holding 2027 to 10% instead would save your home about $11.57 a month and leave about $140 million less to spend.</span></p>
+<p>And 41.5% of every property tax bill isn’t the City’s at all. It’s the Province’s school tax: <span id="pv">$1,948</span> a year on your home.</p>
+</section>
+
+<section id="crazy">
+<h2>Crazy things other cities did, priced for you</h2>
+<p>For fun, and only in theory: famous city projects, what they cost, and what each would add to your home’s bill if Calgary paid for it out of one year’s property tax.</p>
+<div class="tw"><table class="ledger"><thead><tr><th scope="col">What they did</th><th scope="col" class="n">Cost, about</th><th scope="col" class="n pts">Tax points</th><th scope="col" class="n">Your home, a month</th></tr></thead><tbody id="crz"></tbody></table></div>
+<p class="subsrc">Sources: <a href="https://www.stocktondemonstration.org/about-seed">Stockton’s SEED</a> ($500 a month to 125 people for two years, from 2019; for Calgary, $500 to each of the 502,300 households in the 2021 Census); Seoul’s <a href="https://en.wikipedia.org/wiki/Cheonggyecheon">Cheonggyecheon</a> (₩386 billion, 2005); Montreal’s announced budget for <a href="https://www.cbc.ca/lite/story/1.3174622">lighting the Jacques Cartier Bridge</a> (2017); Edmonton’s <a href="https://www.edmonton.ca/activities_parks_recreation/documents/FunicularYearInReviewUpdateReport2019.pdf">100 Street Funicular</a> (2017); CopenHill’s rooftop slope (DKK 82.4 million, <a href="https://ing.dk/artikel/skibakke-paa-toppen-af-amager-bakke-bliver-nu-en-realitet">Ingeniøren</a>, 2015); Medellín’s <a href="https://elevatorworld.com/article/medellins-outdoor-escalator">outdoor escalators</a> (US$6.7 million, 2011); <a href="https://www.smithsonianmag.com/travel/paris-river-has-become-beach-180952270/">Paris Plages</a> (about €2 million a year, older estimates); the City of Calgary’s <a href="https://www.calgary.ca/arts-culture/public-art/96-avenue-ne.html">public art page</a>. Costs are from when each was built, converted at rough recent exchange rates and not adjusted for inflation. A point is about $28 million.</p>
+</section>
+
+<section id="next">
+<h2>What happens next</h2>
+<ul class="steps" id="steps">
+<li data-d="2026-11-10"><b>November 10.</b> The City released the proposal.</li>
+<li data-d="2026-11-23"><b>November 23.</b> Public submissions begin and Council starts deliberating. Register to speak or send written comments at <a href="https://www.calgary.ca/budget">calgary.ca/budget</a>.</li>
+<li data-d="2026-12-01"><b>December.</b> Council votes on the budget, with any changes it makes.</li>
+<li data-d="2027-03-01"><b>Spring 2027.</b> After the provincial budget, Council sets the 2027 tax rates.</li>
+</ul>
+<p>To write to your councillor, <a href="https://www.calgary.ca/council/findyourcouncillor.html">find yours by address</a>.</p>
+</section>
+
+<section id="method">
+<h2>How the numbers are made</h2>
+<ol class="method">
+<li>2026 City tax is your 2026 assessed value times 0.0038906, the City’s 2026 residential rate (<a href="https://www.calgary.ca/property-owners/taxes/bill-rate-calculation.html">rates</a>).</li>
+<li>The City puts the typical house at $266 a month in 2027 on a $688,000 assessment. That implies a 2027 rate of about 0.0046395 under the 15% proposal; your 2027 tax is your 2027 value times that rate.</li>
+<li>The slider runs from 0% to 30% and scales the rate by (1 + your increase) ÷ 1.15. At 15% the City’s figures put the typical house up 16.2%, because values and tax shares shift between years; the slider keeps that shift, so even 0% shows a small rise.</li>
+<li>With no 2027 value of your own, yours moves like the typical house’s, down 2.5%. The typical condo falls 5.6%, from $347,000 to $327,500 (<a href="https://www.ctvnews.ca/calgary/article/calgary-budget-proposes-largest-single-year-property-tax-increase-in-about-30-years/">CTV News</a>, November 10, 2026).</li>
+<li>2028 to 2030 apply the proposed 10%, 7.7% and 6% to the rate, with your value held flat.</li>
+<li>Yours, a year: your City tax split by the City’s 2026 tax breakdown and matched to each budget line. The option captions use July’s City estimates as reported by Global News (5.4% to keep services, 20.2% and about $510 million for every request) and about $28 million per point.</li>
+<li>Inside the subscriptions: your police line is split 85 to 15, the way the service describes its budget; the running-the-City lines are the City’s own; transit’s cents are citywide, from the 2026 budget.</li>
+<li>The ledger leaves out water, waste and recycling charges and the Province’s school tax. The whole-bill chart adds them back: water at the City’s typical-home estimate, and your school tax at the 2026 provincial rate, scaled for 2027 the way the City scales the typical house.</li>
+<li>Shares of income use the household income you enter; the default is Calgary’s 2020 median, $98,000.</li>
+</ol>
+<p>Every figure links to its source. Calgary, Itemized is independent: it isn’t made, checked or endorsed by the City of Calgary.</p>
+</section>
+</article>
+<script>
+{
+const C={rate26:0.0038906,prov26:0.0027593,house:[706000,688000],condo:[347000,327500],mo27:266,later:[0.10,0.077,0.06]};
+const R27=C.mo27*12/C.house[1];
+const SHIFT=C.house[1]/C.house[0];
+const PROV27=(C.house[0]*C.prov26-120)/C.house[1];
+let SL=[[228.9,266],[162.34,152.34],[140,156]];
+const G=[
+['Safety',[['Calgary Police Service',10.90862531772],['Calgary Fire',6.28314008726],['Emergency management and community safety',2.03857739023]]],
+['Getting around',[['Calgary Transit',7.10672162287],['Mobility: roads and traffic',3.8728251505]]],
+['Building and repairs',[['Contribution to capital investments',8.93916576853]]],
+['Running the City',[['Corporate Services: IT, HR, finance, 311, law',7.01159359112],['Corporate Programs: City-wide accounts',0.68987972853],['General managers’ offices',0.32002954016],['Council, the mayor and the auditor',0.26979628212]]],
+['Parks, recreation and culture',[['Civic partners: libraries, arts, sport',2.67145822671],['Parks and open spaces',1.94985823008],['Recreation and social programs',0.91990025552]]],
+['Planning and projects',[['Planning and development',1.4505086874],['Infrastructure Services, incl. the Green Line',1.43038565592],['Facilities',1.32253069521]]],
+['Community',[['Community strategies',0.74679291201],['Partnerships',0.45430257881]]],
+['Waste',[['Waste and recycling (mostly on your utility bill)',0.12005122883]]]
+];
+const ALL=G.flatMap(g=>g[1]);
+const CITY=ALL.reduce((s,i)=>s+i[1],0);
+const MAXP=Math.max(...ALL.map(i=>i[1]));
+const CORP=[['Information technology',1.42776835692],['Human resources',0.77504698536],['Finance',0.70962166821],['Corporate security',0.61542629799],['Chief Housing Office',0.5952126566],['Assessing property and billing tax',0.55981487838],['Communications, 311, clerks, law, purchasing, safety, executives',2.32870274765],['Corporate Programs: City-wide accounts',0.68987972853],['General managers’ offices',0.32002954016],['Council, the mayor and the auditor',0.26979628212]];
+const REV=[['Property tax, including levies',49],['Sales of goods and services',30],['Return on equity',5],['Investment income',4],['Other non-tax revenue',4],['Franchise fees',3],['Licences and permits',3],['Fines and penalties',1],['Government grants',1]];
+const OPS=[['Water services',1222.0,1],['Corporate Programs',900.6],['Calgary Police Service',742.2],['Calgary Transit',659.9],['Mobility',379.8],['Calgary Fire',371.7],['Waste and recycling',254.1,1],['Emergency management and community safety',184.7],['Parks and open spaces',175.8],['Civic partners',163.5],['Downtown strategy',160.4],['Recreation and social programs',100.4]];
+const OPS_TOTAL=6433.6;
+const $=id=>document.getElementById(id);
+const m0=n=>'$'+Math.round(Math.abs(n)).toLocaleString('en-CA');
+const m2=n=>'$'+Math.abs(n).toLocaleString('en-CA',{minimumFractionDigits:2,maximumFractionDigits:2});
+const sg=n=>n>0.004?'+':n<-0.004?'−':'';
+const pctR=r=>(Number.isInteger(r)?r:r.toFixed(1))+'%';
+const num=v=>{const n=parseInt(String(v).replace(/[^0-9]/g,''),10);return Number.isFinite(n)?Math.min(n,999999999):0};
+const DEF={a26:706000,a27:688000,src:'auto',r:15,inc:98000};
+let S=Object.assign({},DEF);
+try{const s=JSON.parse(localStorage.getItem('cgy-itemized'));if(s&&s.a26>0&&s.a27>=0&&s.r>=0&&s.r<=30)S=Object.assign({},DEF,s)}catch(e){}
+const save=()=>{try{localStorage.setItem('cgy-itemized',JSON.stringify(S))}catch(e){}};
+
+const spark=(el,vals,label)=>{
+const w=60,h=16,mn=Math.min(...vals),mx=Math.max(...vals),rg=(mx-mn)||1;
+const pts=vals.map((v,i)=>[i/(vals.length-1)*w,h-2-(v-mn)/rg*(h-4)]);
+const last=pts[pts.length-1];
+el.setAttribute('viewBox','-2 -2 '+(w+4)+' '+(h+4));
+el.setAttribute('role','img');el.setAttribute('aria-label',label);
+el.innerHTML='<title>'+label+'</title><polyline points="'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')+'"/><circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="2.2"/>';
+};
+document.querySelectorAll('svg.spark[data-v]').forEach(el=>spark(el,el.dataset.v.split(',').map(Number),el.dataset.l));
+
+const calc=()=>{const t=[S.a26*C.rate26,S.a27*R27*(1+S.r/100)/1.15];C.later.forEach(g=>t.push(t[t.length-1]*(1+g)));return t};
+
+const render=()=>{
+const t=calc(),t0=t[0],d=t[1]-t[0];
+$('m26').textContent=m0(t0/12);
+$('m27').textContent=m0(t[1]/12);
+$('dl').textContent=Math.abs(d)<6?'about the same':m0(d/12)+(d>0?' more':' less');
+$('dy').textContent=Math.abs(d)<6?'Within a few dollars a year.':'That’s '+m0(d)+(d>0?' more':' less')+' a year, '+(d>0?'up ':'down ')+Math.abs(t0?d/t0*100:0).toFixed(1)+'%.';
+$('m30').textContent=m0(t[4]/12);
+spark($('sp'),t.map(x=>x/12),'Your City tax a month, 2026 to 2030: '+t.map(x=>m0(x/12)).join(', '));
+$('t26').textContent=m0(t0);
+$('rv').textContent=pctR(S.r)+(S.r===15?', as proposed':S.r===0?', no increase':S.r===5.4?', just maintaining services':S.r===20.2?', every request funded':S.r===30?', the top of the range':'');
+let rows='';
+G.forEach(([g,its])=>{
+const gp=its.reduce((s,i)=>s+i[1],0);
+rows+='<tr class="g"><th scope="rowgroup">'+g+'</th><td class="n">'+m2(t0*gp/CITY/12)+'</td><td class="n">'+m0(t0*gp/CITY)+'</td><td class="sb"></td></tr>';
+its.forEach(([l,p])=>{const y=t0*p/CITY;rows+='<tr class="i"><td>'+l+'</td><td class="n">'+m2(y/12)+'</td><td class="n">'+m0(y)+'</td><td class="sb"><span class="bar" style="width:'+(p/MAXP*100).toFixed(1)+'%"></span></td></tr>'});
+});
+$('lb').innerHTML=rows;
+const per=p=>t0*p/CITY/12,pol=per(10.90862531772);
+$('s-pol').textContent=m2(pol);$('s-tra').textContent=m2(per(7.10672162287));$('s-cor').textContent=m2(per(8.29129914193));document.querySelectorAll('.s-tot').forEach(e=>{e.textContent=m0(t0/12)});
+$('sb-pol').innerHTML='<tr><td>People: pay and benefits</td><td class="n">'+m2(pol*0.85)+'</td></tr><tr><td>Vehicles, equipment, buildings, utilities</td><td class="n">'+m2(pol*0.15)+'</td></tr>';
+$('sb-cor').innerHTML=CORP.map(([l,p])=>'<tr><td>'+l+'</td><td class="n">'+m2(per(p))+'</td></tr>').join('');
+budgetTables(t0);
+{const R=S.r,M=x=>'$'+Math.round(x)+' million';let cap;
+if(R===0)cap='No increase: the same tax from existing properties as in 2026. July’s City estimate put just keeping today’s services at 5.4%, so this leaves about '+M(5.4*28)+' a year of today’s services to cut or pay for some other way.';
+else if(R<5.4)cap='Below the 5.4% that July’s City estimate said today’s services need: about '+M((5.4-R)*28)+' a year short.';
+else if(R<15)cap='Enough to keep today’s services by July’s estimate, plus about '+M((R-5.4)*28)+' for new things: '+M((15-R)*28)+' less than the proposal.';
+else if(R===15)cap='The proposal: about '+M(9.6*28)+' a year beyond keeping today’s services, by July’s estimate. It includes the police plan’s $56.6 million for 2027, on the way to 309 more officers by 2030.';
+else if(R<20.2)cap='Between the proposal and every request funded: about '+M((R-15)*28)+' a year more than proposed.';
+else if(R===20.2)cap='Every request funded: what July’s documents said the departments’ and partners’ requests would take, about $510 million more in operating spending.';
+else cap='More than every July request put together: about '+M((R-15)*28)+' a year more than the proposal.';
+if(R>15)cap+=' Here’s what that extra could fund, in theory.';
+$('rcap').textContent=cap;
+const E=(R-15)*28,fd=$('fund');
+if(E>0.5){fd.hidden=false;$('fundh').textContent='What $'+Math.round(E)+' million a year more than the proposal could fund, in theory';
+$('fundt').innerHTML=FUND.map(([l,c,cs,mult])=>{const k=E/c,v=k>=1?(mult&&k>=2?Math.floor(k)+' times':'yes'):Math.round(k*100)+'%';return '<tr><td>'+l+'</td><td class="n">'+cs+'</td><td class="n">'+v+'</td><td class="sb"><span class="bar'+(k>=1?' hl':'')+'" style="width:'+(Math.min(k,1)*100).toFixed(0)+'%"></span></td></tr>'}).join('');}
+else fd.hidden=true;}
+const pv=S.a26*C.prov26;
+$('lf').innerHTML='<tr class="t1"><td>City property tax, 2026</td><td class="n">'+m2(t0/12)+'</td><td class="n">'+m0(t0)+'</td><td></td></tr>'
++'<tr class="p"><td>Proposed for 2027, at '+pctR(S.r)+'</td><td class="n">'+m2(t[1]/12)+'</td><td class="n">'+m0(t[1])+'</td><td></td></tr>'
++'<tr class="c"><td>Change</td><td class="n">'+sg(d)+m2(d/12)+'</td><td class="n">'+sg(d)+m0(d)+'</td><td></td></tr>'
++'<tr class="v"><td>Also on your bill: the Province’s school tax, 2026</td><td class="n">'+m2(pv/12)+'</td><td class="n">'+m0(pv)+'</td><td></td></tr>';
+document.querySelectorAll('[data-p]').forEach(b=>{const v=C[b.dataset.p];b.setAttribute('aria-pressed',String(S.a26===v[0]&&S.a27===v[1]))});
+$('h27').innerHTML=S.src==='condo'?'The typical condo falls 5.6%, to $327,500 (CTV News, from City figures).':S.src==='user'?'Your own 2027 value. <button type="button" class="txt" id="useest">Use the estimate instead</button>.':'Estimated by moving your 2026 value like the typical house’s, down 2.5%. Your 2027 assessment notice will have the real number.';
+const inc=S.inc||0,sh=x=>inc>0?(x/inc*100).toFixed(1)+'%':'(enter an income)';
+$('sh26').textContent=sh(t[0]);$('sh27').textContent=sh(t[1]);$('sh30').textContent=sh(t[4]);
+spark($('sp2'),t.map(x=>inc>0?x/inc*100:0),'Share of income, 2026 to 2030: '+t.map(x=>sh(x)).join(', '));
+const pp=S.a27*R27/1.15/100/12,dr=15-S.r;
+$('pp').textContent=m2(pp);
+$('vs').textContent=Math.abs(dr)<0.05?'Holding 2027 to 10% instead would save your home about '+m2(5*pp)+' a month and leave about $140 million less to spend.':dr>0?'Your '+pctR(S.r)+' would save your home about '+m2(dr*pp)+' a month against the proposal, and leave about $'+Math.round(dr*28)+' million less to spend.':'Your '+pctR(S.r)+' would cost your home about '+m2(-dr*pp)+' a month more than the proposal, and raise about $'+Math.round(-dr*28)+' million more.';
+$('pv').textContent=m0(S.a26*C.prov26);
+$('yr27').textContent=pctR(S.r);
+['y27','y28','y29','y30'].forEach((id,i)=>{$(id).textContent=m0(t[i+1]/12)});
+spark($('sp3'),[S.r,10,7.7,6],'Increase: '+pctR(S.r)+', 10%, 7.7%, 6%');
+spark($('sp4'),t.slice(1).map(x=>x/12),'Your home a month, 2027 to 2030: '+t.slice(1).map(x=>m0(x/12)).join(', '));
+const p26=S.a26*C.prov26/12,p27=S.a27*PROV27/12,b26=t[0]/12+p26+140,b27=t[1]/12+p27+156,bd=b27-b26;
+SL=[[t[0]/12,t[1]/12],[p26,p27],[140,156]];
+$('b26').textContent=m0(b26);$('b27').textContent=m0(b27);$('b27d').textContent=Math.abs(bd)<0.5?'about the same':m0(bd)+(bd>0?' more':' less');
+slope();
+$('crz').innerHTML=CRAZY.map(([l,c,cs])=>{const pts=c/28;return '<tr><td>'+l+'</td><td class="n">'+cs+'</td><td class="n pts">'+(pts>=10?Math.round(pts):pts>=1?pts.toFixed(1):pts.toFixed(2))+'</td><td class="n">'+m2(pts*pp)+'</td></tr>'}).join('');
+if(typeof drawSankey==='function')drawSankey();
+};
+
+const sync=()=>{$('a26').value=S.a26.toLocaleString('en-CA');$('a27').value=S.a27.toLocaleString('en-CA');$('r').value=S.r;$('inc').value=(S.inc||0).toLocaleString('en-CA')};
+const fmtOnBlur=(el,k)=>el.addEventListener('blur',()=>{el.value=S[k]?S[k].toLocaleString('en-CA'):''});
+$('a26').addEventListener('input',e=>{S.a26=num(e.target.value);if(S.src!=='user'){S.a27=Math.round(S.a26*SHIFT);S.src='auto';$('a27').value=S.a27.toLocaleString('en-CA')}render();save()});
+$('a27').addEventListener('input',e=>{S.a27=num(e.target.value);S.src='user';render();save()});
+fmtOnBlur($('a26'),'a26');fmtOnBlur($('a27'),'a27');
+$('inc').addEventListener('input',e=>{S.inc=num(e.target.value);render();save()});fmtOnBlur($('inc'),'inc');
+document.querySelectorAll('[data-r]').forEach(b=>b.addEventListener('click',()=>{S.r=parseFloat(b.dataset.r);$('r').value=S.r;render();save()}));
+$('r').addEventListener('input',e=>{S.r=parseFloat(e.target.value)||0;render();save()});
+document.querySelectorAll('[data-p]').forEach(b=>b.addEventListener('click',()=>{const v=C[b.dataset.p];S.a26=v[0];S.a27=v[1];S.src=b.dataset.p==='condo'?'condo':'auto';sync();render();save()}));
+$('reset').addEventListener('click',()=>{S=Object.assign({},DEF);sync();render();save()});
+$('h27').addEventListener('click',e=>{if(e.target.id==='useest'){S.a27=Math.round(S.a26*SHIFT);S.src='auto';sync();render();save()}});
+
+const OPSP=[0,0.68987972853,10.90862531772,7.10672162287,3.8728251505,6.28314008726,0.12005122883,2.03857739023,1.94985823008,2.67145822671,0.23728675114,0.91990025552];
+const FUND=[['Make every transit ride free',159,'under $159M',0],['Fund the police plan’s four-year growth in one year',132,'$132M',0],['Double the City’s civic partners: libraries, arts, sport',164,'$164M',0],['Double the parks budget',176,'$176M',0],['Build the budget’s new fire and emergency stations',102,'$102M',1],['Run a second Calgary Fire Department',372,'$372M',0],['Repave four years’ worth of roads at once',420,'$420M',0]];
+const CRAZY=[['Give every household $500 a month, like Stockton, California’s famous pilot did for 125 people',3014,'$3.0B a year'],['Tear out a freeway and uncover the creek buried beneath it, like Seoul',385,'$385M'],['Light up a bridge for a birthday, like Montreal',39.5,'$39.5M'],['Build a funicular down to the river, like Edmonton',24,'$24M'],['Put a ski slope on top of the garbage plant, like Copenhagen (the slope alone)',17,'$17M'],['Run outdoor escalators up a hillside neighbourhood, like Medellín',9.2,'$9.2M'],['Truck a beach onto the river every summer, like Paris',3.1,'$3.1M a year'],['Plant a giant blue ring beside Deerfoot, like Calgary did in 2013',0.471,'$471K']];
+const FUNDS=['free transit','the police plan’s four-year growth','doubling civic partners','doubling the parks budget','the new fire and emergency stations','a second fire department','four years of repaving'];
+const budgetTables=t0=>{
+const revMax=REV[0][1];
+$('rev').innerHTML='<thead><tr><th scope="col"></th><th scope="col" class="n">Share</th><th scope="col"></th></tr></thead><tbody>'+REV.map(([l,v],i)=>'<tr><td>'+l+(i===0?'<br><span style="color:var(--grey)">you put in '+m0(t0)+' of it</span>':'')+'</td><td class="n">'+v+'%</td><td class="sb"><span class="bar'+(i===0?' hl':'')+'" style="width:'+(v/revMax*100).toFixed(1)+'%"></span></td></tr>').join('')+'</tbody>';
+const shown=OPS.reduce((a,o)=>a+o[1],0),mapped=OPSP.reduce((a,x)=>a+x,0),opsMax=OPS[0][1];
+const big=v=>'$'+(v>=1000?(v/1000).toFixed(2)+'B':Math.round(v)+'M');
+const row=(l,v,yours,dim)=>'<tr><td>'+l+'</td><td class="n">'+big(v)+'</td><td class="n">'+yours+'</td><td class="sb"><span class="bar" style="width:'+(v/opsMax*100).toFixed(1)+'%;'+(dim?'opacity:.45':'')+'"></span></td></tr>';
+$('ops').innerHTML='<thead><tr><th scope="col"></th><th scope="col" class="n">Citywide</th><th scope="col" class="n">Yours, a year</th><th scope="col"></th></tr></thead><tbody>'
++OPS.map(([l,v,u],i)=>row(l+(u?'*':''),v,OPSP[i]?m0(t0*OPSP[i]/CITY):'water bill',u)).join('')
++row('Everything else (41 smaller units)',OPS_TOTAL-shown,m0(t0*(CITY-mapped)/CITY),1)
++'<tr class="sum"><td>Total</td><td class="n">'+big(OPS_TOTAL)+'</td><td class="n">'+m0(t0)+'</td><td></td></tr></tbody>';
+};
+
+let pick=-1;
+const pickFund=(E,force)=>{
+if(!force&&pick>=0&&FUND[pick][1]<=E)return pick;
+const ok=FUND.map((f,i)=>[i,f[1]]).filter(x=>x[1]<=E);
+if(!ok.length){pick=FUND.reduce((m,f,i)=>f[1]<FUND[m][1]?i:m,0);return pick}
+const w=ok.map(x=>x[1]*x[1]),tw=w.reduce((a,b)=>a+b,0);let r=Math.random()*tw;
+for(let i=0;i<ok.length;i++){r-=w[i];if(r<=0){pick=ok[i][0];return pick}}
+pick=ok[ok.length-1][0];return pick};
+const shortName=l=>({'Emergency management and community safety':'Emergency and community safety','Contribution to capital investments':'Capital contribution','Parks, recreation and culture':'Parks and culture'})[l]||l.split(/[:(,]/)[0].trim();
+const drawSankey=()=>{
+const box=$('sankey');if(box.hidden)return;
+const W=box.clientWidth;if(!W)return;
+const nar=W<520,t=calc(),over=S.r>15,base=over?S.a27*R27:t[1],extra=over?t[1]-base:0,E=(S.r-15)*28;
+const mids=G.map(([g,its])=>({l:shortName(g),v:base*its.reduce((a,i)=>a+i[1],0)/CITY,kids:its.map(([l,p])=>({l:shortName(l),v:base*p/CITY}))}));
+let fi=-1;
+if(extra>0.5){fi=pickFund(E,false);const fits=FUND[fi][1]<=E;mids.push({l:'Above the proposal',v:extra,x:1,kids:[{l:(fits?'In theory: ':'A start on: ')+FUNDS[fi],v:extra,x:1}]})}
+const total=mids.reduce((a,m)=>a+m.v,0);if(!(total>0)){box.innerHTML='';return}
+const rights=nar?[]:mids.flatMap(m=>m.kids.map(c=>{c.par=m;return c}));
+const H=nar?Math.max(320,mids.length*36):Math.max(440,rights.length*26);
+box.style.height=H+'px';
+const padM=nar?12:18,padR=12,n=nar?mids.length:rights.length,pad=nar?padM:padR;
+const k=(H-24-pad*(n-1))/total;
+const nw=6,xS=nar?62:84,xM=nar?Math.round(W-172):Math.round(W*0.36),xR=Math.round(W-215);
+let hM=mids.reduce((a,m)=>a+m.v*k,0)+padM*(mids.length-1),y=12+(H-24-hM)/2;
+mids.forEach(m=>{m.y=y;m.h=Math.max(m.v*k,1);y+=m.v*k+padM});
+const hS=total*k,yS=12+(H-24-hS)/2;
+if(!nar){const hR=rights.reduce((a,c)=>a+c.v*k,0)+padR*(rights.length-1);y=12+(H-24-hR)/2;rights.forEach(c=>{c.y=y;c.h=Math.max(c.v*k,1);y+=c.v*k+padR})}
+const band=(x0,y0,x1,y1,h,cls,tip)=>{const xm=(x0+x1)/2;return '<path class="'+cls+'" d="M'+x0+','+y0+'C'+xm+','+y0+' '+xm+','+y1+' '+x1+','+y1+'L'+x1+','+(y1+h)+'C'+xm+','+(y1+h)+' '+xm+','+(y0+h)+' '+x0+','+(y0+h)+'Z"><title>'+tip+'</title></path>'};
+let g='',ys=yS;
+mids.forEach(m=>{const h=m.v*k;g+=band(xS+nw,ys,xM,m.y,h,m.x?'lk x':'lk','You to '+m.l+': '+m0(m.v)+' a year');ys+=h});
+if(!nar)mids.forEach(m=>{let yy=m.y;m.kids.forEach(c=>{const h=c.v*k;g+=band(xM+nw,yy,xR,c.y,h,c.x?'lk x':'lk',m.l+' to '+c.l+': '+m0(c.v)+' a year');yy+=h})});
+g+='<rect class="nd" x="'+xS+'" y="'+yS+'" width="'+nw+'" height="'+hS+'"/>';
+mids.forEach(m=>{g+='<rect class="nd'+(m.x?' x':'')+'" x="'+xM+'" y="'+m.y+'" width="'+nw+'" height="'+m.h+'"/>'});
+if(!nar)rights.forEach(c=>{g+='<rect class="nd'+(c.x?' x':'')+'" x="'+xR+'" y="'+c.y+'" width="'+nw+'" height="'+c.h+'"/>'});
+g+='<text x="'+(xS-8)+'" y="'+(yS+hS/2-4)+'" text-anchor="end">You pay</text><text class="b" x="'+(xS-8)+'" y="'+(yS+hS/2+13)+'" text-anchor="end">'+m0(t[1])+'</text>';
+mids.forEach(m=>{g+='<text class="sm'+(m.x?' xr':'')+'" x="'+(xM+nw+6)+'" y="'+(m.y+m.h/2+4)+'">'+m.l+' '+m0(m.v)+'</text>'});
+if(!nar)rights.forEach(c=>{g+='<text class="sm'+(c.x?' xr':'')+'" x="'+(xR+nw+6)+'" y="'+(c.y+c.h/2+4)+'">'+c.l+' '+m0(c.v)+'</text>'});
+box.innerHTML='<svg role="img" aria-label="'+('You pay '+m0(t[1])+' a year: '+mids.map(m=>m.l+' '+m0(m.v)).join(', ')).replace(/"/g,'')+'">'+g+'</svg>';
+$('skcap').innerHTML='Your 2027 City tax at '+pctR(S.r)+', a year, split the way the City split 2026’s; the 2027 split isn’t published.'+(extra>0.5?' Above the proposal, your extra '+m0(extra)+' is your share of about $'+Math.round(E)+' million citywide, '+(FUND[fi][1]<=E?'matched in theory to one idea it could fund: ':'in theory a start on ')+FUNDS[fi]+'. Bigger ideas come up more often. <button type="button" class="txt" id="skr">Another idea</button>':' Push the increase above 15% and the extra gets a flow of its own.');
+};
+const skObs=new ResizeObserver(drawSankey);skObs.observe($('sankey'));
+$('sk').addEventListener('click',()=>{const b=$('sk'),open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));$('sankey').hidden=!open;$('skcap').hidden=!open;drawSankey()});
+$('skcap').addEventListener('click',e=>{if(e.target.id==='skr'){pickFund((S.r-15)*28,true);drawSankey()}});
+const slope=()=>{
+const s=$('slope'),W=s.clientWidth,H=s.clientHeight;if(!W)return;
+const nar=W<520;
+const nm=nar?['City tax','School tax','Water and waste']:['City property tax','Provincial school tax','Water, waste and recycling'];
+const vals=SL.flat(),mn=Math.min(...vals),mx=Math.max(...vals),pad=(mx-mn)*0.06+4;
+const lo=mn-pad,hi=mx+pad,top=40,bot=H-16,y=v=>top+(hi-v)/((hi-lo)||1)*(bot-top);
+const xL=nar?W*0.2:W*0.37,xR=nar?W*0.44:W*0.63;
+const place=vs=>{const o=vs.map((v,i)=>({i:i,y:y(v)})).sort((a,b)=>a.y-b.y);for(let k=1;k<o.length;k++)if(o[k].y-o[k-1].y<19)o[k].y=o[k-1].y+19;const over=o[o.length-1].y-(H-4);if(over>0)o.forEach(e=>{e.y-=over});const r=[];o.forEach(e=>{r[e.i]=e.y});return r};
+const yl=place(SL.map(d=>d[0])),yr=place(SL.map(d=>d[1]));
+let h='<text class="hd" x="'+xL+'" y="16" text-anchor="middle">2026</text><text class="hd" x="'+xR+'" y="16" text-anchor="middle">2027</text>';
+SL.forEach((d,i)=>{const c=i===0?'red':'',ch=Math.round(d[1])-Math.round(d[0]),ab=i===1?'about ':'';
+h+='<line class="'+c+'" x1="'+xL+'" y1="'+y(d[0])+'" x2="'+xR+'" y2="'+y(d[1])+'"/><circle class="'+c+'" cx="'+xL+'" cy="'+y(d[0])+'" r="2.5"/><circle class="'+c+'" cx="'+xR+'" cy="'+y(d[1])+'" r="2.5"/>';
+h+='<text class="'+c+'" x="'+(xL-10)+'" y="'+(yl[i]+5)+'" text-anchor="end">'+(nar?'':nm[i]+'  ')+m0(d[0])+'</text>';
+h+='<text class="'+c+'" x="'+(xR+10)+'" y="'+(yr[i]+5)+'">'+ab+m0(d[1])+(nar?'  '+nm[i]:', '+(ch>=0?'+':'−')+'$'+Math.abs(ch))+'</text>';
+});
+s.innerHTML='<svg aria-hidden="true">'+h+'</svg>';
+s.setAttribute('aria-label','Your home, monthly, 2026 to 2027: '+SL.map((d,i)=>nm[i]+' '+m0(d[0])+' to '+m0(d[1])).join('; '));
+};
+const slopeObs=new ResizeObserver(slope);slopeObs.observe($('slope'));
+
+const now=new Date();
+const lis=[...document.querySelectorAll('#steps li')];
+let cur=-1;lis.forEach((li,i)=>{if(new Date(li.dataset.d+'T00:00:00-06:00')<=now)cur=i});
+lis.forEach((li,i)=>{if(i===cur||i===cur+1){const t=document.createElement('span');t.className='tag';t.textContent=i===cur?'(now)':'(next)';li.querySelector('b').after(t)}});
+
+sync();render();
+}
+</script>
+</body>
+</html>
