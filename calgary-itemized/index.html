@@ -67,6 +67,9 @@ ul.steps li{margin-bottom:.5rem}
 .tag{font-style:italic;color:var(--red);margin-left:.3em}
 ol.method li{margin-bottom:.5rem}
 .nw{white-space:nowrap}
+figure.hero{margin:1.2rem 0 1.4rem}
+figure.hero img{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:cover;object-position:50% 45%}
+@media (max-width:760px){figure.hero{max-width:100%}figure.hero img{aspect-ratio:4/3}}
 button.btn{font:inherit;font-size:1.15rem;line-height:1;padding:.45rem .9rem;border:1px solid currentColor;border-radius:3px;background:none;color:inherit;cursor:pointer;min-height:2.4rem}
 button.btn[aria-expanded=true]{background:currentColor}
 button.btn[aria-expanded=true] span{color:var(--paper)}
@@ -99,6 +102,10 @@ button.btn:focus-visible{outline:2px solid var(--red);outline-offset:3px}
 <h1>Calgary, Itemized</h1>
 <p class="subtitle">The proposed 2027 budget, read like a household budget</p>
 <p class="byline">Made by <a href="https://camilleelot.github.io/">Camille</a> from the City of Calgary’s published numbers, as of November 22, 2026. Not an official City page.</p>
+<figure class="fullwidth hero">
+<img src="calgary.jpg" width="1500" height="1125" alt="Downtown Calgary on a summer day, seen from a hillside: low-rise apartments and tall spruce in front, the East Village towers, the Calgary Tower and the Bow building against a blue sky full of white clouds.">
+<figcaption>Downtown Calgary from a hillside, one summer afternoon. Photo by Camille.</figcaption>
+</figure>
 
 <section>
 <p><span class="newthought">On November 10</span> the City of Calgary proposed its budget for 2027 to 2030. It would raise property tax revenue 15% in 2027, then 10%, 7.7% and 6%.<label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"><span class="sidenote">City of Calgary, <a href="https://www.calgary.ca/our-finances/2027-budget.html">proposed 2027–2030 Budget</a>, and the Ward 8 <a href="https://www.calgary.ca/council/ward-8/articles/2027-2030-budget.html">budget toolkit</a>. The 15% is revenue from properties that already exist.</span> For the typical house, the City’s part of the property tax bill goes from $229 a month to $266, and on to about $334 by 2030 <svg class="spark" data-v="228.90,266,292.60,315.13,334.04" data-l="Typical house, City tax a month: $229, $266, $293, $315, $334"></svg>.<label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle"><span class="sidenote">The typical house is the City’s median single-residential assessment: $706,000 in 2026 and $688,000 in 2027. The years after 2027 are this page’s projection.</span> Council hears from the public starting November 23 and votes in December.</p>
